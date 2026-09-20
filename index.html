@@ -293,6 +293,10 @@
   .svc ul{list-style:none;padding:0;margin:1.3rem 0 0;display:flex;flex-direction:column;gap:.55rem}
   .svc li{display:flex;align-items:center;gap:.6rem;font-size:.95rem;color:var(--ink)}
   .svc li::before{content:"";width:6px;height:6px;border-radius:50%;background:var(--steel);flex:none}
+  a.svc{color:inherit;cursor:pointer}
+  .svc-more{margin-top:auto;padding-top:1.4rem;color:var(--steel);font-weight:700;font-size:.95rem;display:inline-flex;align-items:center;gap:.4rem}
+  .svc-more svg{width:16px;height:16px;transition:transform .25s}
+  .svc:hover .svc-more svg{transform:translateX(-5px)}
 
   /* about */
   .about{padding-block:var(--sp-section)}
@@ -591,24 +595,27 @@
           <svg viewBox="0 0 560 46" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M280 0 V16 M280 16 H100 V44 M280 16 H460 V44 M280 16 V44"/></svg>
         </div>
         <div class="svc-grid">
-          <article class="svc stagger">
+          <a class="svc stagger" href="infrastructure.html">
             <div class="svc-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="4" width="18" height="6" rx="1.5"/><rect x="3" y="14" width="18" height="6" rx="1.5"/><path class="ico-led" stroke-linecap="round" d="M7 7h.01"/><path class="ico-led l2" stroke-linecap="round" d="M7 17h.01"/></svg></div>
             <h3>Infrastructure</h3><div class="svc-fa">ساختن بستر درست</div>
             <p>زیرساختی که فناوری و عملیات سازمان روی آن قرار می‌گیرند.</p>
             <ul><li>Network</li><li>Datacenter &amp; Server</li><li>Storage</li><li>Power &amp; UPS</li><li>Passive Infrastructure</li></ul>
-          </article>
-          <article class="svc stagger">
+            <span class="svc-more">مشاهدهٔ حوزهٔ زیرساخت <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M15 6l-6 6 6 6"/></svg></span>
+          </a>
+          <a class="svc stagger" href="security.html">
             <div class="svc-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path class="ico-pulse" d="M12 3l7 3v5c0 4.5-3 7.5-7 9-4-1.5-7-4.5-7-9V6l7-3z"/><path stroke-linecap="round" stroke-linejoin="round" d="M9 11.8l2 2 4-4"/></svg></div>
             <h3>Security</h3><div class="svc-fa">محافظت از آنچه ساخته‌ایم</div>
             <p>راهکارهایی برای محافظت از زیرساخت، محیط و دسترسی‌های سازمان.</p>
             <ul><li>Network Security</li><li>CCTV</li><li>Access &amp; Monitoring</li><li>کنترل تردد</li></ul>
-          </article>
-          <article class="svc stagger">
+            <span class="svc-more">مشاهدهٔ حوزهٔ امنیت <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M15 6l-6 6 6 6"/></svg></span>
+          </a>
+          <a class="svc stagger" href="intelligence.html">
             <div class="svc-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle class="ico-pulse" cx="12" cy="12" r="3"/><g class="ico-rays"><path d="M12 3v3M12 18v3M3 12h3M18 12h3M6 6l2 2M16 16l2 2M18 6l-2 2M8 16l-2 2"/></g></svg></div>
             <h3>Intelligence</h3><div class="svc-fa">هوشمندکردن آنچه ساخته و محافظت کرده‌ایم</div>
             <p>فناوری برای استفاده بهتر از داده، خودکارسازی و تصمیم‌گیری دقیق‌تر.</p>
             <ul><li>AI Solutions &amp; Assistants</li><li>Data &amp; Analytics</li><li>Intelligent Automation</li><li>Software &amp; Custom AI Models</li></ul>
-          </article>
+            <span class="svc-more">مشاهدهٔ حوزهٔ هوشمندی <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M15 6l-6 6 6 6"/></svg></span>
+          </a>
         </div>
       </div>
     </section>
