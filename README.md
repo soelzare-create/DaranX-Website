@@ -17,6 +17,16 @@
 | `intelligence.html` | لندینگ حوزهٔ **هوشمندی** |
 | `assets/daranx-logo.svg` | لوگوی برند |
 
+### زیرمجموعه‌ها (۱۳ لندینگ)
+
+هر حوزه، لندینگ اختصاصی زیرمجموعه‌های خود را دارد (محتوای خلاصه و برندبوک‌محور):
+
+- **زیرساخت:** `network.html`، `datacenter-server.html`، `storage.html`، `power-ups.html`، `passive.html`
+- **امنیت:** `network-security.html`، `cctv.html`، `access-monitoring.html`، `access-control.html`
+- **هوشمندی:** `ai-solutions.html`، `data-analytics.html`، `automation.html`، `software-models.html`
+
+کارت‌های هر صفحهٔ حوزه به این لندینگ‌ها لینک شده‌اند.
+
 صفحه‌ها به هم لینک شده‌اند (نسبی)، پس مجموعه به‌صورت یکپارچه کار می‌کند.
 
 ## اجرای محلی

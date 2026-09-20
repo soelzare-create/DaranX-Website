@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <style>:root{color-scheme:light}html,body{margin:0}img{max-width:100%}[hidden]{display:none!important}</style>
-<title>DaranX Security</title>
+<title>DaranX Network</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@300;400;500;600;700;800;900&display=swap">
@@ -23,7 +23,7 @@
     --r-sm:10px;--r-md:16px;--r-lg:26px;--maxw:1160px;
     --gutter:clamp(1rem,4vw,2.5rem);--sp:clamp(3.5rem,7vw,6.5rem);
     --font:"Vazirmatn",-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
-    --logo:url("assets/daranx-logo.svg");
+    --logo:url("daranx-logo.svg");
   }
   @media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
     --navy:#0C2036;--navy-deep:#081627;--steel:#5B95CE;--steel-soft:#7FB0DF;--silver:#31465D;
@@ -260,26 +260,53 @@
     .subs{grid-template-columns:1fr}.mstrip{grid-template-columns:1fr}.foot-grid{grid-template-columns:1fr;gap:1.6rem}
   }
 
-  /* standalone tweaks */
-  .view{animation:none}
+  /* sub-landing specifics */
+  .cols{display:grid;grid-template-columns:1fr 1fr;gap:1.3rem;margin-top:2.4rem}
+  .panel{background:var(--surface);border:1px solid var(--line);border-radius:var(--r-lg);padding:1.9rem 1.8rem;box-shadow:var(--shadow)}
+  .panel h3{font-size:1.25rem}
+  .panel p{color:var(--ink-soft);margin-top:.8rem;font-size:1rem}
+  .vlist{list-style:none;padding:0;margin:1rem 0 0;display:grid;gap:.7rem}
+  .vlist li{display:flex;gap:.6rem;align-items:flex-start;color:var(--ink);font-size:.97rem}
+  .vlist li svg{width:20px;height:20px;flex:none;color:var(--steel);margin-top:.15rem}
+  .approach{display:flex;flex-wrap:wrap;gap:.6rem;margin-top:1.2rem}
+  .approach span{display:inline-flex;align-items:center;gap:.45rem;font-size:.9rem;font-weight:600;color:var(--ink-soft);background:var(--surface-2);border-radius:999px;padding:.4rem .9rem}
+  .approach span b{color:var(--steel);font-weight:800}
+  .subnav{display:flex;flex-wrap:wrap;gap:.5rem;margin-top:1.4rem}
+  .subnav a{font-size:.85rem;color:var(--ink-soft);border:1px solid var(--line);border-radius:999px;padding:.35rem .85rem;transition:border-color .2s,color .2s}
+  .subnav a:hover{border-color:var(--steel);color:var(--steel)}
+  .subnav a.on{background:var(--grad-soft);color:#fff;border-color:transparent}
+  :root[data-theme="dark"] .subnav a.on{color:#08151f}
+  /* index hub */
+  .idx{display:grid;gap:2rem;margin-top:2.4rem}
+  .idx-group h2{font-size:1.4rem;display:flex;align-items:center;gap:.6rem}
+  .idx-group h2 .en{color:var(--ink-faint);font-size:.85rem;font-weight:600}
+  .idx-cards{display:grid;grid-template-columns:repeat(3,1fr);gap:1rem;margin-top:1rem}
+  .idx-card{position:relative;overflow:hidden;background:var(--surface);border:1px solid var(--line);border-radius:var(--r-md);padding:1.4rem 1.4rem 1.5rem;box-shadow:var(--shadow);cursor:pointer;display:flex;flex-direction:column;transition:transform .25s,box-shadow .25s}
+  .idx-card:hover{transform:translateY(-5px);box-shadow:var(--shadow-lift)}
+  .idx-card::after{content:"";position:absolute;inset:auto 0 0 0;height:3px;background:var(--grad-soft);transform:scaleX(0);transform-origin:right;transition:transform .3s}
+  .idx-card:hover::after{transform:scaleX(1)}
+  .idx-card .ico{width:44px;height:44px;border-radius:12px;background:var(--grad-soft);color:#fff;display:grid;place-items:center;margin-bottom:.9rem}
+  :root[data-theme="dark"] .idx-card .ico{color:#08151f}
+  .idx-card .ico svg{width:22px;height:22px}
+  .idx-card h4{font-size:1.1rem}
+  .idx-card .en{color:var(--ink-faint);font-size:.8rem;font-weight:600;margin-top:.1rem}
+  .idx-card p{color:var(--ink-soft);font-size:.9rem;margin-top:.6rem}
+  @media (max-width:900px){.cols{grid-template-columns:1fr}.idx-cards{grid-template-columns:1fr 1fr}}
+  @media (max-width:640px){.idx-cards{grid-template-columns:1fr}}
+
   .reveal.in{animation:dx-rise .7s ease both}
 </style>
-<style>a.sub{color:inherit;cursor:pointer}.sub-more{display:inline-flex;align-items:center;gap:.35rem;margin-top:1.1rem;color:var(--steel);font-weight:700;font-size:.9rem}.sub-more svg{width:15px;height:15px;transition:transform .25s}.sub:hover .sub-more svg{transform:translateX(-4px)}</style>
 </head>
 <body>
 <div class="progress" aria-hidden="true"><span id="prog"></span></div>
 <div dir="rtl" lang="fa">
   <header class="nav" id="nav">
     <div class="wrap nav-inner">
-      <a class="brand" href="index.html" aria-label="DaranX">
-        <span class="logomark" aria-hidden="true"></span>
-        <span>Daran<span class="x">X</span> <small>Security</small></span>
-      </a>
+      <a class="brand" href="index.html" aria-label="DaranX"><span class="logomark" aria-hidden="true"></span><span>Daran<span class="x">X</span> <small>Infrastructure</small></span></a>
       <nav class="nav-links" id="navLinks" aria-label="ناوبری">
-        <a class="home" href="solutions.html">همه راهکارها</a>
-        <a class="dl" href="infrastructure.html">زیرساخت</a>
-        <a class="dl active" href="#top">امنیت</a>
-        <a class="dl" href="intelligence.html">هوشمندی</a>
+        <a class="home" href="index.html">صفحه اصلی سایت</a>
+        <a href="solutions.html">همه راهکارها</a>
+        <a href="infrastructure.html">حوزهٔ زیرساخت</a>
         <a class="nav-cta" href="tel:+982188964116">تماس</a>
       </nav>
       <div style="display:flex;align-items:center;gap:.5rem">
@@ -292,104 +319,95 @@
     </div>
   </header>
   <main id="top">
-    <div class="dhero">
+
+      <div class="dhero">
         <div class="blobs" aria-hidden="true"><span class="blob b1"></span><span class="blob b2"></span></div>
         <div class="wrap dhero-grid">
           <div class="reveal">
-            <div class="crumbs"><a href="solutions.html">راهکارها</a><span class="sep">›</span><span>امنیت</span></div>
-            <span class="chip">Security</span>
-            <h1>از چیزی که ساخته‌ایم، درست محافظت می‌کنیم.</h1>
-            <p class="lead">امنیت یک افزودنی در پایان پروژه نیست؛ از مرحله طراحی در نظر گرفته می‌شود. زیرساخت، محیط فیزیکی و دسترسی‌های سازمان را در یک راهکار هماهنگ محافظت می‌کنیم.</p>
+            <div class="crumbs"><a href="solutions.html">راهکارها</a><span class="sep">›</span><a href="infrastructure.html">زیرساخت</a><span class="sep">›</span><span>شبکه</span></div>
+            <span class="chip">Network</span>
+            <h1>بستر ارتباطیِ پایدار برای همهٔ سرویس‌ها.</h1>
+            <p class="lead">شبکه، ستون فقرات ارتباط سازمان است؛ آن را متناسب با بار واقعی امروز و رشد فردا طراحی می‌کنیم.</p>
             <div class="dhero-actions">
-              <a class="btn btn-primary" href="tel:+982188964116">مشاوره امنیت</a>
-              <a class="btn btn-ghost" href="intelligence.html">حوزه هوشمندی</a>
+              <a class="btn btn-primary" href="tel:+982188964116">درخواست مشاوره</a>
+              <a class="btn btn-ghost" href="infrastructure.html">حوزهٔ زیرساخت</a>
             </div>
+            <div class="subnav"><a class="on" href="network.html">شبکه</a><a class="" href="datacenter-server.html">دیتاسنتر و سرور</a><a class="" href="storage.html">ذخیره‌سازی</a><a class="" href="power-ups.html">برق و UPS</a><a class="" href="passive.html">زیرساخت پسیو</a></div>
           </div>
           <div class="dhero-visual" aria-hidden="true">
             <div class="dring r1"></div><div class="dring r2"></div>
-            <div class="dcore"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path class="ico-pulse" d="M12 3l7 3v5c0 4.5-3 7.5-7 9-4-1.5-7-4.5-7-9V6l7-3z"/><path stroke-linecap="round" stroke-linejoin="round" d="M9 11.8l2 2 4-4"/></svg></div>
-            <div class="dchip c1"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="8" width="18" height="12" rx="2"/><path d="M8 8V6a4 4 0 0 1 8 0v2"/></svg>دسترسی</div>
-            <div class="dchip c2"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="12" r="3"/><path d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7-10-7-10-7z"/></svg>CCTV</div>
-            <div class="dchip c3"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>محافظت</div>
+            <div class="dcore"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M4 12h16M4 6h16M4 18h16"/></svg></div>
           </div>
         </div>
       </div>
-
       <div class="sec alt">
         <div class="wrap reveal">
-          <div class="sec-head"><span class="eyebrow">زیرمجموعه‌ها</span><h2>لایه‌های محافظت، هماهنگ با هم</h2><p class="lead">چهار بخش که با هم دیدِ کامل و کنترل واقعی بر امنیت سازمان می‌سازند.</p></div>
-          <div class="subs">
-            <a class="sub stagger" href="network-security.html"><div class="sub-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 3l7 3v5c0 4.5-3 7.5-7 9-4-1.5-7-4.5-7-9V6l7-3z"/></svg></div><h3>امنیت شبکه</h3><div class="en">Network Security</div><p>کنترل و محافظت از مسیرهای ارتباطی و داده در برابر تهدیدها و دسترسی‌های غیرمجاز.</p>
-              <span class="sub-more">جزئیات <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M15 6l-6 6 6 6"/></svg></span>
-            </a>
-            <a class="sub stagger" href="cctv.html"><div class="sub-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="12" r="3.5"/><path d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7-10-7-10-7z"/></svg></div><h3>دوربین مداربسته</h3><div class="en">CCTV</div><p>نظارت تصویری برای دیدِ کامل و مستند بر محیط سازمان و رویدادهای آن.</p>
-              <span class="sub-more">جزئیات <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M15 6l-6 6 6 6"/></svg></span>
-            </a>
-            <a class="sub stagger" href="access-monitoring.html"><div class="sub-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 2l7 4v6c0 4-3 7-7 8-4-1-7-4-7-8V6z"/><path stroke-linecap="round" d="M12 8v4l2 1"/></svg></div><h3>دسترسی و پایش</h3><div class="en">Access &amp; Monitoring</div><p>مدیریت اینکه چه کسی به چه چیزی دسترسی دارد، همراه با پایش پیوسته و ثبت رویدادها.</p>
-              <span class="sub-more">جزئیات <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M15 6l-6 6 6 6"/></svg></span>
-            </a>
-            <a class="sub stagger" href="access-control.html"><div class="sub-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="8" width="18" height="12" rx="2"/><path d="M8 8V6a4 4 0 0 1 8 0v2M12 13v3"/></svg></div><h3>کنترل تردد</h3><div class="en">Access Control</div><p>مدیریت ورود و خروج افراد به فضاهای سازمان، متناسب با سطح دسترسی هر نفر.</p>
-              <span class="sub-more">جزئیات <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M15 6l-6 6 6 6"/></svg></span>
-            </a>
+          <div class="cols">
+            <div class="panel stagger">
+              <span class="eyebrow">چیست؟</span>
+              <h3 style="margin-top:.7rem">شبکه</h3>
+              <p>طراحی و پیاده‌سازی شبکهٔ باسیم و بی‌سیم، از دسترسی کاربران تا ارتباط دیتاسنتر — با نگاه به امنیت و پایش از همان ابتدا.</p>
+              <div class="approach">
+                <span><b>۱</b> شناخت</span><span><b>۲</b> طراحی</span><span><b>۳</b> اجرا</span><span><b>۴</b> پشتیبانی</span>
+              </div>
+            </div>
+            <div class="panel stagger">
+              <span class="eyebrow">چرا مهم است؟</span>
+              <ul class="vlist" style="margin-top:1rem">
+                <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg><span>پایداری ارتباط و کاهش قطعی</span></li>
+                <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg><span>مقیاس‌پذیری برای رشد بدون بازطراحی</span></li>
+                <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg><span>بستری آماده برای امنیت و پایش</span></li>
+              </ul>
+            </div>
           </div>
         </div>
       </div>
-
-      <div class="sec">
+      <div class="sec" style="padding-top:0">
         <div class="wrap reveal">
-          <div class="sec-head"><span class="eyebrow">روش کار</span><h2>امنیت، از طراحی تا پایش پیوسته</h2></div>
-          <div class="mstrip">
-            <div class="mstep stagger"><div class="n">۱</div><h4>شناخت</h4><p>شناسایی دارایی‌ها، ریسک‌ها و نقاط حساس سازمان.</p></div>
-            <div class="mstep stagger"><div class="n">۲</div><h4>طراحی</h4><p>طراحی لایه‌های محافظت هماهنگ با زیرساخت.</p></div>
-            <div class="mstep stagger"><div class="n">۳</div><h4>اجرا</h4><p>پیاده‌سازی کنترل‌ها و سامانه‌های نظارتی.</p></div>
-            <div class="mstep stagger"><div class="n">۴</div><h4>پشتیبانی</h4><p>پایش پیوسته و به‌روزرسانی در برابر تهدیدهای نو.</p></div>
-          </div>
-          <div class="outcomes">
-            <span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 6L9 17l-5-5"/></svg>کاهش ریسک</span>
-            <span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 6L9 17l-5-5"/></svg>کنترل دسترسی</span>
-            <span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 6L9 17l-5-5"/></svg>دیدِ پیوسته بر محیط</span>
-            <span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 6L9 17l-5-5"/></svg>آرامش خاطر مدیریت</span>
+          <div class="cta">
+            <span class="eyebrow">شروع از شناخت</span>
+            <h2>شبکه را برای مسئلهٔ واقعی شما طراحی کنیم.</h2>
+            <p>اول نیاز شما را مشخص می‌کنیم، بعد می‌گوییم چه چیزی واقعاً لازم دارید.</p>
+            <div class="cta-actions">
+              <a class="btn btn-light" href="tel:+982188964116">تماس بگیرید</a>
+              <a class="btn btn-outline" href="infrastructure.html">بازگشت به زیرساخت</a>
+            </div>
           </div>
         </div>
       </div>
-      <div class="sec" style="padding-top:0"><div class="wrap reveal"><div class="cta"><span class="eyebrow">شروع از شناخت</span><h2>ریسک‌های سازمان‌تان را با هم مرور کنیم.</h2><p>پیش از هر تجهیزی، اول نقاط حساس و نیاز واقعی را مشخص می‌کنیم.</p><div class="cta-actions"><a class="btn btn-light" href="tel:+982188964116">تماس بگیرید</a><a class="btn btn-outline" href="solutions.html">بازگشت به راهکارها</a></div></div></div></div>
   </main>
-  <footer class="site">
-    <div class="wrap">
-      <div class="foot-grid">
-        <div class="foot-brand">
-          <div class="brand"><span class="logomark" aria-hidden="true"></span><span>Daran<span style="color:var(--steel-soft)">X</span> <small style="color:var(--on-navy-faint)">Security</small></span></div>
-          <p>سه حوزه، یک راهکار یکپارچه. زیرساخت را می‌سازیم، از آن محافظت می‌کنیم و آن را هوشمند می‌کنیم؛ مسئولیت نتیجه را به عهده می‌گیریم و پشتیبانی می‌کنیم.</p>
-        </div>
-        <div class="foot-col"><h4>حوزه‌ها</h4><a href="infrastructure.html">زیرساخت</a><a href="security.html">امنیت</a><a href="intelligence.html">هوشمندی</a><a href="solutions.html">همه راهکارها</a></div>
-        <div class="foot-col"><h4>مسیر</h4><a href="index.html">شناخت</a><a href="index.html">طراحی</a><a href="index.html">اجرا</a><a href="index.html">پشتیبانی</a></div>
-        <div class="foot-col"><h4>تماس</h4>
-          <div class="fc-line"><a href="tel:+982188964116">۰۲۱-۸۸۹۶۴۱۱۶</a> · <a href="tel:+982188966904">۸۸۹۶۶۹۰۴</a></div>
-          <div class="fc-line"><a href="tel:+989359370910">۰۹۳۵-۹۳۷۰۹۱۰</a></div>
-          <div class="fc-line">تهران، میدان فاطمی، نبش چهلستون، ساختمان چهلستون، طبقه ۲، واحد ۲۰۲</div>
-        </div>
+  <footer class="site"><div class="wrap">
+    <div class="foot-grid">
+      <div class="foot-brand">
+        <div class="brand"><span class="logomark" aria-hidden="true"></span><span>Daran<span style="color:var(--steel-soft)">X</span> <small style="color:var(--on-navy-faint)">Infrastructure</small></span></div>
+        <p>سه حوزه، یک راهکار یکپارچه. زیرساخت را می‌سازیم، از آن محافظت می‌کنیم و آن را هوشمند می‌کنیم؛ مسئولیت نتیجه را به عهده می‌گیریم و پشتیبانی می‌کنیم.</p>
       </div>
-      <div class="foot-bottom"><span style="color:var(--on-navy-soft)">همه چیز سر جای درستش.</span><span>© ۱۴۰۵ DaranX — تمامی حقوق محفوظ است.</span></div>
+      <div class="foot-col"><h4>حوزه‌ها</h4><a href="infrastructure.html">زیرساخت</a><a href="security.html">امنیت</a><a href="intelligence.html">هوشمندی</a><a href="solutions.html">همه راهکارها</a></div>
+      <div class="foot-col"><h4>مسیر</h4><a href="index.html">شناخت</a><a href="index.html">طراحی</a><a href="index.html">اجرا</a><a href="index.html">پشتیبانی</a></div>
+      <div class="foot-col"><h4>تماس</h4>
+        <div class="fc-line"><a href="tel:+982188964116">۰۲۱-۸۸۹۶۴۱۱۶</a> · <a href="tel:+982188966904">۸۸۹۶۶۹۰۴</a></div>
+        <div class="fc-line"><a href="tel:+989359370910">۰۹۳۵-۹۳۷۰۹۱۰</a></div>
+        <div class="fc-line">تهران، میدان فاطمی، نبش چهلستون، ساختمان چهلستون، طبقه ۲، واحد ۲۰۲</div>
+      </div>
     </div>
-  </footer>
+    <div class="foot-bottom"><span style="color:var(--on-navy-soft)">همه چیز سر جای درستش.</span><span>© ۱۴۰۵ DaranX — تمامی حقوق محفوظ است.</span></div>
+  </div></footer>
 </div>
 <script>
   (function(){
     var root=document.documentElement, tt=document.getElementById('themeToggle');
     function stored(){try{return localStorage.getItem('dx-theme')}catch(e){return null}}
     var s=stored(); if(s){root.setAttribute('data-theme',s);}
-    tt.addEventListener('click',function(){var cur=root.getAttribute('data-theme');var isDark=cur?cur==='dark':matchMedia('(prefers-color-scheme:dark)').matches;var next=isDark?'light':'dark';root.setAttribute('data-theme',next);try{localStorage.setItem('dx-theme',next)}catch(e){}});
+    tt.addEventListener('click',function(){var c=root.getAttribute('data-theme');var d=c?c==='dark':matchMedia('(prefers-color-scheme:dark)').matches;var n=d?'light':'dark';root.setAttribute('data-theme',n);try{localStorage.setItem('dx-theme',n)}catch(e){}});
     var mb=document.getElementById('menuBtn'), nl=document.getElementById('navLinks');
-    mb.addEventListener('click',function(){var open=nl.classList.toggle('open');mb.setAttribute('aria-expanded',open);});
+    mb.addEventListener('click',function(){var o=nl.classList.toggle('open');mb.setAttribute('aria-expanded',o);});
     nl.addEventListener('click',function(e){if(e.target.tagName==='A')nl.classList.remove('open')});
     var nav=document.getElementById('nav'), prog=document.getElementById('prog');
     function onScroll(){nav.classList.toggle('scrolled',window.scrollY>8);var h=document.documentElement.scrollHeight-window.innerHeight;prog.style.width=(h>0?(window.scrollY/h*100):0)+'%';}
     onScroll(); window.addEventListener('scroll',onScroll,{passive:true});
     var els=document.querySelectorAll('.reveal');
-    if('IntersectionObserver' in window){
-      var io=new IntersectionObserver(function(en){en.forEach(function(x){if(x.isIntersecting){x.target.classList.add('in');io.unobserve(x.target);}});},{threshold:.1});
-      els.forEach(function(el){io.observe(el)});
-    } else { els.forEach(function(el){el.classList.add('in')}); }
+    if('IntersectionObserver' in window){var io=new IntersectionObserver(function(en){en.forEach(function(x){if(x.isIntersecting){x.target.classList.add('in');io.unobserve(x.target);}});},{threshold:.1});els.forEach(function(el){io.observe(el)});}
+    else{els.forEach(function(el){el.classList.add('in')});}
   })();
 </script>
 </body>
