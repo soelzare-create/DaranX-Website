@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+  <url><loc>https://daranx.example/</loc><changefreq>monthly</changefreq></url>
+  <url><loc>https://daranx.example/solutions.html</loc><changefreq>monthly</changefreq></url>
+  <url><loc>https://daranx.example/infrastructure.html</loc><changefreq>monthly</changefreq></url>
+  <url><loc>https://daranx.example/security.html</loc><changefreq>monthly</changefreq></url>
+  <url><loc>https://daranx.example/intelligence.html</loc><changefreq>monthly</changefreq></url>
+  <url><loc>https://daranx.example/network.html</loc><changefreq>monthly</changefreq></url>
+  <url><loc>https://daranx.example/datacenter-server.html</loc><changefreq>monthly</changefreq></url>
+  <url><loc>https://daranx.example/storage.html</loc><changefreq>monthly</changefreq></url>
+  <url><loc>https://daranx.example/power-ups.html</loc><changefreq>monthly</changefreq></url>
+  <url><loc>https://daranx.example/passive.html</loc><changefreq>monthly</changefreq></url>
+  <url><loc>https://daranx.example/network-security.html</loc><changefreq>monthly</changefreq></url>
+  <url><loc>https://daranx.example/cctv.html</loc><changefreq>monthly</changefreq></url>
+  <url><loc>https://daranx.example/access-monitoring.html</loc><changefreq>monthly</changefreq></url>
+  <url><loc>https://daranx.example/access-control.html</loc><changefreq>monthly</changefreq></url>
+  <url><loc>https://daranx.example/ai-solutions.html</loc><changefreq>monthly</changefreq></url>
+  <url><loc>https://daranx.example/data-analytics.html</loc><changefreq>monthly</changefreq></url>
+  <url><loc>https://daranx.example/automation.html</loc><changefreq>monthly</changefreq></url>
+  <url><loc>https://daranx.example/software-models.html</loc><changefreq>monthly</changefreq></url>
+</urlset>

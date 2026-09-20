@@ -51,6 +51,17 @@ python -m http.server 8080
 (`/root`) قرار دهید. فایل `.nojekyll` باعث می‌شود دارایی‌ها بدون پردازش Jekyll
 سرو شوند. (برای ریپازیتوریِ خصوصی، GitHub Pages نیازمند پلن مناسب است.)
 
+
+## پیش از انتشار: تنظیم دامنه
+
+متاتگ‌های SEO/OpenGraph و `sitemap.xml`/`robots.txt` با دامنهٔ نمونهٔ `https://daranx.example` نوشته شده‌اند. پیش از انتشار، آن را با دامنهٔ واقعی جایگزین کنید:
+
+```bash
+grep -rl "daranx.example" . | xargs sed -i "s#https://daranx.example#https://YOUR-DOMAIN#g"
+```
+
+فایل‌های SEO: هر صفحه شامل `description`، Open Graph و Twitter Card است؛ تصویر اشتراک‌گذاری در `assets/og.png` و آیکون‌ها در `assets/favicon.svg` و `assets/favicon-32.png` و `assets/apple-touch-icon.png`.
+
 ## هویت بصری
 
 - پالت: `#153A62` (نِیوی)، `#D9D9D9` (نقره‌ای)، `#FFFFFF` (سفید) + تینت فولادیِ برگرفته از نِیوی برای لهجه‌ها.
