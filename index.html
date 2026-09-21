@@ -623,6 +623,20 @@
   .map .leaflet-control-attribution{font-size:.68rem}
   .map .leaflet-popup-content{font-weight:600;line-height:1.8}
 </style>
+<style id="mobilefix">
+  @media (max-width:640px){
+    /* Hero ring: keep the animated diagram, but drop the tiny node labels —
+       on phones the side labels spilled off-screen (horizontal scroll) and
+       collided with the tagline. The same four ideas appear in the sections
+       below. */
+    .hv-node .lbl{display:none}
+    .hero-visual{max-width:300px}
+    .fold-motion{overflow-x:clip}
+    .hero.fold-hero{overflow:hidden}
+    /* Final safety net: never allow sideways scrolling on phones. */
+    html,body{overflow-x:hidden}
+  }
+</style>
 <div class="progress" aria-hidden="true"><span id="prog"></span></div>
 
 <div dir="rtl" lang="fa">
