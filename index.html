@@ -1147,8 +1147,8 @@
   (function(){
     var el = document.getElementById('map');
     if(!el || !window.L) return;
-    // ⚠️ office coordinates — fine-tune to the exact building if needed.
-    var LAT = 35.7161, LNG = 51.4010, ZOOM = 16;
+    // Office coordinates (exact building).
+    var LAT = 35.7206225, LNG = 51.4062148, ZOOM = 17;
     var map = L.map('map', { scrollWheelZoom: false }).setView([LAT, LNG], ZOOM);
     L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
       maxZoom: 19,
