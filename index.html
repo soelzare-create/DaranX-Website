@@ -6,6 +6,7 @@
 <style>:root{color-scheme:light}html,body{margin:0}img{max-width:100%}[hidden]{display:none!important}</style>
 <title>DaranX — شریک فناوری سازمان‌ها</title>
 <link rel="preload" href="assets/fonts/Vazirmatn-VF.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="assets/leaflet/leaflet.css">
 <style id="fontface">
 @font-face{font-family:"Vazirmatn";src:url("assets/fonts/Vazirmatn-VF.woff2") format("woff2");font-weight:100 900;font-style:normal;font-display:swap}
 </style>
@@ -611,6 +612,16 @@
   .cf-status.err{background:rgba(230,120,116,.14);border:1px solid rgba(230,120,116,.5);color:#f7d4d2}
   .cf-note{margin:.2rem 0 0;font-size:.8rem;color:var(--on-navy-faint)}
   @media (max-width:520px){.cf-row{grid-template-columns:1fr}}
+  /* ---- location map (Leaflet) ---- */
+  .mapsec{padding-block:var(--sp-section)}
+  .map-head{display:flex;justify-content:space-between;align-items:flex-end;gap:1.5rem;flex-wrap:wrap;margin-bottom:1.4rem}
+  .map-head h2{font-size:clamp(1.5rem,1.2rem + 1.4vw,2.2rem);margin-top:.7rem}
+  .map-addr{color:var(--ink-soft);margin-top:.7rem;max-width:52ch;line-height:1.9}
+  .map-actions{display:flex;gap:.7rem;flex-wrap:wrap}
+  .map{height:clamp(320px,42vh,460px);border-radius:var(--r-lg);overflow:hidden;border:1px solid var(--line);box-shadow:var(--shadow-lift);position:relative;z-index:0;isolation:isolate;background:var(--surface-2)}
+  .map-hint{margin:.8rem 0 0;font-size:.82rem;color:var(--ink-faint)}
+  .map .leaflet-control-attribution{font-size:.68rem}
+  .map .leaflet-popup-content{font-weight:600;line-height:1.8}
 </style>
 <div class="progress" aria-hidden="true"><span id="prog"></span></div>
 
@@ -974,6 +985,25 @@
         </div>
       </div>
     </section>
+
+    <!-- LOCATION MAP -->
+    <section id="location" class="mapsec reveal" aria-label="موقعیت دفتر DaranX">
+      <div class="wrap">
+        <div class="map-head">
+          <div>
+            <span class="eyebrow">موقعیت ما</span>
+            <h2>روی نقشه پیدامان کنید</h2>
+            <p class="map-addr">تهران، میدان فاطمی، نبش چهلستون، ساختمان چهلستون، طبقه ۲، واحد ۲۰۲</p>
+          </div>
+          <div class="map-actions">
+            <a class="btn btn-primary" id="mapDir" href="https://www.openstreetmap.org/" target="_blank" rel="noopener">مسیریابی (گوگل مپ)</a>
+            <a class="btn btn-ghost" id="mapNeshan" href="https://neshan.org/" target="_blank" rel="noopener">نشان</a>
+          </div>
+        </div>
+        <div id="map" class="map" role="application" aria-label="نقشهٔ موقعیت دفتر DaranX"></div>
+        <p class="map-hint">برای بزرگ‌نمایی، روی نقشه کلیک کنید و سپس با اسکرول زوم کنید.</p>
+      </div>
+    </section>
   </main>
 
   <footer class="site">
@@ -1110,6 +1140,38 @@
       if(q.get('sent') === '1'){ show('ok', 'پیام شما با موفقیت ارسال شد. به‌زودی با شما تماس می‌گیریم.'); }
       else if(q.get('sent') === '0'){ show('err', 'ارسال ناموفق بود. لطفاً دوباره تلاش کنید یا تماس بگیرید.'); }
     } catch(_){}
+  })();
+</script>
+<script src="assets/leaflet/leaflet.js"></script>
+<script id="mapjs">
+  (function(){
+    var el = document.getElementById('map');
+    if(!el || !window.L) return;
+    // ⚠️ office coordinates — fine-tune to the exact building if needed.
+    var LAT = 35.7161, LNG = 51.4010, ZOOM = 16;
+    var map = L.map('map', { scrollWheelZoom: false }).setView([LAT, LNG], ZOOM);
+    L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
+      maxZoom: 19,
+      attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>'
+    }).addTo(map);
+    var icon = L.icon({
+      iconUrl: 'assets/leaflet/images/marker-icon.png',
+      iconRetinaUrl: 'assets/leaflet/images/marker-icon-2x.png',
+      shadowUrl: 'assets/leaflet/images/marker-shadow.png',
+      iconSize: [25, 41], iconAnchor: [12, 41], popupAnchor: [1, -34], shadowSize: [41, 41]
+    });
+    L.marker([LAT, LNG], { icon: icon }).addTo(map)
+      .bindPopup('<b>DaranX</b><br>میدان فاطمی، نبش چهلستون<br>ساختمان چهلستون، طبقه ۲، واحد ۲۰۲');
+    // Only hijack the wheel after the user interacts with the map.
+    map.on('focus', function(){ map.scrollWheelZoom.enable(); });
+    map.on('blur',  function(){ map.scrollWheelZoom.disable(); });
+    // Wire up the directions buttons to the same coordinates.
+    var g = document.getElementById('mapDir');
+    if(g) g.href = 'https://www.google.com/maps/dir/?api=1&destination=' + LAT + ',' + LNG;
+    var n = document.getElementById('mapNeshan');
+    if(n) n.href = 'https://neshan.org/maps/@' + LAT + ',' + LNG + ',' + ZOOM + 'z';
+    // Ensure correct sizing once laid out.
+    setTimeout(function(){ map.invalidateSize(); }, 200);
   })();
 </script>
 </body>
