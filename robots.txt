@@ -1,4 +1,4 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://soelzare-create.github.io/DaranX-Website/sitemap.xml
+Sitemap: https://www.daranx.com/sitemap.xml

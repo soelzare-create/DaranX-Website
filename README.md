@@ -52,17 +52,15 @@ python -m http.server 8080
 سرو شوند. (برای ریپازیتوریِ خصوصی، GitHub Pages نیازمند پلن مناسب است.)
 
 
-## دامنه و آدرس
+## پیش از انتشار: تنظیم دامنه
 
-نسخهٔ منتشرشده روی **GitHub Pages** با آدرس پایهٔ `https://soelzare-create.github.io/DaranX-Website` در متاتگ‌های SEO/OpenGraph و `sitemap.xml`/`robots.txt` تنظیم شده است.
-
-برای **دامنهٔ اختصاصی** (مثلاً روی همین Pages یا روی هاست دیگر)، آدرس پایه را جایگزین کنید:
+متاتگ‌های SEO/OpenGraph و `sitemap.xml`/`robots.txt` با دامنهٔ نمونهٔ `https://www.daranx.com` نوشته شده‌اند. پیش از انتشار، آن را با دامنهٔ واقعی جایگزین کنید:
 
 ```bash
-grep -rl "soelzare-create.github.io/DaranX-Website" . | xargs sed -i "s#https://soelzare-create.github.io/DaranX-Website#https://YOUR-DOMAIN#g"
+grep -rl "www.daranx.com" . | xargs sed -i "s#https://www.daranx.com#https://YOUR-DOMAIN#g"
 ```
-و در Settings → Pages فیلد Custom domain را پر کنید (فایل `CNAME` ساخته می‌شود).
 
+فایل‌های SEO: هر صفحه شامل `description`، Open Graph و Twitter Card است؛ تصویر اشتراک‌گذاری در `assets/og.png` و آیکون‌ها در `assets/favicon.svg` و `assets/favicon-32.png` و `assets/apple-touch-icon.png`.
 
 ## هویت بصری
 

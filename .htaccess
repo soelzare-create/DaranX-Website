@@ -4,12 +4,15 @@
 DirectoryIndex index.html
 AddDefaultCharset UTF-8
 
-# --- Force HTTPS -----------------------------------------------------------
-# Enable these three lines AFTER SSL (AutoSSL/Let's Encrypt) is active for the
-# domain, so visitors are always sent to the secure version.
+# --- Canonical host: force HTTPS + www -------------------------------------
+# Enable these lines AFTER SSL (AutoSSL/Let's Encrypt) is active, so every
+# visitor lands on the single canonical origin https://www.daranx.com — the
+# same host used in every <link rel="canonical"> tag. One redirect handles
+# both http→https and non-www→www, avoiding duplicate-content for SEO.
 # RewriteEngine On
-# RewriteCond %{HTTPS} off
-# RewriteRule ^(.*)$ https://%{HTTP_HOST}/$1 [R=301,L]
+# RewriteCond %{HTTPS} off [OR]
+# RewriteCond %{HTTP_HOST} !^www\. [NC]
+# RewriteRule ^ https://www.daranx.com%{REQUEST_URI} [R=301,L]
 
 # --- Caching for static assets --------------------------------------------
 <IfModule mod_expires.c>
