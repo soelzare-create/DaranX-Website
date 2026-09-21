@@ -311,6 +311,13 @@
     .fm-grid{grid-template-columns:1fr;gap:2.2rem}.fold-motion .dhero-visual{order:-1;max-width:320px}
   }
 </style>
+<style id="snapfix">
+  html{scroll-snap-type:y proximity;scroll-padding-top:78px}
+  .hero,.fold-hero,.fold-motion,.sec,.philosophy,.method,.diff,.services,.about,.venture,.contact{scroll-snap-align:start}
+  @media (max-width:640px){html{scroll-snap-type:none}}
+  @media (prefers-reduced-motion:reduce){html{scroll-snap-type:none}}
+</style>
+<script>(function(){try{if('scrollRestoration' in history)history.scrollRestoration='manual';}catch(e){}function t(){if(!location.hash)window.scrollTo(0,0);}t();window.addEventListener('load',t);window.addEventListener('pageshow',t);})();</script>
 <div class="progress" aria-hidden="true"><span id="prog"></span></div>
 <div dir="rtl" lang="fa">
   <header class="nav" id="nav">
