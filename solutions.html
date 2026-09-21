@@ -264,7 +264,7 @@
 <meta name="description" content="سه حوزهٔ فعالیت DaranX — زیرساخت، امنیت و هوشمندی — به‌عنوان اجزای یک راهکار یکپارچه. یک حوزه را برای دیدن جزئیات و زیرمجموعه‌ها انتخاب کنید.">
 <meta name="robots" content="index,follow">
 <meta name="theme-color" content="#153A62">
-<link rel="canonical" href="https://soelzare-create.github.io/DaranX-Website/solutions.html">
+<link rel="canonical" href="https://daranx.example/solutions.html">
 <link rel="icon" type="image/svg+xml" href="assets/favicon.svg">
 <link rel="icon" type="image/png" sizes="32x32" href="assets/favicon-32.png">
 <link rel="apple-touch-icon" href="assets/apple-touch-icon.png">
@@ -273,16 +273,39 @@
 <meta property="og:locale" content="fa_IR">
 <meta property="og:title" content="راهکارها — DaranX">
 <meta property="og:description" content="سه حوزهٔ فعالیت DaranX — زیرساخت، امنیت و هوشمندی — به‌عنوان اجزای یک راهکار یکپارچه. یک حوزه را برای دیدن جزئیات و زیرمجموعه‌ها انتخاب کنید.">
-<meta property="og:url" content="https://soelzare-create.github.io/DaranX-Website/solutions.html">
-<meta property="og:image" content="https://soelzare-create.github.io/DaranX-Website/assets/og.jpg">
+<meta property="og:url" content="https://daranx.example/solutions.html">
+<meta property="og:image" content="https://daranx.example/assets/og.jpg">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="راهکارها — DaranX">
 <meta name="twitter:description" content="سه حوزهٔ فعالیت DaranX — زیرساخت، امنیت و هوشمندی — به‌عنوان اجزای یک راهکار یکپارچه. یک حوزه را برای دیدن جزئیات و زیرمجموعه‌ها انتخاب کنید.">
-<meta name="twitter:image" content="https://soelzare-create.github.io/DaranX-Website/assets/og.jpg">
+<meta name="twitter:image" content="https://daranx.example/assets/og.jpg">
 </head>
 <body>
+<style>
+  .fold-hero{position:relative;overflow:hidden;padding-block:clamp(2.5rem,5vw,4.5rem) var(--sp)}
+  .fh-grid{display:grid;grid-template-columns:1.02fr .98fr;gap:clamp(2rem,5vw,4rem);align-items:center;position:relative;z-index:1}
+  .fh-title{font-size:clamp(2.2rem,2.4vw + 1.4rem,3.7rem);font-weight:900;line-height:1.1;margin-top:1rem}
+  .fh-lead{margin-top:1.3rem;max-width:48ch}
+  .fh-photo{position:relative;margin:0;border-radius:var(--r-lg);overflow:hidden;border:1px solid var(--line);box-shadow:var(--shadow-lift);aspect-ratio:4/3;background:var(--surface-2)}
+  .fh-photo img{width:100%;height:100%;object-fit:cover;display:block}
+  .fh-photo figcaption{position:absolute;inset-inline:0;bottom:0;padding:.6rem .9rem;font-size:.82rem;color:#fff;background:linear-gradient(transparent,rgba(8,20,32,.6))}
+  .fh-photo .ph{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:.7rem;text-align:center;padding:1.6rem;background:radial-gradient(120% 120% at 80% 0,color-mix(in srgb,var(--steel) 16%,transparent),transparent 60%),var(--surface-2)}
+  .fh-photo .ph svg{width:54px;height:54px;color:var(--steel);opacity:.85}
+  .fh-photo .ph b{color:var(--ink);font-weight:700;font-size:1.02rem}
+  .fh-photo .ph span{color:var(--ink-faint);font-size:.85rem}
+  .fh-photo.noimg img,.fh-photo.noimg figcaption{display:none}
+  .fh-photo:not(.noimg) .ph{display:none}
+  .fold-motion{padding-block:var(--sp)}
+  .fm-grid{display:grid;grid-template-columns:.82fr 1.18fr;gap:clamp(2rem,5vw,4.5rem);align-items:center}
+  .longcopy{margin-top:1rem;color:var(--ink-soft);font-size:1.03rem;line-height:1.95;max-width:66ch}
+  .longcopy p{margin-top:1.1rem}.longcopy p:first-child{margin-top:0}
+  @media (max-width:900px){
+    .fh-grid{grid-template-columns:1fr;gap:2rem}.fh-photo{order:-1}
+    .fm-grid{grid-template-columns:1fr;gap:2.2rem}.fold-motion .dhero-visual{order:-1;max-width:320px}
+  }
+</style>
 <div class="progress" aria-hidden="true"><span id="prog"></span></div>
 
 <div dir="rtl" lang="fa">
@@ -313,12 +336,47 @@
 
     <!-- ============ HUB ============ -->
     <section class="view" id="view-hub" data-view="hub">
-      <div class="dhero">
+      <div class="fold-hero">
         <div class="blobs" aria-hidden="true"><span class="blob b1"></span><span class="blob b2"></span></div>
-        <div class="wrap reveal">
-          <span class="chip">معماری خدمات DaranX</span>
-          <h1 style="max-width:18ch">سه حوزه فعالیت، <span class="grad-text">یک راهکار یکپارچه.</span></h1>
-          <p class="lead" style="max-width:52ch;margin-top:1.3rem">زیرساخت را می‌سازیم، از آن محافظت می‌کنیم و آن را هوشمند می‌کنیم. هر حوزه جای مشخص خود را در راهکار دارد و همه با هم طراحی می‌شوند؛ مسئولیت نتیجه را به عهده می‌گیریم و پشتیبانی می‌کنیم. یک حوزه را انتخاب کنید تا جزئیات و زیرمجموعه‌های آن را ببینید.</p>
+        <div class="wrap fh-grid">
+          <div class="fh-text reveal">
+            <span class="chip">معماری خدمات DaranX</span>
+            <h1 class="fh-title">سه حوزه فعالیت، <span class="grad-text">یک راهکار یکپارچه.</span></h1>
+            <p class="lead fh-lead">زیرساخت را می‌سازیم، از آن محافظت می‌کنیم و آن را هوشمند می‌کنیم. هر حوزه جای مشخص خود را در راهکار دارد و همه با هم طراحی می‌شوند؛ مسئولیت نتیجه را به عهده می‌گیریم و پشتیبانی می‌کنیم. یک حوزه را انتخاب کنید تا جزئیات و زیرمجموعه‌های آن را ببینید.</p>
+            <div class="dhero-actions"><a class="btn btn-primary" href="tel:+982188964116">درخواست مشاوره</a></div>
+          </div>
+          <figure class="fh-photo reveal">
+            <img src="assets/photos/solutions.jpg" alt="تصویر واقعی راهکارهای DaranX" loading="lazy" onerror="this.closest('.fh-photo').classList.add('noimg')">
+            <figcaption>سه حوزه، یک راهکار یکپارچه</figcaption>
+            <div class="ph" aria-hidden="true">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M12 2v20M2 12h20"/><circle cx="12" cy="12" r="9"/></svg>
+              <b>تصویر واقعی: راهکارها</b>
+              <span>این کادر با عکس واقعیِ شما جایگزین می‌شود<br>(assets/photos/solutions.jpg)</span>
+            </div>
+          </figure>
+        </div>
+      </div>
+      <div class="fold-motion">
+        <div class="wrap fm-grid">
+          <div class="dhero-visual reveal" aria-hidden="true">
+            <div class="dring r1"></div><div class="dring r2"></div>
+            <div class="dcore"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M12 2v20M2 12h20"/><circle cx="12" cy="12" r="9"/></svg></div>
+            <div class="dchip c1"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="4" width="18" height="6" rx="1.5"/><rect x="3" y="14" width="18" height="6" rx="1.5"/></svg>زیرساخت</div>
+            <div class="dchip c2"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 3l7 3v5c0 4.5-3 7.5-7 9-4-1.5-7-4.5-7-9V6z"/></svg>امنیت</div>
+            <div class="dchip c3"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="12" r="3"/><path d="M12 4v2M12 18v2M4 12h2M18 12h2"/></svg>هوشمندی</div>
+          </div>
+          <div class="fm-text reveal">
+            <span class="eyebrow">دربارهٔ راهکارهای DaranX</span>
+            <h2 style="font-size:clamp(1.6rem,1.3rem+1.4vw,2.3rem);margin-top:.8rem">سه حوزه، یک راهکار یکپارچه</h2>
+            <div class="longcopy">
+              <p>DaranX سه حوزهٔ فعالیت دارد که با هم یک راهکارِ یکپارچه می‌سازند: زیرساخت، امنیت و هوشمندی. ما زیرساخت را می‌سازیم، از آن محافظت می‌کنیم و آن را هوشمند می‌کنیم — اما نکتهٔ اصلی این است که این سه را جدا از هم نمی‌بینیم. هر حوزه جای مشخصِ خود را در راهکار دارد و همه با هم طراحی می‌شوند، چون همه چیز باید سرِ جای درستش باشد.</p>
+              <p>زیرساخت، بسترِ درستی است که فناوری و عملیاتِ سازمان روی آن قرار می‌گیرد: شبکه، سرور، ذخیره‌سازی، برق و کابل‌کشیِ منظم. اگر این پایه درست ساخته نشود، هیچ لایهٔ بالاتری پایدار نمی‌ماند. برای همین کار را از ساختنِ یک بسترِ پایدار و مقیاس‌پذیر شروع می‌کنیم که آمادهٔ رشدِ فردا باشد.</p>
+              <p>امنیت، از آنچه ساخته‌ایم محافظت می‌کند؛ از مسیرهای داده و محیطِ فیزیکی تا دسترسی‌های سازمان. این حوزه از همان مرحلهٔ طراحیِ زیرساخت در نظر گرفته می‌شود، نه به‌عنوان یک افزودنیِ پایانی. لایه‌های امنیت هماهنگ با هم طراحی می‌شوند تا محافظت، به‌جای کندکردنِ کار، در خدمتِ آن باشد.</p>
+              <p>هوشمندی، آنچه را ساخته و محافظت کرده‌ایم به ارزش تبدیل می‌کند: استفادهٔ بهتر از داده، خودکارسازی و تصمیم‌گیریِ دقیق‌تر. این حوزه روی بستری از زیرساخت و دادهٔ درست بنا می‌شود، چون هوشمندیِ واقعی بدونِ یک پایهٔ مطمئن، دوام نمی‌آورد.</p>
+              <p>در این میان، طراحی یک خدمتِ جدا در کنارِ بقیه نیست؛ لایه‌ای مشترک است که هر سه حوزه را به هم متصل می‌کند. اول طراحی می‌کنیم که زیرساخت چگونه ساخته شود، امنیت چگونه از آن محافظت کند و هوشمندی چگونه از این بستر ارزش بسازد. طراحی است که فناوری‌های مختلف را به یک راهکارِ واحد تبدیل می‌کند: Design + Technology = Solution.</p>
+              <p>همین است که می‌گوییم ما خدمات مختلف را کنارِ هم نمی‌گذاریم؛ آن‌ها را با هم طراحی می‌کنیم و مسئولیتِ نتیجه را به عهده می‌گیریم. یک حوزه را انتخاب کنید تا جزئیات و زیرمجموعه‌های آن را ببینید — و به یاد داشته باشید که ارزشِ واقعی، در ارتباطِ درستِ میانِ همین حوزه‌ها ساخته می‌شود.</p>
+            </div>
+          </div>
         </div>
       </div>
       <div class="sec" style="padding-top:0">

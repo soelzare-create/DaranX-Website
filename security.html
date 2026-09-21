@@ -269,7 +269,7 @@
 <meta name="description" content="حوزهٔ امنیت DaranX: امنیت شبکه، دوربین مداربسته، دسترسی و پایش و کنترل تردد — محافظت از زیرساخت، محیط و دسترسی‌های سازمان.">
 <meta name="robots" content="index,follow">
 <meta name="theme-color" content="#153A62">
-<link rel="canonical" href="https://soelzare-create.github.io/DaranX-Website/security.html">
+<link rel="canonical" href="https://daranx.example/security.html">
 <link rel="icon" type="image/svg+xml" href="assets/favicon.svg">
 <link rel="icon" type="image/png" sizes="32x32" href="assets/favicon-32.png">
 <link rel="apple-touch-icon" href="assets/apple-touch-icon.png">
@@ -278,16 +278,39 @@
 <meta property="og:locale" content="fa_IR">
 <meta property="og:title" content="امنیت — DaranX">
 <meta property="og:description" content="حوزهٔ امنیت DaranX: امنیت شبکه، دوربین مداربسته، دسترسی و پایش و کنترل تردد — محافظت از زیرساخت، محیط و دسترسی‌های سازمان.">
-<meta property="og:url" content="https://soelzare-create.github.io/DaranX-Website/security.html">
-<meta property="og:image" content="https://soelzare-create.github.io/DaranX-Website/assets/og.jpg">
+<meta property="og:url" content="https://daranx.example/security.html">
+<meta property="og:image" content="https://daranx.example/assets/og.jpg">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="امنیت — DaranX">
 <meta name="twitter:description" content="حوزهٔ امنیت DaranX: امنیت شبکه، دوربین مداربسته، دسترسی و پایش و کنترل تردد — محافظت از زیرساخت، محیط و دسترسی‌های سازمان.">
-<meta name="twitter:image" content="https://soelzare-create.github.io/DaranX-Website/assets/og.jpg">
+<meta name="twitter:image" content="https://daranx.example/assets/og.jpg">
 </head>
 <body>
+<style>
+  .fold-hero{position:relative;overflow:hidden;padding-block:clamp(2.5rem,5vw,4.5rem) var(--sp)}
+  .fh-grid{display:grid;grid-template-columns:1.02fr .98fr;gap:clamp(2rem,5vw,4rem);align-items:center;position:relative;z-index:1}
+  .fh-title{font-size:clamp(2.2rem,2.4vw + 1.4rem,3.7rem);font-weight:900;line-height:1.1;margin-top:1rem}
+  .fh-lead{margin-top:1.3rem;max-width:48ch}
+  .fh-photo{position:relative;margin:0;border-radius:var(--r-lg);overflow:hidden;border:1px solid var(--line);box-shadow:var(--shadow-lift);aspect-ratio:4/3;background:var(--surface-2)}
+  .fh-photo img{width:100%;height:100%;object-fit:cover;display:block}
+  .fh-photo figcaption{position:absolute;inset-inline:0;bottom:0;padding:.6rem .9rem;font-size:.82rem;color:#fff;background:linear-gradient(transparent,rgba(8,20,32,.6))}
+  .fh-photo .ph{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:.7rem;text-align:center;padding:1.6rem;background:radial-gradient(120% 120% at 80% 0,color-mix(in srgb,var(--steel) 16%,transparent),transparent 60%),var(--surface-2)}
+  .fh-photo .ph svg{width:54px;height:54px;color:var(--steel);opacity:.85}
+  .fh-photo .ph b{color:var(--ink);font-weight:700;font-size:1.02rem}
+  .fh-photo .ph span{color:var(--ink-faint);font-size:.85rem}
+  .fh-photo.noimg img,.fh-photo.noimg figcaption{display:none}
+  .fh-photo:not(.noimg) .ph{display:none}
+  .fold-motion{padding-block:var(--sp)}
+  .fm-grid{display:grid;grid-template-columns:.82fr 1.18fr;gap:clamp(2rem,5vw,4.5rem);align-items:center}
+  .longcopy{margin-top:1rem;color:var(--ink-soft);font-size:1.03rem;line-height:1.95;max-width:66ch}
+  .longcopy p{margin-top:1.1rem}.longcopy p:first-child{margin-top:0}
+  @media (max-width:900px){
+    .fh-grid{grid-template-columns:1fr;gap:2rem}.fh-photo{order:-1}
+    .fm-grid{grid-template-columns:1fr;gap:2.2rem}.fold-motion .dhero-visual{order:-1;max-width:320px}
+  }
+</style>
 <div class="progress" aria-hidden="true"><span id="prog"></span></div>
 <div dir="rtl" lang="fa">
   <header class="nav" id="nav">
@@ -313,25 +336,52 @@
     </div>
   </header>
   <main id="top">
-    <div class="dhero">
+    <div class="fold-hero">
         <div class="blobs" aria-hidden="true"><span class="blob b1"></span><span class="blob b2"></span></div>
-        <div class="wrap dhero-grid">
-          <div class="reveal">
+        <div class="wrap fh-grid">
+          <div class="fh-text reveal">
             <div class="crumbs"><a href="solutions.html">راهکارها</a><span class="sep">›</span><span>امنیت</span></div>
             <span class="chip">Security</span>
-            <h1>از چیزی که ساخته‌ایم، درست محافظت می‌کنیم.</h1>
-            <p class="lead">امنیت یک افزودنی در پایان پروژه نیست؛ از مرحله طراحی در نظر گرفته می‌شود. زیرساخت، محیط فیزیکی و دسترسی‌های سازمان را در یک راهکار هماهنگ محافظت می‌کنیم.</p>
+            <h1 class="fh-title">از چیزی که ساخته‌ایم، درست محافظت می‌کنیم.</h1>
+            <p class="lead fh-lead">امنیت یک افزودنی در پایان پروژه نیست؛ از مرحله طراحی در نظر گرفته می‌شود. زیرساخت، محیط فیزیکی و دسترسی‌های سازمان را در یک راهکار هماهنگ محافظت می‌کنیم.</p>
             <div class="dhero-actions">
               <a class="btn btn-primary" href="tel:+982188964116">مشاوره امنیت</a>
               <a class="btn btn-ghost" href="intelligence.html">حوزه هوشمندی</a>
             </div>
           </div>
-          <div class="dhero-visual" aria-hidden="true">
+          <figure class="fh-photo reveal">
+            <img src="assets/photos/security.jpg" alt="تصویر واقعی امنیت" loading="lazy" onerror="this.closest('.fh-photo').classList.add('noimg')">
+            <figcaption>امنیت — Security</figcaption>
+            <div class="ph" aria-hidden="true">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M12 3l7 3v5c0 4.5-3 7.5-7 9-4-1.5-7-4.5-7-9V6l7-3z"/></svg>
+              <b>تصویر واقعی: امنیت</b>
+              <span>این کادر با عکس واقعیِ شما جایگزین می‌شود<br>(assets/photos/security.jpg)</span>
+            </div>
+          </figure>
+        </div>
+      </div>
+
+      <div class="fold-motion">
+        <div class="wrap fm-grid">
+          <div class="dhero-visual reveal" aria-hidden="true">
             <div class="dring r1"></div><div class="dring r2"></div>
             <div class="dcore"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path class="ico-pulse" d="M12 3l7 3v5c0 4.5-3 7.5-7 9-4-1.5-7-4.5-7-9V6l7-3z"/><path stroke-linecap="round" stroke-linejoin="round" d="M9 11.8l2 2 4-4"/></svg></div>
             <div class="dchip c1"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="8" width="18" height="12" rx="2"/><path d="M8 8V6a4 4 0 0 1 8 0v2"/></svg>دسترسی</div>
             <div class="dchip c2"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="12" r="3"/><path d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7-10-7-10-7z"/></svg>CCTV</div>
             <div class="dchip c3"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>محافظت</div>
+          </div>
+          <div class="fm-text reveal">
+            <span class="eyebrow">دربارهٔ امنیت</span>
+            <h2 style="font-size:clamp(1.6rem,1.3rem+1.4vw,2.3rem);margin-top:.8rem">از چیزی که ساخته‌ایم، درست محافظت می‌کنیم.</h2>
+            <div class="longcopy">
+              <p>امنیت یعنی محافظت از آنچه ساخته‌ایم؛ از زیرساخت و داده تا محیطِ فیزیکی و دسترسی‌های سازمان. تهدیدها تنها از بیرون نمی‌آیند و تنها دیجیتال نیستند: یک دسترسیِ کنترل‌نشده، یک نقطهٔ بدونِ نظارت یا یک درِ بازِ اتاقِ سرور می‌تواند به‌اندازهٔ یک حملهٔ سایبری هزینه بسازد. در DaranX امنیت را یک افزودنیِ پایانی نمی‌بینیم؛ آن را از همان مرحلهٔ طراحی و به‌عنوان بخشی از راهکار در نظر می‌گیریم.</p>
+              <p>روش ما با شناخت شروع می‌شود: چه دارایی‌هایی باید محافظت شوند، ریسک‌های واقعیِ سازمان کدام‌اند، و چه کسی به چه چیزی باید دسترسی داشته باشد؟ بدونِ این شناخت، هر ابزارِ امنیتی فقط یک هزینهٔ اضافه است، نه یک محافظتِ واقعی. اول مسئله را می‌فهمیم، بعد لایه‌های محافظت را طراحی می‌کنیم.</p>
+              <p>در طراحی، لایه‌های امنیت را هماهنگ با هم می‌بینیم: امنیتِ شبکه برای محافظت از مسیرهای داده، دوربینِ مداربسته برای دیدِ کامل بر محیط، دسترسی و پایش برای کنترلِ اینکه چه کسی به چه چیزی دسترسی دارد، و کنترلِ تردد برای امنیتِ فیزیکیِ فضاها. این‌ها با هم یک دفاعِ منسجم می‌سازند، نه مجموعه‌ای از ابزارهای پراکنده که هرکدام گوشه‌ای کار می‌کنند.</p>
+              <p>اجرا را هماهنگ با زیرساخت انجام می‌دهیم و کار با نصب تمام نمی‌شود؛ امنیت یک وضعیتِ ثابت نیست، یک فرآیندِ پیوسته است. پایش، به‌روزرسانی و پاسخ به تهدیدهای تازه بخشی از مسئولیتِ ماست، چون تهدیدها ثابت نمی‌مانند و امنیتِ دیروز لزوماً امنیتِ امروز نیست.</p>
+              <p>تمایزِ ما در تعدادِ تجهیزاتِ امنیتی نیست، در دیدنِ کلِ مسئله و پذیرفتنِ مسئولیتِ نتیجه است. آنچه را طراحی و اجرا کرده‌ایم، خودمان پشتیبانی می‌کنیم، و اگر امنیتِ سازمان برای شما مهم است، برای ما هم مهم است.</p>
+              <p>نتیجه، کاهشِ واقعیِ ریسک، کنترلِ دقیقِ دسترسی و دیدِ پیوسته بر محیط و داده است؛ آرامشی که به مدیریت اجازه می‌دهد به‌جای نگرانیِ دائمی، روی رشدِ کسب‌وکار تمرکز کند.</p>
+              <p>برای ما مشتری یک هم‌تیمی است، نه یک فروشِ یک‌باره؛ برای همین امنیتِ سازمان را در طولِ زمان همراهی می‌کنیم تا در برابرِ تهدیدهای تازه هم آماده بماند و آرامشِ خاطرِ شما پایدار باشد.</p>
+            </div>
           </div>
         </div>
       </div>

@@ -269,7 +269,7 @@
 <meta name="description" content="حوزهٔ هوشمندی DaranX: هوش مصنوعی، داده و تحلیل، خودکارسازی هوشمند و نرم‌افزار و مدل‌های اختصاصی — ارزش‌آفرینی از داده برای تصمیم بهتر.">
 <meta name="robots" content="index,follow">
 <meta name="theme-color" content="#153A62">
-<link rel="canonical" href="https://soelzare-create.github.io/DaranX-Website/intelligence.html">
+<link rel="canonical" href="https://daranx.example/intelligence.html">
 <link rel="icon" type="image/svg+xml" href="assets/favicon.svg">
 <link rel="icon" type="image/png" sizes="32x32" href="assets/favicon-32.png">
 <link rel="apple-touch-icon" href="assets/apple-touch-icon.png">
@@ -278,16 +278,39 @@
 <meta property="og:locale" content="fa_IR">
 <meta property="og:title" content="هوشمندی — DaranX">
 <meta property="og:description" content="حوزهٔ هوشمندی DaranX: هوش مصنوعی، داده و تحلیل، خودکارسازی هوشمند و نرم‌افزار و مدل‌های اختصاصی — ارزش‌آفرینی از داده برای تصمیم بهتر.">
-<meta property="og:url" content="https://soelzare-create.github.io/DaranX-Website/intelligence.html">
-<meta property="og:image" content="https://soelzare-create.github.io/DaranX-Website/assets/og.jpg">
+<meta property="og:url" content="https://daranx.example/intelligence.html">
+<meta property="og:image" content="https://daranx.example/assets/og.jpg">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="هوشمندی — DaranX">
 <meta name="twitter:description" content="حوزهٔ هوشمندی DaranX: هوش مصنوعی، داده و تحلیل، خودکارسازی هوشمند و نرم‌افزار و مدل‌های اختصاصی — ارزش‌آفرینی از داده برای تصمیم بهتر.">
-<meta name="twitter:image" content="https://soelzare-create.github.io/DaranX-Website/assets/og.jpg">
+<meta name="twitter:image" content="https://daranx.example/assets/og.jpg">
 </head>
 <body>
+<style>
+  .fold-hero{position:relative;overflow:hidden;padding-block:clamp(2.5rem,5vw,4.5rem) var(--sp)}
+  .fh-grid{display:grid;grid-template-columns:1.02fr .98fr;gap:clamp(2rem,5vw,4rem);align-items:center;position:relative;z-index:1}
+  .fh-title{font-size:clamp(2.2rem,2.4vw + 1.4rem,3.7rem);font-weight:900;line-height:1.1;margin-top:1rem}
+  .fh-lead{margin-top:1.3rem;max-width:48ch}
+  .fh-photo{position:relative;margin:0;border-radius:var(--r-lg);overflow:hidden;border:1px solid var(--line);box-shadow:var(--shadow-lift);aspect-ratio:4/3;background:var(--surface-2)}
+  .fh-photo img{width:100%;height:100%;object-fit:cover;display:block}
+  .fh-photo figcaption{position:absolute;inset-inline:0;bottom:0;padding:.6rem .9rem;font-size:.82rem;color:#fff;background:linear-gradient(transparent,rgba(8,20,32,.6))}
+  .fh-photo .ph{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:.7rem;text-align:center;padding:1.6rem;background:radial-gradient(120% 120% at 80% 0,color-mix(in srgb,var(--steel) 16%,transparent),transparent 60%),var(--surface-2)}
+  .fh-photo .ph svg{width:54px;height:54px;color:var(--steel);opacity:.85}
+  .fh-photo .ph b{color:var(--ink);font-weight:700;font-size:1.02rem}
+  .fh-photo .ph span{color:var(--ink-faint);font-size:.85rem}
+  .fh-photo.noimg img,.fh-photo.noimg figcaption{display:none}
+  .fh-photo:not(.noimg) .ph{display:none}
+  .fold-motion{padding-block:var(--sp)}
+  .fm-grid{display:grid;grid-template-columns:.82fr 1.18fr;gap:clamp(2rem,5vw,4.5rem);align-items:center}
+  .longcopy{margin-top:1rem;color:var(--ink-soft);font-size:1.03rem;line-height:1.95;max-width:66ch}
+  .longcopy p{margin-top:1.1rem}.longcopy p:first-child{margin-top:0}
+  @media (max-width:900px){
+    .fh-grid{grid-template-columns:1fr;gap:2rem}.fh-photo{order:-1}
+    .fm-grid{grid-template-columns:1fr;gap:2.2rem}.fold-motion .dhero-visual{order:-1;max-width:320px}
+  }
+</style>
 <div class="progress" aria-hidden="true"><span id="prog"></span></div>
 <div dir="rtl" lang="fa">
   <header class="nav" id="nav">
@@ -313,25 +336,52 @@
     </div>
   </header>
   <main id="top">
-    <div class="dhero">
+    <div class="fold-hero">
         <div class="blobs" aria-hidden="true"><span class="blob b1"></span><span class="blob b2"></span></div>
-        <div class="wrap dhero-grid">
-          <div class="reveal">
+        <div class="wrap fh-grid">
+          <div class="fh-text reveal">
             <div class="crumbs"><a href="solutions.html">راهکارها</a><span class="sep">›</span><span>هوشمندی</span></div>
             <span class="chip">Intelligence</span>
-            <h1>از داده‌ای که دارید، تصمیم بهتری بسازید.</h1>
-            <p class="lead">وقتی بستر ساخته و محافظت شد، نوبت ارزش‌آفرینی است. با هوش مصنوعی، تحلیل داده و خودکارسازی، کارهای تکراری را حذف و تصمیم‌ها را دقیق‌تر می‌کنیم — متناسب با مسئله واقعی کسب‌وکار شما.</p>
+            <h1 class="fh-title">از داده‌ای که دارید، تصمیم بهتری بسازید.</h1>
+            <p class="lead fh-lead">وقتی بستر ساخته و محافظت شد، نوبت ارزش‌آفرینی است. با هوش مصنوعی، تحلیل داده و خودکارسازی، کارهای تکراری را حذف و تصمیم‌ها را دقیق‌تر می‌کنیم — متناسب با مسئله واقعی کسب‌وکار شما.</p>
             <div class="dhero-actions">
               <a class="btn btn-primary" href="tel:+982188964116">مشاوره هوشمندی</a>
               <a class="btn btn-ghost" href="infrastructure.html">حوزه زیرساخت</a>
             </div>
           </div>
-          <div class="dhero-visual" aria-hidden="true">
+          <figure class="fh-photo reveal">
+            <img src="assets/photos/intelligence.jpg" alt="تصویر واقعی هوشمندی" loading="lazy" onerror="this.closest('.fh-photo').classList.add('noimg')">
+            <figcaption>هوشمندی — Intelligence</figcaption>
+            <div class="ph" aria-hidden="true">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><circle cx="12" cy="12" r="3"/><path d="M12 3v3M12 18v3M3 12h3M18 12h3M6 6l2 2M16 16l2 2M18 6l-2 2M8 16l-2 2"/></svg>
+              <b>تصویر واقعی: هوشمندی</b>
+              <span>این کادر با عکس واقعیِ شما جایگزین می‌شود<br>(assets/photos/intelligence.jpg)</span>
+            </div>
+          </figure>
+        </div>
+      </div>
+
+      <div class="fold-motion">
+        <div class="wrap fm-grid">
+          <div class="dhero-visual reveal" aria-hidden="true">
             <div class="dring r1"></div><div class="dring r2"></div>
             <div class="dcore"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle class="ico-pulse" cx="12" cy="12" r="3"/><g class="ico-rays"><path d="M12 3v3M12 18v3M3 12h3M18 12h3M6 6l2 2M16 16l2 2M18 6l-2 2M8 16l-2 2"/></g></svg></div>
             <div class="dchip c1"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M4 19V5M4 19h16M8 15l3-4 3 2 4-6"/></svg>تحلیل</div>
             <div class="dchip c2"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="4" y="4" width="16" height="16" rx="3"/><path d="M9 9h6v6H9z"/></svg>AI</div>
             <div class="dchip c3"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 3v3M12 18v3M5 12H2m20 0h-3"/><circle cx="12" cy="12" r="4"/></svg>خودکارسازی</div>
+          </div>
+          <div class="fm-text reveal">
+            <span class="eyebrow">دربارهٔ هوشمندی</span>
+            <h2 style="font-size:clamp(1.6rem,1.3rem+1.4vw,2.3rem);margin-top:.8rem">از داده‌ای که دارید، تصمیم بهتری بسازید.</h2>
+            <div class="longcopy">
+              <p>وقتی زیرساخت ساخته و از آن محافظت شد، نوبتِ ارزش‌آفرینی است. هوشمندی یعنی استفادهٔ بهتر از داده، خودکارسازیِ کارهای تکراری و تصمیم‌گیریِ دقیق‌تر — با فناوری‌هایی مثلِ هوشِ مصنوعی، تحلیلِ داده و نرم‌افزارهای اختصاصی. در DaranX این فناوری‌ها را نه به‌خاطرِ مد روز بودن، بلکه برای حلِ مسئلهٔ واقعیِ کسب‌وکار به کار می‌گیریم.</p>
+              <p>روش ما با شناخت شروع می‌شود: کدام کارها تکراری و خطاپذیرند، کجا تصمیم‌گیری کند است، و چه داده‌ای در اختیار داریم؟ داده‌های پراکنده تا وقتی یک‌جا و قابل‌فهم نشوند فقط بارِ اضافه‌اند؛ کارِ ما این است که آن‌ها را به تصویری روشن و قابلِ تصمیم تبدیل کنیم. اول می‌فهمیم کجا ارزش ساخته می‌شود، بعد راهکار را طراحی می‌کنیم.</p>
+              <p>در طراحی، اجزای هوشمندی را با هم می‌بینیم: راهکارها و دستیارهای هوشِ مصنوعی برای ساده‌کردنِ کارها، داده و تحلیل برای تصمیمِ بهتر، خودکارسازیِ هوشمند برای حذفِ کارهای دستی، و نرم‌افزار و مدل‌های اختصاصی که با فرآیندِ سازمان هماهنگ‌اند. همهٔ این‌ها روی بستری از زیرساخت و دادهٔ درست بنا می‌شوند تا نتیجه پایدار بماند.</p>
+              <p>اجرا را گام‌به‌گام و قابل‌ارزیابی انجام می‌دهیم؛ به‌جای یک جهشِ بزرگ و پرریسک، از یک قدمِ روشن شروع می‌کنیم، نتیجه را می‌سنجیم و بعد گسترش می‌دهیم. پس از استقرار هم راهکار را پایش و بهبود می‌دهیم، چون داده و فرآیندِ سازمان زنده‌اند و راهکار باید همراهِ آن‌ها به‌روز بماند.</p>
+              <p>تمایزِ ما در فهرستِ فناوری‌ها نیست، در دیدنِ کلِ مسئله و پذیرفتنِ مسئولیتِ نتیجه است. کاری را که به مسئلهٔ شما نمی‌خورد وعده نمی‌دهیم، و اگر یک راهکارِ ساده‌تر کافی باشد، صادقانه همان را می‌گوییم؛ چون اعتبارِ بلندمدت برای ما مهم‌تر از یک فروشِ کوتاه‌مدت است.</p>
+              <p>نتیجه، تصمیمِ دقیق‌تر، بهره‌وریِ بالاتر و مزیتِ رقابتیِ پایدار است؛ فناوری‌ای که در خدمتِ هدفِ سازمان قرار می‌گیرد، نه اینکه خودش به یک مسئلهٔ تازه تبدیل شود.</p>
+              <p>و چون مخاطبِ ما الزاماً متخصصِ فناوری نیست، ارزشِ این راهکارها را با زبانِ کسب‌وکار توضیح می‌دهیم: صرفه‌جویی در زمان، کاهشِ خطا و تصمیمی که به سودِ سازمان تمام می‌شود.</p>
+            </div>
           </div>
         </div>
       </div>

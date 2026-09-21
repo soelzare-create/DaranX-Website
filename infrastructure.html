@@ -269,7 +269,7 @@
 <meta name="description" content="حوزهٔ زیرساخت DaranX: شبکه، دیتاسنتر و سرور، ذخیره‌سازی، برق و UPS و زیرساخت پسیو — بستری پایدار و مقیاس‌پذیر برای سازمان.">
 <meta name="robots" content="index,follow">
 <meta name="theme-color" content="#153A62">
-<link rel="canonical" href="https://soelzare-create.github.io/DaranX-Website/infrastructure.html">
+<link rel="canonical" href="https://daranx.example/infrastructure.html">
 <link rel="icon" type="image/svg+xml" href="assets/favicon.svg">
 <link rel="icon" type="image/png" sizes="32x32" href="assets/favicon-32.png">
 <link rel="apple-touch-icon" href="assets/apple-touch-icon.png">
@@ -278,16 +278,39 @@
 <meta property="og:locale" content="fa_IR">
 <meta property="og:title" content="زیرساخت — DaranX">
 <meta property="og:description" content="حوزهٔ زیرساخت DaranX: شبکه، دیتاسنتر و سرور، ذخیره‌سازی، برق و UPS و زیرساخت پسیو — بستری پایدار و مقیاس‌پذیر برای سازمان.">
-<meta property="og:url" content="https://soelzare-create.github.io/DaranX-Website/infrastructure.html">
-<meta property="og:image" content="https://soelzare-create.github.io/DaranX-Website/assets/og.jpg">
+<meta property="og:url" content="https://daranx.example/infrastructure.html">
+<meta property="og:image" content="https://daranx.example/assets/og.jpg">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="زیرساخت — DaranX">
 <meta name="twitter:description" content="حوزهٔ زیرساخت DaranX: شبکه، دیتاسنتر و سرور، ذخیره‌سازی، برق و UPS و زیرساخت پسیو — بستری پایدار و مقیاس‌پذیر برای سازمان.">
-<meta name="twitter:image" content="https://soelzare-create.github.io/DaranX-Website/assets/og.jpg">
+<meta name="twitter:image" content="https://daranx.example/assets/og.jpg">
 </head>
 <body>
+<style>
+  .fold-hero{position:relative;overflow:hidden;padding-block:clamp(2.5rem,5vw,4.5rem) var(--sp)}
+  .fh-grid{display:grid;grid-template-columns:1.02fr .98fr;gap:clamp(2rem,5vw,4rem);align-items:center;position:relative;z-index:1}
+  .fh-title{font-size:clamp(2.2rem,2.4vw + 1.4rem,3.7rem);font-weight:900;line-height:1.1;margin-top:1rem}
+  .fh-lead{margin-top:1.3rem;max-width:48ch}
+  .fh-photo{position:relative;margin:0;border-radius:var(--r-lg);overflow:hidden;border:1px solid var(--line);box-shadow:var(--shadow-lift);aspect-ratio:4/3;background:var(--surface-2)}
+  .fh-photo img{width:100%;height:100%;object-fit:cover;display:block}
+  .fh-photo figcaption{position:absolute;inset-inline:0;bottom:0;padding:.6rem .9rem;font-size:.82rem;color:#fff;background:linear-gradient(transparent,rgba(8,20,32,.6))}
+  .fh-photo .ph{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:.7rem;text-align:center;padding:1.6rem;background:radial-gradient(120% 120% at 80% 0,color-mix(in srgb,var(--steel) 16%,transparent),transparent 60%),var(--surface-2)}
+  .fh-photo .ph svg{width:54px;height:54px;color:var(--steel);opacity:.85}
+  .fh-photo .ph b{color:var(--ink);font-weight:700;font-size:1.02rem}
+  .fh-photo .ph span{color:var(--ink-faint);font-size:.85rem}
+  .fh-photo.noimg img,.fh-photo.noimg figcaption{display:none}
+  .fh-photo:not(.noimg) .ph{display:none}
+  .fold-motion{padding-block:var(--sp)}
+  .fm-grid{display:grid;grid-template-columns:.82fr 1.18fr;gap:clamp(2rem,5vw,4.5rem);align-items:center}
+  .longcopy{margin-top:1rem;color:var(--ink-soft);font-size:1.03rem;line-height:1.95;max-width:66ch}
+  .longcopy p{margin-top:1.1rem}.longcopy p:first-child{margin-top:0}
+  @media (max-width:900px){
+    .fh-grid{grid-template-columns:1fr;gap:2rem}.fh-photo{order:-1}
+    .fm-grid{grid-template-columns:1fr;gap:2.2rem}.fold-motion .dhero-visual{order:-1;max-width:320px}
+  }
+</style>
 <div class="progress" aria-hidden="true"><span id="prog"></span></div>
 <div dir="rtl" lang="fa">
   <header class="nav" id="nav">
@@ -313,25 +336,51 @@
     </div>
   </header>
   <main id="top">
-    <div class="dhero">
+    <div class="fold-hero">
         <div class="blobs" aria-hidden="true"><span class="blob b1"></span><span class="blob b2"></span></div>
-        <div class="wrap dhero-grid">
-          <div class="reveal">
+        <div class="wrap fh-grid">
+          <div class="fh-text reveal">
             <div class="crumbs"><a href="solutions.html">راهکارها</a><span class="sep">›</span><span>زیرساخت</span></div>
             <span class="chip">Infrastructure</span>
-            <h1>زیرساختی که سازمان با خیال راحت روی آن می‌ایستد.</h1>
-            <p class="lead">هر سرویس و هر تصمیم فناوری به یک بستر پایدار وابسته است. ما این بستر را متناسب با بار واقعی امروز و رشد فردای شما طراحی و اجرا می‌کنیم — طوری که نگهداری و توسعه‌اش ساده بماند.</p>
+            <h1 class="fh-title">زیرساختی که سازمان با خیال راحت روی آن می‌ایستد.</h1>
+            <p class="lead fh-lead">هر سرویس و هر تصمیم فناوری به یک بستر پایدار وابسته است. ما این بستر را متناسب با بار واقعی امروز و رشد فردای شما طراحی و اجرا می‌کنیم — طوری که نگهداری و توسعه‌اش ساده بماند.</p>
             <div class="dhero-actions">
               <a class="btn btn-primary" href="tel:+982188964116">مشاوره زیرساخت</a>
               <a class="btn btn-ghost" href="security.html">حوزه امنیت</a>
             </div>
           </div>
-          <div class="dhero-visual" aria-hidden="true">
+          <figure class="fh-photo reveal">
+            <img src="assets/photos/infrastructure.jpg" alt="تصویر واقعی زیرساخت" loading="lazy" onerror="this.closest('.fh-photo').classList.add('noimg')">
+            <figcaption>زیرساخت — Infrastructure</figcaption>
+            <div class="ph" aria-hidden="true">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><rect x="3" y="4" width="18" height="6" rx="1.5"/><rect x="3" y="14" width="18" height="6" rx="1.5"/><path stroke-linecap="round" d="M7 7h.01M7 17h.01"/></svg>
+              <b>تصویر واقعی: زیرساخت</b>
+              <span>این کادر با عکس واقعیِ شما جایگزین می‌شود<br>(assets/photos/infrastructure.jpg)</span>
+            </div>
+          </figure>
+        </div>
+      </div>
+
+      <div class="fold-motion">
+        <div class="wrap fm-grid">
+          <div class="dhero-visual reveal" aria-hidden="true">
             <div class="dring r1"></div><div class="dring r2"></div>
             <div class="dcore"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><rect x="3" y="4" width="18" height="6" rx="1.5"/><rect x="3" y="14" width="18" height="6" rx="1.5"/><path class="ico-led" stroke-linecap="round" d="M7 7h.01"/><path class="ico-led l2" stroke-linecap="round" d="M7 17h.01"/></svg></div>
             <div class="dchip c1"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M4 12h16M4 6h16M4 18h16"/></svg>شبکه</div>
             <div class="dchip c2"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="4" y="4" width="16" height="16" rx="2"/></svg>سرور</div>
             <div class="dchip c3"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M13 2L3 14h7l-1 8 10-12h-7z"/></svg>UPS</div>
+          </div>
+          <div class="fm-text reveal">
+            <span class="eyebrow">دربارهٔ زیرساخت</span>
+            <h2 style="font-size:clamp(1.6rem,1.3rem+1.4vw,2.3rem);margin-top:.8rem">زیرساختی که سازمان با خیال راحت روی آن می‌ایستد.</h2>
+            <div class="longcopy">
+              <p>زیرساخت، همان بستری است که همهٔ فناوری و عملیاتِ سازمان روی آن قرار می‌گیرد؛ از شبکه و سرور تا ذخیره‌سازی، برق و کابل‌کشی. وقتی این بستر درست ساخته نشده باشد، مشکلاتش به‌ندرت در یک نقطه می‌مانند: کندی، قطعی و خطاهای مبهم در جای‌جای سازمان ظاهر می‌شوند و کارِ روزمره را مختل می‌کنند. در DaranX زیرساخت را نه مجموعه‌ای از تجهیزاتِ کنارِ هم، بلکه پایهٔ کلِ راهکار می‌بینیم.</p>
+              <p>روش ما با اصلِ «طراحی مقدم بر اجراست» شروع می‌شود. پیش از انتخابِ هر تجهیز، مسئلهٔ واقعیِ سازمان را می‌شناسیم: نیازِ امروز چیست، رشدِ فردا چه فشاری می‌آورد، و کدام بخش‌ها حساس‌اند و نباید قطع شوند؟ پاسخِ این پرسش‌هاست که شکلِ زیرساخت را تعیین می‌کند، نه فهرستِ برندها و مدل‌های موجود در بازار. انتخابِ تجهیزات، نتیجهٔ طراحی است، نه نقطهٔ شروعِ آن.</p>
+              <p>در طراحی، اجزای زیرساخت را با هم و در ارتباط با یکدیگر می‌بینیم: شبکه‌ای که بارِ واقعی را تحمل کند، سرورهایی درست‌اندازه، ذخیره‌سازیِ امن و در دسترس، تغذیهٔ برقِ پایدار، و کابل‌کشیِ منظمی که نگهداری را ساده می‌کند. هر جزء جای مشخصِ خود را دارد و برای یک هدفِ مشترک طراحی می‌شود؛ همین است که مجموعه را از چند دستگاهِ جدا، به یک راهکارِ منسجم تبدیل می‌کند.</p>
+              <p>اجرا را با تجهیزات و روشِ اجراییِ مناسب و همراه با مستندسازیِ دقیق انجام می‌دهیم، تا زیرساخت هم امروز کار کند و هم فردا قابلِ نگهداری و توسعه باشد. اما کار با تحویل تمام نمی‌شود؛ نگاهِ پشتیبانی از همان مرحلهٔ طراحی در نظر گرفته می‌شود. اگر قرار است فردا نگهدارِ این بستر باشیم، امروز آن را طوری می‌سازیم که برای شما و برای ما دردسر نسازد.</p>
+              <p>همین نگاهِ کل‌نگر است که تمایزِ ما را می‌سازد: ما اجزا را کنارِ هم نمی‌گذاریم، آن‌ها را با هم طراحی می‌کنیم و مسئولیتِ نتیجه را به عهده می‌گیریم. تصمیمِ امروز را با نیازِ فردا می‌سنجیم تا زیرساخت، به‌جای تبدیل‌شدن به یک محدودیت، فضای رشدِ سازمان را باز کند.</p>
+              <p>نتیجهٔ این مسیر، زیرساختی است پایدار، مقیاس‌پذیر و ساده در نگهداری؛ بستری که سازمان با خیالِ راحت روی آن می‌ایستد و انرژی‌اش را به‌جای درگیریِ همیشگی با مشکلاتِ فنی، صرفِ کارِ اصلیِ خود می‌کند.</p>
+            </div>
           </div>
         </div>
       </div>

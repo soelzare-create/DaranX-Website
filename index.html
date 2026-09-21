@@ -471,7 +471,7 @@
 <meta name="description" content="DaranX شریک فناوری سازمان‌ها و کسب‌وکارهاست: زیرساخت، امنیت و هوشمندی را از شناخت و طراحی تا اجرا و پشتیبانی، به‌عنوان یک راهکار یکپارچه طراحی می‌کند.">
 <meta name="robots" content="index,follow">
 <meta name="theme-color" content="#153A62">
-<link rel="canonical" href="https://soelzare-create.github.io/DaranX-Website/">
+<link rel="canonical" href="https://daranx.example/">
 <link rel="icon" type="image/svg+xml" href="assets/favicon.svg">
 <link rel="icon" type="image/png" sizes="32x32" href="assets/favicon-32.png">
 <link rel="apple-touch-icon" href="assets/apple-touch-icon.png">
@@ -480,16 +480,39 @@
 <meta property="og:locale" content="fa_IR">
 <meta property="og:title" content="DaranX — شریک فناوری سازمان‌ها">
 <meta property="og:description" content="DaranX شریک فناوری سازمان‌ها و کسب‌وکارهاست: زیرساخت، امنیت و هوشمندی را از شناخت و طراحی تا اجرا و پشتیبانی، به‌عنوان یک راهکار یکپارچه طراحی می‌کند.">
-<meta property="og:url" content="https://soelzare-create.github.io/DaranX-Website/">
-<meta property="og:image" content="https://soelzare-create.github.io/DaranX-Website/assets/og.jpg">
+<meta property="og:url" content="https://daranx.example/">
+<meta property="og:image" content="https://daranx.example/assets/og.jpg">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="DaranX — شریک فناوری سازمان‌ها">
 <meta name="twitter:description" content="DaranX شریک فناوری سازمان‌ها و کسب‌وکارهاست: زیرساخت، امنیت و هوشمندی را از شناخت و طراحی تا اجرا و پشتیبانی، به‌عنوان یک راهکار یکپارچه طراحی می‌کند.">
-<meta name="twitter:image" content="https://soelzare-create.github.io/DaranX-Website/assets/og.jpg">
+<meta name="twitter:image" content="https://daranx.example/assets/og.jpg">
 </head>
 <body>
+<style>
+  .fold-hero{position:relative;overflow:hidden;padding-block:clamp(2.5rem,5vw,4.5rem) var(--sp)}
+  .fh-grid{display:grid;grid-template-columns:1.02fr .98fr;gap:clamp(2rem,5vw,4rem);align-items:center;position:relative;z-index:1}
+  .fh-title{font-size:clamp(2.2rem,2.4vw + 1.4rem,3.7rem);font-weight:900;line-height:1.1;margin-top:1rem}
+  .fh-lead{margin-top:1.3rem;max-width:48ch}
+  .fh-photo{position:relative;margin:0;border-radius:var(--r-lg);overflow:hidden;border:1px solid var(--line);box-shadow:var(--shadow-lift);aspect-ratio:4/3;background:var(--surface-2)}
+  .fh-photo img{width:100%;height:100%;object-fit:cover;display:block}
+  .fh-photo figcaption{position:absolute;inset-inline:0;bottom:0;padding:.6rem .9rem;font-size:.82rem;color:#fff;background:linear-gradient(transparent,rgba(8,20,32,.6))}
+  .fh-photo .ph{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:.7rem;text-align:center;padding:1.6rem;background:radial-gradient(120% 120% at 80% 0,color-mix(in srgb,var(--steel) 16%,transparent),transparent 60%),var(--surface-2)}
+  .fh-photo .ph svg{width:54px;height:54px;color:var(--steel);opacity:.85}
+  .fh-photo .ph b{color:var(--ink);font-weight:700;font-size:1.02rem}
+  .fh-photo .ph span{color:var(--ink-faint);font-size:.85rem}
+  .fh-photo.noimg img,.fh-photo.noimg figcaption{display:none}
+  .fh-photo:not(.noimg) .ph{display:none}
+  .fold-motion{padding-block:var(--sp)}
+  .fm-grid{display:grid;grid-template-columns:.82fr 1.18fr;gap:clamp(2rem,5vw,4.5rem);align-items:center}
+  .longcopy{margin-top:1rem;color:var(--ink-soft);font-size:1.03rem;line-height:1.95;max-width:66ch}
+  .longcopy p{margin-top:1.1rem}.longcopy p:first-child{margin-top:0}
+  @media (max-width:900px){
+    .fh-grid{grid-template-columns:1fr;gap:2rem}.fh-photo{order:-1}
+    .fm-grid{grid-template-columns:1fr;gap:2.2rem}.fold-motion .dhero-visual{order:-1;max-width:320px}
+  }
+</style>
 <div class="progress" aria-hidden="true"><span id="prog"></span></div>
 
 <div dir="rtl" lang="fa">
@@ -521,9 +544,9 @@
   <main id="top">
 
     <!-- HERO -->
-    <section class="hero">
+    <section class="hero fold-hero">
       <div class="blobs" aria-hidden="true"><span class="blob b1"></span><span class="blob b2"></span><span class="blob b3"></span></div>
-      <div class="wrap hero-grid">
+      <div class="wrap fh-grid">
         <div>
           <span class="hero-pill"><span class="dot"></span>شریک فناوری سازمان‌ها و کسب‌وکارها</span>
           <h1>
@@ -539,7 +562,20 @@
             <span><b>شناخت</b></span><span><b>طراحی</b></span><span><b>اجرا</b></span><span><b>پشتیبانی</b></span>
           </div>
         </div>
-        <div class="hero-visual" aria-hidden="true">
+        <figure class="fh-photo reveal">
+          <img src="assets/photos/home.jpg" alt="تصویر واقعی DaranX" loading="lazy" onerror="this.closest('.fh-photo').classList.add('noimg')">
+          <figcaption>DaranX — شریک فناوری سازمان‌ها</figcaption>
+          <div class="ph" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M12 2v20M2 12h20"/><circle cx="12" cy="12" r="9"/></svg>
+            <b>تصویر واقعی: DaranX</b>
+            <span>این کادر با عکس واقعیِ شما جایگزین می‌شود<br>(assets/photos/home.jpg)</span>
+          </div>
+        </figure>
+      </div>
+    </section>
+    <section class="fold-motion">
+      <div class="wrap fm-grid">
+        <div class="hero-visual reveal" aria-hidden="true">
           <svg class="hv-lines" viewBox="0 0 100 100"><path d="M50 50 L50 8"/><path d="M50 50 L92 50"/><path d="M50 50 L50 92"/><path d="M50 50 L8 50"/></svg>
           <div class="hv-ring r1"></div><div class="hv-ring r2"></div><div class="hv-ring r3"></div>
           <div class="orbit o1"><span class="orbit-dot"></span></div>
@@ -554,6 +590,18 @@
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="12" r="3"/><path d="M12 3v3M12 18v3M3 12h3M18 12h3M6 6l2 2M16 16l2 2M18 6l-2 2M8 16l-2 2"/></svg></div>
           <div class="hv-node n4"><span class="lbl">طراحی</span>
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 3v18M3 12h18"/><circle cx="12" cy="12" r="9"/></svg></div>
+        </div>
+        <div class="fm-text reveal">
+          <span class="eyebrow">دربارهٔ DaranX</span>
+          <h2 style="font-size:clamp(1.7rem,1.3rem+1.6vw,2.5rem);margin-top:.8rem">همه چیز، سرِ جای درستش.</h2>
+          <div class="longcopy">
+            <p>DaranX یک شریکِ فناوری برای سازمان‌ها و کسب‌وکارهاست. ما زیرساخت، امنیت و فناوری‌های هوشمند را از مرحلهٔ شناخت و طراحی تا اجرا و پشتیبانی، به‌عنوان اجزای یک راهکارِ واحد می‌بینیم — نه مجموعه‌ای از تجهیزات که کنارِ هم چیده شده‌اند. باورِ اصلیِ ما ساده است: همه چیز باید سرِ جای درستش باشد، و این نتیجهٔ یک اتفاق نیست، بلکه حاصلِ شناختِ درست، طراحیِ درست و اجرای درست است.</p>
+            <p>برای ما، طراحی مقدم بر اجراست. پیش از انتخابِ تجهیز، نصبِ سرور یا پیاده‌سازیِ هر راهکار، اول مسئلهٔ واقعیِ سازمان را می‌فهمیم: نیازِ واقعی چیست، چه چیزی امروز لازم است و چه چیزی ممکن است فردا لازم شود. طراحی برای ما یعنی پیداکردنِ جای درستِ هر فناوری، متناسب با مسئلهٔ واقعیِ کسب‌وکار؛ چون اجرای دقیقِ یک طراحیِ اشتباه، همچنان یک نتیجهٔ اشتباه است.</p>
+            <p>روشِ کارِ ما یک زنجیرهٔ پیوسته است: شناخت، طراحی، اجرا و پشتیبانی. مسئله را می‌فهمیم، راهکار را طراحی می‌کنیم، آن را اجرا می‌کنیم و از آن پشتیبانی می‌کنیم. پشتیبانی برای ما مرحله‌ای بعد از پروژه نیست؛ نگاهِ پشتیبانی از همان مرحلهٔ طراحی آغاز می‌شود، چون اگر قرار است فردا نگهدارِ چیزی باشیم، امروز آن را طوری می‌سازیم که دردسر نسازد.</p>
+            <p>تمایزِ ما در تعداد یا تنوعِ خدمات نیست. ارزشِ واقعی زمانی ساخته می‌شود که اجزای مختلف بر اساسِ مسئلهٔ واقعیِ سازمان انتخاب شوند، جای مشخصی در راهکار داشته باشند و برای یک هدفِ مشترک با هم طراحی شوند. به‌همین‌دلیل می‌گوییم: ما خدمات مختلف را کنارِ هم نمی‌گذاریم؛ آن‌ها را با هم طراحی می‌کنیم و مسئولیتِ نتیجه را به عهده می‌گیریم.</p>
+            <p>توانمندی‌های ما در سه حوزه سازمان می‌یابند: زیرساخت برای ساختنِ بسترِ درست، امنیت برای محافظت از آنچه ساخته‌ایم، و هوشمندی برای ارزش‌آفرینی از داده. طراحی، لایهٔ مشترکی است که هر سه را به هم متصل می‌کند؛ چون طراحی است که فناوری‌های مختلف را از مجموعه‌ای از تجهیزات، به یک راهکارِ واحد تبدیل می‌کند.</p>
+            <p>مخاطبِ ما الزاماً متخصصِ فناوری نیست؛ برای همین ارزشِ فناوری را با زبانِ کسب‌وکار توضیح می‌دهیم: هزینه، ریسک، پایداری، بهره‌وری، امنیت و توسعه. هدفِ نهایی این است که فناوری در خدمتِ کسب‌وکار قرار بگیرد و به رشدِ پایدارِ آن کمک کند، نه اینکه خودش به یک مسئلهٔ تازه تبدیل شود.</p>
+          </div>
         </div>
       </div>
     </section>
