@@ -1,0 +1,57 @@
+# استقرار خودکار سایت DaranX روی هاست cPanel از طریق FTP/FTPS.
+# Auto-deploy the static site to cPanel hosting over FTP/FTPS on every push.
+#
+# ── راه‌اندازی یک‌بار (One-time setup) ────────────────────────────────────────
+# در GitHub: Settings → Secrets and variables → Actions → New repository secret
+# سه Secret زیر را بسازید (نام‌ها باید دقیقاً همین باشند):
+#   FTP_SERVER    → آدرس هاست، مثلاً ftp.daranx.com  (از Configure FTP Client)
+#   FTP_USERNAME  → نام کاربری FTP، مثلاً deploy@daranx.com
+#   FTP_PASSWORD  → رمز همان حساب FTP
+# رمز فقط اینجا ذخیره می‌شود، در کد یا لاگ‌ها دیده نمی‌شود.
+# ─────────────────────────────────────────────────────────────────────────────
+
+name: deploy-to-cpanel
+
+on:
+  push:
+    branches: ["main"]
+  workflow_dispatch:        # امکان اجرای دستی از تب Actions
+
+concurrency:
+  group: deploy-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  ftp-deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Deploy via FTP
+        uses: SamKirkland/FTP-Deploy-Action@v4.3.5
+        with:
+          server: ${{ secrets.FTP_SERVER }}
+          username: ${{ secrets.FTP_USERNAME }}
+          password: ${{ secrets.FTP_PASSWORD }}
+
+          # اتصال امن. اگر هاست FTPS نداشت، این خط را به ftp تغییر دهید.
+          protocol: ftps
+          # گواهی FTPS در هاست‌های اشتراکی معمولاً self-signed است.
+          security: loose
+          port: 21
+
+          # پوشهٔ مقصد روی هاست.
+          #  • حساب FTP اختصاصی با Directory=public_html  →  "./"
+          #  • حساب اصلی cPanel                           →  "public_html/"
+          server-dir: ./
+
+          # فقط فایل‌های تغییرکرده آپلود می‌شوند (وضعیت روی هاست نگه داشته می‌شود).
+          # این فایل‌ها هرگز روی سایت منتشر نمی‌شوند:
+          exclude: |
+            **/.git*
+            **/.git*/**
+            **/.github/**
+            **/node_modules/**
+            README.md
+            .gitignore
