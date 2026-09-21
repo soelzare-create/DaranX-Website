@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <style>:root{color-scheme:light}html,body{margin:0}img{max-width:100%}[hidden]{display:none!important}</style>
-<title>دیتاسنتر و سرور — DaranX</title>
+<title>DaranX Datacenter & Server</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@300;400;500;600;700;800;900&display=swap">
@@ -294,29 +294,34 @@
   @media (max-width:900px){.cols{grid-template-columns:1fr}.idx-cards{grid-template-columns:1fr 1fr}}
   @media (max-width:640px){.idx-cards{grid-template-columns:1fr}}
 
+  /* ---- new 3-fold layout ---- */
+  .fold-hero{position:relative;overflow:hidden;padding-block:clamp(2.5rem,5vw,4.5rem) var(--sp)}
+  .fh-grid{display:grid;grid-template-columns:1.02fr .98fr;gap:clamp(2rem,5vw,4rem);align-items:center}
+  .fh-title{font-size:clamp(2.2rem,2.4vw + 1.4rem,3.7rem);font-weight:900;line-height:1.1;margin-top:1rem}
+  .fh-lead{margin-top:1.3rem;max-width:48ch}
+  .fh-photo{position:relative;margin:0;border-radius:var(--r-lg);overflow:hidden;border:1px solid var(--line);box-shadow:var(--shadow-lift);aspect-ratio:4/3;background:var(--surface-2)}
+  .fh-photo img{width:100%;height:100%;object-fit:cover;display:block}
+  .fh-photo figcaption{position:absolute;inset-inline:0;bottom:0;padding:.6rem .9rem;font-size:.82rem;color:#fff;background:linear-gradient(transparent,rgba(8,20,32,.6))}
+  .fh-photo .ph{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:.7rem;text-align:center;padding:1.6rem;
+    background:radial-gradient(120% 120% at 80% 0,color-mix(in srgb,var(--steel) 16%,transparent),transparent 60%),var(--surface-2)}
+  .fh-photo .ph svg{width:54px;height:54px;color:var(--steel);opacity:.85}
+  .fh-photo .ph b{color:var(--ink);font-weight:700;font-size:1.02rem}
+  .fh-photo .ph span{color:var(--ink-faint);font-size:.85rem}
+  .fh-photo.noimg img,.fh-photo.noimg figcaption{display:none}
+  .fh-photo:not(.noimg) .ph{display:none}
+
+  .fold-motion{padding-block:var(--sp)}
+  .fm-grid{display:grid;grid-template-columns:.82fr 1.18fr;gap:clamp(2rem,5vw,4.5rem);align-items:center}
+  .longcopy{margin-top:1rem;color:var(--ink-soft);font-size:1.03rem;line-height:1.95;max-width:66ch}
+  .longcopy p{margin-top:1.1rem}
+  .longcopy p:first-child{margin-top:0}
+  @media (max-width:900px){
+    .fh-grid{grid-template-columns:1fr;gap:2rem}.fh-photo{order:-1}
+    .fm-grid{grid-template-columns:1fr;gap:2.2rem}.fold-motion .dhero-visual{order:-1;max-width:320px}
+  }
+
   .reveal.in{animation:dx-rise .7s ease both}
 </style>
-<!-- seo -->
-<meta name="description" content="دیتاسنتر و سرور — مرکز داده و سرورها را نه بیش‌ازحد و نه ناکافی، بلکه متناسب با بار واقعی سازمان طراحی می‌کنیم.">
-<meta name="robots" content="index,follow">
-<meta name="theme-color" content="#153A62">
-<link rel="canonical" href="https://soelzare-create.github.io/DaranX-Website/datacenter-server.html">
-<link rel="icon" type="image/svg+xml" href="assets/favicon.svg">
-<link rel="icon" type="image/png" sizes="32x32" href="assets/favicon-32.png">
-<link rel="apple-touch-icon" href="assets/apple-touch-icon.png">
-<meta property="og:type" content="website">
-<meta property="og:site_name" content="DaranX">
-<meta property="og:locale" content="fa_IR">
-<meta property="og:title" content="دیتاسنتر و سرور — DaranX">
-<meta property="og:description" content="دیتاسنتر و سرور — مرکز داده و سرورها را نه بیش‌ازحد و نه ناکافی، بلکه متناسب با بار واقعی سازمان طراحی می‌کنیم.">
-<meta property="og:url" content="https://soelzare-create.github.io/DaranX-Website/datacenter-server.html">
-<meta property="og:image" content="https://soelzare-create.github.io/DaranX-Website/assets/og.jpg">
-<meta property="og:image:width" content="1200">
-<meta property="og:image:height" content="630">
-<meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:title" content="دیتاسنتر و سرور — DaranX">
-<meta name="twitter:description" content="دیتاسنتر و سرور — مرکز داده و سرورها را نه بیش‌ازحد و نه ناکافی، بلکه متناسب با بار واقعی سازمان طراحی می‌کنیم.">
-<meta name="twitter:image" content="https://soelzare-create.github.io/DaranX-Website/assets/og.jpg">
 </head>
 <body>
 <div class="progress" aria-hidden="true"><span id="prog"></span></div>
@@ -341,27 +346,57 @@
   </header>
   <main id="top">
 
-      <div class="dhero">
+      <!-- FOLD 1: topic headline + real photo + short intro -->
+      <div class="fold-hero">
         <div class="blobs" aria-hidden="true"><span class="blob b1"></span><span class="blob b2"></span></div>
-        <div class="wrap dhero-grid">
-          <div class="reveal">
+        <div class="wrap fh-grid">
+          <div class="fh-text reveal">
             <div class="crumbs"><a href="solutions.html">راهکارها</a><span class="sep">›</span><a href="infrastructure.html">زیرساخت</a><span class="sep">›</span><span>دیتاسنتر و سرور</span></div>
             <span class="chip">Datacenter & Server</span>
-            <h1>قلبِ پردازش سازمان، درست‌اندازه و قابل‌اتکا.</h1>
-            <p class="lead">مرکز داده و سرورها را نه بیش‌ازحد و نه ناکافی، بلکه متناسب با بار واقعی سازمان طراحی می‌کنیم.</p>
+            <h1 class="fh-title">قلبِ پردازش سازمان، درست‌اندازه و قابل‌اتکا.</h1>
+            <p class="lead fh-lead">مرکز داده و سرورها را نه بیش‌ازحد و نه ناکافی، بلکه متناسب با بار واقعی سازمان طراحی می‌کنیم.</p>
             <div class="dhero-actions">
               <a class="btn btn-primary" href="tel:+982188964116">درخواست مشاوره</a>
               <a class="btn btn-ghost" href="infrastructure.html">حوزهٔ زیرساخت</a>
             </div>
             <div class="subnav"><a class="" href="network.html">شبکه</a><a class="on" href="datacenter-server.html">دیتاسنتر و سرور</a><a class="" href="storage.html">ذخیره‌سازی</a><a class="" href="power-ups.html">برق و UPS</a><a class="" href="passive.html">زیرساخت پسیو</a></div>
           </div>
-          <div class="dhero-visual" aria-hidden="true">
+          <figure class="fh-photo reveal">
+            <img src="assets/photos/datacenter-server.jpg" alt="تصویر واقعی دیتاسنتر و سرور" loading="lazy"
+                 onerror="this.closest('.fh-photo').classList.add('noimg')">
+            <figcaption>دیتاسنتر و سرور — Datacenter & Server</figcaption>
+            <div class="ph" aria-hidden="true">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><rect x="3" y="4" width="18" height="6" rx="1.5"/><rect x="3" y="14" width="18" height="6" rx="1.5"/><path stroke-linecap="round" d="M7 7h.01M7 17h.01"/></svg>
+              <b>تصویر واقعی: دیتاسنتر و سرور</b>
+              <span>این کادر با عکس واقعیِ شما جایگزین می‌شود<br>(assets/photos/datacenter-server.jpg)</span>
+            </div>
+          </figure>
+        </div>
+      </div>
+
+      <!-- FOLD 2: motion graphic + long description (300–700 words) -->
+      <div class="fold-motion alt">
+        <div class="wrap fm-grid">
+          <div class="dhero-visual reveal" aria-hidden="true">
             <div class="dring r1"></div><div class="dring r2"></div>
             <div class="dcore"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><rect x="3" y="4" width="18" height="6" rx="1.5"/><rect x="3" y="14" width="18" height="6" rx="1.5"/><path stroke-linecap="round" d="M7 7h.01M7 17h.01"/></svg></div>
           </div>
+          <div class="fm-text reveal">
+            <span class="eyebrow">دربارهٔ دیتاسنتر و سرور</span>
+            <h2 style="font-size:clamp(1.6rem,1.3rem+1.4vw,2.3rem);margin-top:.8rem">قلبِ پردازش سازمان، درست‌اندازه و قابل‌اتکا.</h2>
+            <div class="longcopy">
+              <p>دیتاسنتر و سرور، همان جایی است که پردازش سازمان واقعاً اتفاق می‌افتد؛ از نرم‌افزارهای داخلی و پایگاه داده گرفته تا سرویس‌هایی که کاربران هر روز به آن‌ها تکیه می‌کنند. این بخش، قلبِ تپندهٔ فناوریِ سازمان است و هر لرزشی در آن، خودش را در همه‌جا نشان می‌دهد. اگر سرورها بیش‌ازحدِ نیاز خریداری شوند، سرمایه‌ای بی‌استفاده روی دست سازمان می‌ماند؛ و اگر ناکافی باشند، کندی و توقف درست در پرکارترین لحظه‌ها ظاهر می‌شود. به همین دلیل در DaranX سرور را یک قلم خرید نمی‌بینیم، بلکه بخشی از یک طراحیِ حساب‌شده.</p>
+              <p>روش ما با اصل «طراحی مقدم بر اجراست» شروع می‌شود. پیش از انتخاب برند و مدل، بار واقعیِ پردازشیِ سازمان را می‌شناسیم: چه سرویس‌هایی، با چه حجمی و با چه میزان اهمیتی اجرا می‌شوند؟ رشدِ یکی دو سالِ آینده چه فشاری اضافه می‌کند؟ کدام سرویس‌ها نباید حتی یک لحظه از دسترس خارج شوند؟ پاسخِ این پرسش‌هاست که تعیین می‌کند به چه پردازنده، حافظه و معماری‌ای نیاز داریم — نه فهرستِ تجهیزاتِ موجود در بازار.</p>
+              <p>در طراحی، به چند چیز هم‌زمان فکر می‌کنیم. مجازی‌سازی به ما اجازه می‌دهد از منابع به‌شکل بهینه استفاده کنیم و به‌جای چند سرورِ کم‌بار، بستری منعطف و جمع‌وجور بسازیم. افزونگی برای بخش‌های حیاتی در نظر گرفته می‌شود تا یک خرابی، کلِ سازمان را زمین نزند. آمادگی از نظر برق، خنک‌کاری و فضای فیزیکی سنجیده می‌شود، و مسیرِ روشنی برای پشتیبان‌گیری و بازیابی از همان ابتدا دیده می‌شود.</p>
+              <p>اجرا را با پیکربندی و مستندسازیِ منظم انجام می‌دهیم؛ سروری که مستند و مرتب تحویل داده شود، بعداً برای توسعه و عیب‌یابی دردسر نمی‌سازد. کار هم با تحویل تمام نمی‌شود: پشتیبانی از همان مرحلهٔ طراحی در نظر گرفته می‌شود، چون اگر قرار است فردا نگهدارِ این بستر باشیم، امروز آن را طوری می‌سازیم که برای شما و برای ما ساده بماند.</p>
+              <p>نتیجهٔ این مسیر، زیرساختِ پردازشی‌ای است متناسب با نیاز، قابل‌اتکا و آمادهٔ رشد؛ بستری که هزینه‌اش در بلندمدت کنترل می‌شود و به‌جای تبدیل‌شدن به یک مسئلهٔ تازه، در خدمتِ اهدافِ کسب‌وکار شما می‌ماند.</p>
+            </div>
+          </div>
         </div>
       </div>
-      <div class="sec alt">
+
+      <!-- FOLD 3+: existing structure -->
+      <div class="sec">
         <div class="wrap reveal">
           <div class="cols">
             <div class="panel stagger">

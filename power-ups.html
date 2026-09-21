@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <style>:root{color-scheme:light}html,body{margin:0}img{max-width:100%}[hidden]{display:none!important}</style>
-<title>برق و UPS — DaranX</title>
+<title>DaranX Power & UPS</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@300;400;500;600;700;800;900&display=swap">
@@ -294,29 +294,34 @@
   @media (max-width:900px){.cols{grid-template-columns:1fr}.idx-cards{grid-template-columns:1fr 1fr}}
   @media (max-width:640px){.idx-cards{grid-template-columns:1fr}}
 
+  /* ---- new 3-fold layout ---- */
+  .fold-hero{position:relative;overflow:hidden;padding-block:clamp(2.5rem,5vw,4.5rem) var(--sp)}
+  .fh-grid{display:grid;grid-template-columns:1.02fr .98fr;gap:clamp(2rem,5vw,4rem);align-items:center}
+  .fh-title{font-size:clamp(2.2rem,2.4vw + 1.4rem,3.7rem);font-weight:900;line-height:1.1;margin-top:1rem}
+  .fh-lead{margin-top:1.3rem;max-width:48ch}
+  .fh-photo{position:relative;margin:0;border-radius:var(--r-lg);overflow:hidden;border:1px solid var(--line);box-shadow:var(--shadow-lift);aspect-ratio:4/3;background:var(--surface-2)}
+  .fh-photo img{width:100%;height:100%;object-fit:cover;display:block}
+  .fh-photo figcaption{position:absolute;inset-inline:0;bottom:0;padding:.6rem .9rem;font-size:.82rem;color:#fff;background:linear-gradient(transparent,rgba(8,20,32,.6))}
+  .fh-photo .ph{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:.7rem;text-align:center;padding:1.6rem;
+    background:radial-gradient(120% 120% at 80% 0,color-mix(in srgb,var(--steel) 16%,transparent),transparent 60%),var(--surface-2)}
+  .fh-photo .ph svg{width:54px;height:54px;color:var(--steel);opacity:.85}
+  .fh-photo .ph b{color:var(--ink);font-weight:700;font-size:1.02rem}
+  .fh-photo .ph span{color:var(--ink-faint);font-size:.85rem}
+  .fh-photo.noimg img,.fh-photo.noimg figcaption{display:none}
+  .fh-photo:not(.noimg) .ph{display:none}
+
+  .fold-motion{padding-block:var(--sp)}
+  .fm-grid{display:grid;grid-template-columns:.82fr 1.18fr;gap:clamp(2rem,5vw,4.5rem);align-items:center}
+  .longcopy{margin-top:1rem;color:var(--ink-soft);font-size:1.03rem;line-height:1.95;max-width:66ch}
+  .longcopy p{margin-top:1.1rem}
+  .longcopy p:first-child{margin-top:0}
+  @media (max-width:900px){
+    .fh-grid{grid-template-columns:1fr;gap:2rem}.fh-photo{order:-1}
+    .fm-grid{grid-template-columns:1fr;gap:2.2rem}.fold-motion .dhero-visual{order:-1;max-width:320px}
+  }
+
   .reveal.in{animation:dx-rise .7s ease both}
 </style>
-<!-- seo -->
-<meta name="description" content="برق و UPS — وقتی برق پایدار نباشد، هیچ سرویسی پایدار نیست. تغذیه و حفاظت را از ابتدا در طراحی می‌بینیم.">
-<meta name="robots" content="index,follow">
-<meta name="theme-color" content="#153A62">
-<link rel="canonical" href="https://soelzare-create.github.io/DaranX-Website/power-ups.html">
-<link rel="icon" type="image/svg+xml" href="assets/favicon.svg">
-<link rel="icon" type="image/png" sizes="32x32" href="assets/favicon-32.png">
-<link rel="apple-touch-icon" href="assets/apple-touch-icon.png">
-<meta property="og:type" content="website">
-<meta property="og:site_name" content="DaranX">
-<meta property="og:locale" content="fa_IR">
-<meta property="og:title" content="برق و UPS — DaranX">
-<meta property="og:description" content="برق و UPS — وقتی برق پایدار نباشد، هیچ سرویسی پایدار نیست. تغذیه و حفاظت را از ابتدا در طراحی می‌بینیم.">
-<meta property="og:url" content="https://soelzare-create.github.io/DaranX-Website/power-ups.html">
-<meta property="og:image" content="https://soelzare-create.github.io/DaranX-Website/assets/og.jpg">
-<meta property="og:image:width" content="1200">
-<meta property="og:image:height" content="630">
-<meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:title" content="برق و UPS — DaranX">
-<meta name="twitter:description" content="برق و UPS — وقتی برق پایدار نباشد، هیچ سرویسی پایدار نیست. تغذیه و حفاظت را از ابتدا در طراحی می‌بینیم.">
-<meta name="twitter:image" content="https://soelzare-create.github.io/DaranX-Website/assets/og.jpg">
 </head>
 <body>
 <div class="progress" aria-hidden="true"><span id="prog"></span></div>
@@ -341,27 +346,58 @@
   </header>
   <main id="top">
 
-      <div class="dhero">
+      <!-- FOLD 1: topic headline + real photo + short intro -->
+      <div class="fold-hero">
         <div class="blobs" aria-hidden="true"><span class="blob b1"></span><span class="blob b2"></span></div>
-        <div class="wrap dhero-grid">
-          <div class="reveal">
+        <div class="wrap fh-grid">
+          <div class="fh-text reveal">
             <div class="crumbs"><a href="solutions.html">راهکارها</a><span class="sep">›</span><a href="infrastructure.html">زیرساخت</a><span class="sep">›</span><span>برق و UPS</span></div>
             <span class="chip">Power & UPS</span>
-            <h1>تغذیهٔ پایدار؛ پیش‌نیازِ در دسترس بودن.</h1>
-            <p class="lead">وقتی برق پایدار نباشد، هیچ سرویسی پایدار نیست. تغذیه و حفاظت را از ابتدا در طراحی می‌بینیم.</p>
+            <h1 class="fh-title">تغذیهٔ پایدار؛ پیش‌نیازِ در دسترس بودن.</h1>
+            <p class="lead fh-lead">وقتی برق پایدار نباشد، هیچ سرویسی پایدار نیست. تغذیه و حفاظت را از ابتدا در طراحی می‌بینیم.</p>
             <div class="dhero-actions">
               <a class="btn btn-primary" href="tel:+982188964116">درخواست مشاوره</a>
               <a class="btn btn-ghost" href="infrastructure.html">حوزهٔ زیرساخت</a>
             </div>
             <div class="subnav"><a class="" href="network.html">شبکه</a><a class="" href="datacenter-server.html">دیتاسنتر و سرور</a><a class="" href="storage.html">ذخیره‌سازی</a><a class="on" href="power-ups.html">برق و UPS</a><a class="" href="passive.html">زیرساخت پسیو</a></div>
           </div>
-          <div class="dhero-visual" aria-hidden="true">
+          <figure class="fh-photo reveal">
+            <img src="assets/photos/power-ups.jpg" alt="تصویر واقعی برق و UPS" loading="lazy"
+                 onerror="this.closest('.fh-photo').classList.add('noimg')">
+            <figcaption>برق و UPS — Power & UPS</figcaption>
+            <div class="ph" aria-hidden="true">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M13 2L3 14h7l-1 8 10-12h-7z"/></svg>
+              <b>تصویر واقعی: برق و UPS</b>
+              <span>این کادر با عکس واقعیِ شما جایگزین می‌شود<br>(assets/photos/power-ups.jpg)</span>
+            </div>
+          </figure>
+        </div>
+      </div>
+
+      <!-- FOLD 2: motion graphic + long description (300–700 words) -->
+      <div class="fold-motion alt">
+        <div class="wrap fm-grid">
+          <div class="dhero-visual reveal" aria-hidden="true">
             <div class="dring r1"></div><div class="dring r2"></div>
             <div class="dcore"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M13 2L3 14h7l-1 8 10-12h-7z"/></svg></div>
           </div>
+          <div class="fm-text reveal">
+            <span class="eyebrow">دربارهٔ برق و UPS</span>
+            <h2 style="font-size:clamp(1.6rem,1.3rem+1.4vw,2.3rem);margin-top:.8rem">تغذیهٔ پایدار؛ پیش‌نیازِ در دسترس بودن.</h2>
+            <div class="longcopy">
+              <p>برق، پیش‌نیازِ خاموشِ همه‌چیز است؛ وقتی برق پایدار نباشد، هیچ سرور، شبکه یا دوربینی پایدار نمی‌ماند. یک قطعیِ کوتاه یا نوسانِ ناگهانی می‌تواند سرویس‌ها را متوقف کند و حتی تجهیزاتِ حساس را از کار بیندازد. برای همین در DaranX تغذیه و حفاظتِ برق را نه در پایانِ کار و به‌عنوان یک افزودنی، بلکه از همان مرحلهٔ طراحی و به‌عنوان بخشی از پایداریِ کلِ راهکار در نظر می‌گیریم.</p>
+              <p>روش ما با شناختِ نیازِ واقعی شروع می‌شود: چه تجهیزاتی باید در هر شرایطی بی‌وقفه بمانند؟ در قطعیِ برق، چند دقیقه یا چند ساعت باید سرویس‌ها روشن بمانند تا به‌سلامت خاموش شوند یا ژنراتور وارد مدار شود؟ کدام بخش‌ها حساس‌ترند و اولویتِ تغذیه دارند؟ این‌ها اندازه، ظرفیت و معماریِ UPS و مسیرِ برق‌رسانی را تعیین می‌کنند.</p>
+              <p>در طراحی به ظرفیت و زمانِ پشتیبانیِ UPS فکر می‌کنیم، به سلامت و عمرِ باتری‌ها، به حفاظت در برابرِ نوسان و اضافه‌ولتاژ، به هماهنگی با ژنراتور در صورتِ وجود، و به امکانِ پایشِ پیوستهٔ وضعیتِ برق. هدف این است که قطعیِ برق به یک بحران تبدیل نشود، بلکه بی‌سروصدا و طبقِ نقشه مدیریت شود.</p>
+              <p>اجرا را منظم و ایمن انجام می‌دهیم و پشتیبانی را از ابتدا لحاظ می‌کنیم؛ چون تغذیهٔ پایدار چیزی نیست که یک‌بار نصب شود و رها گردد — باتری‌ها عمر دارند و باید در زمانِ درست بررسی و تعویض شوند. همین نگاهِ بلندمدت است که تفاوت را می‌سازد.</p>
+              <p>نتیجه، تداومِ سرویس در قطعی و نوسان، حفاظت از تجهیزاتِ حساس، و کاهشِ ریسکِ توقف‌های پرهزینه است؛ آرامشی که از دانستنِ این می‌آید که یک قطعیِ ساده، کارِ سازمان را متوقف نمی‌کند.</p>
+              <p>برای ما، برق و UPS یک قلمِ مجزا نیست؛ بخشی از پایداریِ کلِ زیرساخت است که با سرور، شبکه و سایرِ لایه‌ها هماهنگ طراحی می‌شود. همین است که می‌گوییم اجزا را کنارِ هم نمی‌گذاریم، آن‌ها را با هم طراحی می‌کنیم. تصمیمِ امروز را با نیازِ فردا می‌سنجیم تا تغذیهٔ برق، به‌جای تبدیل‌شدن به نقطه‌ضعفِ پنهانِ سازمان، بخشی از قوتِ آن باشد و در دسترس‌بودنِ سرویس‌ها را تضمین کند.</p>
+            </div>
+          </div>
         </div>
       </div>
-      <div class="sec alt">
+
+      <!-- FOLD 3+: existing structure -->
+      <div class="sec">
         <div class="wrap reveal">
           <div class="cols">
             <div class="panel stagger">

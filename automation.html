@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <style>:root{color-scheme:light}html,body{margin:0}img{max-width:100%}[hidden]{display:none!important}</style>
-<title>خودکارسازی هوشمند — DaranX</title>
+<title>DaranX Intelligent Automation</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@300;400;500;600;700;800;900&display=swap">
@@ -294,29 +294,34 @@
   @media (max-width:900px){.cols{grid-template-columns:1fr}.idx-cards{grid-template-columns:1fr 1fr}}
   @media (max-width:640px){.idx-cards{grid-template-columns:1fr}}
 
+  /* ---- new 3-fold layout ---- */
+  .fold-hero{position:relative;overflow:hidden;padding-block:clamp(2.5rem,5vw,4.5rem) var(--sp)}
+  .fh-grid{display:grid;grid-template-columns:1.02fr .98fr;gap:clamp(2rem,5vw,4rem);align-items:center}
+  .fh-title{font-size:clamp(2.2rem,2.4vw + 1.4rem,3.7rem);font-weight:900;line-height:1.1;margin-top:1rem}
+  .fh-lead{margin-top:1.3rem;max-width:48ch}
+  .fh-photo{position:relative;margin:0;border-radius:var(--r-lg);overflow:hidden;border:1px solid var(--line);box-shadow:var(--shadow-lift);aspect-ratio:4/3;background:var(--surface-2)}
+  .fh-photo img{width:100%;height:100%;object-fit:cover;display:block}
+  .fh-photo figcaption{position:absolute;inset-inline:0;bottom:0;padding:.6rem .9rem;font-size:.82rem;color:#fff;background:linear-gradient(transparent,rgba(8,20,32,.6))}
+  .fh-photo .ph{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:.7rem;text-align:center;padding:1.6rem;
+    background:radial-gradient(120% 120% at 80% 0,color-mix(in srgb,var(--steel) 16%,transparent),transparent 60%),var(--surface-2)}
+  .fh-photo .ph svg{width:54px;height:54px;color:var(--steel);opacity:.85}
+  .fh-photo .ph b{color:var(--ink);font-weight:700;font-size:1.02rem}
+  .fh-photo .ph span{color:var(--ink-faint);font-size:.85rem}
+  .fh-photo.noimg img,.fh-photo.noimg figcaption{display:none}
+  .fh-photo:not(.noimg) .ph{display:none}
+
+  .fold-motion{padding-block:var(--sp)}
+  .fm-grid{display:grid;grid-template-columns:.82fr 1.18fr;gap:clamp(2rem,5vw,4.5rem);align-items:center}
+  .longcopy{margin-top:1rem;color:var(--ink-soft);font-size:1.03rem;line-height:1.95;max-width:66ch}
+  .longcopy p{margin-top:1.1rem}
+  .longcopy p:first-child{margin-top:0}
+  @media (max-width:900px){
+    .fh-grid{grid-template-columns:1fr;gap:2rem}.fh-photo{order:-1}
+    .fm-grid{grid-template-columns:1fr;gap:2.2rem}.fold-motion .dhero-visual{order:-1;max-width:320px}
+  }
+
   .reveal.in{animation:dx-rise .7s ease both}
 </style>
-<!-- seo -->
-<meta name="description" content="خودکارسازی هوشمند — فرآیندهای تکراری را با جریان‌های خودکارِ قابل‌اتکا و یکپارچه با سیستم‌های موجود جایگزین می‌کنیم.">
-<meta name="robots" content="index,follow">
-<meta name="theme-color" content="#153A62">
-<link rel="canonical" href="https://soelzare-create.github.io/DaranX-Website/automation.html">
-<link rel="icon" type="image/svg+xml" href="assets/favicon.svg">
-<link rel="icon" type="image/png" sizes="32x32" href="assets/favicon-32.png">
-<link rel="apple-touch-icon" href="assets/apple-touch-icon.png">
-<meta property="og:type" content="website">
-<meta property="og:site_name" content="DaranX">
-<meta property="og:locale" content="fa_IR">
-<meta property="og:title" content="خودکارسازی هوشمند — DaranX">
-<meta property="og:description" content="خودکارسازی هوشمند — فرآیندهای تکراری را با جریان‌های خودکارِ قابل‌اتکا و یکپارچه با سیستم‌های موجود جایگزین می‌کنیم.">
-<meta property="og:url" content="https://soelzare-create.github.io/DaranX-Website/automation.html">
-<meta property="og:image" content="https://soelzare-create.github.io/DaranX-Website/assets/og.jpg">
-<meta property="og:image:width" content="1200">
-<meta property="og:image:height" content="630">
-<meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:title" content="خودکارسازی هوشمند — DaranX">
-<meta name="twitter:description" content="خودکارسازی هوشمند — فرآیندهای تکراری را با جریان‌های خودکارِ قابل‌اتکا و یکپارچه با سیستم‌های موجود جایگزین می‌کنیم.">
-<meta name="twitter:image" content="https://soelzare-create.github.io/DaranX-Website/assets/og.jpg">
 </head>
 <body>
 <div class="progress" aria-hidden="true"><span id="prog"></span></div>
@@ -341,27 +346,59 @@
   </header>
   <main id="top">
 
-      <div class="dhero">
+      <!-- FOLD 1: topic headline + real photo + short intro -->
+      <div class="fold-hero">
         <div class="blobs" aria-hidden="true"><span class="blob b1"></span><span class="blob b2"></span></div>
-        <div class="wrap dhero-grid">
-          <div class="reveal">
+        <div class="wrap fh-grid">
+          <div class="fh-text reveal">
             <div class="crumbs"><a href="solutions.html">راهکارها</a><span class="sep">›</span><a href="intelligence.html">هوشمندی</a><span class="sep">›</span><span>خودکارسازی هوشمند</span></div>
             <span class="chip">Intelligent Automation</span>
-            <h1>حذف کارهای دستی و خطاپذیر.</h1>
-            <p class="lead">فرآیندهای تکراری را با جریان‌های خودکارِ قابل‌اتکا و یکپارچه با سیستم‌های موجود جایگزین می‌کنیم.</p>
+            <h1 class="fh-title">حذف کارهای دستی و خطاپذیر.</h1>
+            <p class="lead fh-lead">فرآیندهای تکراری را با جریان‌های خودکارِ قابل‌اتکا و یکپارچه با سیستم‌های موجود جایگزین می‌کنیم.</p>
             <div class="dhero-actions">
               <a class="btn btn-primary" href="tel:+982188964116">درخواست مشاوره</a>
               <a class="btn btn-ghost" href="intelligence.html">حوزهٔ هوشمندی</a>
             </div>
             <div class="subnav"><a class="" href="ai-solutions.html">راهکارها و دستیارهای هوش مصنوعی</a><a class="" href="data-analytics.html">داده و تحلیل</a><a class="on" href="automation.html">خودکارسازی هوشمند</a><a class="" href="software-models.html">نرم‌افزار و مدل‌های اختصاصی</a></div>
           </div>
-          <div class="dhero-visual" aria-hidden="true">
+          <figure class="fh-photo reveal">
+            <img src="assets/photos/automation.jpg" alt="تصویر واقعی خودکارسازی هوشمند" loading="lazy"
+                 onerror="this.closest('.fh-photo').classList.add('noimg')">
+            <figcaption>خودکارسازی هوشمند — Intelligent Automation</figcaption>
+            <div class="ph" aria-hidden="true">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><circle cx="12" cy="12" r="4"/><path d="M12 2v3M12 19v3M2 12h3M19 12h3"/></svg>
+              <b>تصویر واقعی: خودکارسازی هوشمند</b>
+              <span>این کادر با عکس واقعیِ شما جایگزین می‌شود<br>(assets/photos/automation.jpg)</span>
+            </div>
+          </figure>
+        </div>
+      </div>
+
+      <!-- FOLD 2: motion graphic + long description (300–700 words) -->
+      <div class="fold-motion alt">
+        <div class="wrap fm-grid">
+          <div class="dhero-visual reveal" aria-hidden="true">
             <div class="dring r1"></div><div class="dring r2"></div>
             <div class="dcore"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><circle cx="12" cy="12" r="4"/><path d="M12 2v3M12 19v3M2 12h3M19 12h3"/></svg></div>
           </div>
+          <div class="fm-text reveal">
+            <span class="eyebrow">دربارهٔ خودکارسازی هوشمند</span>
+            <h2 style="font-size:clamp(1.6rem,1.3rem+1.4vw,2.3rem);margin-top:.8rem">حذف کارهای دستی و خطاپذیر.</h2>
+            <div class="longcopy">
+              <p>بخشِ زیادی از زمانِ سازمان‌ها صرفِ کارهای تکراری و دستی می‌شود؛ کارهایی که هم وقت می‌گیرند و هم مستعدِ خطا هستند و انگیزهٔ کارکنان را هم می‌گیرند. خودکارسازیِ هوشمند یعنی سپردنِ این کارها به فرآیندهایی قابل‌اتکا، تا نیرویِ انسانی روی کاری تمرکز کند که واقعاً ارزش می‌سازد. در DaranX خودکارسازی را متناسب با فرآیندِ واقعیِ شما طراحی می‌کنیم، نه بر اساسِ یک الگوی آماده.</p>
+              <p>روش ما با شناخت شروع می‌شود: کدام فرآیندها تکراری و قاعده‌مندند؟ کجا خطای انسانی بیشترین هزینه را دارد؟ این کارها به چه سیستم‌هایی وصل‌اند و چه ورودی و خروجی‌ای دارند؟ خودکارسازیِ یک فرآیندِ اشتباه فقط اشتباه را سریع‌تر می‌کند؛ برای همین اول فرآیند را درست می‌فهمیم و در صورتِ نیاز، ساده‌اش می‌کنیم.</p>
+              <p>در طراحی به جریان‌های خودکارِ پایدار فکر می‌کنیم، به یکپارچگی با سیستم‌های موجود تا خودکارسازی یک جزیرهٔ جدا نماند، و به کنترل و پایش برای اطمینان از درستیِ نتیجه. جایی هم که قضاوتِ انسانی لازم است، انسان را از مدار خارج نمی‌کنیم؛ کارِ تکراری را حذف می‌کنیم، نه تصمیمِ مهم را.</p>
+              <p>اجرا را گام‌به‌گام و با کمترین اختلال در کارِ جاری انجام می‌دهیم و پشتیبانی را ادامه می‌دهیم، چون فرآیندهای سازمان با زمان تغییر می‌کنند و خودکارسازی باید همراهِ آن‌ها به‌روز بماند.</p>
+              <p>نتیجه، افزایشِ بهره‌وری، کاهشِ خطا و دوباره‌کاری، و آزادشدنِ وقتِ کارکنان برای کارهای مهم‌تر است؛ سازمانی که به‌جای دویدن پشتِ کارهای تکراری، انرژی‌اش را صرفِ رشد می‌کند.</p>
+              <p>برای ما خودکارسازی بخشی از یک راهکارِ یکپارچه است که با داده، نرم‌افزار و زیرساخت هماهنگ می‌شود. تمایزِ ما در دیدنِ کلِ مسئله و پذیرفتنِ مسئولیتِ نتیجه است، نه در تعدادِ ابزارها. چیزی را خودکار نمی‌کنیم که فردا برای سازمان دردسر بسازد؛ راهکار را طوری می‌سازیم که پایدار بماند و خودمان هم پشتیبانی‌اش می‌کنیم.</p>
+              <p>اول مسئله را می‌فهمیم، بعد راهکار پیشنهاد می‌کنیم؛ و اگر جایی خودکارسازی ارزشی نسازد، صادقانه همان را می‌گوییم. تجهیزات و ابزارها وسیله‌اند؛ راهکار و نتیجه، هدف‌اند.</p>
+            </div>
+          </div>
         </div>
       </div>
-      <div class="sec alt">
+
+      <!-- FOLD 3+: existing structure -->
+      <div class="sec">
         <div class="wrap reveal">
           <div class="cols">
             <div class="panel stagger">

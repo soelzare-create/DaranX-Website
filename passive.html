@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <style>:root{color-scheme:light}html,body{margin:0}img{max-width:100%}[hidden]{display:none!important}</style>
-<title>زیرساخت پسیو — DaranX</title>
+<title>DaranX Passive Infrastructure</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@300;400;500;600;700;800;900&display=swap">
@@ -294,29 +294,34 @@
   @media (max-width:900px){.cols{grid-template-columns:1fr}.idx-cards{grid-template-columns:1fr 1fr}}
   @media (max-width:640px){.idx-cards{grid-template-columns:1fr}}
 
+  /* ---- new 3-fold layout ---- */
+  .fold-hero{position:relative;overflow:hidden;padding-block:clamp(2.5rem,5vw,4.5rem) var(--sp)}
+  .fh-grid{display:grid;grid-template-columns:1.02fr .98fr;gap:clamp(2rem,5vw,4rem);align-items:center}
+  .fh-title{font-size:clamp(2.2rem,2.4vw + 1.4rem,3.7rem);font-weight:900;line-height:1.1;margin-top:1rem}
+  .fh-lead{margin-top:1.3rem;max-width:48ch}
+  .fh-photo{position:relative;margin:0;border-radius:var(--r-lg);overflow:hidden;border:1px solid var(--line);box-shadow:var(--shadow-lift);aspect-ratio:4/3;background:var(--surface-2)}
+  .fh-photo img{width:100%;height:100%;object-fit:cover;display:block}
+  .fh-photo figcaption{position:absolute;inset-inline:0;bottom:0;padding:.6rem .9rem;font-size:.82rem;color:#fff;background:linear-gradient(transparent,rgba(8,20,32,.6))}
+  .fh-photo .ph{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:.7rem;text-align:center;padding:1.6rem;
+    background:radial-gradient(120% 120% at 80% 0,color-mix(in srgb,var(--steel) 16%,transparent),transparent 60%),var(--surface-2)}
+  .fh-photo .ph svg{width:54px;height:54px;color:var(--steel);opacity:.85}
+  .fh-photo .ph b{color:var(--ink);font-weight:700;font-size:1.02rem}
+  .fh-photo .ph span{color:var(--ink-faint);font-size:.85rem}
+  .fh-photo.noimg img,.fh-photo.noimg figcaption{display:none}
+  .fh-photo:not(.noimg) .ph{display:none}
+
+  .fold-motion{padding-block:var(--sp)}
+  .fm-grid{display:grid;grid-template-columns:.82fr 1.18fr;gap:clamp(2rem,5vw,4.5rem);align-items:center}
+  .longcopy{margin-top:1rem;color:var(--ink-soft);font-size:1.03rem;line-height:1.95;max-width:66ch}
+  .longcopy p{margin-top:1.1rem}
+  .longcopy p:first-child{margin-top:0}
+  @media (max-width:900px){
+    .fh-grid{grid-template-columns:1fr;gap:2rem}.fh-photo{order:-1}
+    .fm-grid{grid-template-columns:1fr;gap:2.2rem}.fold-motion .dhero-visual{order:-1;max-width:320px}
+  }
+
   .reveal.in{animation:dx-rise .7s ease both}
 </style>
-<!-- seo -->
-<meta name="description" content="زیرساخت پسیو — زیرساخت پسیوِ استاندارد و مستند، پایهٔ آرام و پایدارِ همهٔ لایه‌های بالاتر است.">
-<meta name="robots" content="index,follow">
-<meta name="theme-color" content="#153A62">
-<link rel="canonical" href="https://soelzare-create.github.io/DaranX-Website/passive.html">
-<link rel="icon" type="image/svg+xml" href="assets/favicon.svg">
-<link rel="icon" type="image/png" sizes="32x32" href="assets/favicon-32.png">
-<link rel="apple-touch-icon" href="assets/apple-touch-icon.png">
-<meta property="og:type" content="website">
-<meta property="og:site_name" content="DaranX">
-<meta property="og:locale" content="fa_IR">
-<meta property="og:title" content="زیرساخت پسیو — DaranX">
-<meta property="og:description" content="زیرساخت پسیو — زیرساخت پسیوِ استاندارد و مستند، پایهٔ آرام و پایدارِ همهٔ لایه‌های بالاتر است.">
-<meta property="og:url" content="https://soelzare-create.github.io/DaranX-Website/passive.html">
-<meta property="og:image" content="https://soelzare-create.github.io/DaranX-Website/assets/og.jpg">
-<meta property="og:image:width" content="1200">
-<meta property="og:image:height" content="630">
-<meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:title" content="زیرساخت پسیو — DaranX">
-<meta name="twitter:description" content="زیرساخت پسیو — زیرساخت پسیوِ استاندارد و مستند، پایهٔ آرام و پایدارِ همهٔ لایه‌های بالاتر است.">
-<meta name="twitter:image" content="https://soelzare-create.github.io/DaranX-Website/assets/og.jpg">
 </head>
 <body>
 <div class="progress" aria-hidden="true"><span id="prog"></span></div>
@@ -341,27 +346,58 @@
   </header>
   <main id="top">
 
-      <div class="dhero">
+      <!-- FOLD 1: topic headline + real photo + short intro -->
+      <div class="fold-hero">
         <div class="blobs" aria-hidden="true"><span class="blob b1"></span><span class="blob b2"></span></div>
-        <div class="wrap dhero-grid">
-          <div class="reveal">
+        <div class="wrap fh-grid">
+          <div class="fh-text reveal">
             <div class="crumbs"><a href="solutions.html">راهکارها</a><span class="sep">›</span><a href="infrastructure.html">زیرساخت</a><span class="sep">›</span><span>زیرساخت پسیو</span></div>
             <span class="chip">Passive Infrastructure</span>
-            <h1>بستر فیزیکیِ منظم که نگهداری را ساده می‌کند.</h1>
-            <p class="lead">زیرساخت پسیوِ استاندارد و مستند، پایهٔ آرام و پایدارِ همهٔ لایه‌های بالاتر است.</p>
+            <h1 class="fh-title">بستر فیزیکیِ منظم که نگهداری را ساده می‌کند.</h1>
+            <p class="lead fh-lead">زیرساخت پسیوِ استاندارد و مستند، پایهٔ آرام و پایدارِ همهٔ لایه‌های بالاتر است.</p>
             <div class="dhero-actions">
               <a class="btn btn-primary" href="tel:+982188964116">درخواست مشاوره</a>
               <a class="btn btn-ghost" href="infrastructure.html">حوزهٔ زیرساخت</a>
             </div>
             <div class="subnav"><a class="" href="network.html">شبکه</a><a class="" href="datacenter-server.html">دیتاسنتر و سرور</a><a class="" href="storage.html">ذخیره‌سازی</a><a class="" href="power-ups.html">برق و UPS</a><a class="on" href="passive.html">زیرساخت پسیو</a></div>
           </div>
-          <div class="dhero-visual" aria-hidden="true">
+          <figure class="fh-photo reveal">
+            <img src="assets/photos/passive.jpg" alt="تصویر واقعی زیرساخت پسیو" loading="lazy"
+                 onerror="this.closest('.fh-photo').classList.add('noimg')">
+            <figcaption>زیرساخت پسیو — Passive Infrastructure</figcaption>
+            <div class="ph" aria-hidden="true">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M6 3v18M18 3v18M6 8h12M6 14h12"/></svg>
+              <b>تصویر واقعی: زیرساخت پسیو</b>
+              <span>این کادر با عکس واقعیِ شما جایگزین می‌شود<br>(assets/photos/passive.jpg)</span>
+            </div>
+          </figure>
+        </div>
+      </div>
+
+      <!-- FOLD 2: motion graphic + long description (300–700 words) -->
+      <div class="fold-motion alt">
+        <div class="wrap fm-grid">
+          <div class="dhero-visual reveal" aria-hidden="true">
             <div class="dring r1"></div><div class="dring r2"></div>
             <div class="dcore"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M6 3v18M18 3v18M6 8h12M6 14h12"/></svg></div>
           </div>
+          <div class="fm-text reveal">
+            <span class="eyebrow">دربارهٔ زیرساخت پسیو</span>
+            <h2 style="font-size:clamp(1.6rem,1.3rem+1.4vw,2.3rem);margin-top:.8rem">بستر فیزیکیِ منظم که نگهداری را ساده می‌کند.</h2>
+            <div class="longcopy">
+              <p>زیرساختِ پسیو — کابل‌کشی، رَک و مسیرهای فیزیکی — همان پایهٔ خاموشی است که همهٔ لایه‌های فعال روی آن می‌نشینند. این بخش کمتر دیده می‌شود، اما وقتی نامرتب و بدونِ مستندات باشد، هر تغییرِ کوچک به یک ماجرا تبدیل می‌شود و عیب‌یابی ساعت‌ها زمان می‌برد. در DaranX پسیو را با نظم و استانداردی طراحی می‌کنیم که نگهداری و توسعه را در تمامِ عمرِ زیرساخت ساده نگه دارد.</p>
+              <p>روش ما با شناخت شروع می‌شود: امروز چند نقطه و چه سرویس‌هایی نیاز به اتصال دارند و فردا چه چیزی اضافه می‌شود؟ مسیرها و ظرفیت باید طوری دیده شوند که توسعهٔ آینده بدونِ خراب‌کاری روی کارِ امروز ممکن باشد. طراحیِ درستِ پسیو یعنی فکرکردن به فردا از همین امروز، تا افزودنِ یک بخشِ جدید نیازمندِ بازکردنِ کلِ کار نباشد.</p>
+              <p>در طراحی به کابل‌کشیِ ساخت‌یافته و استاندارد فکر می‌کنیم، به انتخابِ درستِ بستر (مسی یا فیبر) متناسب با نیاز، به برچسب‌گذاری و مستندسازیِ دقیقِ هر مسیر و پورت، و به چیدمانِ منظمِ رَک و مسیرهای تمیز. همین نظمِ ظاهراً ساده است که بعدها عیب‌یابی را از چند ساعت به چند دقیقه کاهش می‌دهد و از خطاهای انسانی جلوگیری می‌کند.</p>
+              <p>اجرا را با دقت و مطابقِ استاندارد انجام می‌دهیم، مسیرها را تست می‌کنیم و همه‌چیز را مستند تحویل می‌دهیم؛ چون قرار است فردا خودمان هم پشتیبانِ همین بستر باشیم و می‌دانیم مستنداتِ درست چقدر ارزش دارد. پشتیبانی برای ما از همین مرحله آغاز می‌شود.</p>
+              <p>نتیجه، زیرساختی است پایدار، مرتب و آماده برای توسعه که هزینهٔ نگهداری را در بلندمدت پایین نگه می‌دارد و اجازه می‌دهد لایه‌های بالاتر — شبکه، سرور و امنیت — روی پایه‌ای مطمئن رشد کنند.</p>
+              <p>در DaranX پسیو را جدا از بقیهٔ لایه‌ها نمی‌بینیم؛ آن را با نگاه به شبکه، امنیت و توسعهٔ آینده طراحی می‌کنیم، چون همه‌چیز باید سرِ جای درستش باشد. سرمایه‌گذاری روی پسیوِ درست شاید امروز دیده نشود، اما در سال‌های بعد، هر بار که تغییری ساده و بی‌دردسر انجام می‌شود، ارزشش را نشان می‌دهد. ما چیزی را طراحی نمی‌کنیم که فردا برای خودمان و برای شما دردسر بسازد.</p>
+            </div>
+          </div>
         </div>
       </div>
-      <div class="sec alt">
+
+      <!-- FOLD 3+: existing structure -->
+      <div class="sec">
         <div class="wrap reveal">
           <div class="cols">
             <div class="panel stagger">
