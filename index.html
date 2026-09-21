@@ -551,6 +551,31 @@
   @media (max-width:640px){.pf-grid{grid-template-columns:1fr}}
 
 </style>
+<style id="cfcss">
+  .cform{margin-top:1.8rem;display:grid;gap:1rem}
+  .cf-row{display:grid;grid-template-columns:1fr 1fr;gap:1rem}
+  .cf-field{display:flex;flex-direction:column;gap:.4rem;min-width:0}
+  .cf-field label{font-size:.86rem;font-weight:600;color:var(--on-navy-soft)}
+  .cf-field label .req{color:var(--steel-soft)}
+  .cf-field label .opt{color:var(--on-navy-faint);font-weight:500;font-size:.8rem}
+  .cform input,.cform textarea{
+    width:100%;box-sizing:border-box;font:inherit;color:#fff;
+    background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.2);
+    border-radius:var(--r-sm);padding:.7rem .85rem;transition:border-color .2s,background .2s,box-shadow .2s}
+  .cform textarea{resize:vertical;min-height:96px;line-height:1.7}
+  .cform input::placeholder,.cform textarea::placeholder{color:rgba(255,255,255,.42)}
+  .cform input:focus,.cform textarea:focus{outline:none;border-color:var(--steel-soft);
+    background:rgba(255,255,255,.1);box-shadow:0 0 0 3px rgba(111,163,210,.25)}
+  .cform input:user-invalid,.cform textarea:user-invalid{border-color:#f2a3a0}
+  .cf-hp{position:absolute;left:-9999px;width:1px;height:1px;overflow:hidden}
+  .cf-actions{display:flex;flex-wrap:wrap;gap:.9rem;margin-top:.4rem;align-items:center}
+  .cf-submit[disabled]{opacity:.6;cursor:progress}
+  .cf-status{margin:0;font-size:.92rem;font-weight:600;padding:.7rem .9rem;border-radius:var(--r-sm)}
+  .cf-status.ok{background:rgba(90,190,140,.16);border:1px solid rgba(90,190,140,.5);color:#d5f2e2}
+  .cf-status.err{background:rgba(230,120,116,.14);border:1px solid rgba(230,120,116,.5);color:#f7d4d2}
+  .cf-note{margin:.2rem 0 0;font-size:.8rem;color:var(--on-navy-faint)}
+  @media (max-width:520px){.cf-row{grid-template-columns:1fr}}
+</style>
 <div class="progress" aria-hidden="true"><span id="prog"></span></div>
 
 <div dir="rtl" lang="fa">
@@ -876,21 +901,40 @@
           <span class="eyebrow">شروع از شناخت</span>
           <h3>مسئله سازمان‌تان را با ما در میان بگذارید.</h3>
           <p>یک گفتگو درباره وضعیت فعلی و اهداف، اولین قدم طراحی راهکاری است که سر جای درستش قرار می‌گیرد.</p>
-          <div class="contact-actions">
-            <a href="tel:+982188964116" class="btn btn-light">تماس بگیرید</a>
-            <a href="mailto:info@daranx.com" class="btn btn-outline">ارسال ایمیل</a>
-          </div>
-          <div class="map-embed" aria-hidden="true">
-            <svg viewBox="0 0 400 175" preserveAspectRatio="xMidYMid slice"><rect width="400" height="175" fill="rgba(255,255,255,.03)"/>
-              <g stroke="rgba(174,196,219,.25)" stroke-width="1">
-                <path d="M0 60 H400 M0 115 H400 M120 0 V175 M270 0 V175"/>
-              </g>
-              <path d="M120 0 V60 H0" stroke="rgba(111,163,210,.5)" stroke-width="2.5" fill="none"/>
-              <rect x="120" y="60" width="150" height="55" fill="rgba(62,123,182,.14)"/>
-            </svg>
-            <div class="map-pin"><span class="pin"></span></div>
-            <span class="map-cap">میدان فاطمی، نبش چهلستون — ساختمان چهلستون</span>
-          </div>
+          <form class="cform" id="contactForm" method="post" action="contact.php" novalidate>
+            <div class="cf-row">
+              <div class="cf-field">
+                <label for="cf-name">نام و نام خانوادگی <span class="req">*</span></label>
+                <input id="cf-name" name="name" type="text" autocomplete="name" required maxlength="80" placeholder="مثلاً علی رضایی">
+              </div>
+              <div class="cf-field">
+                <label for="cf-phone">شماره تماس <span class="req">*</span></label>
+                <input id="cf-phone" name="phone" type="tel" inputmode="tel" autocomplete="tel" required maxlength="25" placeholder="۰۹۱۲ ۳۴۵ ۶۷۸۹">
+              </div>
+            </div>
+            <div class="cf-row">
+              <div class="cf-field">
+                <label for="cf-email">ایمیل <span class="opt">(اختیاری)</span></label>
+                <input id="cf-email" name="email" type="email" autocomplete="email" maxlength="120" placeholder="you@example.com">
+              </div>
+              <div class="cf-field">
+                <label for="cf-company">سازمان / موضوع <span class="opt">(اختیاری)</span></label>
+                <input id="cf-company" name="company" type="text" maxlength="100" placeholder="نام شرکت یا موضوع">
+              </div>
+            </div>
+            <div class="cf-field">
+              <label for="cf-message">پیام شما <span class="req">*</span></label>
+              <textarea id="cf-message" name="message" rows="4" required maxlength="2000" placeholder="کوتاه بگویید با چه مسئله‌ای درگیر هستید…"></textarea>
+            </div>
+            <!-- honeypot: must stay empty; bots fill it -->
+            <div class="cf-hp" aria-hidden="true"><label>این فیلد را خالی بگذارید<input name="website" tabindex="-1" autocomplete="off"></label></div>
+            <div class="cf-actions">
+              <button type="submit" class="btn btn-light cf-submit">ارسال پیام</button>
+              <a href="tel:+982188964116" class="btn btn-outline">یا تماس بگیرید</a>
+            </div>
+            <p class="cf-status" id="cfStatus" role="status" aria-live="polite" hidden></p>
+            <p class="cf-note">اطلاعات شما فقط برای پاسخ‌گویی استفاده می‌شود و در اختیار کسی قرار نمی‌گیرد.</p>
+          </form>
         </div>
       </div>
     </section>
@@ -983,6 +1027,53 @@
       },{threshold:.12});
       els.forEach(function(el){io.observe(el)});
     } else { els.forEach(function(el){el.classList.add('in')}); if(steps)steps.classList.add('drawn'); }
+  })();
+</script>
+<script id="cfjs">
+  (function(){
+    var form = document.getElementById('contactForm');
+    if(!form) return;
+    var statusEl = document.getElementById('cfStatus');
+    var btn = form.querySelector('.cf-submit');
+    function show(kind, msg){
+      statusEl.className = 'cf-status ' + kind;
+      statusEl.textContent = msg;
+      statusEl.hidden = false;
+    }
+    form.addEventListener('submit', function(e){
+      e.preventDefault();
+      if(!form.checkValidity()){ form.reportValidity(); return; }
+      var data = new FormData(form);
+      btn.disabled = true;
+      var original = btn.textContent;
+      btn.textContent = 'در حال ارسال…';
+      statusEl.hidden = true;
+      fetch(form.action, {
+        method: 'POST',
+        body: data,
+        headers: { 'Accept': 'application/json', 'X-Requested-With': 'fetch' }
+      }).then(function(r){
+        return r.json().catch(function(){ return { ok: r.ok }; });
+      }).then(function(res){
+        if(res && res.ok){
+          show('ok', 'پیام شما با موفقیت ارسال شد. به‌زودی با شما تماس می‌گیریم.');
+          form.reset();
+        } else {
+          show('err', (res && res.error) || 'ارسال ناموفق بود. لطفاً دوباره تلاش کنید یا تماس بگیرید.');
+        }
+      }).catch(function(){
+        show('err', 'ارتباط برقرار نشد. لطفاً اتصال اینترنت را بررسی کنید یا تماس بگیرید.');
+      }).finally(function(){
+        btn.disabled = false;
+        btn.textContent = original;
+      });
+    });
+    // Non-JS fallback: contact.php redirects back with ?sent=1 / ?sent=0
+    try {
+      var q = new URLSearchParams(location.search);
+      if(q.get('sent') === '1'){ show('ok', 'پیام شما با موفقیت ارسال شد. به‌زودی با شما تماس می‌گیریم.'); }
+      else if(q.get('sent') === '0'){ show('err', 'ارسال ناموفق بود. لطفاً دوباره تلاش کنید یا تماس بگیرید.'); }
+    } catch(_){}
   })();
 </script>
 </body>
