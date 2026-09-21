@@ -318,6 +318,37 @@
   @media (prefers-reduced-motion:reduce){html{scroll-snap-type:none}}
 </style>
 <script>(function(){try{if('scrollRestoration' in history)history.scrollRestoration='manual';}catch(e){}function t(){if(!location.hash)window.scrollTo(0,0);}t();window.addEventListener('load',t);window.addEventListener('pageshow',t);})();</script>
+<style id="pfcss">
+  /* ---- portfolio / work-history ---- */
+  .portfolio .sec-head{text-align:center;max-width:60ch;margin-inline:auto}
+  .portfolio .sec-head h2{font-size:clamp(1.6rem,1.3rem+1.4vw,2.3rem)}
+  .portfolio .sec-head p{color:var(--ink-soft);margin-top:.8rem}
+  .pf-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1.3rem;margin-top:2.2rem}
+  .pf-card{position:relative;background:var(--surface);border:1px solid var(--line);border-radius:var(--r-lg);overflow:hidden;box-shadow:var(--shadow);display:flex;flex-direction:column;transition:transform .25s,box-shadow .25s}
+  .pf-card:hover{transform:translateY(-6px);box-shadow:var(--shadow-lift)}
+  .pf-media{position:relative;aspect-ratio:16/10;background:var(--surface-2);overflow:hidden}
+  .pf-media img{width:100%;height:100%;object-fit:cover;display:block}
+  .pf-media .ph{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:.55rem;text-align:center;padding:1.2rem;
+    background:radial-gradient(120% 120% at 80% 0,color-mix(in srgb,var(--steel) 14%,transparent),transparent 60%),var(--surface-2)}
+  .pf-media .ph svg{width:40px;height:40px;color:var(--steel);opacity:.8}
+  .pf-media .ph b{color:var(--ink);font-weight:700;font-size:.92rem}
+  .pf-media .ph span{color:var(--ink-faint);font-size:.78rem;line-height:1.6}
+  .pf-media.noimg img{display:none}
+  .pf-media:not(.noimg) .ph{display:none}
+  .pf-num{position:absolute;top:.7rem;inset-inline-start:.7rem;z-index:2;width:30px;height:30px;border-radius:9px;display:grid;place-items:center;font-weight:800;font-size:.9rem;color:#fff;background:var(--grad-soft);box-shadow:var(--shadow)}
+  :root[data-theme="dark"] .pf-num{color:#08151f}
+  .pf-body{padding:1.25rem 1.35rem 1.45rem;display:flex;flex-direction:column;gap:.6rem;flex:1}
+  .pf-tag{align-self:flex-start;font-size:.76rem;font-weight:700;color:var(--steel);background:var(--surface-2);border:1px solid var(--line);border-radius:999px;padding:.24rem .7rem}
+  .pf-body h3{font-size:1.06rem;line-height:1.45;margin:0}
+  .pf-body p{color:var(--ink-soft);font-size:.92rem;line-height:1.75;margin:0}
+  .pf-meta{margin-top:.2rem;display:flex;flex-wrap:wrap;gap:.4rem}
+  .pf-meta span{font-size:.78rem;color:var(--ink-faint);background:var(--surface-2);border-radius:999px;padding:.22rem .6rem}
+  .pf-note{margin-top:1.6rem;text-align:center;color:var(--ink-faint);font-size:.9rem;line-height:1.8}
+  .pf-note code{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:.82rem;color:var(--steel);background:var(--surface-2);border-radius:6px;padding:.1rem .4rem;direction:ltr;display:inline-block}
+  @media (max-width:900px){.pf-grid{grid-template-columns:1fr 1fr}}
+  @media (max-width:640px){.pf-grid{grid-template-columns:1fr}}
+
+</style>
 <div class="progress" aria-hidden="true"><span id="prog"></span></div>
 <div dir="rtl" lang="fa">
   <header class="nav" id="nav">
@@ -434,6 +465,74 @@
             <span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 6L9 17l-5-5"/></svg>کاهش خطای انسانی</span>
             <span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 6L9 17l-5-5"/></svg>مزیت رقابتی پایدار</span>
           </div>
+        </div>
+      </div>
+      
+      <!-- نمونه‌کارها / سابقهٔ کاری -->
+      <div class="sec portfolio">
+        <div class="wrap reveal">
+          <div class="sec-head">
+            <span class="eyebrow">نمونه‌کارها</span>
+            <h2>سابقهٔ کاری ما در هوشمندی</h2>
+            <p>گزیده‌ای از نمونه‌کارها؛ ساختار هر پروژه از شناخت تا پشتیبانی، مطابق روش کار DaranX.</p>
+          </div>
+          <div class="pf-grid">
+            <article class="pf-card reveal">
+              <figure class="pf-media">
+                <span class="pf-num">۱</span>
+                <img src="assets/portfolio/intelligence-1.jpg" alt="نمونه‌کار هوشمندی 1" loading="lazy"
+                     onerror="this.closest('.pf-media').classList.add('noimg')">
+                <div class="ph" aria-hidden="true">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><rect x="3" y="4" width="18" height="14" rx="2"/><circle cx="8.5" cy="9" r="1.6"/><path d="M4 16l4.5-4 3 2.5L15 10l5 5"/></svg>
+                  <b>تصویر نمونه‌کار</b>
+                  <span>assets/portfolio/intelligence-1.jpg</span>
+                </div>
+              </figure>
+              <div class="pf-body">
+                <span class="pf-tag">هوشمندی</span>
+                <h3>طراحی و اجرای هوشمندی از صفر</h3>
+                <p>از شناخت نیاز تا تحویل و پشتیبانی؛ هوشمندیی متناسب با بار واقعی سازمان و آماده برای توسعهٔ آینده.</p>
+                <div class="pf-meta"><span>شناخت</span><span>طراحی</span><span>اجرا</span><span>پشتیبانی</span></div>
+              </div>
+            </article>
+            <article class="pf-card reveal">
+              <figure class="pf-media">
+                <span class="pf-num">۲</span>
+                <img src="assets/portfolio/intelligence-2.jpg" alt="نمونه‌کار هوشمندی 2" loading="lazy"
+                     onerror="this.closest('.pf-media').classList.add('noimg')">
+                <div class="ph" aria-hidden="true">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><rect x="3" y="4" width="18" height="14" rx="2"/><circle cx="8.5" cy="9" r="1.6"/><path d="M4 16l4.5-4 3 2.5L15 10l5 5"/></svg>
+                  <b>تصویر نمونه‌کار</b>
+                  <span>assets/portfolio/intelligence-2.jpg</span>
+                </div>
+              </figure>
+              <div class="pf-body">
+                <span class="pf-tag">هوشمندی</span>
+                <h3>بازطراحی و بهبود هوشمندی موجود</h3>
+                <p>رفع نقاط ضعف، افزایش پایداری و ساده‌تر شدن نگهداری — بدون توقف جریان کسب‌وکار.</p>
+                <div class="pf-meta"><span>ارزیابی وضعیت</span><span>بهینه‌سازی</span><span>تحویل تدریجی</span></div>
+              </div>
+            </article>
+            <article class="pf-card reveal">
+              <figure class="pf-media">
+                <span class="pf-num">۳</span>
+                <img src="assets/portfolio/intelligence-3.jpg" alt="نمونه‌کار هوشمندی 3" loading="lazy"
+                     onerror="this.closest('.pf-media').classList.add('noimg')">
+                <div class="ph" aria-hidden="true">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><rect x="3" y="4" width="18" height="14" rx="2"/><circle cx="8.5" cy="9" r="1.6"/><path d="M4 16l4.5-4 3 2.5L15 10l5 5"/></svg>
+                  <b>تصویر نمونه‌کار</b>
+                  <span>assets/portfolio/intelligence-3.jpg</span>
+                </div>
+              </figure>
+              <div class="pf-body">
+                <span class="pf-tag">هوشمندی</span>
+                <h3>هوشمندی یکپارچه با سایر حوزه‌ها</h3>
+                <p>هماهنگ‌کردن هوشمندی با زیرساخت، امنیت و هوشمندی در یک راهکار واحد و منسجم.</p>
+                <div class="pf-meta"><span>طراحی یکپارچه</span><span>هماهنگی حوزه‌ها</span></div>
+              </div>
+            </article>
+          </div>
+          <p class="pf-note">این بخش آمادهٔ نمایش نمونه‌کارهای واقعی شماست. تصویر هر کارت را در مسیر <code>assets/portfolio/intelligence-1.jpg</code> تا <code>intelligence-3.jpg</code> قرار دهید و عنوان و توضیح را با پروژهٔ واقعی جایگزین کنید.</p>
         </div>
       </div>
       <div class="sec" style="padding-top:0"><div class="wrap reveal"><div class="cta"><span class="eyebrow">شروع از شناخت</span><h2>ببینیم داده شما کجا می‌تواند ارزش بسازد.</h2><p>یک گفتگو درباره داده‌ها و فرآیندهای فعلی، نقطه شروع است.</p><div class="cta-actions"><a class="btn btn-light" href="tel:+982188964116">تماس بگیرید</a><a class="btn btn-outline" href="solutions.html">بازگشت به راهکارها</a></div></div></div></div>
