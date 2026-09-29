@@ -341,6 +341,34 @@
     .fm-grid{grid-template-columns:1fr;gap:2.2rem}.fold-motion .dhero-visual{order:-1;max-width:320px}
   }
 
+  /* ---- full-screen cover (first screen of each landing) ---- */
+  .cover{position:relative;min-height:100svh;min-height:100vh;display:grid;place-items:center;overflow:hidden;isolation:isolate;text-align:center;scroll-snap-align:start}
+  .cover-bg{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;z-index:-2}
+  .cover.noimg .cover-bg{display:none}
+  .cover::before{content:"";position:absolute;inset:0;z-index:-1;
+    background:linear-gradient(180deg,rgba(8,20,34,.74),rgba(8,20,34,.5) 42%,rgba(8,20,34,.86))}
+  .cover.noimg{background:radial-gradient(120% 95% at 72% 8%,var(--steel),var(--navy) 62%)}
+  .cover.noimg::before{background:linear-gradient(180deg,rgba(8,20,34,.35),transparent 40%,rgba(8,20,34,.5))}
+  .cwrap{position:relative;z-index:1;max-width:920px;padding:6.5rem 1.4rem 5.5rem;color:#fff}
+  .ceyebrow{display:inline-flex;align-items:center;gap:.5rem;font-size:.85rem;font-weight:700;letter-spacing:.14em;
+    text-transform:uppercase;color:#cfe0f2}
+  .ceyebrow::before{content:"";width:26px;height:2px;background:var(--steel-soft);border-radius:2px}
+  .cover h1{font-size:clamp(1.9rem,2.8vw + 1rem,3.5rem);font-weight:900;line-height:1.35;color:#fff;
+    text-wrap:balance;margin:1.1rem auto 0;max-width:20ch;text-shadow:0 2px 24px rgba(0,0,0,.35)}
+  .cphones{display:flex;flex-wrap:wrap;justify-content:center;gap:.4rem 1.6rem;margin-top:1.9rem;
+    font-size:clamp(1.5rem,1rem + 1.8vw,2.4rem);font-weight:800;font-variant-numeric:tabular-nums;direction:ltr}
+  .cphones a{color:#fff;transition:color .2s}.cphones a:hover{color:var(--steel-soft)}
+  .cactions{margin-top:2rem;display:flex;justify-content:center;gap:1rem;flex-wrap:wrap}
+  .cbtn{display:inline-flex;align-items:center;gap:.6rem;background:#fff;color:var(--navy);font:inherit;font-weight:800;
+    font-size:1.05rem;border-radius:999px;padding:1rem 2.3rem;box-shadow:0 18px 44px -18px rgba(0,0,0,.5);transition:transform .2s,box-shadow .2s}
+  .cbtn:hover{transform:translateY(-2px);box-shadow:0 24px 54px -20px rgba(0,0,0,.55)}
+  .cbtn svg{width:20px;height:20px}
+  .cscroll{position:absolute;bottom:1.5rem;left:0;right:0;display:flex;justify-content:center;color:rgba(255,255,255,.85);
+    background:transparent;border:0;cursor:pointer;animation:cbob 1.8s ease-in-out infinite}
+  .cscroll svg{width:30px;height:30px}
+  @keyframes cbob{0%,100%{transform:translateY(0)}50%{transform:translateY(8px)}}
+  @media (prefers-reduced-motion:reduce){.cscroll{animation:none}}
+
   /* ---- portfolio / work-history ---- */
   .portfolio .sec-head{text-align:center;max-width:60ch;margin-inline:auto}
   .portfolio .sec-head h2{font-size:clamp(1.6rem,1.3rem+1.4vw,2.3rem)}
@@ -471,6 +499,28 @@
   </header>
   <main id="top">
 
+      <!-- FULL-SCREEN COVER: photo + bold CTA + phone -->
+      <section class="cover" aria-label="تماس برای دیتاسنتر و سرور">
+        <img class="cover-bg" src="assets/photos/datacenter-server.jpg" alt="" loading="eager"
+             onerror="this.closest('.cover').classList.add('noimg')">
+        <div class="cwrap reveal">
+          <span class="ceyebrow">DaranX · زیرساخت</span>
+          <h1>جهت مشاورهٔ رایگان و طراحی و راه‌اندازی مرکز داده و سرور، با این شماره تماس بگیرید</h1>
+          <div class="cphones">
+            <a href="tel:+982188964116">۰۲۱-۸۸۹۶۴۱۱۶</a>
+            <a href="tel:+989359370910">۰۹۳۵-۹۳۷۰۹۱۰</a>
+          </div>
+          <div class="cactions">
+            <a class="cbtn" href="tel:+982188964116">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.9v3a2 2 0 0 1-2.2 2 19.8 19.8 0 0 1-8.6-3 19.5 19.5 0 0 1-6-6 19.8 19.8 0 0 1-3-8.6A2 2 0 0 1 4.1 2h3a2 2 0 0 1 2 1.7c.1 1 .4 1.9.7 2.8a2 2 0 0 1-.5 2.1L8.1 9.9a16 16 0 0 0 6 6l1.3-1.3a2 2 0 0 1 2.1-.4c.9.3 1.8.6 2.8.7a2 2 0 0 1 1.7 2z"/></svg>
+              همین حالا تماس بگیرید
+            </a>
+          </div>
+        </div>
+        <button class="cscroll" type="button" aria-label="ادامه" onclick="scrollTo({top:innerHeight,behavior:'smooth'})">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9l6 6 6-6"/></svg>
+        </button>
+      </section>
       <!-- FOLD 1: topic headline + real photo + short intro -->
       <div class="fold-hero">
         <div class="blobs" aria-hidden="true"><span class="blob b1"></span><span class="blob b2"></span></div>
