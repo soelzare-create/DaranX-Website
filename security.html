@@ -440,6 +440,23 @@
   @keyframes cbob{0%,100%{transform:translateY(0)}50%{transform:translateY(8px)}}
   @media (prefers-reduced-motion:reduce){.cscroll{animation:none}}
 </style>
+<style id="desccss">
+  /* ---- description panel: full-width banner + wide horizontal text ---- */
+  .fold-motion.desc .wrap{max-width:940px}
+  .fm-banner{position:relative;margin:0;height:24vh;min-height:150px;max-height:280px;border-radius:var(--r-lg);
+    overflow:hidden;border:1px solid var(--line);box-shadow:var(--shadow-lift);background:var(--surface-2)}
+  .fm-banner img{width:100%;height:100%;object-fit:cover;display:block}
+  .fm-banner.noimg img{display:none}
+  .fm-banner .ph{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;gap:.55rem;
+    color:var(--ink-faint);font-weight:700;font-size:.95rem;
+    background:radial-gradient(120% 130% at 80% 0,color-mix(in srgb,var(--steel) 16%,transparent),transparent 60%),var(--surface-2)}
+  .fm-banner .ph svg{width:30px;height:30px;color:var(--steel);opacity:.8}
+  .fm-banner:not(.noimg) .ph{display:none}
+  .fm-head{margin-top:1.5rem;text-align:center}
+  .fm-head h2{font-size:clamp(1.6rem,1.3rem+1.4vw,2.4rem);margin-top:.5rem}
+  .longcopy.cols3{margin-top:1.6rem;max-width:none;color:var(--ink-soft);line-height:2.05;font-size:1.04rem}
+  .longcopy.cols3 p{margin:0 0 1.1rem}
+</style>
 <div class="progress" aria-hidden="true"><span id="prog"></span></div>
 <div dir="rtl" lang="fa">
   <header class="nav" id="nav">
@@ -513,69 +530,6 @@
         </div>
       </div>
 
-      <div class="fold-motion">
-        <div class="wrap fm-grid">
-          <div class="dhero-visual reveal" aria-hidden="true">
-            <div class="dring r1"></div><div class="dring r2"></div>
-            <div class="dcore"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path class="ico-pulse" d="M12 3l7 3v5c0 4.5-3 7.5-7 9-4-1.5-7-4.5-7-9V6l7-3z"/><path stroke-linecap="round" stroke-linejoin="round" d="M9 11.8l2 2 4-4"/></svg></div>
-            <div class="dchip c1"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="8" width="18" height="12" rx="2"/><path d="M8 8V6a4 4 0 0 1 8 0v2"/></svg>دسترسی</div>
-            <div class="dchip c2"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="12" r="3"/><path d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7-10-7-10-7z"/></svg>CCTV</div>
-            <div class="dchip c3"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>محافظت</div>
-          </div>
-          <div class="fm-text reveal">
-            <span class="eyebrow">دربارهٔ امنیت</span>
-            <h2 style="font-size:clamp(1.6rem,1.3rem+1.4vw,2.3rem);margin-top:.8rem">از چیزی که ساخته‌ایم، درست محافظت می‌کنیم.</h2>
-            <div class="longcopy">
-              <p>امنیت یعنی محافظت از آنچه ساخته‌ایم؛ از زیرساخت و داده تا محیطِ فیزیکی و دسترسی‌های سازمان. تهدیدها تنها از بیرون نمی‌آیند و تنها دیجیتال نیستند: یک دسترسیِ کنترل‌نشده، یک نقطهٔ بدونِ نظارت یا یک درِ بازِ اتاقِ سرور می‌تواند به‌اندازهٔ یک حملهٔ سایبری هزینه بسازد. در DaranX امنیت را یک افزودنیِ پایانی نمی‌بینیم؛ آن را از همان مرحلهٔ طراحی و به‌عنوان بخشی از راهکار در نظر می‌گیریم.</p>
-              <p>روش ما با شناخت شروع می‌شود: چه دارایی‌هایی باید محافظت شوند، ریسک‌های واقعیِ سازمان کدام‌اند، و چه کسی به چه چیزی باید دسترسی داشته باشد؟ بدونِ این شناخت، هر ابزارِ امنیتی فقط یک هزینهٔ اضافه است، نه یک محافظتِ واقعی. اول مسئله را می‌فهمیم، بعد لایه‌های محافظت را طراحی می‌کنیم.</p>
-              <p>در طراحی، لایه‌های امنیت را هماهنگ با هم می‌بینیم: امنیتِ شبکه برای محافظت از مسیرهای داده، دوربینِ مداربسته برای دیدِ کامل بر محیط، دسترسی و پایش برای کنترلِ اینکه چه کسی به چه چیزی دسترسی دارد، و کنترلِ تردد برای امنیتِ فیزیکیِ فضاها. این‌ها با هم یک دفاعِ منسجم می‌سازند، نه مجموعه‌ای از ابزارهای پراکنده که هرکدام گوشه‌ای کار می‌کنند.</p>
-              <p>اجرا را هماهنگ با زیرساخت انجام می‌دهیم و کار با نصب تمام نمی‌شود؛ امنیت یک وضعیتِ ثابت نیست، یک فرآیندِ پیوسته است. پایش، به‌روزرسانی و پاسخ به تهدیدهای تازه بخشی از مسئولیتِ ماست، چون تهدیدها ثابت نمی‌مانند و امنیتِ دیروز لزوماً امنیتِ امروز نیست.</p>
-              <p>تمایزِ ما در تعدادِ تجهیزاتِ امنیتی نیست، در دیدنِ کلِ مسئله و پذیرفتنِ مسئولیتِ نتیجه است. آنچه را طراحی و اجرا کرده‌ایم، خودمان پشتیبانی می‌کنیم، و اگر امنیتِ سازمان برای شما مهم است، برای ما هم مهم است.</p>
-              <p>نتیجه، کاهشِ واقعیِ ریسک، کنترلِ دقیقِ دسترسی و دیدِ پیوسته بر محیط و داده است؛ آرامشی که به مدیریت اجازه می‌دهد به‌جای نگرانیِ دائمی، روی رشدِ کسب‌وکار تمرکز کند.</p>
-              <p>برای ما مشتری یک هم‌تیمی است، نه یک فروشِ یک‌باره؛ برای همین امنیتِ سازمان را در طولِ زمان همراهی می‌کنیم تا در برابرِ تهدیدهای تازه هم آماده بماند و آرامشِ خاطرِ شما پایدار باشد.</p>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <div class="sec alt">
-        <div class="wrap reveal">
-          <div class="sec-head"><span class="eyebrow">زیرمجموعه‌ها</span><h2>لایه‌های محافظت، هماهنگ با هم</h2><p class="lead">چهار بخش که با هم دیدِ کامل و کنترل واقعی بر امنیت سازمان می‌سازند.</p></div>
-          <div class="subs">
-            <a class="sub stagger" href="network-security.html"><div class="sub-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 3l7 3v5c0 4.5-3 7.5-7 9-4-1.5-7-4.5-7-9V6l7-3z"/></svg></div><h3>امنیت شبکه</h3><div class="en">Network Security</div><p>کنترل و محافظت از مسیرهای ارتباطی و داده در برابر تهدیدها و دسترسی‌های غیرمجاز.</p>
-              <span class="sub-more">جزئیات <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M15 6l-6 6 6 6"/></svg></span>
-            </a>
-            <a class="sub stagger" href="cctv.html"><div class="sub-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="12" r="3.5"/><path d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7-10-7-10-7z"/></svg></div><h3>دوربین مداربسته</h3><div class="en">CCTV</div><p>نظارت تصویری برای دیدِ کامل و مستند بر محیط سازمان و رویدادهای آن.</p>
-              <span class="sub-more">جزئیات <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M15 6l-6 6 6 6"/></svg></span>
-            </a>
-            <a class="sub stagger" href="access-monitoring.html"><div class="sub-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 2l7 4v6c0 4-3 7-7 8-4-1-7-4-7-8V6z"/><path stroke-linecap="round" d="M12 8v4l2 1"/></svg></div><h3>دسترسی و پایش</h3><div class="en">Access &amp; Monitoring</div><p>مدیریت اینکه چه کسی به چه چیزی دسترسی دارد، همراه با پایش پیوسته و ثبت رویدادها.</p>
-              <span class="sub-more">جزئیات <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M15 6l-6 6 6 6"/></svg></span>
-            </a>
-            <a class="sub stagger" href="access-control.html"><div class="sub-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="8" width="18" height="12" rx="2"/><path d="M8 8V6a4 4 0 0 1 8 0v2M12 13v3"/></svg></div><h3>کنترل تردد</h3><div class="en">Access Control</div><p>مدیریت ورود و خروج افراد به فضاهای سازمان، متناسب با سطح دسترسی هر نفر.</p>
-              <span class="sub-more">جزئیات <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M15 6l-6 6 6 6"/></svg></span>
-            </a>
-          </div>
-        </div>
-      </div>
-
-      <div class="sec">
-        <div class="wrap reveal">
-          <div class="sec-head"><span class="eyebrow">روش کار</span><h2>امنیت، از طراحی تا پایش پیوسته</h2></div>
-          <div class="mstrip">
-            <div class="mstep stagger"><div class="n">۱</div><h4>شناخت</h4><p>شناسایی دارایی‌ها، ریسک‌ها و نقاط حساس سازمان.</p></div>
-            <div class="mstep stagger"><div class="n">۲</div><h4>طراحی</h4><p>طراحی لایه‌های محافظت هماهنگ با زیرساخت.</p></div>
-            <div class="mstep stagger"><div class="n">۳</div><h4>اجرا</h4><p>پیاده‌سازی کنترل‌ها و سامانه‌های نظارتی.</p></div>
-            <div class="mstep stagger"><div class="n">۴</div><h4>پشتیبانی</h4><p>پایش پیوسته و به‌روزرسانی در برابر تهدیدهای نو.</p></div>
-          </div>
-          <div class="outcomes">
-            <span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 6L9 17l-5-5"/></svg>کاهش ریسک</span>
-            <span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 6L9 17l-5-5"/></svg>کنترل دسترسی</span>
-            <span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 6L9 17l-5-5"/></svg>دیدِ پیوسته بر محیط</span>
-            <span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 6L9 17l-5-5"/></svg>آرامش خاطر مدیریت</span>
-          </div>
-        </div>
-      </div>
-      
       <!-- نمونه‌کارها / سابقهٔ کاری -->
       <div class="sec portfolio">
         <div class="wrap reveal">
@@ -643,6 +597,68 @@
           <p class="pf-note">این بخش آمادهٔ نمایش نمونه‌کارهای واقعی شماست. تصویر هر کارت را در مسیر <code>assets/portfolio/security-1.jpg</code> تا <code>security-3.jpg</code> قرار دهید و عنوان و توضیح را با پروژهٔ واقعی جایگزین کنید.</p>
         </div>
       </div>
+
+      <div class="fold-motion desc">
+        <div class="wrap">
+          <figure class="fm-banner reveal">
+            <img src="assets/photos/security.jpg" alt="تصویر امنیت" loading="lazy"
+                 onerror="this.closest('.fm-banner').classList.add('noimg')">
+            <div class="ph" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path class="ico-pulse" d="M12 3l7 3v5c0 4.5-3 7.5-7 9-4-1.5-7-4.5-7-9V6l7-3z"/><path stroke-linecap="round" stroke-linejoin="round" d="M9 11.8l2 2 4-4"/></svg><b>تصویر بنر — امنیت</b></div>
+          </figure>
+          <div class="fm-head reveal">
+            <span class="eyebrow">دربارهٔ امنیت</span>
+            <h2>از چیزی که ساخته‌ایم، درست محافظت می‌کنیم.</h2>
+          </div>
+          <div class="longcopy cols3 reveal">
+              <p>امنیت یعنی محافظت از آنچه ساخته‌ایم؛ از زیرساخت و داده تا محیطِ فیزیکی و دسترسی‌های سازمان. تهدیدها تنها از بیرون نمی‌آیند و تنها دیجیتال نیستند: یک دسترسیِ کنترل‌نشده، یک نقطهٔ بدونِ نظارت یا یک درِ بازِ اتاقِ سرور می‌تواند به‌اندازهٔ یک حملهٔ سایبری هزینه بسازد. در DaranX امنیت را یک افزودنیِ پایانی نمی‌بینیم؛ آن را از همان مرحلهٔ طراحی و به‌عنوان بخشی از راهکار در نظر می‌گیریم.</p>
+              <p>روش ما با شناخت شروع می‌شود: چه دارایی‌هایی باید محافظت شوند، ریسک‌های واقعیِ سازمان کدام‌اند، و چه کسی به چه چیزی باید دسترسی داشته باشد؟ بدونِ این شناخت، هر ابزارِ امنیتی فقط یک هزینهٔ اضافه است، نه یک محافظتِ واقعی. اول مسئله را می‌فهمیم، بعد لایه‌های محافظت را طراحی می‌کنیم.</p>
+              <p>در طراحی، لایه‌های امنیت را هماهنگ با هم می‌بینیم: امنیتِ شبکه برای محافظت از مسیرهای داده، دوربینِ مداربسته برای دیدِ کامل بر محیط، دسترسی و پایش برای کنترلِ اینکه چه کسی به چه چیزی دسترسی دارد، و کنترلِ تردد برای امنیتِ فیزیکیِ فضاها. این‌ها با هم یک دفاعِ منسجم می‌سازند، نه مجموعه‌ای از ابزارهای پراکنده که هرکدام گوشه‌ای کار می‌کنند.</p>
+              <p>اجرا را هماهنگ با زیرساخت انجام می‌دهیم و کار با نصب تمام نمی‌شود؛ امنیت یک وضعیتِ ثابت نیست، یک فرآیندِ پیوسته است. پایش، به‌روزرسانی و پاسخ به تهدیدهای تازه بخشی از مسئولیتِ ماست، چون تهدیدها ثابت نمی‌مانند و امنیتِ دیروز لزوماً امنیتِ امروز نیست.</p>
+              <p>تمایزِ ما در تعدادِ تجهیزاتِ امنیتی نیست، در دیدنِ کلِ مسئله و پذیرفتنِ مسئولیتِ نتیجه است. آنچه را طراحی و اجرا کرده‌ایم، خودمان پشتیبانی می‌کنیم، و اگر امنیتِ سازمان برای شما مهم است، برای ما هم مهم است.</p>
+              <p>نتیجه، کاهشِ واقعیِ ریسک، کنترلِ دقیقِ دسترسی و دیدِ پیوسته بر محیط و داده است؛ آرامشی که به مدیریت اجازه می‌دهد به‌جای نگرانیِ دائمی، روی رشدِ کسب‌وکار تمرکز کند.</p>
+              <p>برای ما مشتری یک هم‌تیمی است، نه یک فروشِ یک‌باره؛ برای همین امنیتِ سازمان را در طولِ زمان همراهی می‌کنیم تا در برابرِ تهدیدهای تازه هم آماده بماند و آرامشِ خاطرِ شما پایدار باشد.</p>
+            </div>
+        </div>
+      </div>
+
+      <div class="sec alt">
+        <div class="wrap reveal">
+          <div class="sec-head"><span class="eyebrow">زیرمجموعه‌ها</span><h2>لایه‌های محافظت، هماهنگ با هم</h2><p class="lead">چهار بخش که با هم دیدِ کامل و کنترل واقعی بر امنیت سازمان می‌سازند.</p></div>
+          <div class="subs">
+            <a class="sub stagger" href="network-security.html"><div class="sub-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 3l7 3v5c0 4.5-3 7.5-7 9-4-1.5-7-4.5-7-9V6l7-3z"/></svg></div><h3>امنیت شبکه</h3><div class="en">Network Security</div><p>کنترل و محافظت از مسیرهای ارتباطی و داده در برابر تهدیدها و دسترسی‌های غیرمجاز.</p>
+              <span class="sub-more">جزئیات <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M15 6l-6 6 6 6"/></svg></span>
+            </a>
+            <a class="sub stagger" href="cctv.html"><div class="sub-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="12" r="3.5"/><path d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7-10-7-10-7z"/></svg></div><h3>دوربین مداربسته</h3><div class="en">CCTV</div><p>نظارت تصویری برای دیدِ کامل و مستند بر محیط سازمان و رویدادهای آن.</p>
+              <span class="sub-more">جزئیات <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M15 6l-6 6 6 6"/></svg></span>
+            </a>
+            <a class="sub stagger" href="access-monitoring.html"><div class="sub-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 2l7 4v6c0 4-3 7-7 8-4-1-7-4-7-8V6z"/><path stroke-linecap="round" d="M12 8v4l2 1"/></svg></div><h3>دسترسی و پایش</h3><div class="en">Access &amp; Monitoring</div><p>مدیریت اینکه چه کسی به چه چیزی دسترسی دارد، همراه با پایش پیوسته و ثبت رویدادها.</p>
+              <span class="sub-more">جزئیات <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M15 6l-6 6 6 6"/></svg></span>
+            </a>
+            <a class="sub stagger" href="access-control.html"><div class="sub-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="8" width="18" height="12" rx="2"/><path d="M8 8V6a4 4 0 0 1 8 0v2M12 13v3"/></svg></div><h3>کنترل تردد</h3><div class="en">Access Control</div><p>مدیریت ورود و خروج افراد به فضاهای سازمان، متناسب با سطح دسترسی هر نفر.</p>
+              <span class="sub-more">جزئیات <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M15 6l-6 6 6 6"/></svg></span>
+            </a>
+          </div>
+        </div>
+      </div>
+
+      <div class="sec">
+        <div class="wrap reveal">
+          <div class="sec-head"><span class="eyebrow">روش کار</span><h2>امنیت، از طراحی تا پایش پیوسته</h2></div>
+          <div class="mstrip">
+            <div class="mstep stagger"><div class="n">۱</div><h4>شناخت</h4><p>شناسایی دارایی‌ها، ریسک‌ها و نقاط حساس سازمان.</p></div>
+            <div class="mstep stagger"><div class="n">۲</div><h4>طراحی</h4><p>طراحی لایه‌های محافظت هماهنگ با زیرساخت.</p></div>
+            <div class="mstep stagger"><div class="n">۳</div><h4>اجرا</h4><p>پیاده‌سازی کنترل‌ها و سامانه‌های نظارتی.</p></div>
+            <div class="mstep stagger"><div class="n">۴</div><h4>پشتیبانی</h4><p>پایش پیوسته و به‌روزرسانی در برابر تهدیدهای نو.</p></div>
+          </div>
+          <div class="outcomes">
+            <span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 6L9 17l-5-5"/></svg>کاهش ریسک</span>
+            <span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 6L9 17l-5-5"/></svg>کنترل دسترسی</span>
+            <span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 6L9 17l-5-5"/></svg>دیدِ پیوسته بر محیط</span>
+            <span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 6L9 17l-5-5"/></svg>آرامش خاطر مدیریت</span>
+          </div>
+        </div>
+      </div>
+
       <div class="sec" style="padding-top:0"><div class="wrap reveal"><div class="cta"><span class="eyebrow">شروع از شناخت</span><h2>ریسک‌های سازمان‌تان را با هم مرور کنیم.</h2><p>پیش از هر تجهیزی، اول نقاط حساس و نیاز واقعی را مشخص می‌کنیم.</p><div class="cta-actions"><a class="btn btn-light" href="tel:+982188964116">تماس بگیرید</a><a class="btn btn-outline" href="solutions.html">بازگشت به راهکارها</a></div></div></div></div>
   </main>
   <footer class="site">

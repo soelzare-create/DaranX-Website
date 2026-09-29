@@ -440,6 +440,23 @@
   @keyframes cbob{0%,100%{transform:translateY(0)}50%{transform:translateY(8px)}}
   @media (prefers-reduced-motion:reduce){.cscroll{animation:none}}
 </style>
+<style id="desccss">
+  /* ---- description panel: full-width banner + wide horizontal text ---- */
+  .fold-motion.desc .wrap{max-width:940px}
+  .fm-banner{position:relative;margin:0;height:24vh;min-height:150px;max-height:280px;border-radius:var(--r-lg);
+    overflow:hidden;border:1px solid var(--line);box-shadow:var(--shadow-lift);background:var(--surface-2)}
+  .fm-banner img{width:100%;height:100%;object-fit:cover;display:block}
+  .fm-banner.noimg img{display:none}
+  .fm-banner .ph{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;gap:.55rem;
+    color:var(--ink-faint);font-weight:700;font-size:.95rem;
+    background:radial-gradient(120% 130% at 80% 0,color-mix(in srgb,var(--steel) 16%,transparent),transparent 60%),var(--surface-2)}
+  .fm-banner .ph svg{width:30px;height:30px;color:var(--steel);opacity:.8}
+  .fm-banner:not(.noimg) .ph{display:none}
+  .fm-head{margin-top:1.5rem;text-align:center}
+  .fm-head h2{font-size:clamp(1.6rem,1.3rem+1.4vw,2.4rem);margin-top:.5rem}
+  .longcopy.cols3{margin-top:1.6rem;max-width:none;color:var(--ink-soft);line-height:2.05;font-size:1.04rem}
+  .longcopy.cols3 p{margin:0 0 1.1rem}
+</style>
 <div class="progress" aria-hidden="true"><span id="prog"></span></div>
 <div dir="rtl" lang="fa">
   <header class="nav" id="nav">
@@ -513,75 +530,6 @@
         </div>
       </div>
 
-      <div class="fold-motion">
-        <div class="wrap fm-grid">
-          <div class="dhero-visual reveal" aria-hidden="true">
-            <div class="dring r1"></div><div class="dring r2"></div>
-            <div class="dcore"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle class="ico-pulse" cx="12" cy="12" r="3"/><g class="ico-rays"><path d="M12 3v3M12 18v3M3 12h3M18 12h3M6 6l2 2M16 16l2 2M18 6l-2 2M8 16l-2 2"/></g></svg></div>
-            <div class="dchip c1"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M4 19V5M4 19h16M8 15l3-4 3 2 4-6"/></svg>تحلیل</div>
-            <div class="dchip c2"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="4" y="4" width="16" height="16" rx="3"/><path d="M9 9h6v6H9z"/></svg>AI</div>
-            <div class="dchip c3"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 3v3M12 18v3M5 12H2m20 0h-3"/><circle cx="12" cy="12" r="4"/></svg>خودکارسازی</div>
-          </div>
-          <div class="fm-text reveal">
-            <span class="eyebrow">دربارهٔ هوشمندی</span>
-            <h2 style="font-size:clamp(1.6rem,1.3rem+1.4vw,2.3rem);margin-top:.8rem">از داده‌ای که دارید، تصمیم بهتری بسازید.</h2>
-            <div class="longcopy">
-              <p>وقتی زیرساخت ساخته و از آن محافظت شد، نوبتِ ارزش‌آفرینی است. هوشمندی یعنی استفادهٔ بهتر از داده، خودکارسازیِ کارهای تکراری و تصمیم‌گیریِ دقیق‌تر — با فناوری‌هایی مثلِ هوشِ مصنوعی، تحلیلِ داده و نرم‌افزارهای اختصاصی. در DaranX این فناوری‌ها را نه به‌خاطرِ مد روز بودن، بلکه برای حلِ مسئلهٔ واقعیِ کسب‌وکار به کار می‌گیریم.</p>
-              <p>روش ما با شناخت شروع می‌شود: کدام کارها تکراری و خطاپذیرند، کجا تصمیم‌گیری کند است، و چه داده‌ای در اختیار داریم؟ داده‌های پراکنده تا وقتی یک‌جا و قابل‌فهم نشوند فقط بارِ اضافه‌اند؛ کارِ ما این است که آن‌ها را به تصویری روشن و قابلِ تصمیم تبدیل کنیم. اول می‌فهمیم کجا ارزش ساخته می‌شود، بعد راهکار را طراحی می‌کنیم.</p>
-              <p>در طراحی، اجزای هوشمندی را با هم می‌بینیم: راهکارها و دستیارهای هوشِ مصنوعی برای ساده‌کردنِ کارها، داده و تحلیل برای تصمیمِ بهتر، خودکارسازیِ هوشمند برای حذفِ کارهای دستی، و نرم‌افزار و مدل‌های اختصاصی که با فرآیندِ سازمان هماهنگ‌اند. همهٔ این‌ها روی بستری از زیرساخت و دادهٔ درست بنا می‌شوند تا نتیجه پایدار بماند.</p>
-              <p>اجرا را گام‌به‌گام و قابل‌ارزیابی انجام می‌دهیم؛ به‌جای یک جهشِ بزرگ و پرریسک، از یک قدمِ روشن شروع می‌کنیم، نتیجه را می‌سنجیم و بعد گسترش می‌دهیم. پس از استقرار هم راهکار را پایش و بهبود می‌دهیم، چون داده و فرآیندِ سازمان زنده‌اند و راهکار باید همراهِ آن‌ها به‌روز بماند.</p>
-              <p>تمایزِ ما در فهرستِ فناوری‌ها نیست، در دیدنِ کلِ مسئله و پذیرفتنِ مسئولیتِ نتیجه است. کاری را که به مسئلهٔ شما نمی‌خورد وعده نمی‌دهیم، و اگر یک راهکارِ ساده‌تر کافی باشد، صادقانه همان را می‌گوییم؛ چون اعتبارِ بلندمدت برای ما مهم‌تر از یک فروشِ کوتاه‌مدت است.</p>
-              <p>نتیجه، تصمیمِ دقیق‌تر، بهره‌وریِ بالاتر و مزیتِ رقابتیِ پایدار است؛ فناوری‌ای که در خدمتِ هدفِ سازمان قرار می‌گیرد، نه اینکه خودش به یک مسئلهٔ تازه تبدیل شود.</p>
-              <p>و چون مخاطبِ ما الزاماً متخصصِ فناوری نیست، ارزشِ این راهکارها را با زبانِ کسب‌وکار توضیح می‌دهیم: صرفه‌جویی در زمان، کاهشِ خطا و تصمیمی که به سودِ سازمان تمام می‌شود.</p>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <div class="sec alt">
-        <div class="wrap reveal">
-          <div class="sec-head"><span class="eyebrow">زیرمجموعه‌ها</span><h2>فناوری هوشمند، در خدمت نتیجه</h2><p class="lead">شش بخش که داده و نرم‌افزار را به مزیت واقعی کسب‌وکار تبدیل می‌کنند.</p></div>
-          <div class="subs">
-            <a class="sub stagger" href="ai-solutions.html"><div class="sub-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="4" y="4" width="16" height="16" rx="3"/><path d="M9 9h6v6H9z"/></svg></div><h3>راهکارهای هوش مصنوعی</h3><div class="en">AI Solutions</div><p>به‌کارگیری هوش مصنوعی متناسب با مسئله واقعی، نه صرفاً به‌خاطر مد روز بودن آن.</p>
-              <span class="sub-more">جزئیات <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M15 6l-6 6 6 6"/></svg></span>
-            </a>
-            <a class="sub stagger" href="ai-solutions.html"><div class="sub-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 3a7 7 0 0 1 7 7v4a4 4 0 0 1-4 4H9a4 4 0 0 1-4-4v-4a7 7 0 0 1 7-7z"/><path d="M9 12h.01M15 12h.01"/></svg></div><h3>دستیارهای هوشمند</h3><div class="en">AI Assistants</div><p>دستیارهایی که کارهای تکراری و پاسخ‌گویی را ساده و سریع می‌کنند.</p>
-              <span class="sub-more">جزئیات <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M15 6l-6 6 6 6"/></svg></span>
-            </a>
-            <a class="sub stagger" href="data-analytics.html"><div class="sub-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M4 19V5M4 19h16M8 15l3-4 3 2 4-6"/></svg></div><h3>داده و تحلیل</h3><div class="en">Data &amp; Analytics</div><p>تبدیل داده‌های پراکنده به تصویری روشن و قابل تصمیم‌گیری برای مدیران.</p>
-              <span class="sub-more">جزئیات <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M15 6l-6 6 6 6"/></svg></span>
-            </a>
-            <a class="sub stagger" href="automation.html"><div class="sub-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="12" r="4"/><path d="M12 2v3M12 19v3M2 12h3M19 12h3"/></svg></div><h3>خودکارسازی هوشمند</h3><div class="en">Intelligent Automation</div><p>حذف کارهای دستی و خطاپذیر با فرآیندهای خودکار و قابل اتکا.</p>
-              <span class="sub-more">جزئیات <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M15 6l-6 6 6 6"/></svg></span>
-            </a>
-            <a class="sub stagger" href="software-models.html"><div class="sub-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M8 9l-4 3 4 3M16 9l4 3-4 3M13 5l-2 14"/></svg></div><h3>راهکارهای نرم‌افزاری</h3><div class="en">Software Solutions</div><p>نرم‌افزاری که با فرآیند سازمان هماهنگ می‌شود، نه اینکه سازمان را به آن مجبور کند.</p>
-              <span class="sub-more">جزئیات <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M15 6l-6 6 6 6"/></svg></span>
-            </a>
-            <a class="sub stagger" href="software-models.html"><div class="sub-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="3" width="18" height="18" rx="4"/><path d="M8 12h8M12 8v8"/></svg></div><h3>مدل‌های اختصاصی AI</h3><div class="en">Custom AI Models</div><p>مدل‌هایی که برای داده، زبان و نیاز خاص سازمان شما ساخته و آموزش داده می‌شوند.</p>
-              <span class="sub-more">جزئیات <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M15 6l-6 6 6 6"/></svg></span>
-            </a>
-          </div>
-        </div>
-      </div>
-
-      <div class="sec">
-        <div class="wrap reveal">
-          <div class="sec-head"><span class="eyebrow">روش کار</span><h2>هوشمندی، از داده تا تصمیم</h2></div>
-          <div class="mstrip">
-            <div class="mstep stagger"><div class="n">۱</div><h4>شناخت</h4><p>فهم مسئله و داده‌های موجود سازمان.</p></div>
-            <div class="mstep stagger"><div class="n">۲</div><h4>طراحی</h4><p>طراحی راهکار داده و مدل متناسب با نیاز.</p></div>
-            <div class="mstep stagger"><div class="n">۳</div><h4>اجرا</h4><p>پیاده‌سازی و یکپارچه‌سازی با فرآیندها.</p></div>
-            <div class="mstep stagger"><div class="n">۴</div><h4>پشتیبانی</h4><p>پایش نتیجه و بهبود پیوسته مدل‌ها.</p></div>
-          </div>
-          <div class="outcomes">
-            <span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 6L9 17l-5-5"/></svg>تصمیم دقیق‌تر</span>
-            <span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 6L9 17l-5-5"/></svg>افزایش بهره‌وری</span>
-            <span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 6L9 17l-5-5"/></svg>کاهش خطای انسانی</span>
-            <span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 6L9 17l-5-5"/></svg>مزیت رقابتی پایدار</span>
-          </div>
-        </div>
-      </div>
-      
       <!-- نمونه‌کارها / سابقهٔ کاری -->
       <div class="sec portfolio">
         <div class="wrap reveal">
@@ -649,6 +597,74 @@
           <p class="pf-note">این بخش آمادهٔ نمایش نمونه‌کارهای واقعی شماست. تصویر هر کارت را در مسیر <code>assets/portfolio/intelligence-1.jpg</code> تا <code>intelligence-3.jpg</code> قرار دهید و عنوان و توضیح را با پروژهٔ واقعی جایگزین کنید.</p>
         </div>
       </div>
+
+      <div class="fold-motion desc">
+        <div class="wrap">
+          <figure class="fm-banner reveal">
+            <img src="assets/photos/intelligence.jpg" alt="تصویر هوشمندی" loading="lazy"
+                 onerror="this.closest('.fm-banner').classList.add('noimg')">
+            <div class="ph" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle class="ico-pulse" cx="12" cy="12" r="3"/><g class="ico-rays"><path d="M12 3v3M12 18v3M3 12h3M18 12h3M6 6l2 2M16 16l2 2M18 6l-2 2M8 16l-2 2"/></g></svg><b>تصویر بنر — هوشمندی</b></div>
+          </figure>
+          <div class="fm-head reveal">
+            <span class="eyebrow">دربارهٔ هوشمندی</span>
+            <h2>از داده‌ای که دارید، تصمیم بهتری بسازید.</h2>
+          </div>
+          <div class="longcopy cols3 reveal">
+              <p>وقتی زیرساخت ساخته و از آن محافظت شد، نوبتِ ارزش‌آفرینی است. هوشمندی یعنی استفادهٔ بهتر از داده، خودکارسازیِ کارهای تکراری و تصمیم‌گیریِ دقیق‌تر — با فناوری‌هایی مثلِ هوشِ مصنوعی، تحلیلِ داده و نرم‌افزارهای اختصاصی. در DaranX این فناوری‌ها را نه به‌خاطرِ مد روز بودن، بلکه برای حلِ مسئلهٔ واقعیِ کسب‌وکار به کار می‌گیریم.</p>
+              <p>روش ما با شناخت شروع می‌شود: کدام کارها تکراری و خطاپذیرند، کجا تصمیم‌گیری کند است، و چه داده‌ای در اختیار داریم؟ داده‌های پراکنده تا وقتی یک‌جا و قابل‌فهم نشوند فقط بارِ اضافه‌اند؛ کارِ ما این است که آن‌ها را به تصویری روشن و قابلِ تصمیم تبدیل کنیم. اول می‌فهمیم کجا ارزش ساخته می‌شود، بعد راهکار را طراحی می‌کنیم.</p>
+              <p>در طراحی، اجزای هوشمندی را با هم می‌بینیم: راهکارها و دستیارهای هوشِ مصنوعی برای ساده‌کردنِ کارها، داده و تحلیل برای تصمیمِ بهتر، خودکارسازیِ هوشمند برای حذفِ کارهای دستی، و نرم‌افزار و مدل‌های اختصاصی که با فرآیندِ سازمان هماهنگ‌اند. همهٔ این‌ها روی بستری از زیرساخت و دادهٔ درست بنا می‌شوند تا نتیجه پایدار بماند.</p>
+              <p>اجرا را گام‌به‌گام و قابل‌ارزیابی انجام می‌دهیم؛ به‌جای یک جهشِ بزرگ و پرریسک، از یک قدمِ روشن شروع می‌کنیم، نتیجه را می‌سنجیم و بعد گسترش می‌دهیم. پس از استقرار هم راهکار را پایش و بهبود می‌دهیم، چون داده و فرآیندِ سازمان زنده‌اند و راهکار باید همراهِ آن‌ها به‌روز بماند.</p>
+              <p>تمایزِ ما در فهرستِ فناوری‌ها نیست، در دیدنِ کلِ مسئله و پذیرفتنِ مسئولیتِ نتیجه است. کاری را که به مسئلهٔ شما نمی‌خورد وعده نمی‌دهیم، و اگر یک راهکارِ ساده‌تر کافی باشد، صادقانه همان را می‌گوییم؛ چون اعتبارِ بلندمدت برای ما مهم‌تر از یک فروشِ کوتاه‌مدت است.</p>
+              <p>نتیجه، تصمیمِ دقیق‌تر، بهره‌وریِ بالاتر و مزیتِ رقابتیِ پایدار است؛ فناوری‌ای که در خدمتِ هدفِ سازمان قرار می‌گیرد، نه اینکه خودش به یک مسئلهٔ تازه تبدیل شود.</p>
+              <p>و چون مخاطبِ ما الزاماً متخصصِ فناوری نیست، ارزشِ این راهکارها را با زبانِ کسب‌وکار توضیح می‌دهیم: صرفه‌جویی در زمان، کاهشِ خطا و تصمیمی که به سودِ سازمان تمام می‌شود.</p>
+            </div>
+        </div>
+      </div>
+
+      <div class="sec alt">
+        <div class="wrap reveal">
+          <div class="sec-head"><span class="eyebrow">زیرمجموعه‌ها</span><h2>فناوری هوشمند، در خدمت نتیجه</h2><p class="lead">شش بخش که داده و نرم‌افزار را به مزیت واقعی کسب‌وکار تبدیل می‌کنند.</p></div>
+          <div class="subs">
+            <a class="sub stagger" href="ai-solutions.html"><div class="sub-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="4" y="4" width="16" height="16" rx="3"/><path d="M9 9h6v6H9z"/></svg></div><h3>راهکارهای هوش مصنوعی</h3><div class="en">AI Solutions</div><p>به‌کارگیری هوش مصنوعی متناسب با مسئله واقعی، نه صرفاً به‌خاطر مد روز بودن آن.</p>
+              <span class="sub-more">جزئیات <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M15 6l-6 6 6 6"/></svg></span>
+            </a>
+            <a class="sub stagger" href="ai-solutions.html"><div class="sub-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 3a7 7 0 0 1 7 7v4a4 4 0 0 1-4 4H9a4 4 0 0 1-4-4v-4a7 7 0 0 1 7-7z"/><path d="M9 12h.01M15 12h.01"/></svg></div><h3>دستیارهای هوشمند</h3><div class="en">AI Assistants</div><p>دستیارهایی که کارهای تکراری و پاسخ‌گویی را ساده و سریع می‌کنند.</p>
+              <span class="sub-more">جزئیات <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M15 6l-6 6 6 6"/></svg></span>
+            </a>
+            <a class="sub stagger" href="data-analytics.html"><div class="sub-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M4 19V5M4 19h16M8 15l3-4 3 2 4-6"/></svg></div><h3>داده و تحلیل</h3><div class="en">Data &amp; Analytics</div><p>تبدیل داده‌های پراکنده به تصویری روشن و قابل تصمیم‌گیری برای مدیران.</p>
+              <span class="sub-more">جزئیات <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M15 6l-6 6 6 6"/></svg></span>
+            </a>
+            <a class="sub stagger" href="automation.html"><div class="sub-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="12" r="4"/><path d="M12 2v3M12 19v3M2 12h3M19 12h3"/></svg></div><h3>خودکارسازی هوشمند</h3><div class="en">Intelligent Automation</div><p>حذف کارهای دستی و خطاپذیر با فرآیندهای خودکار و قابل اتکا.</p>
+              <span class="sub-more">جزئیات <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M15 6l-6 6 6 6"/></svg></span>
+            </a>
+            <a class="sub stagger" href="software-models.html"><div class="sub-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M8 9l-4 3 4 3M16 9l4 3-4 3M13 5l-2 14"/></svg></div><h3>راهکارهای نرم‌افزاری</h3><div class="en">Software Solutions</div><p>نرم‌افزاری که با فرآیند سازمان هماهنگ می‌شود، نه اینکه سازمان را به آن مجبور کند.</p>
+              <span class="sub-more">جزئیات <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M15 6l-6 6 6 6"/></svg></span>
+            </a>
+            <a class="sub stagger" href="software-models.html"><div class="sub-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="3" width="18" height="18" rx="4"/><path d="M8 12h8M12 8v8"/></svg></div><h3>مدل‌های اختصاصی AI</h3><div class="en">Custom AI Models</div><p>مدل‌هایی که برای داده، زبان و نیاز خاص سازمان شما ساخته و آموزش داده می‌شوند.</p>
+              <span class="sub-more">جزئیات <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M15 6l-6 6 6 6"/></svg></span>
+            </a>
+          </div>
+        </div>
+      </div>
+
+      <div class="sec">
+        <div class="wrap reveal">
+          <div class="sec-head"><span class="eyebrow">روش کار</span><h2>هوشمندی، از داده تا تصمیم</h2></div>
+          <div class="mstrip">
+            <div class="mstep stagger"><div class="n">۱</div><h4>شناخت</h4><p>فهم مسئله و داده‌های موجود سازمان.</p></div>
+            <div class="mstep stagger"><div class="n">۲</div><h4>طراحی</h4><p>طراحی راهکار داده و مدل متناسب با نیاز.</p></div>
+            <div class="mstep stagger"><div class="n">۳</div><h4>اجرا</h4><p>پیاده‌سازی و یکپارچه‌سازی با فرآیندها.</p></div>
+            <div class="mstep stagger"><div class="n">۴</div><h4>پشتیبانی</h4><p>پایش نتیجه و بهبود پیوسته مدل‌ها.</p></div>
+          </div>
+          <div class="outcomes">
+            <span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 6L9 17l-5-5"/></svg>تصمیم دقیق‌تر</span>
+            <span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 6L9 17l-5-5"/></svg>افزایش بهره‌وری</span>
+            <span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 6L9 17l-5-5"/></svg>کاهش خطای انسانی</span>
+            <span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 6L9 17l-5-5"/></svg>مزیت رقابتی پایدار</span>
+          </div>
+        </div>
+      </div>
+
       <div class="sec" style="padding-top:0"><div class="wrap reveal"><div class="cta"><span class="eyebrow">شروع از شناخت</span><h2>ببینیم داده شما کجا می‌تواند ارزش بسازد.</h2><p>یک گفتگو درباره داده‌ها و فرآیندهای فعلی، نقطه شروع است.</p><div class="cta-actions"><a class="btn btn-light" href="tel:+982188964116">تماس بگیرید</a><a class="btn btn-outline" href="solutions.html">بازگشت به راهکارها</a></div></div></div></div>
   </main>
   <footer class="site">
