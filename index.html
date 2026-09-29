@@ -1228,10 +1228,11 @@
     // Full-screen deck: one gesture per section; leaving content scatters to
     // every side, the next section assembles in. Falls back to normal scroll
     // when the viewer prefers reduced motion.
-    if(!matchMedia('(prefers-reduced-motion:no-preference)').matches) return;
-    // Desktop-only: phones and tablets keep normal (already mobile-optimized)
-    // scrolling, where content-heavy sections stack too tall for a one-screen deck.
-    if(window.innerWidth<1024) return;
+    // Desktop-only: phones/tablets keep normal scrolling.
+    if(window.innerWidth<900) return;
+    // Honour reduced-motion by dropping the scatter (pages still paginate, but
+    // transitions are a plain fade instead of movement).
+    var reduce=!matchMedia('(prefers-reduced-motion:no-preference)').matches;
     var root=document.documentElement;
     var main=document.getElementById('top');
     if(!main) return;
@@ -1269,7 +1270,24 @@
       }
       return out.filter(Boolean);
     }
+    // Scale a panel's content down just enough to fit one screen, so every
+    // scroll cleanly advances a whole page (nothing gets cut, nothing scrolls
+    // internally).
+    function fit(p){
+      var wrap=p.querySelector('.wrap'); if(!wrap)return;
+      wrap.style.zoom=''; p.style.overflowY='';
+      // zoom shrinks the real layout (unlike transform), so the panel genuinely
+      // fits one screen. Iterate a couple of times to converge exactly.
+      for(var k=0;k<4;k++){
+        if(p.scrollHeight-p.clientHeight<=4) break;
+        var cur=parseFloat(wrap.style.zoom)||1;
+        var f=Math.max(0.5, cur*(p.clientHeight-14)/p.scrollHeight);
+        wrap.style.zoom=f;
+      }
+      if(p.scrollHeight-p.clientHeight>4) p.style.overflowY='hidden';
+    }
     function scatter(p){
+      if(reduce)return;
       targets(p).forEach(function(el,i){
         var d=DIRS[i%DIRS.length], mag=80+(i%3)*34, rot=(i%2?1:-1)*(5+(i%4)*3);
         el.style.transition='transform .8s cubic-bezier(.6,0,.24,1), opacity .5s ease';
@@ -1279,6 +1297,7 @@
       });
     }
     function assemble(p){
+      if(reduce)return;
       targets(p).forEach(function(el,i){
         el.style.transition='none'; el.style.transform='translateY(38px)'; el.style.opacity='0';
         void el.offsetWidth;
@@ -1296,7 +1315,7 @@
       if(nav)nav.classList.toggle('scrolled', idx>0);
       if(window.__dxmap){try{setTimeout(function(){window.__dxmap.invalidateSize();},120);}catch(e){}}
     }
-    function setActive(n){idx=n;panels.forEach(function(p,i){p.classList.toggle('active',i===idx);p.classList.remove('out');clearT(p);});chrome();assemble(panels[idx]);}
+    function setActive(n){idx=n;panels.forEach(function(p,i){p.classList.toggle('active',i===idx);p.classList.remove('out');clearT(p);});chrome();fit(panels[idx]);assemble(panels[idx]);}
     function go(n){
       n=Math.max(0,Math.min(panels.length-1,n));
       if(n===idx||animating)return;
@@ -1304,7 +1323,7 @@
       var out=panels[idx], inc=panels[n];
       out.style.zIndex='1'; inc.style.zIndex='2';
       scatter(out); out.classList.add('out'); out.classList.remove('active');
-      inc.scrollTop=0; clearT(inc); inc.classList.add('active'); void inc.offsetWidth; assemble(inc);
+      inc.scrollTop=0; clearT(inc); inc.classList.add('active'); void inc.offsetWidth; fit(inc); assemble(inc);
       idx=n; chrome();
       setTimeout(function(){out.classList.remove('out');clearT(out);out.style.zIndex='';inc.style.zIndex='';animating=false;},980);
     }
@@ -1325,14 +1344,14 @@
     var h=(location.hash||'').replace('#','');
     if(h){var pi=idxForId(h);if(pi>0)setActive(pi);}
 
+    // Every scroll gesture advances exactly one full page (panels are scaled to
+    // fit, so there's no internal scrolling to get stuck in).
     main.addEventListener('wheel',function(e){
-      var p=panels[idx];
-      var atTop=p.scrollTop<=0, atBot=p.scrollTop+p.clientHeight>=p.scrollHeight-1;
-      if((e.deltaY>0&&!atBot)||(e.deltaY<0&&!atTop))return;
       e.preventDefault();
       var now=Date.now(); if(now<lockUntil||Math.abs(e.deltaY)<6)return;
       lockUntil=now+980; go(idx+(e.deltaY>0?1:-1));
     },{passive:false});
+    var rt; window.addEventListener('resize',function(){clearTimeout(rt);rt=setTimeout(function(){fit(panels[idx]);},180);});
 
     window.addEventListener('keydown',function(e){
       if(e.target&&/^(INPUT|TEXTAREA|SELECT)$/.test(e.target.tagName))return;
@@ -1342,13 +1361,11 @@
       else if(e.key==='End'){e.preventDefault();go(panels.length-1);}
     });
 
-    var ty=0,tmoved=0,tp=null,tTop=false,tBot=false;
-    main.addEventListener('touchstart',function(e){ty=e.touches[0].clientY;tmoved=0;tp=panels[idx];
-      tTop=tp.scrollTop<=0;tBot=tp.scrollTop+tp.clientHeight>=tp.scrollHeight-1;},{passive:true});
-    main.addEventListener('touchmove',function(e){tmoved=e.touches[0].clientY-ty;var up=tmoved<0;
-      if((up&&tBot)||(!up&&tTop)){if(e.cancelable)e.preventDefault();}},{passive:false});
+    var ty=0,tmoved=0;
+    main.addEventListener('touchstart',function(e){ty=e.touches[0].clientY;tmoved=0;},{passive:true});
+    main.addEventListener('touchmove',function(e){tmoved=e.touches[0].clientY-ty;if(e.cancelable)e.preventDefault();},{passive:false});
     main.addEventListener('touchend',function(){if(Math.abs(tmoved)<45)return;var now=Date.now();if(now<lockUntil)return;
-      if(tmoved<0&&tBot){lockUntil=now+980;go(idx+1);}else if(tmoved>0&&tTop){lockUntil=now+980;go(idx-1);}},{passive:true});
+      lockUntil=now+980;go(idx+(tmoved<0?1:-1));},{passive:true});
   })();
 </script>
 </body>
