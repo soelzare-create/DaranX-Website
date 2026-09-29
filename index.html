@@ -637,6 +637,40 @@
     html,body{overflow-x:hidden}
   }
 </style>
+<style id="deckcss">
+  @media (prefers-reduced-motion:no-preference){
+    html.deck,html.deck body{height:100%;overflow:hidden;overscroll-behavior:none}
+    html.deck #top{position:fixed;inset:0;z-index:1}
+    html.deck #top>.dpanel{position:absolute;inset:0;opacity:0;visibility:hidden;overflow-y:auto;overscroll-behavior:contain;
+      display:flex;flex-direction:column;justify-content:center;
+      padding-block:clamp(5rem,9vh,6.5rem) clamp(2.2rem,6vh,4rem)!important;
+      transition:opacity .5s ease, visibility .5s ease;scrollbar-width:none}
+    html.deck #top>.dpanel::-webkit-scrollbar{display:none}
+    html.deck #top>.dpanel.active{opacity:1;visibility:visible}
+    html.deck #top>.dpanel.out{opacity:0;visibility:visible;transition:opacity .35s ease, visibility .35s ease}
+    /* keep the decorative blobs from inflating a scrollable panel's height */
+    html.deck #top>.dpanel .blobs{position:absolute;inset:0;overflow:hidden;pointer-events:none}
+    /* fit the tall opening panels to one screen (others already fit) */
+    html.deck #top>.hero{padding-block:clamp(4rem,7vh,5.5rem) clamp(1.2rem,3vh,2.5rem)!important}
+    html.deck .hero .fh-photo{aspect-ratio:auto;height:38vh;max-height:340px}
+    html.deck .hero .fh-title{font-size:clamp(2rem,1.5rem+1.8vw,3.1rem);margin-top:.6rem}
+    html.deck .hero .fh-lead{margin-top:.9rem}
+    html.deck #top>.fold-motion{padding-block:clamp(3.5rem,6vh,5rem) clamp(1.2rem,3vh,2.5rem)!important}
+    html.deck .fold-motion .dhero-visual{max-width:230px}
+    html.deck #top>.contact,html.deck #top>.services{padding-block:clamp(4rem,7vh,5.5rem) clamp(1.2rem,3vh,2.5rem)!important}
+    /* let the deck engine drive motion; silence the scroll-observer animation */
+    html.deck .reveal.in,html.deck .reveal.in .stagger{animation:none}
+    html.deck .snapfix,html.deck footer.site{display:none}
+    html.deck .ddots{position:fixed;top:50%;inset-inline-end:max(12px,1.8vw);transform:translateY(-50%);z-index:40;
+      display:flex;flex-direction:column;gap:.8rem}
+    .ddots{display:none}
+    .ddots button{width:11px;height:11px;padding:0;border-radius:50%;border:1px solid var(--steel);background:transparent;
+      cursor:pointer;transition:transform .3s,background .3s}
+    .ddots button[aria-current="true"]{background:var(--steel);transform:scale(1.4)}
+    @media (max-width:600px){html.deck .ddots{inset-inline-end:9px;gap:.65rem}}
+  }
+</style>
+<div class="ddots" id="ddots" aria-label="ناوبری بخش‌ها"></div>
 <div class="progress" aria-hidden="true"><span id="prog"></span></div>
 
 <div dir="rtl" lang="fa">
@@ -1164,6 +1198,7 @@
     // Office coordinates (exact building).
     var LAT = 35.7206225, LNG = 51.4062148, ZOOM = 17;
     var map = L.map('map', { scrollWheelZoom: false }).setView([LAT, LNG], ZOOM);
+    window.__dxmap = map;
     L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
       maxZoom: 19,
       attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>'
@@ -1186,6 +1221,134 @@
     if(n) n.href = 'https://neshan.org/maps/@' + LAT + ',' + LNG + ',' + ZOOM + 'z';
     // Ensure correct sizing once laid out.
     setTimeout(function(){ map.invalidateSize(); }, 200);
+  })();
+</script>
+<script id="deckjs">
+  (function(){
+    // Full-screen deck: one gesture per section; leaving content scatters to
+    // every side, the next section assembles in. Falls back to normal scroll
+    // when the viewer prefers reduced motion.
+    if(!matchMedia('(prefers-reduced-motion:no-preference)').matches) return;
+    // Desktop-only: phones and tablets keep normal (already mobile-optimized)
+    // scrolling, where content-heavy sections stack too tall for a one-screen deck.
+    if(window.innerWidth<1024) return;
+    var root=document.documentElement;
+    var main=document.getElementById('top');
+    if(!main) return;
+    var panels=[].slice.call(main.children).filter(function(el){
+      return el.nodeType===1 && (el.matches('section')||el.classList.contains('sec')||
+             el.classList.contains('fold-motion')||el.classList.contains('hero'));
+    });
+    if(panels.length<2) return;
+    panels.forEach(function(p){p.classList.add('dpanel');});
+    root.classList.add('deck');
+
+    var idx=0, animating=false, lockUntil=0;
+    var DIRS=[[0,-1],[1,0],[0,1],[-1,0],[1,-1],[-1,1],[1,1],[-1,-1]];
+    var prog=document.getElementById('prog');
+    var nav=document.getElementById('nav');
+    var dotsWrap=document.getElementById('ddots');
+    panels.forEach(function(p,i){var b=document.createElement('button');b.type='button';
+      b.setAttribute('aria-label','بخش '+(i+1));b.addEventListener('click',function(){go(i);});dotsWrap.appendChild(b);});
+    var dots=[].slice.call(dotsWrap.children);
+
+    function targets(p){
+      var grids=p.querySelectorAll('.cards,.hub-cards,.subs,.mstrip,.pf-grid,.cols,.idx-cards');
+      var out=[];
+      if(grids.length){
+        var head=p.querySelector('.sec-head,.diff-quote,h1,h2');
+        if(head)out.push(head);
+        [].forEach.call(grids,function(g){[].forEach.call(g.children,function(c){out.push(c);});});
+        [].forEach.call(p.querySelectorAll('.hero-actions,.dhero-actions,.cta,.contact-info,.contact-cta,.map-head,.map,.fh-photo,.dhero-visual,.pf-note,.map-hint'),
+          function(e){if(out.indexOf(e)<0)out.push(e);});
+      }else{
+        var wrap=p.querySelector('.wrap')||p;
+        var kids=[].slice.call(wrap.children);
+        if(kids.length===1 && kids[0].children.length>1) kids=[].slice.call(kids[0].children);
+        out=kids;
+      }
+      return out.filter(Boolean);
+    }
+    function scatter(p){
+      targets(p).forEach(function(el,i){
+        var d=DIRS[i%DIRS.length], mag=80+(i%3)*34, rot=(i%2?1:-1)*(5+(i%4)*3);
+        el.style.transition='transform .8s cubic-bezier(.6,0,.24,1), opacity .5s ease';
+        el.style.transitionDelay=(i*0.035)+'s';
+        el.style.transform='translate('+(d[0]*mag)+'px,'+(d[1]*mag)+'px) rotate('+rot+'deg) scale(.86)';
+        el.style.opacity='0';
+      });
+    }
+    function assemble(p){
+      targets(p).forEach(function(el,i){
+        el.style.transition='none'; el.style.transform='translateY(38px)'; el.style.opacity='0';
+        void el.offsetWidth;
+        el.style.transition='transform .75s cubic-bezier(.2,.7,.2,1), opacity .6s ease';
+        el.style.transitionDelay=(0.06+i*0.05)+'s';
+        el.style.transform=''; el.style.opacity='';
+      });
+    }
+    function clearT(p){targets(p).forEach(function(el){el.style.transition='';el.style.transitionDelay='';el.style.transform='';el.style.opacity='';});}
+
+    function chrome(){
+      dots.forEach(function(d,i){d.setAttribute('aria-current',i===idx?'true':'false');});
+      if(prog)prog.style.width=(idx/(panels.length-1)*100)+'%';
+      panels.forEach(function(p,i){p.style.pointerEvents=i===idx?'auto':'none';p.setAttribute('aria-hidden',i===idx?'false':'true');});
+      if(nav)nav.classList.toggle('scrolled', idx>0);
+      if(window.__dxmap){try{setTimeout(function(){window.__dxmap.invalidateSize();},120);}catch(e){}}
+    }
+    function setActive(n){idx=n;panels.forEach(function(p,i){p.classList.toggle('active',i===idx);p.classList.remove('out');clearT(p);});chrome();assemble(panels[idx]);}
+    function go(n){
+      n=Math.max(0,Math.min(panels.length-1,n));
+      if(n===idx||animating)return;
+      animating=true;
+      var out=panels[idx], inc=panels[n];
+      out.style.zIndex='1'; inc.style.zIndex='2';
+      scatter(out); out.classList.add('out'); out.classList.remove('active');
+      inc.scrollTop=0; clearT(inc); inc.classList.add('active'); void inc.offsetWidth; assemble(inc);
+      idx=n; chrome();
+      setTimeout(function(){out.classList.remove('out');clearT(out);out.style.zIndex='';inc.style.zIndex='';animating=false;},980);
+    }
+    window.__deckGo=go;
+
+    function idxForId(id){if(id==='top')return 0;for(var i=0;i<panels.length;i++){if(panels[i].id===id)return i;}return -1;}
+    document.addEventListener('click',function(e){
+      var a=e.target.closest&&e.target.closest('a[href^="#"]');
+      if(!a)return;
+      var id=(a.getAttribute('href')||'').slice(1);
+      var pi=idxForId(id);
+      if(pi>=0){e.preventDefault();
+        var nl=document.getElementById('navLinks'); if(nl)nl.classList.remove('open');
+        go(pi);}
+    });
+
+    setActive(0);
+    var h=(location.hash||'').replace('#','');
+    if(h){var pi=idxForId(h);if(pi>0)setActive(pi);}
+
+    main.addEventListener('wheel',function(e){
+      var p=panels[idx];
+      var atTop=p.scrollTop<=0, atBot=p.scrollTop+p.clientHeight>=p.scrollHeight-1;
+      if((e.deltaY>0&&!atBot)||(e.deltaY<0&&!atTop))return;
+      e.preventDefault();
+      var now=Date.now(); if(now<lockUntil||Math.abs(e.deltaY)<6)return;
+      lockUntil=now+980; go(idx+(e.deltaY>0?1:-1));
+    },{passive:false});
+
+    window.addEventListener('keydown',function(e){
+      if(e.target&&/^(INPUT|TEXTAREA|SELECT)$/.test(e.target.tagName))return;
+      if(['ArrowDown','PageDown'].indexOf(e.key)>-1){e.preventDefault();go(idx+1);}
+      else if(['ArrowUp','PageUp'].indexOf(e.key)>-1){e.preventDefault();go(idx-1);}
+      else if(e.key==='Home'){e.preventDefault();go(0);}
+      else if(e.key==='End'){e.preventDefault();go(panels.length-1);}
+    });
+
+    var ty=0,tmoved=0,tp=null,tTop=false,tBot=false;
+    main.addEventListener('touchstart',function(e){ty=e.touches[0].clientY;tmoved=0;tp=panels[idx];
+      tTop=tp.scrollTop<=0;tBot=tp.scrollTop+tp.clientHeight>=tp.scrollHeight-1;},{passive:true});
+    main.addEventListener('touchmove',function(e){tmoved=e.touches[0].clientY-ty;var up=tmoved<0;
+      if((up&&tBot)||(!up&&tTop)){if(e.cancelable)e.preventDefault();}},{passive:false});
+    main.addEventListener('touchend',function(){if(Math.abs(tmoved)<45)return;var now=Date.now();if(now<lockUntil)return;
+      if(tmoved<0&&tBot){lockUntil=now+980;go(idx+1);}else if(tmoved>0&&tTop){lockUntil=now+980;go(idx-1);}},{passive:true});
   })();
 </script>
 </body>
