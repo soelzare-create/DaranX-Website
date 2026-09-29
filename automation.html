@@ -369,6 +369,25 @@
   @keyframes cbob{0%,100%{transform:translateY(0)}50%{transform:translateY(8px)}}
   @media (prefers-reduced-motion:reduce){.cscroll{animation:none}}
 
+  /* ---- description panel: full-width banner + horizontal (multi-column) text ---- */
+  .fold-motion.desc .wrap{max-width:1120px}
+  .fm-banner{position:relative;margin:0;height:24vh;min-height:150px;max-height:280px;border-radius:var(--r-lg);
+    overflow:hidden;border:1px solid var(--line);box-shadow:var(--shadow-lift);background:var(--surface-2)}
+  .fm-banner img{width:100%;height:100%;object-fit:cover;display:block}
+  .fm-banner.noimg img{display:none}
+  .fm-banner .ph{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;gap:.55rem;
+    color:var(--ink-faint);font-weight:700;font-size:.95rem;
+    background:radial-gradient(120% 130% at 80% 0,color-mix(in srgb,var(--steel) 16%,transparent),transparent 60%),var(--surface-2)}
+  .fm-banner .ph svg{width:30px;height:30px;color:var(--steel);opacity:.8}
+  .fm-banner:not(.noimg) .ph{display:none}
+  .fm-head{margin-top:1.5rem;text-align:center}
+  .fm-head h2{font-size:clamp(1.6rem,1.3rem+1.4vw,2.4rem);margin-top:.5rem}
+  .longcopy.cols3{margin-top:1.6rem;max-width:none;column-count:3;column-gap:2.4rem;
+    color:var(--ink-soft);line-height:1.95;font-size:1rem}
+  .longcopy.cols3 p{margin:0 0 1.05rem;break-inside:avoid}
+  @media (max-width:900px){.longcopy.cols3{column-count:2;column-gap:1.8rem}}
+  @media (max-width:600px){.longcopy.cols3{column-count:1}}
+
   /* ---- portfolio / work-history ---- */
   .portfolio .sec-head{text-align:center;max-width:60ch;margin-inline:auto}
   .portfolio .sec-head h2{font-size:clamp(1.6rem,1.3rem+1.4vw,2.3rem)}
@@ -549,52 +568,7 @@
         </div>
       </div>
 
-      <!-- FOLD 2: motion graphic + long description (300–700 words) -->
-      <div class="fold-motion alt">
-        <div class="wrap fm-grid">
-          <div class="dhero-visual reveal" aria-hidden="true">
-            <div class="dring r1"></div><div class="dring r2"></div>
-            <div class="dcore"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><circle cx="12" cy="12" r="4"/><path d="M12 2v3M12 19v3M2 12h3M19 12h3"/></svg></div>
-          </div>
-          <div class="fm-text reveal">
-            <span class="eyebrow">دربارهٔ خودکارسازی هوشمند</span>
-            <h2 style="font-size:clamp(1.6rem,1.3rem+1.4vw,2.3rem);margin-top:.8rem">حذف کارهای دستی و خطاپذیر.</h2>
-            <div class="longcopy">
-              <p>بخشِ زیادی از زمانِ سازمان‌ها صرفِ کارهای تکراری و دستی می‌شود؛ کارهایی که هم وقت می‌گیرند و هم مستعدِ خطا هستند و انگیزهٔ کارکنان را هم می‌گیرند. خودکارسازیِ هوشمند یعنی سپردنِ این کارها به فرآیندهایی قابل‌اتکا، تا نیرویِ انسانی روی کاری تمرکز کند که واقعاً ارزش می‌سازد. در DaranX خودکارسازی را متناسب با فرآیندِ واقعیِ شما طراحی می‌کنیم، نه بر اساسِ یک الگوی آماده.</p>
-              <p>روش ما با شناخت شروع می‌شود: کدام فرآیندها تکراری و قاعده‌مندند؟ کجا خطای انسانی بیشترین هزینه را دارد؟ این کارها به چه سیستم‌هایی وصل‌اند و چه ورودی و خروجی‌ای دارند؟ خودکارسازیِ یک فرآیندِ اشتباه فقط اشتباه را سریع‌تر می‌کند؛ برای همین اول فرآیند را درست می‌فهمیم و در صورتِ نیاز، ساده‌اش می‌کنیم.</p>
-              <p>در طراحی به جریان‌های خودکارِ پایدار فکر می‌کنیم، به یکپارچگی با سیستم‌های موجود تا خودکارسازی یک جزیرهٔ جدا نماند، و به کنترل و پایش برای اطمینان از درستیِ نتیجه. جایی هم که قضاوتِ انسانی لازم است، انسان را از مدار خارج نمی‌کنیم؛ کارِ تکراری را حذف می‌کنیم، نه تصمیمِ مهم را.</p>
-              <p>اجرا را گام‌به‌گام و با کمترین اختلال در کارِ جاری انجام می‌دهیم و پشتیبانی را ادامه می‌دهیم، چون فرآیندهای سازمان با زمان تغییر می‌کنند و خودکارسازی باید همراهِ آن‌ها به‌روز بماند.</p>
-              <p>نتیجه، افزایشِ بهره‌وری، کاهشِ خطا و دوباره‌کاری، و آزادشدنِ وقتِ کارکنان برای کارهای مهم‌تر است؛ سازمانی که به‌جای دویدن پشتِ کارهای تکراری، انرژی‌اش را صرفِ رشد می‌کند.</p>
-              <p>برای ما خودکارسازی بخشی از یک راهکارِ یکپارچه است که با داده، نرم‌افزار و زیرساخت هماهنگ می‌شود. تمایزِ ما در دیدنِ کلِ مسئله و پذیرفتنِ مسئولیتِ نتیجه است، نه در تعدادِ ابزارها. چیزی را خودکار نمی‌کنیم که فردا برای سازمان دردسر بسازد؛ راهکار را طوری می‌سازیم که پایدار بماند و خودمان هم پشتیبانی‌اش می‌کنیم.</p>
-              <p>اول مسئله را می‌فهمیم، بعد راهکار پیشنهاد می‌کنیم؛ و اگر جایی خودکارسازی ارزشی نسازد، صادقانه همان را می‌گوییم. تجهیزات و ابزارها وسیله‌اند؛ راهکار و نتیجه، هدف‌اند.</p>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <!-- FOLD 3+: existing structure -->
-      <div class="sec">
-        <div class="wrap reveal">
-          <div class="cols">
-            <div class="panel stagger">
-              <span class="eyebrow">چیست؟</span>
-              <h3 style="margin-top:.7rem">خودکارسازی هوشمند</h3>
-              <p>خودکارسازی فرآیندهای تکراری سازمان با تمرکز بر پایداری، یکپارچگی و کاهش دخالت دستی.</p>
-              <div class="approach">
-                <span><b>۱</b> شناخت</span><span><b>۲</b> طراحی</span><span><b>۳</b> اجرا</span><span><b>۴</b> پشتیبانی</span>
-              </div>
-            </div>
-            <div class="panel stagger">
-              <span class="eyebrow">چرا مهم است؟</span>
-              <ul class="vlist" style="margin-top:1rem">
-                <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg><span>افزایش بهره‌وری</span></li>
-                <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg><span>کاهش خطا و دوباره‌کاری</span></li>
-                <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg><span>تمرکز نیروی انسانی بر کار ارزشمند</span></li>
-              </ul>
-            </div>
-          </div>
-        </div>
-      </div>
+      <!-- SCREEN 3: portfolio (نمونه‌کارها) -->
 
       <!-- نمونه‌کارها / سابقهٔ کاری -->
       <div class="sec portfolio">
@@ -661,6 +635,54 @@
             </article>
           </div>
           <p class="pf-note">این بخش آمادهٔ نمایش نمونه‌کارهای واقعی شماست. تصویر هر کارت را در مسیر <code>assets/portfolio/automation-1.jpg</code> تا <code>automation-3.jpg</code> قرار دهید و عنوان و توضیح را با پروژهٔ واقعی جایگزین کنید.</p>
+        </div>
+      </div>
+
+      <!-- SCREEN 4: full-width banner + horizontal (multi-column) description -->
+      <div class="fold-motion desc">
+        <div class="wrap">
+          <figure class="fm-banner reveal">
+            <img src="assets/photos/automation.jpg" alt="تصویر خودکارسازی هوشمند" loading="lazy"
+                 onerror="this.closest('.fm-banner').classList.add('noimg')">
+            <div class="ph" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><circle cx="12" cy="12" r="4"/><path d="M12 2v3M12 19v3M2 12h3M19 12h3"/></svg><b>تصویر بنر — خودکارسازی هوشمند</b></div>
+          </figure>
+          <div class="fm-head reveal">
+            <span class="eyebrow">دربارهٔ خودکارسازی هوشمند</span>
+            <h2>حذف کارهای دستی و خطاپذیر.</h2>
+          </div>
+          <div class="longcopy cols3 reveal">
+            <p>بخشِ زیادی از زمانِ سازمان‌ها صرفِ کارهای تکراری و دستی می‌شود؛ کارهایی که هم وقت می‌گیرند و هم مستعدِ خطا هستند و انگیزهٔ کارکنان را هم می‌گیرند. خودکارسازیِ هوشمند یعنی سپردنِ این کارها به فرآیندهایی قابل‌اتکا، تا نیرویِ انسانی روی کاری تمرکز کند که واقعاً ارزش می‌سازد. در DaranX خودکارسازی را متناسب با فرآیندِ واقعیِ شما طراحی می‌کنیم، نه بر اساسِ یک الگوی آماده.</p>
+            <p>روش ما با شناخت شروع می‌شود: کدام فرآیندها تکراری و قاعده‌مندند؟ کجا خطای انسانی بیشترین هزینه را دارد؟ این کارها به چه سیستم‌هایی وصل‌اند و چه ورودی و خروجی‌ای دارند؟ خودکارسازیِ یک فرآیندِ اشتباه فقط اشتباه را سریع‌تر می‌کند؛ برای همین اول فرآیند را درست می‌فهمیم و در صورتِ نیاز، ساده‌اش می‌کنیم.</p>
+            <p>در طراحی به جریان‌های خودکارِ پایدار فکر می‌کنیم، به یکپارچگی با سیستم‌های موجود تا خودکارسازی یک جزیرهٔ جدا نماند، و به کنترل و پایش برای اطمینان از درستیِ نتیجه. جایی هم که قضاوتِ انسانی لازم است، انسان را از مدار خارج نمی‌کنیم؛ کارِ تکراری را حذف می‌کنیم، نه تصمیمِ مهم را.</p>
+            <p>اجرا را گام‌به‌گام و با کمترین اختلال در کارِ جاری انجام می‌دهیم و پشتیبانی را ادامه می‌دهیم، چون فرآیندهای سازمان با زمان تغییر می‌کنند و خودکارسازی باید همراهِ آن‌ها به‌روز بماند.</p>
+            <p>نتیجه، افزایشِ بهره‌وری، کاهشِ خطا و دوباره‌کاری، و آزادشدنِ وقتِ کارکنان برای کارهای مهم‌تر است؛ سازمانی که به‌جای دویدن پشتِ کارهای تکراری، انرژی‌اش را صرفِ رشد می‌کند.</p>
+            <p>برای ما خودکارسازی بخشی از یک راهکارِ یکپارچه است که با داده، نرم‌افزار و زیرساخت هماهنگ می‌شود. تمایزِ ما در دیدنِ کلِ مسئله و پذیرفتنِ مسئولیتِ نتیجه است، نه در تعدادِ ابزارها. چیزی را خودکار نمی‌کنیم که فردا برای سازمان دردسر بسازد؛ راهکار را طوری می‌سازیم که پایدار بماند و خودمان هم پشتیبانی‌اش می‌کنیم.</p>
+            <p>اول مسئله را می‌فهمیم، بعد راهکار پیشنهاد می‌کنیم؛ و اگر جایی خودکارسازی ارزشی نسازد، صادقانه همان را می‌گوییم. تجهیزات و ابزارها وسیله‌اند؛ راهکار و نتیجه، هدف‌اند.</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- چیست / چرا مهم است -->
+      <div class="sec">
+        <div class="wrap reveal">
+          <div class="cols">
+            <div class="panel stagger">
+              <span class="eyebrow">چیست؟</span>
+              <h3 style="margin-top:.7rem">خودکارسازی هوشمند</h3>
+              <p>خودکارسازی فرآیندهای تکراری سازمان با تمرکز بر پایداری، یکپارچگی و کاهش دخالت دستی.</p>
+              <div class="approach">
+                <span><b>۱</b> شناخت</span><span><b>۲</b> طراحی</span><span><b>۳</b> اجرا</span><span><b>۴</b> پشتیبانی</span>
+              </div>
+            </div>
+            <div class="panel stagger">
+              <span class="eyebrow">چرا مهم است؟</span>
+              <ul class="vlist" style="margin-top:1rem">
+                <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg><span>افزایش بهره‌وری</span></li>
+                <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg><span>کاهش خطا و دوباره‌کاری</span></li>
+                <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg><span>تمرکز نیروی انسانی بر کار ارزشمند</span></li>
+              </ul>
+            </div>
+          </div>
         </div>
       </div>
       <div class="sec" style="padding-top:0">

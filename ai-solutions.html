@@ -369,6 +369,25 @@
   @keyframes cbob{0%,100%{transform:translateY(0)}50%{transform:translateY(8px)}}
   @media (prefers-reduced-motion:reduce){.cscroll{animation:none}}
 
+  /* ---- description panel: full-width banner + horizontal (multi-column) text ---- */
+  .fold-motion.desc .wrap{max-width:1120px}
+  .fm-banner{position:relative;margin:0;height:24vh;min-height:150px;max-height:280px;border-radius:var(--r-lg);
+    overflow:hidden;border:1px solid var(--line);box-shadow:var(--shadow-lift);background:var(--surface-2)}
+  .fm-banner img{width:100%;height:100%;object-fit:cover;display:block}
+  .fm-banner.noimg img{display:none}
+  .fm-banner .ph{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;gap:.55rem;
+    color:var(--ink-faint);font-weight:700;font-size:.95rem;
+    background:radial-gradient(120% 130% at 80% 0,color-mix(in srgb,var(--steel) 16%,transparent),transparent 60%),var(--surface-2)}
+  .fm-banner .ph svg{width:30px;height:30px;color:var(--steel);opacity:.8}
+  .fm-banner:not(.noimg) .ph{display:none}
+  .fm-head{margin-top:1.5rem;text-align:center}
+  .fm-head h2{font-size:clamp(1.6rem,1.3rem+1.4vw,2.4rem);margin-top:.5rem}
+  .longcopy.cols3{margin-top:1.6rem;max-width:none;column-count:3;column-gap:2.4rem;
+    color:var(--ink-soft);line-height:1.95;font-size:1rem}
+  .longcopy.cols3 p{margin:0 0 1.05rem;break-inside:avoid}
+  @media (max-width:900px){.longcopy.cols3{column-count:2;column-gap:1.8rem}}
+  @media (max-width:600px){.longcopy.cols3{column-count:1}}
+
   /* ---- portfolio / work-history ---- */
   .portfolio .sec-head{text-align:center;max-width:60ch;margin-inline:auto}
   .portfolio .sec-head h2{font-size:clamp(1.6rem,1.3rem+1.4vw,2.3rem)}
@@ -549,51 +568,7 @@
         </div>
       </div>
 
-      <!-- FOLD 2: motion graphic + long description (300–700 words) -->
-      <div class="fold-motion alt">
-        <div class="wrap fm-grid">
-          <div class="dhero-visual reveal" aria-hidden="true">
-            <div class="dring r1"></div><div class="dring r2"></div>
-            <div class="dcore"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><rect x="4" y="4" width="16" height="16" rx="3"/><path d="M9 9h6v6H9z"/></svg></div>
-          </div>
-          <div class="fm-text reveal">
-            <span class="eyebrow">دربارهٔ راهکارها و دستیارهای هوش مصنوعی</span>
-            <h2 style="font-size:clamp(1.6rem,1.3rem+1.4vw,2.3rem);margin-top:.8rem">هوش مصنوعی برای مسئلهٔ واقعی، نه مد روز.</h2>
-            <div class="longcopy">
-              <p>هوشِ مصنوعی این روزها زیاد شنیده می‌شود، اما ارزشِ واقعی‌اش وقتی ساخته می‌شود که برای یک مسئلهٔ واقعیِ کسب‌وکار به کار برود، نه صرفاً به‌خاطرِ مد روز بودن. در DaranX ابتدا مسئله را می‌فهمیم و بعد تصمیم می‌گیریم که آیا و کجا هوشِ مصنوعی و دستیارهای هوشمند واقعاً کمک می‌کنند — چون گاهی پاسخِ درست، یک راهکارِ ساده‌تر است، نه پیچیده‌تر.</p>
-              <p>روش ما با شناخت شروع می‌شود: کدام کارها تکراری، زمان‌بر یا خطاپذیرند؟ کجا پاسخ‌گویی به مشتری یا تصمیم‌گیری کند است؟ چه داده‌ای در اختیار داریم و آیا برای ساختنِ راهکار کافی است؟ پاسخِ این پرسش‌ها مشخص می‌کند که یک راهکارِ هوشِ مصنوعی یا یک دستیارِ هوشمند، در کجا بیشترین ارزش را می‌سازد و از کجا باید شروع کرد.</p>
-              <p>در طراحی به تناسبِ راهکار با فرآیندِ واقعیِ سازمان فکر می‌کنیم، به یکپارچگی با سیستم‌های موجود تا راهکار یک جزیرهٔ جدا نماند، و به قابل‌اعتماد بودنِ نتیجه. دستیارِ هوشمندی که کارهای تکراری و پاسخ‌گویی را ساده می‌کند، تنها زمانی مفید است که در دلِ جریانِ کارِ واقعی بنشیند و کارکنان بتوانند به آن تکیه کنند.</p>
-              <p>اجرا را گام‌به‌گام و قابل‌ارزیابی انجام می‌دهیم؛ به‌جای یک جهشِ بزرگ و پرریسک، از یک قدمِ روشن شروع می‌کنیم، نتیجه را می‌سنجیم و بعد گسترش می‌دهیم. پس از استقرار هم نتیجه را پایش و بهبود می‌دهیم، چون یک مدل بدونِ نگهداری به‌مرور از واقعیت فاصله می‌گیرد.</p>
-              <p>نتیجه، صرفه‌جویی در زمانِ کارکنان، کاهشِ خطای انسانی و تجربهٔ بهتر برای کاربر و مشتری است — ارزشی ملموس و قابل‌اندازه‌گیری، نه یک وعدهٔ کلی دربارهٔ فناوریِ روز.</p>
-              <p>در DaranX هوشِ مصنوعی را جدا از بقیهٔ فناوری نمی‌بینیم؛ آن را روی بستری از زیرساخت و دادهٔ درست بنا می‌کنیم تا نتیجه پایدار بماند. کاری را که بلد نیستیم انجام نمی‌دهیم، و راهکاری را وعده نمی‌دهیم که به مسئلهٔ شما نخورد. اگر نتیجه برای شما مهم است، برای ما هم مهم است — و مسئولیتش را تا انتها ادامه می‌دهیم.</p>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <!-- FOLD 3+: existing structure -->
-      <div class="sec">
-        <div class="wrap reveal">
-          <div class="cols">
-            <div class="panel stagger">
-              <span class="eyebrow">چیست؟</span>
-              <h3 style="margin-top:.7rem">راهکارها و دستیارهای هوش مصنوعی</h3>
-              <p>به‌کارگیری هوش مصنوعی و دستیارهای هوشمند برای ساده‌کردن کارهای تکراری، پاسخ‌گویی و پشتیبانی تصمیم.</p>
-              <div class="approach">
-                <span><b>۱</b> شناخت</span><span><b>۲</b> طراحی</span><span><b>۳</b> اجرا</span><span><b>۴</b> پشتیبانی</span>
-              </div>
-            </div>
-            <div class="panel stagger">
-              <span class="eyebrow">چرا مهم است؟</span>
-              <ul class="vlist" style="margin-top:1rem">
-                <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg><span>صرفه‌جویی در زمان کارکنان</span></li>
-                <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg><span>کاهش خطای انسانی</span></li>
-                <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg><span>تجربهٔ بهتر برای کاربر و مشتری</span></li>
-              </ul>
-            </div>
-          </div>
-        </div>
-      </div>
+      <!-- SCREEN 3: portfolio (نمونه‌کارها) -->
 
       <!-- نمونه‌کارها / سابقهٔ کاری -->
       <div class="sec portfolio">
@@ -660,6 +635,53 @@
             </article>
           </div>
           <p class="pf-note">این بخش آمادهٔ نمایش نمونه‌کارهای واقعی شماست. تصویر هر کارت را در مسیر <code>assets/portfolio/ai-solutions-1.jpg</code> تا <code>ai-solutions-3.jpg</code> قرار دهید و عنوان و توضیح را با پروژهٔ واقعی جایگزین کنید.</p>
+        </div>
+      </div>
+
+      <!-- SCREEN 4: full-width banner + horizontal (multi-column) description -->
+      <div class="fold-motion desc">
+        <div class="wrap">
+          <figure class="fm-banner reveal">
+            <img src="assets/photos/ai-solutions.jpg" alt="تصویر راهکارها و دستیارهای هوش مصنوعی" loading="lazy"
+                 onerror="this.closest('.fm-banner').classList.add('noimg')">
+            <div class="ph" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><rect x="4" y="4" width="16" height="16" rx="3"/><path d="M9 9h6v6H9z"/></svg><b>تصویر بنر — راهکارها و دستیارهای هوش مصنوعی</b></div>
+          </figure>
+          <div class="fm-head reveal">
+            <span class="eyebrow">دربارهٔ راهکارها و دستیارهای هوش مصنوعی</span>
+            <h2>هوش مصنوعی برای مسئلهٔ واقعی، نه مد روز.</h2>
+          </div>
+          <div class="longcopy cols3 reveal">
+            <p>هوشِ مصنوعی این روزها زیاد شنیده می‌شود، اما ارزشِ واقعی‌اش وقتی ساخته می‌شود که برای یک مسئلهٔ واقعیِ کسب‌وکار به کار برود، نه صرفاً به‌خاطرِ مد روز بودن. در DaranX ابتدا مسئله را می‌فهمیم و بعد تصمیم می‌گیریم که آیا و کجا هوشِ مصنوعی و دستیارهای هوشمند واقعاً کمک می‌کنند — چون گاهی پاسخِ درست، یک راهکارِ ساده‌تر است، نه پیچیده‌تر.</p>
+            <p>روش ما با شناخت شروع می‌شود: کدام کارها تکراری، زمان‌بر یا خطاپذیرند؟ کجا پاسخ‌گویی به مشتری یا تصمیم‌گیری کند است؟ چه داده‌ای در اختیار داریم و آیا برای ساختنِ راهکار کافی است؟ پاسخِ این پرسش‌ها مشخص می‌کند که یک راهکارِ هوشِ مصنوعی یا یک دستیارِ هوشمند، در کجا بیشترین ارزش را می‌سازد و از کجا باید شروع کرد.</p>
+            <p>در طراحی به تناسبِ راهکار با فرآیندِ واقعیِ سازمان فکر می‌کنیم، به یکپارچگی با سیستم‌های موجود تا راهکار یک جزیرهٔ جدا نماند، و به قابل‌اعتماد بودنِ نتیجه. دستیارِ هوشمندی که کارهای تکراری و پاسخ‌گویی را ساده می‌کند، تنها زمانی مفید است که در دلِ جریانِ کارِ واقعی بنشیند و کارکنان بتوانند به آن تکیه کنند.</p>
+            <p>اجرا را گام‌به‌گام و قابل‌ارزیابی انجام می‌دهیم؛ به‌جای یک جهشِ بزرگ و پرریسک، از یک قدمِ روشن شروع می‌کنیم، نتیجه را می‌سنجیم و بعد گسترش می‌دهیم. پس از استقرار هم نتیجه را پایش و بهبود می‌دهیم، چون یک مدل بدونِ نگهداری به‌مرور از واقعیت فاصله می‌گیرد.</p>
+            <p>نتیجه، صرفه‌جویی در زمانِ کارکنان، کاهشِ خطای انسانی و تجربهٔ بهتر برای کاربر و مشتری است — ارزشی ملموس و قابل‌اندازه‌گیری، نه یک وعدهٔ کلی دربارهٔ فناوریِ روز.</p>
+            <p>در DaranX هوشِ مصنوعی را جدا از بقیهٔ فناوری نمی‌بینیم؛ آن را روی بستری از زیرساخت و دادهٔ درست بنا می‌کنیم تا نتیجه پایدار بماند. کاری را که بلد نیستیم انجام نمی‌دهیم، و راهکاری را وعده نمی‌دهیم که به مسئلهٔ شما نخورد. اگر نتیجه برای شما مهم است، برای ما هم مهم است — و مسئولیتش را تا انتها ادامه می‌دهیم.</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- چیست / چرا مهم است -->
+      <div class="sec">
+        <div class="wrap reveal">
+          <div class="cols">
+            <div class="panel stagger">
+              <span class="eyebrow">چیست؟</span>
+              <h3 style="margin-top:.7rem">راهکارها و دستیارهای هوش مصنوعی</h3>
+              <p>به‌کارگیری هوش مصنوعی و دستیارهای هوشمند برای ساده‌کردن کارهای تکراری، پاسخ‌گویی و پشتیبانی تصمیم.</p>
+              <div class="approach">
+                <span><b>۱</b> شناخت</span><span><b>۲</b> طراحی</span><span><b>۳</b> اجرا</span><span><b>۴</b> پشتیبانی</span>
+              </div>
+            </div>
+            <div class="panel stagger">
+              <span class="eyebrow">چرا مهم است؟</span>
+              <ul class="vlist" style="margin-top:1rem">
+                <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg><span>صرفه‌جویی در زمان کارکنان</span></li>
+                <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg><span>کاهش خطای انسانی</span></li>
+                <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg><span>تجربهٔ بهتر برای کاربر و مشتری</span></li>
+              </ul>
+            </div>
+          </div>
         </div>
       </div>
       <div class="sec" style="padding-top:0">

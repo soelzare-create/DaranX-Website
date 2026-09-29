@@ -369,6 +369,25 @@
   @keyframes cbob{0%,100%{transform:translateY(0)}50%{transform:translateY(8px)}}
   @media (prefers-reduced-motion:reduce){.cscroll{animation:none}}
 
+  /* ---- description panel: full-width banner + horizontal (multi-column) text ---- */
+  .fold-motion.desc .wrap{max-width:1120px}
+  .fm-banner{position:relative;margin:0;height:24vh;min-height:150px;max-height:280px;border-radius:var(--r-lg);
+    overflow:hidden;border:1px solid var(--line);box-shadow:var(--shadow-lift);background:var(--surface-2)}
+  .fm-banner img{width:100%;height:100%;object-fit:cover;display:block}
+  .fm-banner.noimg img{display:none}
+  .fm-banner .ph{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;gap:.55rem;
+    color:var(--ink-faint);font-weight:700;font-size:.95rem;
+    background:radial-gradient(120% 130% at 80% 0,color-mix(in srgb,var(--steel) 16%,transparent),transparent 60%),var(--surface-2)}
+  .fm-banner .ph svg{width:30px;height:30px;color:var(--steel);opacity:.8}
+  .fm-banner:not(.noimg) .ph{display:none}
+  .fm-head{margin-top:1.5rem;text-align:center}
+  .fm-head h2{font-size:clamp(1.6rem,1.3rem+1.4vw,2.4rem);margin-top:.5rem}
+  .longcopy.cols3{margin-top:1.6rem;max-width:none;column-count:3;column-gap:2.4rem;
+    color:var(--ink-soft);line-height:1.95;font-size:1rem}
+  .longcopy.cols3 p{margin:0 0 1.05rem;break-inside:avoid}
+  @media (max-width:900px){.longcopy.cols3{column-count:2;column-gap:1.8rem}}
+  @media (max-width:600px){.longcopy.cols3{column-count:1}}
+
   /* ---- portfolio / work-history ---- */
   .portfolio .sec-head{text-align:center;max-width:60ch;margin-inline:auto}
   .portfolio .sec-head h2{font-size:clamp(1.6rem,1.3rem+1.4vw,2.3rem)}
@@ -549,51 +568,7 @@
         </div>
       </div>
 
-      <!-- FOLD 2: motion graphic + long description (300–700 words) -->
-      <div class="fold-motion alt">
-        <div class="wrap fm-grid">
-          <div class="dhero-visual reveal" aria-hidden="true">
-            <div class="dring r1"></div><div class="dring r2"></div>
-            <div class="dcore"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M12 3l7 3v5c0 4.5-3 7.5-7 9-4-1.5-7-4.5-7-9V6l7-3z"/><path stroke-linecap="round" stroke-linejoin="round" d="M9 11.8l2 2 4-4"/></svg></div>
-          </div>
-          <div class="fm-text reveal">
-            <span class="eyebrow">دربارهٔ امنیت شبکه</span>
-            <h2 style="font-size:clamp(1.6rem,1.3rem+1.4vw,2.3rem);margin-top:.8rem">محافظت از مسیرهای ارتباطی و داده.</h2>
-            <div class="longcopy">
-              <p>امنیتِ شبکه یعنی محافظت از مسیرهایی که داده و ارتباطِ سازمان از آن‌ها عبور می‌کند. تهدیدها لزوماً از بیرون نمی‌آیند؛ یک دسترسیِ نادرست، یک بخش‌بندی‌نشدنِ شبکه یا یک پیکربندیِ بازمانده می‌تواند به‌اندازهٔ یک حملهٔ بیرونی خطرناک باشد. در DaranX امنیت را یک افزودنیِ پایانی نمی‌بینیم؛ آن را از همان مرحلهٔ طراحیِ شبکه و به‌عنوان بخشی جدانشدنی از آن در نظر می‌گیریم.</p>
-              <p>روش ما با شناختِ دارایی‌ها و ریسک‌ها شروع می‌شود: چه چیزی باید محافظت شود، چه کسی به چه چیزی باید دسترسی داشته باشد، و کدام مسیرها و سرویس‌ها حساس‌ترند؟ بدونِ این شناخت، هر ابزارِ امنیتی فقط یک هزینهٔ اضافه است، نه یک محافظتِ واقعی. اول مسئله را می‌فهمیم، بعد راهکار را طراحی می‌کنیم.</p>
-              <p>در طراحی به جداسازیِ منطقیِ بخش‌ها فکر می‌کنیم تا یک نفوذ به همه‌جا سرایت نکند، به کنترل و محدودسازیِ دسترسی‌ها بر پایهٔ اصلِ «کمترین دسترسیِ لازم»، به پایشِ ترافیک و شناساییِ رفتارِ غیرعادی، و به محافظت در برابرِ تهدیدهای شناخته‌شده. این لایه‌ها با هم یک دفاعِ منسجم می‌سازند، نه مجموعه‌ای از ابزارهای پراکنده که هرکدام گوشه‌ای کار می‌کنند.</p>
-              <p>اجرا را هماهنگ با زیرساختِ شبکه انجام می‌دهیم و پشتیبانی و به‌روزرسانی را ادامه می‌دهیم، چون تهدیدها ثابت نمی‌مانند و امنیتِ دیروز لزوماً امنیتِ امروز نیست. نگاهِ پشتیبانی از همان طراحی آغاز می‌شود.</p>
-              <p>نتیجه، کاهشِ واقعیِ ریسکِ نفوذ، کنترلِ دقیقِ دسترسی، و آرامشی است که از دانستنِ «همه‌چیز تحتِ نظر و در جای درستِ خود است» می‌آید — امنیتی که در خدمتِ کارِ سازمان است، نه مانعِ آن.</p>
-              <p>در DaranX امنیت را جزئی از یک راهکارِ یکپارچه می‌بینیم، نه فهرستی از ابزارها که کنارِ هم چیده شده‌اند. زیرساخت، امنیت و لایه‌های بالاتر با هم طراحی می‌شوند تا محافظت، به‌جای کندکردنِ کار، در خدمتِ آن باشد. مسئولیتِ نتیجه را هم به عهده می‌گیریم: اگر قرار است فردا از این محیط محافظت کنیم، امروز آن را طوری می‌سازیم که هم امن باشد و هم قابلِ نگهداری.</p>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <!-- FOLD 3+: existing structure -->
-      <div class="sec">
-        <div class="wrap reveal">
-          <div class="cols">
-            <div class="panel stagger">
-              <span class="eyebrow">چیست؟</span>
-              <h3 style="margin-top:.7rem">امنیت شبکه</h3>
-              <p>کنترل دسترسی، جداسازی و پایش ترافیک برای جلوگیری از نفوذ و سوءاستفاده در بستر شبکه.</p>
-              <div class="approach">
-                <span><b>۱</b> شناخت</span><span><b>۲</b> طراحی</span><span><b>۳</b> اجرا</span><span><b>۴</b> پشتیبانی</span>
-              </div>
-            </div>
-            <div class="panel stagger">
-              <span class="eyebrow">چرا مهم است؟</span>
-              <ul class="vlist" style="margin-top:1rem">
-                <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg><span>کاهش ریسک نفوذ</span></li>
-                <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg><span>کنترل دقیق دسترسی</span></li>
-                <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg><span>حفاظت داده در حال انتقال</span></li>
-              </ul>
-            </div>
-          </div>
-        </div>
-      </div>
+      <!-- SCREEN 3: portfolio (نمونه‌کارها) -->
 
       <!-- نمونه‌کارها / سابقهٔ کاری -->
       <div class="sec portfolio">
@@ -660,6 +635,53 @@
             </article>
           </div>
           <p class="pf-note">این بخش آمادهٔ نمایش نمونه‌کارهای واقعی شماست. تصویر هر کارت را در مسیر <code>assets/portfolio/network-security-1.jpg</code> تا <code>network-security-3.jpg</code> قرار دهید و عنوان و توضیح را با پروژهٔ واقعی جایگزین کنید.</p>
+        </div>
+      </div>
+
+      <!-- SCREEN 4: full-width banner + horizontal (multi-column) description -->
+      <div class="fold-motion desc">
+        <div class="wrap">
+          <figure class="fm-banner reveal">
+            <img src="assets/photos/network-security.jpg" alt="تصویر امنیت شبکه" loading="lazy"
+                 onerror="this.closest('.fm-banner').classList.add('noimg')">
+            <div class="ph" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M12 3l7 3v5c0 4.5-3 7.5-7 9-4-1.5-7-4.5-7-9V6l7-3z"/><path stroke-linecap="round" stroke-linejoin="round" d="M9 11.8l2 2 4-4"/></svg><b>تصویر بنر — امنیت شبکه</b></div>
+          </figure>
+          <div class="fm-head reveal">
+            <span class="eyebrow">دربارهٔ امنیت شبکه</span>
+            <h2>محافظت از مسیرهای ارتباطی و داده.</h2>
+          </div>
+          <div class="longcopy cols3 reveal">
+            <p>امنیتِ شبکه یعنی محافظت از مسیرهایی که داده و ارتباطِ سازمان از آن‌ها عبور می‌کند. تهدیدها لزوماً از بیرون نمی‌آیند؛ یک دسترسیِ نادرست، یک بخش‌بندی‌نشدنِ شبکه یا یک پیکربندیِ بازمانده می‌تواند به‌اندازهٔ یک حملهٔ بیرونی خطرناک باشد. در DaranX امنیت را یک افزودنیِ پایانی نمی‌بینیم؛ آن را از همان مرحلهٔ طراحیِ شبکه و به‌عنوان بخشی جدانشدنی از آن در نظر می‌گیریم.</p>
+            <p>روش ما با شناختِ دارایی‌ها و ریسک‌ها شروع می‌شود: چه چیزی باید محافظت شود، چه کسی به چه چیزی باید دسترسی داشته باشد، و کدام مسیرها و سرویس‌ها حساس‌ترند؟ بدونِ این شناخت، هر ابزارِ امنیتی فقط یک هزینهٔ اضافه است، نه یک محافظتِ واقعی. اول مسئله را می‌فهمیم، بعد راهکار را طراحی می‌کنیم.</p>
+            <p>در طراحی به جداسازیِ منطقیِ بخش‌ها فکر می‌کنیم تا یک نفوذ به همه‌جا سرایت نکند، به کنترل و محدودسازیِ دسترسی‌ها بر پایهٔ اصلِ «کمترین دسترسیِ لازم»، به پایشِ ترافیک و شناساییِ رفتارِ غیرعادی، و به محافظت در برابرِ تهدیدهای شناخته‌شده. این لایه‌ها با هم یک دفاعِ منسجم می‌سازند، نه مجموعه‌ای از ابزارهای پراکنده که هرکدام گوشه‌ای کار می‌کنند.</p>
+            <p>اجرا را هماهنگ با زیرساختِ شبکه انجام می‌دهیم و پشتیبانی و به‌روزرسانی را ادامه می‌دهیم، چون تهدیدها ثابت نمی‌مانند و امنیتِ دیروز لزوماً امنیتِ امروز نیست. نگاهِ پشتیبانی از همان طراحی آغاز می‌شود.</p>
+            <p>نتیجه، کاهشِ واقعیِ ریسکِ نفوذ، کنترلِ دقیقِ دسترسی، و آرامشی است که از دانستنِ «همه‌چیز تحتِ نظر و در جای درستِ خود است» می‌آید — امنیتی که در خدمتِ کارِ سازمان است، نه مانعِ آن.</p>
+            <p>در DaranX امنیت را جزئی از یک راهکارِ یکپارچه می‌بینیم، نه فهرستی از ابزارها که کنارِ هم چیده شده‌اند. زیرساخت، امنیت و لایه‌های بالاتر با هم طراحی می‌شوند تا محافظت، به‌جای کندکردنِ کار، در خدمتِ آن باشد. مسئولیتِ نتیجه را هم به عهده می‌گیریم: اگر قرار است فردا از این محیط محافظت کنیم، امروز آن را طوری می‌سازیم که هم امن باشد و هم قابلِ نگهداری.</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- چیست / چرا مهم است -->
+      <div class="sec">
+        <div class="wrap reveal">
+          <div class="cols">
+            <div class="panel stagger">
+              <span class="eyebrow">چیست؟</span>
+              <h3 style="margin-top:.7rem">امنیت شبکه</h3>
+              <p>کنترل دسترسی، جداسازی و پایش ترافیک برای جلوگیری از نفوذ و سوءاستفاده در بستر شبکه.</p>
+              <div class="approach">
+                <span><b>۱</b> شناخت</span><span><b>۲</b> طراحی</span><span><b>۳</b> اجرا</span><span><b>۴</b> پشتیبانی</span>
+              </div>
+            </div>
+            <div class="panel stagger">
+              <span class="eyebrow">چرا مهم است؟</span>
+              <ul class="vlist" style="margin-top:1rem">
+                <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg><span>کاهش ریسک نفوذ</span></li>
+                <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg><span>کنترل دقیق دسترسی</span></li>
+                <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg><span>حفاظت داده در حال انتقال</span></li>
+              </ul>
+            </div>
+          </div>
         </div>
       </div>
       <div class="sec" style="padding-top:0">

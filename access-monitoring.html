@@ -369,6 +369,25 @@
   @keyframes cbob{0%,100%{transform:translateY(0)}50%{transform:translateY(8px)}}
   @media (prefers-reduced-motion:reduce){.cscroll{animation:none}}
 
+  /* ---- description panel: full-width banner + horizontal (multi-column) text ---- */
+  .fold-motion.desc .wrap{max-width:1120px}
+  .fm-banner{position:relative;margin:0;height:24vh;min-height:150px;max-height:280px;border-radius:var(--r-lg);
+    overflow:hidden;border:1px solid var(--line);box-shadow:var(--shadow-lift);background:var(--surface-2)}
+  .fm-banner img{width:100%;height:100%;object-fit:cover;display:block}
+  .fm-banner.noimg img{display:none}
+  .fm-banner .ph{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;gap:.55rem;
+    color:var(--ink-faint);font-weight:700;font-size:.95rem;
+    background:radial-gradient(120% 130% at 80% 0,color-mix(in srgb,var(--steel) 16%,transparent),transparent 60%),var(--surface-2)}
+  .fm-banner .ph svg{width:30px;height:30px;color:var(--steel);opacity:.8}
+  .fm-banner:not(.noimg) .ph{display:none}
+  .fm-head{margin-top:1.5rem;text-align:center}
+  .fm-head h2{font-size:clamp(1.6rem,1.3rem+1.4vw,2.4rem);margin-top:.5rem}
+  .longcopy.cols3{margin-top:1.6rem;max-width:none;column-count:3;column-gap:2.4rem;
+    color:var(--ink-soft);line-height:1.95;font-size:1rem}
+  .longcopy.cols3 p{margin:0 0 1.05rem;break-inside:avoid}
+  @media (max-width:900px){.longcopy.cols3{column-count:2;column-gap:1.8rem}}
+  @media (max-width:600px){.longcopy.cols3{column-count:1}}
+
   /* ---- portfolio / work-history ---- */
   .portfolio .sec-head{text-align:center;max-width:60ch;margin-inline:auto}
   .portfolio .sec-head h2{font-size:clamp(1.6rem,1.3rem+1.4vw,2.3rem)}
@@ -549,52 +568,7 @@
         </div>
       </div>
 
-      <!-- FOLD 2: motion graphic + long description (300–700 words) -->
-      <div class="fold-motion alt">
-        <div class="wrap fm-grid">
-          <div class="dhero-visual reveal" aria-hidden="true">
-            <div class="dring r1"></div><div class="dring r2"></div>
-            <div class="dcore"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M12 2l7 4v6c0 4-3 7-7 8-4-1-7-4-7-8V6z"/><path stroke-linecap="round" d="M12 8v4l2 1"/></svg></div>
-          </div>
-          <div class="fm-text reveal">
-            <span class="eyebrow">دربارهٔ دسترسی و پایش</span>
-            <h2 style="font-size:clamp(1.6rem,1.3rem+1.4vw,2.3rem);margin-top:.8rem">چه کسی، به چه چیزی، چه زمانی.</h2>
-            <div class="longcopy">
-              <p>دسترسی و پایش به یک پرسشِ ساده پاسخ می‌دهد: چه کسی، به چه چیزی، چه زمانی دسترسی داشته است؟ کنترل و شفافیتِ دسترسی‌ها، پایهٔ امنیت و پاسخ‌گوییِ هر سازمان است؛ بدونِ آن، حتی بهترین ابزارها هم نمی‌دانند از چه کسی و چه چیزی محافظت می‌کنند. در DaranX این لایه را طوری طراحی می‌کنیم که هم دسترسی‌ها دقیق باشند و هم رویدادها همیشه قابل‌ردیابی بمانند.</p>
-              <p>روش ما با شناخت شروع می‌شود: چه منابعی حساس‌اند، هر نقش به چه سطحی از دسترسی نیاز دارد، و چه رویدادهایی باید ثبت شوند؟ دسترسیِ بیش‌ازحد به‌اندازهٔ نبودِ کنترل خطرناک است؛ هدفِ ما دادنِ دقیقاً همان دسترسیِ لازم است، نه بیشتر و نه کمتر.</p>
-              <p>در طراحی به تعریفِ سطوحِ دسترسی بر اساسِ نقش فکر می‌کنیم، به ثبت و نگهداریِ رویدادها به‌شکلی که در زمانِ بررسی قابل‌اتکا باشد، به پایشِ پیوسته و هشدار در مواردِ غیرعادی، و به آمادگی برای ممیزی و انطباق. این‌ها با هم کنترلِ دقیق و دیدِ همیشگی بر دسترسی‌های سازمان می‌سازند.</p>
-              <p>اجرا را هماهنگ با بقیهٔ لایه‌های امنیت انجام می‌دهیم و پشتیبانی را ادامه می‌دهیم، چون نقش‌ها و افراد در سازمان تغییر می‌کنند و دسترسی‌ها باید همیشه به‌روز بمانند. مدیریتِ این تغییرات بخشی از مسئولیتِ ماست.</p>
-              <p>نتیجه، کنترلِ دقیقِ دسترسی، امکانِ ردیابیِ رویدادها، و آمادگی برای ممیزی و انطباق است — چیزی که در زمانِ بروزِ مشکل، تفاوتِ میانِ حدس‌زدن و دانستن را می‌سازد.</p>
-              <p>در نگاهِ DaranX، دسترسی و پایش بخشی از یک راهکارِ امنیتیِ یکپارچه است که با امنیتِ شبکه و کنترلِ تردد با هم طراحی می‌شود. تمایزِ ما در تعدادِ ابزارها نیست، در دیدنِ کلِ مسئله و پذیرفتنِ مسئولیتِ نتیجه است. همین است که کنترلِ دسترسی را از یک قابلیتِ فنی، به آرامشی واقعی برای مدیریت تبدیل می‌کند.</p>
-              <p>مشتری برای ما یک هم‌تیمی است، نه یک فروشِ یک‌باره؛ برای همین دسترسی و پایش را طوری می‌سازیم که در طولِ زمان همراهِ تغییراتِ سازمان بماند و همیشه تصویری روشن از اینکه چه کسی به چه چیزی دسترسی دارد، در اختیارتان بگذارد.</p>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <!-- FOLD 3+: existing structure -->
-      <div class="sec">
-        <div class="wrap reveal">
-          <div class="cols">
-            <div class="panel stagger">
-              <span class="eyebrow">چیست؟</span>
-              <h3 style="margin-top:.7rem">دسترسی و پایش</h3>
-              <p>مدیریت سطوح دسترسی همراه با پایش و ثبت پیوستهٔ رویدادها برای ردیابی و پاسخ‌گویی.</p>
-              <div class="approach">
-                <span><b>۱</b> شناخت</span><span><b>۲</b> طراحی</span><span><b>۳</b> اجرا</span><span><b>۴</b> پشتیبانی</span>
-              </div>
-            </div>
-            <div class="panel stagger">
-              <span class="eyebrow">چرا مهم است؟</span>
-              <ul class="vlist" style="margin-top:1rem">
-                <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg><span>کنترل دقیق سطوح دسترسی</span></li>
-                <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg><span>ردیابی و ثبت رویداد</span></li>
-                <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg><span>آمادگی برای انطباق و ممیزی</span></li>
-              </ul>
-            </div>
-          </div>
-        </div>
-      </div>
+      <!-- SCREEN 3: portfolio (نمونه‌کارها) -->
 
       <!-- نمونه‌کارها / سابقهٔ کاری -->
       <div class="sec portfolio">
@@ -661,6 +635,54 @@
             </article>
           </div>
           <p class="pf-note">این بخش آمادهٔ نمایش نمونه‌کارهای واقعی شماست. تصویر هر کارت را در مسیر <code>assets/portfolio/access-monitoring-1.jpg</code> تا <code>access-monitoring-3.jpg</code> قرار دهید و عنوان و توضیح را با پروژهٔ واقعی جایگزین کنید.</p>
+        </div>
+      </div>
+
+      <!-- SCREEN 4: full-width banner + horizontal (multi-column) description -->
+      <div class="fold-motion desc">
+        <div class="wrap">
+          <figure class="fm-banner reveal">
+            <img src="assets/photos/access-monitoring.jpg" alt="تصویر دسترسی و پایش" loading="lazy"
+                 onerror="this.closest('.fm-banner').classList.add('noimg')">
+            <div class="ph" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M12 2l7 4v6c0 4-3 7-7 8-4-1-7-4-7-8V6z"/><path stroke-linecap="round" d="M12 8v4l2 1"/></svg><b>تصویر بنر — دسترسی و پایش</b></div>
+          </figure>
+          <div class="fm-head reveal">
+            <span class="eyebrow">دربارهٔ دسترسی و پایش</span>
+            <h2>چه کسی، به چه چیزی، چه زمانی.</h2>
+          </div>
+          <div class="longcopy cols3 reveal">
+            <p>دسترسی و پایش به یک پرسشِ ساده پاسخ می‌دهد: چه کسی، به چه چیزی، چه زمانی دسترسی داشته است؟ کنترل و شفافیتِ دسترسی‌ها، پایهٔ امنیت و پاسخ‌گوییِ هر سازمان است؛ بدونِ آن، حتی بهترین ابزارها هم نمی‌دانند از چه کسی و چه چیزی محافظت می‌کنند. در DaranX این لایه را طوری طراحی می‌کنیم که هم دسترسی‌ها دقیق باشند و هم رویدادها همیشه قابل‌ردیابی بمانند.</p>
+            <p>روش ما با شناخت شروع می‌شود: چه منابعی حساس‌اند، هر نقش به چه سطحی از دسترسی نیاز دارد، و چه رویدادهایی باید ثبت شوند؟ دسترسیِ بیش‌ازحد به‌اندازهٔ نبودِ کنترل خطرناک است؛ هدفِ ما دادنِ دقیقاً همان دسترسیِ لازم است، نه بیشتر و نه کمتر.</p>
+            <p>در طراحی به تعریفِ سطوحِ دسترسی بر اساسِ نقش فکر می‌کنیم، به ثبت و نگهداریِ رویدادها به‌شکلی که در زمانِ بررسی قابل‌اتکا باشد، به پایشِ پیوسته و هشدار در مواردِ غیرعادی، و به آمادگی برای ممیزی و انطباق. این‌ها با هم کنترلِ دقیق و دیدِ همیشگی بر دسترسی‌های سازمان می‌سازند.</p>
+            <p>اجرا را هماهنگ با بقیهٔ لایه‌های امنیت انجام می‌دهیم و پشتیبانی را ادامه می‌دهیم، چون نقش‌ها و افراد در سازمان تغییر می‌کنند و دسترسی‌ها باید همیشه به‌روز بمانند. مدیریتِ این تغییرات بخشی از مسئولیتِ ماست.</p>
+            <p>نتیجه، کنترلِ دقیقِ دسترسی، امکانِ ردیابیِ رویدادها، و آمادگی برای ممیزی و انطباق است — چیزی که در زمانِ بروزِ مشکل، تفاوتِ میانِ حدس‌زدن و دانستن را می‌سازد.</p>
+            <p>در نگاهِ DaranX، دسترسی و پایش بخشی از یک راهکارِ امنیتیِ یکپارچه است که با امنیتِ شبکه و کنترلِ تردد با هم طراحی می‌شود. تمایزِ ما در تعدادِ ابزارها نیست، در دیدنِ کلِ مسئله و پذیرفتنِ مسئولیتِ نتیجه است. همین است که کنترلِ دسترسی را از یک قابلیتِ فنی، به آرامشی واقعی برای مدیریت تبدیل می‌کند.</p>
+            <p>مشتری برای ما یک هم‌تیمی است، نه یک فروشِ یک‌باره؛ برای همین دسترسی و پایش را طوری می‌سازیم که در طولِ زمان همراهِ تغییراتِ سازمان بماند و همیشه تصویری روشن از اینکه چه کسی به چه چیزی دسترسی دارد، در اختیارتان بگذارد.</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- چیست / چرا مهم است -->
+      <div class="sec">
+        <div class="wrap reveal">
+          <div class="cols">
+            <div class="panel stagger">
+              <span class="eyebrow">چیست؟</span>
+              <h3 style="margin-top:.7rem">دسترسی و پایش</h3>
+              <p>مدیریت سطوح دسترسی همراه با پایش و ثبت پیوستهٔ رویدادها برای ردیابی و پاسخ‌گویی.</p>
+              <div class="approach">
+                <span><b>۱</b> شناخت</span><span><b>۲</b> طراحی</span><span><b>۳</b> اجرا</span><span><b>۴</b> پشتیبانی</span>
+              </div>
+            </div>
+            <div class="panel stagger">
+              <span class="eyebrow">چرا مهم است؟</span>
+              <ul class="vlist" style="margin-top:1rem">
+                <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg><span>کنترل دقیق سطوح دسترسی</span></li>
+                <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg><span>ردیابی و ثبت رویداد</span></li>
+                <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg><span>آمادگی برای انطباق و ممیزی</span></li>
+              </ul>
+            </div>
+          </div>
         </div>
       </div>
       <div class="sec" style="padding-top:0">

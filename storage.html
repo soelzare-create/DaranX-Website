@@ -369,6 +369,25 @@
   @keyframes cbob{0%,100%{transform:translateY(0)}50%{transform:translateY(8px)}}
   @media (prefers-reduced-motion:reduce){.cscroll{animation:none}}
 
+  /* ---- description panel: full-width banner + horizontal (multi-column) text ---- */
+  .fold-motion.desc .wrap{max-width:1120px}
+  .fm-banner{position:relative;margin:0;height:24vh;min-height:150px;max-height:280px;border-radius:var(--r-lg);
+    overflow:hidden;border:1px solid var(--line);box-shadow:var(--shadow-lift);background:var(--surface-2)}
+  .fm-banner img{width:100%;height:100%;object-fit:cover;display:block}
+  .fm-banner.noimg img{display:none}
+  .fm-banner .ph{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;gap:.55rem;
+    color:var(--ink-faint);font-weight:700;font-size:.95rem;
+    background:radial-gradient(120% 130% at 80% 0,color-mix(in srgb,var(--steel) 16%,transparent),transparent 60%),var(--surface-2)}
+  .fm-banner .ph svg{width:30px;height:30px;color:var(--steel);opacity:.8}
+  .fm-banner:not(.noimg) .ph{display:none}
+  .fm-head{margin-top:1.5rem;text-align:center}
+  .fm-head h2{font-size:clamp(1.6rem,1.3rem+1.4vw,2.4rem);margin-top:.5rem}
+  .longcopy.cols3{margin-top:1.6rem;max-width:none;column-count:3;column-gap:2.4rem;
+    color:var(--ink-soft);line-height:1.95;font-size:1rem}
+  .longcopy.cols3 p{margin:0 0 1.05rem;break-inside:avoid}
+  @media (max-width:900px){.longcopy.cols3{column-count:2;column-gap:1.8rem}}
+  @media (max-width:600px){.longcopy.cols3{column-count:1}}
+
   /* ---- portfolio / work-history ---- */
   .portfolio .sec-head{text-align:center;max-width:60ch;margin-inline:auto}
   .portfolio .sec-head h2{font-size:clamp(1.6rem,1.3rem+1.4vw,2.3rem)}
@@ -549,51 +568,7 @@
         </div>
       </div>
 
-      <!-- FOLD 2: motion graphic + long description (300–700 words) -->
-      <div class="fold-motion alt">
-        <div class="wrap fm-grid">
-          <div class="dhero-visual reveal" aria-hidden="true">
-            <div class="dring r1"></div><div class="dring r2"></div>
-            <div class="dcore"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><ellipse cx="12" cy="6" rx="8" ry="3"/><path d="M4 6v12c0 1.7 3.6 3 8 3s8-1.3 8-3V6"/><path d="M4 12c0 1.7 3.6 3 8 3s8-1.3 8-3"/></svg></div>
-          </div>
-          <div class="fm-text reveal">
-            <span class="eyebrow">دربارهٔ ذخیره‌سازی</span>
-            <h2 style="font-size:clamp(1.6rem,1.3rem+1.4vw,2.3rem);margin-top:.8rem">داده‌ها؛ امن و همیشه در دسترس.</h2>
-            <div class="longcopy">
-              <p>ذخیره‌سازی تا روزی که درست کار می‌کند دیده نمی‌شود، اما لحظه‌ای که داده‌ای در دسترس نباشد یا از دست برود، اهمیتش به گران‌ترین شکلِ ممکن روشن می‌شود. داده‌های سازمان — از اسناد مالی و پرونده‌ها تا نسخه‌های پشتیبان و سوابق مشتریان — به بستری نیاز دارند که هم امن باشد و هم همیشه در دسترس. در DaranX ذخیره‌سازی را نه یک «هارد بزرگ‌ترِ دیگر»، بلکه متناسب با اهمیتِ واقعیِ داده‌ها طراحی می‌کنیم.</p>
-              <p>روش ما با شناخت شروع می‌شود: کدام داده‌ها حیاتی‌اند و نباید لحظه‌ای از دسترس خارج شوند؟ حجمِ داده امروز چقدر است و با چه سرعتی رشد می‌کند؟ کدام داده‌ها به دسترسیِ سریع نیاز دارند و کدام‌ها فقط باید مدت‌ها سالم نگهداری شوند؟ پاسخِ این پرسش‌ها، ظرفیت، کارایی و لایه‌بندیِ درستِ ذخیره‌سازی را مشخص می‌کند.</p>
-              <p>در طراحی به افزونگی و محافظتِ داده در برابر خرابیِ سخت‌افزار فکر می‌کنیم، تا خرابیِ یک دیسک به از دست رفتنِ اطلاعات منجر نشود. به کاراییِ متناسب با نیاز توجه می‌کنیم تا سرویس‌ها کند نشوند، و مهم‌تر از همه، به آمادگی برای پشتیبان‌گیری و بازیابی پس از حادثه. ذخیره‌سازیِ خوب تنها «فضای بیشتر» نیست؛ اطمینان از این است که داده در زمانِ لازم، سالم و در دسترس باشد.</p>
-              <p>اجرا و مستندسازی را طوری انجام می‌دهیم که رشدِ ظرفیت در آینده بدونِ اختلال و بدونِ بازطراحیِ پرهزینه ممکن باشد، و پشتیبانی را از همان ابتدا در نظر می‌گیریم. برای ما، نگهداریِ آسانِ فردا از همین طراحیِ امروز شروع می‌شود.</p>
-              <p>نتیجه، ذخیره‌سازی‌ای است امن، در دسترس و مقیاس‌پذیر؛ پایه‌ای آرام‌بخش که همهٔ سرویس‌های سازمان با خیالِ راحت روی آن می‌نشینند و رشدِ داده دیگر به یک نگرانیِ همیشگی تبدیل نمی‌شود.</p>
-              <p>در نگاهِ DaranX، ذخیره‌سازی یک جزیرهٔ جدا نیست؛ بخشی از یک راهکارِ یکپارچه است که با شبکه، سرور و پشتیبان‌گیری با هم طراحی می‌شود. همین نگاهِ کل‌نگر است که تفاوت می‌سازد: به‌جای کنارِ هم گذاشتنِ چند تجهیز، اجزا را طوری طراحی می‌کنیم که با هم کار کنند و مسئولیتِ نتیجه را هم به عهده می‌گیریم. اگر داده برای کسب‌وکارِ شما مهم است، برای ما هم مهم است — و آن را در جای درستِ خودش نگه می‌داریم.</p>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <!-- FOLD 3+: existing structure -->
-      <div class="sec">
-        <div class="wrap reveal">
-          <div class="cols">
-            <div class="panel stagger">
-              <span class="eyebrow">چیست؟</span>
-              <h3 style="margin-top:.7rem">ذخیره‌سازی</h3>
-              <p>طراحی راهکار ذخیره‌سازی با ظرفیت، کارایی و سطح دسترس‌پذیریِ متناسب با اهمیت داده‌ها.</p>
-              <div class="approach">
-                <span><b>۱</b> شناخت</span><span><b>۲</b> طراحی</span><span><b>۳</b> اجرا</span><span><b>۴</b> پشتیبانی</span>
-              </div>
-            </div>
-            <div class="panel stagger">
-              <span class="eyebrow">چرا مهم است؟</span>
-              <ul class="vlist" style="margin-top:1rem">
-                <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg><span>در دسترس‌بودن داده‌ها</span></li>
-                <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg><span>حفاظت در برابر از دست رفتن داده</span></li>
-                <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg><span>رشد ظرفیت بدون اختلال</span></li>
-              </ul>
-            </div>
-          </div>
-        </div>
-      </div>
+      <!-- SCREEN 3: portfolio (نمونه‌کارها) -->
 
       <!-- نمونه‌کارها / سابقهٔ کاری -->
       <div class="sec portfolio">
@@ -660,6 +635,53 @@
             </article>
           </div>
           <p class="pf-note">این بخش آمادهٔ نمایش نمونه‌کارهای واقعی شماست. تصویر هر کارت را در مسیر <code>assets/portfolio/storage-1.jpg</code> تا <code>storage-3.jpg</code> قرار دهید و عنوان و توضیح را با پروژهٔ واقعی جایگزین کنید.</p>
+        </div>
+      </div>
+
+      <!-- SCREEN 4: full-width banner + horizontal (multi-column) description -->
+      <div class="fold-motion desc">
+        <div class="wrap">
+          <figure class="fm-banner reveal">
+            <img src="assets/photos/storage.jpg" alt="تصویر ذخیره‌سازی" loading="lazy"
+                 onerror="this.closest('.fm-banner').classList.add('noimg')">
+            <div class="ph" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><ellipse cx="12" cy="6" rx="8" ry="3"/><path d="M4 6v12c0 1.7 3.6 3 8 3s8-1.3 8-3V6"/><path d="M4 12c0 1.7 3.6 3 8 3s8-1.3 8-3"/></svg><b>تصویر بنر — ذخیره‌سازی</b></div>
+          </figure>
+          <div class="fm-head reveal">
+            <span class="eyebrow">دربارهٔ ذخیره‌سازی</span>
+            <h2>داده‌ها؛ امن و همیشه در دسترس.</h2>
+          </div>
+          <div class="longcopy cols3 reveal">
+            <p>ذخیره‌سازی تا روزی که درست کار می‌کند دیده نمی‌شود، اما لحظه‌ای که داده‌ای در دسترس نباشد یا از دست برود، اهمیتش به گران‌ترین شکلِ ممکن روشن می‌شود. داده‌های سازمان — از اسناد مالی و پرونده‌ها تا نسخه‌های پشتیبان و سوابق مشتریان — به بستری نیاز دارند که هم امن باشد و هم همیشه در دسترس. در DaranX ذخیره‌سازی را نه یک «هارد بزرگ‌ترِ دیگر»، بلکه متناسب با اهمیتِ واقعیِ داده‌ها طراحی می‌کنیم.</p>
+            <p>روش ما با شناخت شروع می‌شود: کدام داده‌ها حیاتی‌اند و نباید لحظه‌ای از دسترس خارج شوند؟ حجمِ داده امروز چقدر است و با چه سرعتی رشد می‌کند؟ کدام داده‌ها به دسترسیِ سریع نیاز دارند و کدام‌ها فقط باید مدت‌ها سالم نگهداری شوند؟ پاسخِ این پرسش‌ها، ظرفیت، کارایی و لایه‌بندیِ درستِ ذخیره‌سازی را مشخص می‌کند.</p>
+            <p>در طراحی به افزونگی و محافظتِ داده در برابر خرابیِ سخت‌افزار فکر می‌کنیم، تا خرابیِ یک دیسک به از دست رفتنِ اطلاعات منجر نشود. به کاراییِ متناسب با نیاز توجه می‌کنیم تا سرویس‌ها کند نشوند، و مهم‌تر از همه، به آمادگی برای پشتیبان‌گیری و بازیابی پس از حادثه. ذخیره‌سازیِ خوب تنها «فضای بیشتر» نیست؛ اطمینان از این است که داده در زمانِ لازم، سالم و در دسترس باشد.</p>
+            <p>اجرا و مستندسازی را طوری انجام می‌دهیم که رشدِ ظرفیت در آینده بدونِ اختلال و بدونِ بازطراحیِ پرهزینه ممکن باشد، و پشتیبانی را از همان ابتدا در نظر می‌گیریم. برای ما، نگهداریِ آسانِ فردا از همین طراحیِ امروز شروع می‌شود.</p>
+            <p>نتیجه، ذخیره‌سازی‌ای است امن، در دسترس و مقیاس‌پذیر؛ پایه‌ای آرام‌بخش که همهٔ سرویس‌های سازمان با خیالِ راحت روی آن می‌نشینند و رشدِ داده دیگر به یک نگرانیِ همیشگی تبدیل نمی‌شود.</p>
+            <p>در نگاهِ DaranX، ذخیره‌سازی یک جزیرهٔ جدا نیست؛ بخشی از یک راهکارِ یکپارچه است که با شبکه، سرور و پشتیبان‌گیری با هم طراحی می‌شود. همین نگاهِ کل‌نگر است که تفاوت می‌سازد: به‌جای کنارِ هم گذاشتنِ چند تجهیز، اجزا را طوری طراحی می‌کنیم که با هم کار کنند و مسئولیتِ نتیجه را هم به عهده می‌گیریم. اگر داده برای کسب‌وکارِ شما مهم است، برای ما هم مهم است — و آن را در جای درستِ خودش نگه می‌داریم.</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- چیست / چرا مهم است -->
+      <div class="sec">
+        <div class="wrap reveal">
+          <div class="cols">
+            <div class="panel stagger">
+              <span class="eyebrow">چیست؟</span>
+              <h3 style="margin-top:.7rem">ذخیره‌سازی</h3>
+              <p>طراحی راهکار ذخیره‌سازی با ظرفیت، کارایی و سطح دسترس‌پذیریِ متناسب با اهمیت داده‌ها.</p>
+              <div class="approach">
+                <span><b>۱</b> شناخت</span><span><b>۲</b> طراحی</span><span><b>۳</b> اجرا</span><span><b>۴</b> پشتیبانی</span>
+              </div>
+            </div>
+            <div class="panel stagger">
+              <span class="eyebrow">چرا مهم است؟</span>
+              <ul class="vlist" style="margin-top:1rem">
+                <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg><span>در دسترس‌بودن داده‌ها</span></li>
+                <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg><span>حفاظت در برابر از دست رفتن داده</span></li>
+                <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg><span>رشد ظرفیت بدون اختلال</span></li>
+              </ul>
+            </div>
+          </div>
         </div>
       </div>
       <div class="sec" style="padding-top:0">

@@ -369,6 +369,25 @@
   @keyframes cbob{0%,100%{transform:translateY(0)}50%{transform:translateY(8px)}}
   @media (prefers-reduced-motion:reduce){.cscroll{animation:none}}
 
+  /* ---- description panel: full-width banner + horizontal (multi-column) text ---- */
+  .fold-motion.desc .wrap{max-width:1120px}
+  .fm-banner{position:relative;margin:0;height:24vh;min-height:150px;max-height:280px;border-radius:var(--r-lg);
+    overflow:hidden;border:1px solid var(--line);box-shadow:var(--shadow-lift);background:var(--surface-2)}
+  .fm-banner img{width:100%;height:100%;object-fit:cover;display:block}
+  .fm-banner.noimg img{display:none}
+  .fm-banner .ph{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;gap:.55rem;
+    color:var(--ink-faint);font-weight:700;font-size:.95rem;
+    background:radial-gradient(120% 130% at 80% 0,color-mix(in srgb,var(--steel) 16%,transparent),transparent 60%),var(--surface-2)}
+  .fm-banner .ph svg{width:30px;height:30px;color:var(--steel);opacity:.8}
+  .fm-banner:not(.noimg) .ph{display:none}
+  .fm-head{margin-top:1.5rem;text-align:center}
+  .fm-head h2{font-size:clamp(1.6rem,1.3rem+1.4vw,2.4rem);margin-top:.5rem}
+  .longcopy.cols3{margin-top:1.6rem;max-width:none;column-count:3;column-gap:2.4rem;
+    color:var(--ink-soft);line-height:1.95;font-size:1rem}
+  .longcopy.cols3 p{margin:0 0 1.05rem;break-inside:avoid}
+  @media (max-width:900px){.longcopy.cols3{column-count:2;column-gap:1.8rem}}
+  @media (max-width:600px){.longcopy.cols3{column-count:1}}
+
   /* ---- portfolio / work-history ---- */
   .portfolio .sec-head{text-align:center;max-width:60ch;margin-inline:auto}
   .portfolio .sec-head h2{font-size:clamp(1.6rem,1.3rem+1.4vw,2.3rem)}
@@ -549,52 +568,7 @@
         </div>
       </div>
 
-      <!-- FOLD 2: motion graphic + long description (300–700 words) -->
-      <div class="fold-motion alt">
-        <div class="wrap fm-grid">
-          <div class="dhero-visual reveal" aria-hidden="true">
-            <div class="dring r1"></div><div class="dring r2"></div>
-            <div class="dcore"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M4 19V5M4 19h16M8 15l3-4 3 2 4-6"/></svg></div>
-          </div>
-          <div class="fm-text reveal">
-            <span class="eyebrow">دربارهٔ داده و تحلیل</span>
-            <h2 style="font-size:clamp(1.6rem,1.3rem+1.4vw,2.3rem);margin-top:.8rem">از دادهٔ پراکنده تا تصمیمِ روشن.</h2>
-            <div class="longcopy">
-              <p>بیشترِ سازمان‌ها داده دارند، اما کمتر سازمانی از داده‌اش تصمیم می‌سازد. داده‌های پراکنده در سیستم‌های مختلف — مالی، فروش، عملیات — تا وقتی یک‌جا و قابل‌فهم نشوند، فقط بارِ اضافه‌اند و کسی به آن‌ها اعتماد نمی‌کند. در DaranX داده و تحلیل را طوری طراحی می‌کنیم که خروجی‌اش مبنای تصمیمِ مدیران باشد، نه گزارشی که کسی نمی‌خواندش.</p>
-              <p>روش ما با یک پرسش شروع می‌شود: چه تصمیمی قرار است بر اساسِ داده گرفته شود؟ وقتی این روشن شد، سراغِ داده‌های لازم و منابعِ آن‌ها می‌رویم. تحلیلِ بدونِ هدف، انبوهی از نمودارِ بی‌استفاده می‌سازد؛ تحلیلِ درست، به یک تصمیمِ مشخص و یک اقدام ختم می‌شود.</p>
-              <p>در طراحی به گردآوری و پاک‌سازیِ داده از منابعِ مختلف فکر می‌کنیم، چون دادهٔ نادرست به تصمیمِ نادرست منجر می‌شود. به شاخص‌هایی می‌پردازیم که واقعاً مهم‌اند، نه هر عددی که قابلِ اندازه‌گیری است، و به داشبورد و گزارش‌هایی که در یک نگاه قابل‌فهم‌اند. هدف این است که مدیر به‌جای غرق‌شدن در جزئیات، تصویری روشن از وضعیت و روندِ پیشِ رویش داشته باشد.</p>
-              <p>اجرا را طوری انجام می‌دهیم که گزارش‌ها زنده و قابل‌اتکا بمانند و با رشدِ سازمان به‌روز شوند، و پشتیبانی را ادامه می‌دهیم. دادهٔ خوب یک پروژهٔ یک‌باره نیست؛ یک قابلیتِ همیشگی است که باید نگهداری شود.</p>
-              <p>نتیجه، تصمیم‌گیریِ داده‌محور، شفافیت بر عملکرد، و کشفِ فرصت‌ها و هزینه‌هایی است که پیش از این در دلِ داده‌ها پنهان بودند و حالا در خدمتِ رشدِ کسب‌وکار قرار می‌گیرند.</p>
-              <p>در نگاهِ DaranX، داده و تحلیل بخشی از یک راهکارِ یکپارچه است که روی زیرساخت و داده‌ای درست بنا می‌شود؛ اجزا را کنارِ هم نمی‌گذاریم، با هم طراحی می‌کنیم. هدفِ نهایی این است که فناوری در خدمتِ تصمیمِ بهترِ کسب‌وکار قرار بگیرد، نه اینکه خودش به یک گزارشِ پیچیدهٔ دیگر تبدیل شود. مسئولیتِ این نتیجه را هم به عهده می‌گیریم.</p>
-              <p>اول مسئله را می‌فهمیم، بعد راهکار پیشنهاد می‌کنیم؛ چون گزارشی که به یک تصمیمِ مشخص ختم نشود، فقط شلوغی است. هدفِ ما این است که داده، در جای درستِ خودش، به یک ابزارِ تصمیم برای مدیریت تبدیل شود.</p>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <!-- FOLD 3+: existing structure -->
-      <div class="sec">
-        <div class="wrap reveal">
-          <div class="cols">
-            <div class="panel stagger">
-              <span class="eyebrow">چیست؟</span>
-              <h3 style="margin-top:.7rem">داده و تحلیل</h3>
-              <p>گردآوری، پاک‌سازی و تحلیل داده و ارائهٔ گزارش‌ها و داشبوردهایی که مبنای تصمیم قرار می‌گیرند.</p>
-              <div class="approach">
-                <span><b>۱</b> شناخت</span><span><b>۲</b> طراحی</span><span><b>۳</b> اجرا</span><span><b>۴</b> پشتیبانی</span>
-              </div>
-            </div>
-            <div class="panel stagger">
-              <span class="eyebrow">چرا مهم است؟</span>
-              <ul class="vlist" style="margin-top:1rem">
-                <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg><span>تصمیم داده‌محور</span></li>
-                <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg><span>شفافیت بر عملکرد</span></li>
-                <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg><span>کشف فرصت و کاهش هزینه</span></li>
-              </ul>
-            </div>
-          </div>
-        </div>
-      </div>
+      <!-- SCREEN 3: portfolio (نمونه‌کارها) -->
 
       <!-- نمونه‌کارها / سابقهٔ کاری -->
       <div class="sec portfolio">
@@ -661,6 +635,54 @@
             </article>
           </div>
           <p class="pf-note">این بخش آمادهٔ نمایش نمونه‌کارهای واقعی شماست. تصویر هر کارت را در مسیر <code>assets/portfolio/data-analytics-1.jpg</code> تا <code>data-analytics-3.jpg</code> قرار دهید و عنوان و توضیح را با پروژهٔ واقعی جایگزین کنید.</p>
+        </div>
+      </div>
+
+      <!-- SCREEN 4: full-width banner + horizontal (multi-column) description -->
+      <div class="fold-motion desc">
+        <div class="wrap">
+          <figure class="fm-banner reveal">
+            <img src="assets/photos/data-analytics.jpg" alt="تصویر داده و تحلیل" loading="lazy"
+                 onerror="this.closest('.fm-banner').classList.add('noimg')">
+            <div class="ph" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M4 19V5M4 19h16M8 15l3-4 3 2 4-6"/></svg><b>تصویر بنر — داده و تحلیل</b></div>
+          </figure>
+          <div class="fm-head reveal">
+            <span class="eyebrow">دربارهٔ داده و تحلیل</span>
+            <h2>از دادهٔ پراکنده تا تصمیمِ روشن.</h2>
+          </div>
+          <div class="longcopy cols3 reveal">
+            <p>بیشترِ سازمان‌ها داده دارند، اما کمتر سازمانی از داده‌اش تصمیم می‌سازد. داده‌های پراکنده در سیستم‌های مختلف — مالی، فروش، عملیات — تا وقتی یک‌جا و قابل‌فهم نشوند، فقط بارِ اضافه‌اند و کسی به آن‌ها اعتماد نمی‌کند. در DaranX داده و تحلیل را طوری طراحی می‌کنیم که خروجی‌اش مبنای تصمیمِ مدیران باشد، نه گزارشی که کسی نمی‌خواندش.</p>
+            <p>روش ما با یک پرسش شروع می‌شود: چه تصمیمی قرار است بر اساسِ داده گرفته شود؟ وقتی این روشن شد، سراغِ داده‌های لازم و منابعِ آن‌ها می‌رویم. تحلیلِ بدونِ هدف، انبوهی از نمودارِ بی‌استفاده می‌سازد؛ تحلیلِ درست، به یک تصمیمِ مشخص و یک اقدام ختم می‌شود.</p>
+            <p>در طراحی به گردآوری و پاک‌سازیِ داده از منابعِ مختلف فکر می‌کنیم، چون دادهٔ نادرست به تصمیمِ نادرست منجر می‌شود. به شاخص‌هایی می‌پردازیم که واقعاً مهم‌اند، نه هر عددی که قابلِ اندازه‌گیری است، و به داشبورد و گزارش‌هایی که در یک نگاه قابل‌فهم‌اند. هدف این است که مدیر به‌جای غرق‌شدن در جزئیات، تصویری روشن از وضعیت و روندِ پیشِ رویش داشته باشد.</p>
+            <p>اجرا را طوری انجام می‌دهیم که گزارش‌ها زنده و قابل‌اتکا بمانند و با رشدِ سازمان به‌روز شوند، و پشتیبانی را ادامه می‌دهیم. دادهٔ خوب یک پروژهٔ یک‌باره نیست؛ یک قابلیتِ همیشگی است که باید نگهداری شود.</p>
+            <p>نتیجه، تصمیم‌گیریِ داده‌محور، شفافیت بر عملکرد، و کشفِ فرصت‌ها و هزینه‌هایی است که پیش از این در دلِ داده‌ها پنهان بودند و حالا در خدمتِ رشدِ کسب‌وکار قرار می‌گیرند.</p>
+            <p>در نگاهِ DaranX، داده و تحلیل بخشی از یک راهکارِ یکپارچه است که روی زیرساخت و داده‌ای درست بنا می‌شود؛ اجزا را کنارِ هم نمی‌گذاریم، با هم طراحی می‌کنیم. هدفِ نهایی این است که فناوری در خدمتِ تصمیمِ بهترِ کسب‌وکار قرار بگیرد، نه اینکه خودش به یک گزارشِ پیچیدهٔ دیگر تبدیل شود. مسئولیتِ این نتیجه را هم به عهده می‌گیریم.</p>
+            <p>اول مسئله را می‌فهمیم، بعد راهکار پیشنهاد می‌کنیم؛ چون گزارشی که به یک تصمیمِ مشخص ختم نشود، فقط شلوغی است. هدفِ ما این است که داده، در جای درستِ خودش، به یک ابزارِ تصمیم برای مدیریت تبدیل شود.</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- چیست / چرا مهم است -->
+      <div class="sec">
+        <div class="wrap reveal">
+          <div class="cols">
+            <div class="panel stagger">
+              <span class="eyebrow">چیست؟</span>
+              <h3 style="margin-top:.7rem">داده و تحلیل</h3>
+              <p>گردآوری، پاک‌سازی و تحلیل داده و ارائهٔ گزارش‌ها و داشبوردهایی که مبنای تصمیم قرار می‌گیرند.</p>
+              <div class="approach">
+                <span><b>۱</b> شناخت</span><span><b>۲</b> طراحی</span><span><b>۳</b> اجرا</span><span><b>۴</b> پشتیبانی</span>
+              </div>
+            </div>
+            <div class="panel stagger">
+              <span class="eyebrow">چرا مهم است؟</span>
+              <ul class="vlist" style="margin-top:1rem">
+                <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg><span>تصمیم داده‌محور</span></li>
+                <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg><span>شفافیت بر عملکرد</span></li>
+                <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg><span>کشف فرصت و کاهش هزینه</span></li>
+              </ul>
+            </div>
+          </div>
         </div>
       </div>
       <div class="sec" style="padding-top:0">

@@ -369,6 +369,25 @@
   @keyframes cbob{0%,100%{transform:translateY(0)}50%{transform:translateY(8px)}}
   @media (prefers-reduced-motion:reduce){.cscroll{animation:none}}
 
+  /* ---- description panel: full-width banner + horizontal (multi-column) text ---- */
+  .fold-motion.desc .wrap{max-width:1120px}
+  .fm-banner{position:relative;margin:0;height:24vh;min-height:150px;max-height:280px;border-radius:var(--r-lg);
+    overflow:hidden;border:1px solid var(--line);box-shadow:var(--shadow-lift);background:var(--surface-2)}
+  .fm-banner img{width:100%;height:100%;object-fit:cover;display:block}
+  .fm-banner.noimg img{display:none}
+  .fm-banner .ph{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;gap:.55rem;
+    color:var(--ink-faint);font-weight:700;font-size:.95rem;
+    background:radial-gradient(120% 130% at 80% 0,color-mix(in srgb,var(--steel) 16%,transparent),transparent 60%),var(--surface-2)}
+  .fm-banner .ph svg{width:30px;height:30px;color:var(--steel);opacity:.8}
+  .fm-banner:not(.noimg) .ph{display:none}
+  .fm-head{margin-top:1.5rem;text-align:center}
+  .fm-head h2{font-size:clamp(1.6rem,1.3rem+1.4vw,2.4rem);margin-top:.5rem}
+  .longcopy.cols3{margin-top:1.6rem;max-width:none;column-count:3;column-gap:2.4rem;
+    color:var(--ink-soft);line-height:1.95;font-size:1rem}
+  .longcopy.cols3 p{margin:0 0 1.05rem;break-inside:avoid}
+  @media (max-width:900px){.longcopy.cols3{column-count:2;column-gap:1.8rem}}
+  @media (max-width:600px){.longcopy.cols3{column-count:1}}
+
   /* ---- portfolio / work-history ---- */
   .portfolio .sec-head{text-align:center;max-width:60ch;margin-inline:auto}
   .portfolio .sec-head h2{font-size:clamp(1.6rem,1.3rem+1.4vw,2.3rem)}
@@ -549,51 +568,7 @@
         </div>
       </div>
 
-      <!-- FOLD 2: motion graphic + long description (300–700 words) -->
-      <div class="fold-motion alt">
-        <div class="wrap fm-grid">
-          <div class="dhero-visual reveal" aria-hidden="true">
-            <div class="dring r1"></div><div class="dring r2"></div>
-            <div class="dcore"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><circle cx="12" cy="12" r="3.2"/><path d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7-10-7-10-7z"/></svg></div>
-          </div>
-          <div class="fm-text reveal">
-            <span class="eyebrow">دربارهٔ دوربین مداربسته</span>
-            <h2 style="font-size:clamp(1.6rem,1.3rem+1.4vw,2.3rem);margin-top:.8rem">دیدِ کامل و مستند بر محیط سازمان.</h2>
-            <div class="longcopy">
-              <p>دوربینِ مداربسته، چشمِ همیشه‌بیدارِ سازمان بر محیط است؛ هم بازدارنده است و هم در زمانِ بروزِ مشکل، مرجعی مستند برای فهمیدنِ آنچه رخ داده. اما ارزشِ واقعیِ آن نه در تعدادِ دوربین‌ها، بلکه در پوششِ درستِ نقاطِ حساس است. در DaranX نظارتِ تصویری را متناسب با مسئلهٔ واقعیِ سازمان طراحی می‌کنیم، نه صرفاً نصبِ چند دوربینِ بیشتر.</p>
-              <p>روش ما با شناخت شروع می‌شود: کدام نقاط از نظرِ امنیت، تردد یا ارزشِ دارایی حساس‌اند؟ چه چیزی باید دیده و ثبت شود و برای چه مدت نگهداری گردد؟ چه کسانی و از کجا باید به تصاویر دسترسی داشته باشند؟ پاسخِ این پرسش‌ها نوع، تعداد و جای درستِ دوربین‌ها را تعیین می‌کند، نه برعکس.</p>
-              <p>در طراحی به پوششِ بدونِ نقطه‌کورِ نقاطِ کلیدی فکر می‌کنیم، به کیفیت و شرایطِ نورِ هر نقطه، به ظرفیت و مدتِ ذخیره‌سازیِ تصاویر متناسب با نیاز، به دسترسیِ امن و از راه دور برای افرادِ مجاز، و به هماهنگی با سایرِ لایه‌های امنیتی مثلِ کنترلِ تردد. نظارتِ خوب یعنی وقتی به آن نیاز داری، دقیقاً همان چیزی را که لازم است ثبت کرده باشد.</p>
-              <p>اجرا را تمیز و قابل‌نگهداری انجام می‌دهیم و پشتیبانی را ادامه می‌دهیم؛ سامانه‌ای که رها شود، درست همان روزی که به آن نیاز داری از کار می‌افتد. برای همین نگهداری را از ابتدا در نظر می‌گیریم.</p>
-              <p>نتیجه، دیدی کامل و مستند بر محیطِ سازمان است که هم از بروزِ مشکل جلوگیری می‌کند و هم در زمانِ لازم، پاسخِ روشن می‌دهد — آرامشی که از احساسِ کنترل بر فضای سازمان می‌آید.</p>
-              <p>برای ما نظارتِ تصویری بخشی از یک راهکارِ امنیتیِ منسجم است که با کنترلِ تردد، دسترسی و پایش هماهنگ می‌شود، نه یک سامانهٔ جدا. همین یکپارچگی است که ارزشِ واقعی می‌سازد. مسئولیتِ نتیجه را هم ادامه می‌دهیم و آنچه را طراحی و اجرا کرده‌ایم، خودمان پشتیبانی می‌کنیم؛ چون رابطه با مشتری با صدورِ فاکتور تمام نمی‌شود.</p>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <!-- FOLD 3+: existing structure -->
-      <div class="sec">
-        <div class="wrap reveal">
-          <div class="cols">
-            <div class="panel stagger">
-              <span class="eyebrow">چیست؟</span>
-              <h3 style="margin-top:.7rem">دوربین مداربسته</h3>
-              <p>طراحی و اجرای سامانهٔ نظارت تصویری با پوشش درست نقاط کلیدی و امکان بازبینی رویدادها.</p>
-              <div class="approach">
-                <span><b>۱</b> شناخت</span><span><b>۲</b> طراحی</span><span><b>۳</b> اجرا</span><span><b>۴</b> پشتیبانی</span>
-              </div>
-            </div>
-            <div class="panel stagger">
-              <span class="eyebrow">چرا مهم است؟</span>
-              <ul class="vlist" style="margin-top:1rem">
-                <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg><span>بازدارندگی در برابر تخلف</span></li>
-                <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg><span>مستندسازی رویدادها</span></li>
-                <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg><span>نظارت پیوسته بر محیط</span></li>
-              </ul>
-            </div>
-          </div>
-        </div>
-      </div>
+      <!-- SCREEN 3: portfolio (نمونه‌کارها) -->
 
       <!-- نمونه‌کارها / سابقهٔ کاری -->
       <div class="sec portfolio">
@@ -660,6 +635,53 @@
             </article>
           </div>
           <p class="pf-note">این بخش آمادهٔ نمایش نمونه‌کارهای واقعی شماست. تصویر هر کارت را در مسیر <code>assets/portfolio/cctv-1.jpg</code> تا <code>cctv-3.jpg</code> قرار دهید و عنوان و توضیح را با پروژهٔ واقعی جایگزین کنید.</p>
+        </div>
+      </div>
+
+      <!-- SCREEN 4: full-width banner + horizontal (multi-column) description -->
+      <div class="fold-motion desc">
+        <div class="wrap">
+          <figure class="fm-banner reveal">
+            <img src="assets/photos/cctv.jpg" alt="تصویر دوربین مداربسته" loading="lazy"
+                 onerror="this.closest('.fm-banner').classList.add('noimg')">
+            <div class="ph" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><circle cx="12" cy="12" r="3.2"/><path d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7-10-7-10-7z"/></svg><b>تصویر بنر — دوربین مداربسته</b></div>
+          </figure>
+          <div class="fm-head reveal">
+            <span class="eyebrow">دربارهٔ دوربین مداربسته</span>
+            <h2>دیدِ کامل و مستند بر محیط سازمان.</h2>
+          </div>
+          <div class="longcopy cols3 reveal">
+            <p>دوربینِ مداربسته، چشمِ همیشه‌بیدارِ سازمان بر محیط است؛ هم بازدارنده است و هم در زمانِ بروزِ مشکل، مرجعی مستند برای فهمیدنِ آنچه رخ داده. اما ارزشِ واقعیِ آن نه در تعدادِ دوربین‌ها، بلکه در پوششِ درستِ نقاطِ حساس است. در DaranX نظارتِ تصویری را متناسب با مسئلهٔ واقعیِ سازمان طراحی می‌کنیم، نه صرفاً نصبِ چند دوربینِ بیشتر.</p>
+            <p>روش ما با شناخت شروع می‌شود: کدام نقاط از نظرِ امنیت، تردد یا ارزشِ دارایی حساس‌اند؟ چه چیزی باید دیده و ثبت شود و برای چه مدت نگهداری گردد؟ چه کسانی و از کجا باید به تصاویر دسترسی داشته باشند؟ پاسخِ این پرسش‌ها نوع، تعداد و جای درستِ دوربین‌ها را تعیین می‌کند، نه برعکس.</p>
+            <p>در طراحی به پوششِ بدونِ نقطه‌کورِ نقاطِ کلیدی فکر می‌کنیم، به کیفیت و شرایطِ نورِ هر نقطه، به ظرفیت و مدتِ ذخیره‌سازیِ تصاویر متناسب با نیاز، به دسترسیِ امن و از راه دور برای افرادِ مجاز، و به هماهنگی با سایرِ لایه‌های امنیتی مثلِ کنترلِ تردد. نظارتِ خوب یعنی وقتی به آن نیاز داری، دقیقاً همان چیزی را که لازم است ثبت کرده باشد.</p>
+            <p>اجرا را تمیز و قابل‌نگهداری انجام می‌دهیم و پشتیبانی را ادامه می‌دهیم؛ سامانه‌ای که رها شود، درست همان روزی که به آن نیاز داری از کار می‌افتد. برای همین نگهداری را از ابتدا در نظر می‌گیریم.</p>
+            <p>نتیجه، دیدی کامل و مستند بر محیطِ سازمان است که هم از بروزِ مشکل جلوگیری می‌کند و هم در زمانِ لازم، پاسخِ روشن می‌دهد — آرامشی که از احساسِ کنترل بر فضای سازمان می‌آید.</p>
+            <p>برای ما نظارتِ تصویری بخشی از یک راهکارِ امنیتیِ منسجم است که با کنترلِ تردد، دسترسی و پایش هماهنگ می‌شود، نه یک سامانهٔ جدا. همین یکپارچگی است که ارزشِ واقعی می‌سازد. مسئولیتِ نتیجه را هم ادامه می‌دهیم و آنچه را طراحی و اجرا کرده‌ایم، خودمان پشتیبانی می‌کنیم؛ چون رابطه با مشتری با صدورِ فاکتور تمام نمی‌شود.</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- چیست / چرا مهم است -->
+      <div class="sec">
+        <div class="wrap reveal">
+          <div class="cols">
+            <div class="panel stagger">
+              <span class="eyebrow">چیست؟</span>
+              <h3 style="margin-top:.7rem">دوربین مداربسته</h3>
+              <p>طراحی و اجرای سامانهٔ نظارت تصویری با پوشش درست نقاط کلیدی و امکان بازبینی رویدادها.</p>
+              <div class="approach">
+                <span><b>۱</b> شناخت</span><span><b>۲</b> طراحی</span><span><b>۳</b> اجرا</span><span><b>۴</b> پشتیبانی</span>
+              </div>
+            </div>
+            <div class="panel stagger">
+              <span class="eyebrow">چرا مهم است؟</span>
+              <ul class="vlist" style="margin-top:1rem">
+                <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg><span>بازدارندگی در برابر تخلف</span></li>
+                <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg><span>مستندسازی رویدادها</span></li>
+                <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg><span>نظارت پیوسته بر محیط</span></li>
+              </ul>
+            </div>
+          </div>
         </div>
       </div>
       <div class="sec" style="padding-top:0">

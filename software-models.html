@@ -369,6 +369,25 @@
   @keyframes cbob{0%,100%{transform:translateY(0)}50%{transform:translateY(8px)}}
   @media (prefers-reduced-motion:reduce){.cscroll{animation:none}}
 
+  /* ---- description panel: full-width banner + horizontal (multi-column) text ---- */
+  .fold-motion.desc .wrap{max-width:1120px}
+  .fm-banner{position:relative;margin:0;height:24vh;min-height:150px;max-height:280px;border-radius:var(--r-lg);
+    overflow:hidden;border:1px solid var(--line);box-shadow:var(--shadow-lift);background:var(--surface-2)}
+  .fm-banner img{width:100%;height:100%;object-fit:cover;display:block}
+  .fm-banner.noimg img{display:none}
+  .fm-banner .ph{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;gap:.55rem;
+    color:var(--ink-faint);font-weight:700;font-size:.95rem;
+    background:radial-gradient(120% 130% at 80% 0,color-mix(in srgb,var(--steel) 16%,transparent),transparent 60%),var(--surface-2)}
+  .fm-banner .ph svg{width:30px;height:30px;color:var(--steel);opacity:.8}
+  .fm-banner:not(.noimg) .ph{display:none}
+  .fm-head{margin-top:1.5rem;text-align:center}
+  .fm-head h2{font-size:clamp(1.6rem,1.3rem+1.4vw,2.4rem);margin-top:.5rem}
+  .longcopy.cols3{margin-top:1.6rem;max-width:none;column-count:3;column-gap:2.4rem;
+    color:var(--ink-soft);line-height:1.95;font-size:1rem}
+  .longcopy.cols3 p{margin:0 0 1.05rem;break-inside:avoid}
+  @media (max-width:900px){.longcopy.cols3{column-count:2;column-gap:1.8rem}}
+  @media (max-width:600px){.longcopy.cols3{column-count:1}}
+
   /* ---- portfolio / work-history ---- */
   .portfolio .sec-head{text-align:center;max-width:60ch;margin-inline:auto}
   .portfolio .sec-head h2{font-size:clamp(1.6rem,1.3rem+1.4vw,2.3rem)}
@@ -549,52 +568,7 @@
         </div>
       </div>
 
-      <!-- FOLD 2: motion graphic + long description (300–700 words) -->
-      <div class="fold-motion alt">
-        <div class="wrap fm-grid">
-          <div class="dhero-visual reveal" aria-hidden="true">
-            <div class="dring r1"></div><div class="dring r2"></div>
-            <div class="dcore"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M8 9l-4 3 4 3M16 9l4 3-4 3M13 5l-2 14"/></svg></div>
-          </div>
-          <div class="fm-text reveal">
-            <span class="eyebrow">دربارهٔ نرم‌افزار و مدل‌های اختصاصی</span>
-            <h2 style="font-size:clamp(1.6rem,1.3rem+1.4vw,2.3rem);margin-top:.8rem">نرم‌افزار و مدلی که با فرآیند شما هماهنگ است.</h2>
-            <div class="longcopy">
-              <p>گاهی راهکارِ آماده برای مسئلهٔ شما وجود ندارد، یا سازمان را مجبور می‌کند خودش را با نرم‌افزار وفق دهد و فرآیندهای درستش را کنار بگذارد. باورِ ما برعکس است: نرم‌افزار باید با فرآیندِ سازمان هماهنگ شود، نه سازمان با نرم‌افزار. در DaranX نرم‌افزار و مدل‌های هوشِ مصنوعیِ اختصاصی را برای نیازِ واقعیِ شما می‌سازیم، دقیقاً به‌اندازهٔ همان مسئله.</p>
-              <p>روش ما با شناخت شروع می‌شود: فرآیندِ واقعیِ سازمان چیست، کجا راهکارهای آماده کم می‌آورند، و چه داده و نیازِ خاصی وجود دارد؟ ساختنِ نرم‌افزار یا مدل، تنها زمانی درست است که پاسخِ یک مسئلهٔ روشن باشد، نه یک تصمیمِ فناوری‌زده. گاهی هم نتیجهٔ این شناخت این است که یک راهکارِ موجود کافی است — و ما همان را صادقانه می‌گوییم.</p>
-              <p>در طراحی به تناسبِ کاملِ راهکار با فرآیند فکر می‌کنیم، به سادگیِ استفاده و نگهداری تا نرم‌افزار به یک بارِ اضافه تبدیل نشود، و به مدل‌هایی که روی دادهٔ خودِ شما آموزش می‌بینند و زبان و شرایطِ کسب‌وکارتان را می‌فهمند. راهکاری که اختصاصی ساخته شود، مزیتی می‌سازد که رقبا نمی‌توانند به‌سادگی کپی کنند.</p>
-              <p>اجرا را مرحله‌ای و قابل‌ارزیابی انجام می‌دهیم و پس از تحویل هم توسعه و پشتیبانی را ادامه می‌دهیم؛ نرم‌افزار موجودی زنده است که با کسب‌وکار رشد می‌کند و رهاکردنش پس از تحویل، یعنی رهاکردنِ نتیجه.</p>
-              <p>نتیجه، راهکاری است دقیقاً به‌اندازهٔ نیازِ شما، با مالکیت و کنترلِ خودتان — نه یک وابستگیِ همیشگی به ابزارِ دیگران؛ فناوری‌ای که در خدمتِ کسب‌وکارِ شماست و در جای درستِ خودش می‌نشیند.</p>
-              <p>در DaranX نرم‌افزار و مدل را روی بستری از زیرساخت و دادهٔ درست بنا می‌کنیم تا در دنیای واقعی کار کنند، نه فقط روی کاغذ. اعتبارِ بلندمدت برای ما مهم‌تر از یک فروشِ کوتاه‌مدت است؛ برای همین صادقانه می‌گوییم چه چیزی لازم است و چه چیزی نه. مسئولیتِ نتیجه را به عهده می‌گیریم و آنچه را ساخته‌ایم، خودمان پشتیبانی می‌کنیم.</p>
-              <p>اول مسئله را می‌فهمیم، بعد می‌سازیم؛ چون نرم‌افزار و مدل وقتی ارزش دارند که پاسخِ یک نیازِ واقعی باشند و در جای درستِ خود، بخشی از راهکارِ کلیِ سازمان شوند.</p>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <!-- FOLD 3+: existing structure -->
-      <div class="sec">
-        <div class="wrap reveal">
-          <div class="cols">
-            <div class="panel stagger">
-              <span class="eyebrow">چیست؟</span>
-              <h3 style="margin-top:.7rem">نرم‌افزار و مدل‌های اختصاصی</h3>
-              <p>توسعهٔ نرم‌افزار متناسب با فرآیند سازمان و ساخت مدل‌های هوش مصنوعی برای داده و نیاز خاص شما.</p>
-              <div class="approach">
-                <span><b>۱</b> شناخت</span><span><b>۲</b> طراحی</span><span><b>۳</b> اجرا</span><span><b>۴</b> پشتیبانی</span>
-              </div>
-            </div>
-            <div class="panel stagger">
-              <span class="eyebrow">چرا مهم است؟</span>
-              <ul class="vlist" style="margin-top:1rem">
-                <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg><span>تناسب کامل با نیاز واقعی</span></li>
-                <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg><span>مزیت رقابتی پایدار</span></li>
-                <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg><span>مالکیت و کنترل راهکار</span></li>
-              </ul>
-            </div>
-          </div>
-        </div>
-      </div>
+      <!-- SCREEN 3: portfolio (نمونه‌کارها) -->
 
       <!-- نمونه‌کارها / سابقهٔ کاری -->
       <div class="sec portfolio">
@@ -661,6 +635,54 @@
             </article>
           </div>
           <p class="pf-note">این بخش آمادهٔ نمایش نمونه‌کارهای واقعی شماست. تصویر هر کارت را در مسیر <code>assets/portfolio/software-models-1.jpg</code> تا <code>software-models-3.jpg</code> قرار دهید و عنوان و توضیح را با پروژهٔ واقعی جایگزین کنید.</p>
+        </div>
+      </div>
+
+      <!-- SCREEN 4: full-width banner + horizontal (multi-column) description -->
+      <div class="fold-motion desc">
+        <div class="wrap">
+          <figure class="fm-banner reveal">
+            <img src="assets/photos/software-models.jpg" alt="تصویر نرم‌افزار و مدل‌های اختصاصی" loading="lazy"
+                 onerror="this.closest('.fm-banner').classList.add('noimg')">
+            <div class="ph" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M8 9l-4 3 4 3M16 9l4 3-4 3M13 5l-2 14"/></svg><b>تصویر بنر — نرم‌افزار و مدل‌های اختصاصی</b></div>
+          </figure>
+          <div class="fm-head reveal">
+            <span class="eyebrow">دربارهٔ نرم‌افزار و مدل‌های اختصاصی</span>
+            <h2>نرم‌افزار و مدلی که با فرآیند شما هماهنگ است.</h2>
+          </div>
+          <div class="longcopy cols3 reveal">
+            <p>گاهی راهکارِ آماده برای مسئلهٔ شما وجود ندارد، یا سازمان را مجبور می‌کند خودش را با نرم‌افزار وفق دهد و فرآیندهای درستش را کنار بگذارد. باورِ ما برعکس است: نرم‌افزار باید با فرآیندِ سازمان هماهنگ شود، نه سازمان با نرم‌افزار. در DaranX نرم‌افزار و مدل‌های هوشِ مصنوعیِ اختصاصی را برای نیازِ واقعیِ شما می‌سازیم، دقیقاً به‌اندازهٔ همان مسئله.</p>
+            <p>روش ما با شناخت شروع می‌شود: فرآیندِ واقعیِ سازمان چیست، کجا راهکارهای آماده کم می‌آورند، و چه داده و نیازِ خاصی وجود دارد؟ ساختنِ نرم‌افزار یا مدل، تنها زمانی درست است که پاسخِ یک مسئلهٔ روشن باشد، نه یک تصمیمِ فناوری‌زده. گاهی هم نتیجهٔ این شناخت این است که یک راهکارِ موجود کافی است — و ما همان را صادقانه می‌گوییم.</p>
+            <p>در طراحی به تناسبِ کاملِ راهکار با فرآیند فکر می‌کنیم، به سادگیِ استفاده و نگهداری تا نرم‌افزار به یک بارِ اضافه تبدیل نشود، و به مدل‌هایی که روی دادهٔ خودِ شما آموزش می‌بینند و زبان و شرایطِ کسب‌وکارتان را می‌فهمند. راهکاری که اختصاصی ساخته شود، مزیتی می‌سازد که رقبا نمی‌توانند به‌سادگی کپی کنند.</p>
+            <p>اجرا را مرحله‌ای و قابل‌ارزیابی انجام می‌دهیم و پس از تحویل هم توسعه و پشتیبانی را ادامه می‌دهیم؛ نرم‌افزار موجودی زنده است که با کسب‌وکار رشد می‌کند و رهاکردنش پس از تحویل، یعنی رهاکردنِ نتیجه.</p>
+            <p>نتیجه، راهکاری است دقیقاً به‌اندازهٔ نیازِ شما، با مالکیت و کنترلِ خودتان — نه یک وابستگیِ همیشگی به ابزارِ دیگران؛ فناوری‌ای که در خدمتِ کسب‌وکارِ شماست و در جای درستِ خودش می‌نشیند.</p>
+            <p>در DaranX نرم‌افزار و مدل را روی بستری از زیرساخت و دادهٔ درست بنا می‌کنیم تا در دنیای واقعی کار کنند، نه فقط روی کاغذ. اعتبارِ بلندمدت برای ما مهم‌تر از یک فروشِ کوتاه‌مدت است؛ برای همین صادقانه می‌گوییم چه چیزی لازم است و چه چیزی نه. مسئولیتِ نتیجه را به عهده می‌گیریم و آنچه را ساخته‌ایم، خودمان پشتیبانی می‌کنیم.</p>
+            <p>اول مسئله را می‌فهمیم، بعد می‌سازیم؛ چون نرم‌افزار و مدل وقتی ارزش دارند که پاسخِ یک نیازِ واقعی باشند و در جای درستِ خود، بخشی از راهکارِ کلیِ سازمان شوند.</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- چیست / چرا مهم است -->
+      <div class="sec">
+        <div class="wrap reveal">
+          <div class="cols">
+            <div class="panel stagger">
+              <span class="eyebrow">چیست؟</span>
+              <h3 style="margin-top:.7rem">نرم‌افزار و مدل‌های اختصاصی</h3>
+              <p>توسعهٔ نرم‌افزار متناسب با فرآیند سازمان و ساخت مدل‌های هوش مصنوعی برای داده و نیاز خاص شما.</p>
+              <div class="approach">
+                <span><b>۱</b> شناخت</span><span><b>۲</b> طراحی</span><span><b>۳</b> اجرا</span><span><b>۴</b> پشتیبانی</span>
+              </div>
+            </div>
+            <div class="panel stagger">
+              <span class="eyebrow">چرا مهم است؟</span>
+              <ul class="vlist" style="margin-top:1rem">
+                <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg><span>تناسب کامل با نیاز واقعی</span></li>
+                <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg><span>مزیت رقابتی پایدار</span></li>
+                <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg><span>مالکیت و کنترل راهکار</span></li>
+              </ul>
+            </div>
+          </div>
         </div>
       </div>
       <div class="sec" style="padding-top:0">
