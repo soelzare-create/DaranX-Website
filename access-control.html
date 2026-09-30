@@ -331,6 +331,30 @@
   .fh-photo.noimg img,.fh-photo.noimg figcaption{display:none}
   .fh-photo:not(.noimg) .ph{display:none}
 
+  /* SCREEN 2: full-bleed image hero with centered horizontal text */
+  .fh-full{position:relative;min-height:100vh;display:grid;place-items:center;overflow:hidden;text-align:center;isolation:isolate;padding-block:5rem}
+  .fh-full .blobs{display:none}
+  .fh-bg{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;z-index:-2}
+  .fh-full.noimg .fh-bg{display:none}
+  .fh-full::before{content:"";position:absolute;inset:0;z-index:-1;
+    background:linear-gradient(180deg,rgba(8,20,34,.74),rgba(8,20,34,.55) 45%,rgba(8,20,34,.85))}
+  .fh-full.noimg{background:radial-gradient(120% 95% at 72% 8%,var(--steel),var(--navy) 62%)}
+  .fh-center{position:relative;z-index:1;max-width:1000px;margin-inline:auto;color:#fff}
+  .fh-full .fh-title,.fh-full h1{color:#fff;text-shadow:0 2px 26px rgba(0,0,0,.4)}
+  .fh-full .fh-lead,.fh-full .lead{color:rgba(255,255,255,.92);max-width:64ch;margin-left:auto;margin-right:auto;text-shadow:0 1px 16px rgba(0,0,0,.35)}
+  .fh-full .chip{color:#eaf2fb;background:rgba(255,255,255,.14);border:1px solid rgba(255,255,255,.3)}
+  .fh-full .crumbs{justify-content:center;color:rgba(255,255,255,.85)}
+  .fh-full .crumbs a{color:#fff}.fh-full .crumbs .sep{color:rgba(255,255,255,.55)}
+  .fh-full .dhero-actions{justify-content:center;margin-top:1.9rem}
+  .fh-full .btn-ghost{color:#fff;border-color:rgba(255,255,255,.55)}
+  .fh-full .btn-ghost:hover{background:rgba(255,255,255,.12)}
+  .fh-full .subnav{margin-top:2.1rem;justify-content:center;gap:.6rem .8rem}
+  .fh-full .subnav a{color:#fff;font-size:1.02rem;font-weight:700;background:rgba(255,255,255,.13);
+    border:1px solid rgba(255,255,255,.28);border-radius:999px;padding:.55rem 1.2rem;backdrop-filter:blur(6px);-webkit-backdrop-filter:blur(6px)}
+  .fh-full .subnav a:hover{background:rgba(255,255,255,.24);border-color:rgba(255,255,255,.45);color:#fff}
+  .fh-full .subnav a.on{background:rgba(255,255,255,.9);color:#0c2038;border-color:transparent}
+  @media (max-width:560px){.fh-full{padding-block:4rem}.fh-full .subnav a{font-size:.95rem;padding:.45rem 1rem}}
+
   .fold-motion{padding-block:var(--sp)}
   .fm-grid{display:grid;grid-template-columns:.82fr 1.18fr;gap:clamp(2rem,5vw,4.5rem);align-items:center}
   .longcopy{margin-top:1rem;color:var(--ink-soft);font-size:1.03rem;line-height:1.95;max-width:66ch}
@@ -539,30 +563,19 @@
         </button>
       </section>
       <!-- FOLD 1: topic headline + real photo + short intro -->
-      <div class="fold-hero">
-        <div class="blobs" aria-hidden="true"><span class="blob b1"></span><span class="blob b2"></span></div>
-        <div class="wrap fh-grid">
-          <div class="fh-text reveal">
-            <div class="crumbs"><a href="solutions.html">راهکارها</a><span class="sep">›</span><a href="security.html">امنیت</a><span class="sep">›</span><span>کنترل تردد</span></div>
-            <span class="chip">Access Control</span>
-            <h1 class="fh-title">مدیریت ورود و خروج به فضاهای سازمان.</h1>
-            <p class="lead fh-lead">امنیت فیزیکی را با کنترل ترددِ هوشمند و متناسب با سطح مجاز هر فرد تأمین می‌کنیم.</p>
-            <div class="dhero-actions">
-              <a class="btn btn-primary" href="tel:+982188964116">درخواست مشاوره</a>
-              <a class="btn btn-ghost" href="security.html">حوزهٔ امنیت</a>
-            </div>
-            <div class="subnav"><a class="" href="network-security.html">امنیت شبکه</a><a class="" href="cctv.html">دوربین مداربسته</a><a class="" href="access-monitoring.html">دسترسی و پایش</a><a class="on" href="access-control.html">کنترل تردد</a></div>
+      <div class="fold-hero fh-full">
+        <img class="fh-bg" src="assets/photos/home-2.png" alt="" loading="lazy"
+             onerror="this.closest('.fh-full').classList.add('noimg')">
+        <div class="wrap fh-center reveal">
+          <div class="crumbs"><a href="solutions.html">راهکارها</a><span class="sep">›</span><a href="security.html">امنیت</a><span class="sep">›</span><span>کنترل تردد</span></div>
+          <span class="chip">Access Control</span>
+          <h1 class="fh-title">مدیریت ورود و خروج به فضاهای سازمان.</h1>
+          <p class="lead fh-lead">امنیت فیزیکی را با کنترل ترددِ هوشمند و متناسب با سطح مجاز هر فرد تأمین می‌کنیم.</p>
+          <div class="dhero-actions">
+            <a class="btn btn-primary" href="tel:+982188964116">درخواست مشاوره</a>
+            <a class="btn btn-ghost" href="security.html">حوزهٔ امنیت</a>
           </div>
-          <figure class="fh-photo reveal">
-            <img src="assets/photos/access-control.jpg" alt="تصویر واقعی کنترل تردد" loading="lazy"
-                 onerror="this.closest('.fh-photo').classList.add('noimg')">
-            <figcaption>کنترل تردد — Access Control</figcaption>
-            <div class="ph" aria-hidden="true">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><rect x="3" y="8" width="18" height="12" rx="2"/><path d="M8 8V6a4 4 0 0 1 8 0v2M12 13v3"/></svg>
-              <b>تصویر واقعی: کنترل تردد</b>
-              <span>این کادر با عکس واقعیِ شما جایگزین می‌شود<br>(assets/photos/access-control.jpg)</span>
-            </div>
-          </figure>
+          <div class="subnav"><a class="" href="network-security.html">امنیت شبکه</a><a class="" href="cctv.html">دوربین مداربسته</a><a class="" href="access-monitoring.html">دسترسی و پایش</a><a class="on" href="access-control.html">کنترل تردد</a></div>
         </div>
       </div>
 
