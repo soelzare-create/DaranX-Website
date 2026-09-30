@@ -12,11 +12,10 @@
 
 name: deploy-to-cpanel
 
-# ⏸ موقتاً غیرفعال: تریگر push کامنت شده تا با هر push خودکار اجرا (و قرمز) نشود.
-#    برای فعال‌سازی دوباره، فقط دو خط push زیر را از حالت کامنت خارج کنید.
+# ✅ فعال: با هر push روی main، سایت خودکار روی هاست cPanel از طریق FTPS منتشر می‌شود.
 on:
-  # push:
-  #   branches: ["main"]
+  push:
+    branches: ["main"]
   workflow_dispatch:        # اجرای دستی از تب Actions همچنان ممکن است
 
 concurrency:
