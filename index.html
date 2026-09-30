@@ -743,6 +743,30 @@
   .longcopy.cols3{margin-top:1.6rem;max-width:none;color:var(--ink-soft);line-height:2.05;font-size:1.04rem}
   .longcopy.cols3 p{margin:0 0 1.1rem}
 </style>
+<style id="fhfullcss">
+  /* SCREEN 2: full-bleed image hero with centered horizontal text */
+  .fh-full{position:relative;min-height:100vh;display:grid;place-items:center;overflow:hidden;text-align:center;isolation:isolate;padding-block:5rem}
+  .fh-full .blobs{display:none}
+  .fh-bg{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;z-index:-2}
+  .fh-full.noimg .fh-bg{display:none}
+  .fh-full::before{content:"";position:absolute;inset:0;z-index:-1;
+    background:linear-gradient(180deg,rgba(8,20,34,.74),rgba(8,20,34,.55) 45%,rgba(8,20,34,.85))}
+  .fh-full.noimg{background:radial-gradient(120% 95% at 72% 8%,var(--steel),var(--navy) 62%)}
+  .fh-center{position:relative;z-index:1;max-width:1000px;color:#fff}
+  .fh-center .hero-pill{color:#eaf2fb;background:rgba(255,255,255,.12);border-color:rgba(255,255,255,.28)}
+  .fh-full h1{color:#fff;text-shadow:0 2px 26px rgba(0,0,0,.4)}
+  .fh-full h1 .grad-text{background:linear-gradient(90deg,#c7ddf5,#6ea8dd);-webkit-background-clip:text;background-clip:text;color:transparent}
+  .fh-full .lead{color:rgba(255,255,255,.92);max-width:62ch;margin:1.2rem auto 0;font-size:1.12rem;text-shadow:0 1px 16px rgba(0,0,0,.35)}
+  .fh-full .hero-actions{justify-content:center;margin-top:1.9rem}
+  .fh-full .btn-ghost{color:#fff;border-color:rgba(255,255,255,.55)}
+  .fh-full .btn-ghost:hover{background:rgba(255,255,255,.12)}
+  .fh-full .hero-tagline{margin-top:2.3rem;display:flex;flex-wrap:wrap;justify-content:center;gap:.7rem 1rem;border:0;padding:0}
+  .fh-full .hero-tagline span{display:inline-flex;align-items:center;color:#fff;font-size:1.08rem;font-weight:800;
+    background:rgba(255,255,255,.12);border:1px solid rgba(255,255,255,.26);border-radius:999px;padding:.55rem 1.35rem;
+    backdrop-filter:blur(6px);-webkit-backdrop-filter:blur(6px)}
+  .fh-full .hero-tagline span::after,.fh-full .hero-tagline span:last-child::after{content:none}
+  @media (max-width:560px){.fh-full{padding-block:4rem}.fh-full .hero-tagline span{font-size:.95rem;padding:.45rem 1rem}}
+</style>
 <div class="progress" aria-hidden="true"><span id="prog"></span></div>
 
 <div dir="rtl" lang="fa">
@@ -794,34 +818,24 @@
     </section>
 
 
-    <!-- HERO -->
-    <section class="hero fold-hero">
-      <div class="blobs" aria-hidden="true"><span class="blob b1"></span><span class="blob b2"></span><span class="blob b3"></span></div>
-      <div class="wrap fh-grid">
-        <div>
-          <span class="hero-pill"><span class="dot"></span>شریک فناوری سازمان‌ها و کسب‌وکارها</span>
-          <h1>
-            <span class="ln"><span>همه چیز</span></span>
-            <span class="ln"><span class="grad-text">سر جای درستش.</span></span>
-          </h1>
-          <p class="lead">DaranX زیرساخت، امنیت و فناوری‌های هوشمند را از شناخت و طراحی تا اجرا و پشتیبانی، به‌عنوان اجزای یک راهکار واحد طراحی می‌کند — نه مجموعه‌ای از تجهیزات کنار هم.</p>
-          <div class="hero-actions">
-            <a href="#contact" class="btn btn-primary">گفتگو درباره مسئله شما</a>
-            <a href="#services" class="btn btn-ghost">دیدن حوزه‌های کاری</a>
-          </div>
-          <div class="hero-tagline">
-            <span><b>شناخت</b></span><span><b>طراحی</b></span><span><b>اجرا</b></span><span><b>پشتیبانی</b></span>
-          </div>
+    <!-- SCREEN 2: full-bleed image + centered horizontal text -->
+    <section class="hero fold-hero fh-full">
+      <img class="fh-bg" src="assets/photos/home-2.png" alt="" loading="lazy"
+           onerror="this.closest('.fh-full').classList.add('noimg')">
+      <div class="wrap fh-center reveal">
+        <span class="hero-pill"><span class="dot"></span>شریک فناوری سازمان‌ها و کسب‌وکارها</span>
+        <h1>
+          <span class="ln"><span>همه چیز</span></span>
+          <span class="ln"><span class="grad-text">سر جای درستش.</span></span>
+        </h1>
+        <p class="lead">DaranX زیرساخت، امنیت و فناوری‌های هوشمند را از شناخت و طراحی تا اجرا و پشتیبانی، به‌عنوان اجزای یک راهکار واحد طراحی می‌کند — نه مجموعه‌ای از تجهیزات کنار هم.</p>
+        <div class="hero-actions">
+          <a href="#contact" class="btn btn-primary">گفتگو درباره مسئله شما</a>
+          <a href="#services" class="btn btn-ghost">دیدن حوزه‌های کاری</a>
         </div>
-        <figure class="fh-photo reveal">
-          <img src="assets/photos/home.png" alt="تصویر واقعی DaranX" loading="lazy" onerror="this.closest('.fh-photo').classList.add('noimg')">
-          <figcaption>DaranX — شریک فناوری سازمان‌ها</figcaption>
-          <div class="ph" aria-hidden="true">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M12 2v20M2 12h20"/><circle cx="12" cy="12" r="9"/></svg>
-            <b>تصویر واقعی: DaranX</b>
-            <span>این کادر با عکس واقعیِ شما جایگزین می‌شود<br>(assets/photos/home.png)</span>
-          </div>
-        </figure>
+        <div class="hero-tagline">
+          <span><b>شناخت</b></span><span><b>طراحی</b></span><span><b>اجرا</b></span><span><b>پشتیبانی</b></span>
+        </div>
       </div>
     </section>
     <!-- نمونه‌کارها (screen 3) -->
