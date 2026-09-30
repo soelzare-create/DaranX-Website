@@ -476,6 +476,11 @@
   .fh-full .dhero-actions{justify-content:center;margin-top:1.9rem}
   .fh-full .btn-ghost{color:#fff;border-color:rgba(255,255,255,.55)}
   .fh-full .btn-ghost:hover{background:rgba(255,255,255,.12)}
+  /* busy themed image: blur + stronger scrim so baked-in text doesn't clash */
+  .fh-busy .fh-bg{filter:blur(5px) brightness(.6) saturate(1.05);transform:scale(1.08)}
+  .fh-busy::before{background:
+    radial-gradient(95% 75% at 50% 46%,rgba(7,16,30,.88),rgba(7,16,30,.6) 68%,transparent),
+    linear-gradient(180deg,rgba(8,20,34,.66),rgba(8,20,34,.82))}
   @media (max-width:560px){.fh-full{padding-block:4rem}}
 </style>
 <div class="progress" aria-hidden="true"><span id="prog"></span></div>
@@ -526,7 +531,7 @@
       </button>
     </section>
 
-    <div class="fold-hero fh-full">
+    <div class="fold-hero fh-full fh-busy">
         <img class="fh-bg" src="assets/photos/infrastructure-2.png" alt="" loading="lazy"
              onerror="this.closest('.fh-full').classList.add('noimg')">
         <div class="wrap fh-center reveal">
