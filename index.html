@@ -136,6 +136,13 @@
     border-bottom:1px solid transparent;transition:border-color .3s, background .3s;
   }
   header.nav.scrolled{border-bottom-color:var(--line);background:color-mix(in srgb, var(--ground) 92%, transparent)}
+  /* transparent bar over the homepage hero so the image (and its DaranX logo) shows through */
+  header.nav.over-hero{background:transparent;backdrop-filter:none;-webkit-backdrop-filter:none;border-bottom-color:transparent}
+  header.nav.over-hero .brand,header.nav.over-hero .nav-links a{color:#fff;text-shadow:0 1px 12px rgba(0,0,0,.35)}
+  header.nav.over-hero .brand .x{color:var(--steel-soft)}
+  header.nav.over-hero .logomark{filter:brightness(0) invert(1)}
+  header.nav.over-hero .theme-toggle{color:#fff;border-color:rgba(255,255,255,.45)}
+  header.nav.over-hero .menu-btn{color:#fff}
   .nav-inner{display:flex;align-items:center;justify-content:space-between;gap:1rem;height:72px}
   .brand{display:flex;align-items:center;gap:.6rem;font-weight:900;font-size:1.3rem;color:var(--ink)}
   .brand .x{color:var(--steel)}
@@ -1390,7 +1397,7 @@
       dots.forEach(function(d,i){d.setAttribute('aria-current',i===idx?'true':'false');});
       if(prog)prog.style.width=(idx/(panels.length-1)*100)+'%';
       panels.forEach(function(p,i){p.style.pointerEvents=i===idx?'auto':'none';p.setAttribute('aria-hidden',i===idx?'false':'true');});
-      if(nav)nav.classList.add('scrolled');
+      if(nav){var overHero=(idx===0);nav.classList.toggle('over-hero',overHero);nav.classList.toggle('scrolled',!overHero);}
       if(window.__dxmap){try{setTimeout(function(){window.__dxmap.invalidateSize();},120);}catch(e){}}
     }
     function setActive(n){idx=n;panels.forEach(function(p,i){p.classList.toggle('active',i===idx);p.classList.remove('out');clearT(p);});chrome();fit(panels[idx]);assemble(panels[idx]);}
