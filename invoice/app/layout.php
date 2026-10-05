@@ -10,6 +10,8 @@ const NAV = [
     'inv' => ['فاکتورها', ['p' => 'docs', 'type' => 'inv']],
     'customers' => ['مشتریان', ['p' => 'customers']],
     'payments' => ['دریافت‌ها', ['p' => 'payments']],
+    'purchases' => ['خریدها', ['p' => 'purchases']],
+    'expenses' => ['پرداخت‌ها', ['p' => 'expenses']],
     'assistant' => ['دستیار', ['p' => 'assistant']],
     'import' => ['ورود از اکسل', ['p' => 'import']],
     'settings' => ['تنظیمات', ['p' => 'settings']],
@@ -176,5 +178,104 @@ function customer_fields(array $c): void
   </div>
   <label class="field"><span>یادداشت</span>
     <textarea name="note" rows="2" maxlength="1000"><?= e($c['note'] ?? '') ?></textarea></label>
+<?php
+}
+
+/** «INV-0003 — customer» label for an invoice in a <select>. */
+function invoice_option_label(array $d): string
+{
+    return $d['number'] . ' — ' . $d['cust_name'] . ' — ' . money($d['total'])
+        . ($d['status'] === 'cancelled' ? ' (باطل‌شده)' : '');
+}
+
+/** Shared fields of the add/edit purchase form. $f holds display strings. */
+function purchase_fields(array $f, array $invoices, array $suppliers): void
+{
+    ?>
+  <div class="fgrid">
+    <label class="field"><span>فاکتور مربوط</span>
+      <select name="doc_id" required>
+        <option value="">— انتخاب فاکتور —</option>
+        <?php foreach ($invoices as $d): ?>
+          <option value="<?= (int) $d['id'] ?>"<?= (string) $d['id'] === (string) ($f['doc_id'] ?? '') ? ' selected' : '' ?>><?= e(invoice_option_label($d)) ?></option>
+        <?php endforeach; ?>
+      </select></label>
+    <label class="field"><span>تأمین‌کننده <small>(فروشنده)</small></span>
+      <input name="supplier" value="<?= e($f['supplier'] ?? '') ?>" list="supList" maxlength="150" autocomplete="off">
+      <datalist id="supList"><?php foreach ($suppliers as $s): ?><option value="<?= e($s) ?>"><?php endforeach; ?></datalist></label>
+  </div>
+  <label class="field"><span>شرح خرید <small>(چه چیزی خریده شد)</small></span>
+    <input name="title" value="<?= e($f['title'] ?? '') ?>" required maxlength="300"></label>
+  <div class="fgrid">
+    <label class="field"><span>مبلغ خرید (<?= e(setting('unit')) ?>)</span>
+      <input name="amount" class="money" inputmode="decimal" value="<?= e($f['amount'] ?? '') ?>" required placeholder="۰"></label>
+    <label class="field"><span>تاریخ</span>
+      <input name="date" value="<?= e($f['date'] ?? '') ?>" required placeholder="۱۴۰۵/۰۱/۰۱"></label>
+  </div>
+  <label class="field"><span>توضیح <small>(اختیاری؛ مثلاً شماره فاکتور فروشنده)</small></span>
+    <input name="note" value="<?= e($f['note'] ?? '') ?>" maxlength="300"></label>
+<?php
+}
+
+/**
+ * Shared fields of the add/edit expense (payment out) form. The direct-only
+ * part (invoice + purchase) is hidden by app.js when «سربار» is chosen; the
+ * server ignores it for overhead either way.
+ */
+function expense_fields(array $f, array $invoices, array $purchases, array $payees): void
+{
+    $kind = ($f['kind'] ?? 'direct') === 'overhead' ? 'overhead' : 'direct';
+    ?>
+  <div class="field"><span>نوع پرداخت</span>
+    <div class="kind-pick">
+      <?php foreach (EXPENSE_KINDS as $k => $label): ?>
+        <label class="chk"><input type="radio" name="kind" value="<?= e($k) ?>"<?= $k === $kind ? ' checked' : '' ?>> <?= e($label) ?></label>
+      <?php endforeach; ?>
+    </div>
+  </div>
+  <div class="fgrid direct-only"<?= $kind === 'overhead' ? ' hidden' : '' ?>>
+    <label class="field"><span>فاکتور مربوط</span>
+      <select name="doc_id">
+        <option value="">— انتخاب فاکتور —</option>
+        <?php foreach ($invoices as $d): ?>
+          <option value="<?= (int) $d['id'] ?>"<?= (string) $d['id'] === (string) ($f['doc_id'] ?? '') ? ' selected' : '' ?>><?= e(invoice_option_label($d)) ?></option>
+        <?php endforeach; ?>
+      </select></label>
+    <label class="field"><span>بابت خرید <small>(اختیاری)</small></span>
+      <select name="purchase_id">
+        <option value="">— بدون خرید (هزینهٔ دیگر، مثل پیک) —</option>
+        <?php foreach ($purchases as $p): ?>
+          <option value="<?= (int) $p['id'] ?>" data-doc="<?= (int) $p['doc_id'] ?>" data-supplier="<?= e($p['supplier']) ?>"
+            <?= (string) $p['id'] === (string) ($f['purchase_id'] ?? '') ? ' selected' : '' ?>><?= e($p['number'] . ' — ' . $p['title']
+              . ($p['supplier'] !== '' ? ' (' . $p['supplier'] . ')' : '') . ' — ' . $p['doc_number']
+              . (purchase_left($p) >= 0.5 ? ' — مانده ' . money(purchase_left($p)) : ' — پرداخت‌شده')) ?></option>
+        <?php endforeach; ?>
+      </select>
+      <small class="muted">پرداخت بابت یک خرید، همان خرید را تسویه می‌کند و هزینهٔ جدیدی به فاکتور اضافه نمی‌کند.</small></label>
+  </div>
+  <div class="fgrid">
+    <label class="field"><span>بابت <small>(دستهٔ هزینه)</small></span>
+      <input name="category" value="<?= e($f['category'] ?? '') ?>" list="<?= $kind === 'overhead' ? 'catOverhead' : 'catDirect' ?>"
+             maxlength="80" autocomplete="off" placeholder="<?= $kind === 'overhead' ? 'مثلاً اجاره' : 'مثلاً پیک' ?>">
+      <datalist id="catDirect"><?php foreach (DIRECT_CATEGORIES as $c): ?><option value="<?= e($c) ?>"><?php endforeach; ?></datalist>
+      <datalist id="catOverhead"><?php foreach (OVERHEAD_CATEGORIES as $c): ?><option value="<?= e($c) ?>"><?php endforeach; ?></datalist></label>
+    <label class="field"><span>پرداخت به <small>(گیرنده)</small></span>
+      <input name="payee" value="<?= e($f['payee'] ?? '') ?>" list="payeeList" maxlength="150" autocomplete="off">
+      <datalist id="payeeList"><?php foreach ($payees as $s): ?><option value="<?= e($s) ?>"><?php endforeach; ?></datalist></label>
+  </div>
+  <div class="fgrid">
+    <label class="field"><span>مبلغ (<?= e(setting('unit')) ?>)</span>
+      <input name="amount" class="money" inputmode="decimal" value="<?= e($f['amount'] ?? '') ?>" required placeholder="۰"></label>
+    <label class="field"><span>تاریخ</span>
+      <input name="date" value="<?= e($f['date'] ?? '') ?>" required placeholder="۱۴۰۵/۰۱/۰۱"></label>
+    <label class="field"><span>روش پرداخت</span>
+      <select name="method">
+        <?php foreach (PAY_METHODS as $m): ?>
+          <option<?= $m === ($f['method'] ?? '') ? ' selected' : '' ?>><?= e($m) ?></option>
+        <?php endforeach; ?>
+      </select></label>
+  </div>
+  <label class="field"><span>توضیح <small>(اختیاری)</small></span>
+    <input name="note" value="<?= e($f['note'] ?? '') ?>" maxlength="300"></label>
 <?php
 }

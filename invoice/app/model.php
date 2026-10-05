@@ -13,6 +13,14 @@ const DOC_PREFIX = ['qot' => 'QOT-', 'inv' => 'INV-'];
 const PAY_METHODS = ['نقدی', 'کارت به کارت', 'واریز / حواله', 'چک', 'سایر'];
 const MAX_AMOUNT = 1e15;
 
+const PURCHASE_PREFIX = 'PUR-';
+const EXPENSE_KINDS = ['direct' => 'هزینهٔ مستقیم فاکتور', 'overhead' => 'هزینهٔ سربار شرکت'];
+const EXPENSE_KIND_SHORT = ['direct' => 'مستقیم', 'overhead' => 'سربار'];
+// Suggestions only (the category field is free text).
+const DIRECT_CATEGORIES = ['پرداخت بابت خرید', 'پیک / حمل‌ونقل', 'نصب و اجرا', 'سایر'];
+const OVERHEAD_CATEGORIES = ['اجاره', 'حقوق و دستمزد', 'قبوض و شارژ', 'تبلیغات', 'ملزومات اداری',
+    'ایاب و ذهاب', 'سایر'];
+
 const SETTING_DEFAULTS = [
     'company_name' => 'شرکت فناوری اطلاعات داران',
     'company_tagline' => 'همه چیز سرِ جای درستش.',
@@ -510,7 +518,15 @@ function doc_set_status(int $id, string $status): void
 
 function doc_delete(int $id): void
 {
-    db()->prepare('DELETE FROM docs WHERE id = ?')->execute([$id]);
+    tx(function (PDO $pdo) use ($id) {
+        $st = $pdo->prepare('SELECT (SELECT COUNT(*) FROM purchases WHERE doc_id = ?)
+                                  + (SELECT COUNT(*) FROM expenses WHERE doc_id = ?)');
+        $st->execute([$id, $id]);
+        if ((int) $st->fetchColumn() > 0) {
+            throw new UserError('این فاکتور خرید یا هزینهٔ ثبت‌شده دارد؛ اول آن‌ها را حذف کنید یا به فاکتور دیگری بدهید.');
+        }
+        $pdo->prepare('DELETE FROM docs WHERE id = ?')->execute([$id]);
+    });
 }
 
 function docs_list(string $type, string $q = '', int $customerId = 0, int $limit = 300): array
@@ -644,6 +660,314 @@ function payments_list(string $q = '', int $limit = 300): array
     return $st->fetchAll();
 }
 
+// --- Shared input checks for purchases / expenses --------------------------
+
+function amount_in($v, string $what): int
+{
+    $amount = parse_num($v ?? '');
+    if ($amount === null || $amount <= 0) {
+        throw new UserError($what . ' را درست وارد کنید.');
+    }
+    if ($amount > MAX_AMOUNT) {
+        throw new UserError($what . ' بیش از حد بزرگ است.');
+    }
+    return (int) round($amount);
+}
+
+function date_in($v): string
+{
+    $date = jdate_norm($v ?? '');
+    if ($date === null) {
+        throw new UserError('تاریخ معتبر نیست؛ آن را مثل ۱۴۰۵/۰۱/۲۰ وارد کنید.');
+    }
+    return $date;
+}
+
+/** Invoices a purchase or a direct cost can be assigned to (newest first). */
+function invoice_options(int $keepId = 0): array
+{
+    $st = db()->prepare("SELECT id, number, cust_name, total, status FROM docs
+                         WHERE type = 'inv' AND (status = 'active' OR id = ?)
+                         ORDER BY date DESC, id DESC LIMIT 500");
+    $st->execute([$keepId]);
+    return $st->fetchAll();
+}
+
+/** Check an invoice reference. A cancelled invoice can be kept, but not newly chosen. */
+function invoice_ref(int $docId, int $currentId = 0): int
+{
+    $d = $docId ? doc_get($docId) : null;
+    if (!$d || $d['type'] !== 'inv') {
+        throw new UserError('فاکتور مربوط را انتخاب کنید.');
+    }
+    if ($d['status'] !== 'active' && $docId !== $currentId) {
+        throw new UserError('فاکتور ' . $d['number'] . ' باطل شده است؛ یک فاکتور فعال انتخاب کنید.');
+    }
+    return $docId;
+}
+
+// --- Purchases (the cost side of an invoice) --------------------------------
+
+const PURCHASE_SQL = "SELECT p.*, d.number AS doc_number, d.cust_name, d.status AS doc_status,
+        COALESCE((SELECT SUM(e.amount) FROM expenses e WHERE e.purchase_id = p.id), 0) AS paid
+    FROM purchases p JOIN docs d ON d.id = p.doc_id";
+
+function purchase_get(int $id): ?array
+{
+    $st = db()->prepare(PURCHASE_SQL . ' WHERE p.id = ?');
+    $st->execute([$id]);
+    return $st->fetch() ?: null;
+}
+
+function purchase_next_number(): string
+{
+    $max = 0;
+    foreach (db()->query('SELECT number FROM purchases')->fetchAll(PDO::FETCH_COLUMN) as $n) {
+        if (preg_match('/(\d+)\s*$/', $n, $m)) {
+            $max = max($max, (int) $m[1]);
+        }
+    }
+    return PURCHASE_PREFIX . str_pad((string) ($max + 1), 4, '0', STR_PAD_LEFT);
+}
+
+function purchase_validate(array $in, ?array $old = null): array
+{
+    $p = [
+        'doc_id' => invoice_ref((int) ($in['doc_id'] ?? 0), $old ? (int) $old['doc_id'] : 0),
+        'supplier' => clean_line($in['supplier'] ?? '', 150),
+        'title' => clean_line($in['title'] ?? '', 300),
+        'amount' => amount_in($in['amount'] ?? '', 'مبلغ خرید'),
+        'date' => date_in($in['date'] ?? ''),
+        'note' => clean_line($in['note'] ?? '', 300),
+    ];
+    if ($p['title'] === '') {
+        throw new UserError('شرح خرید را بنویسید (چه چیزی خریده شد).');
+    }
+    return $p;
+}
+
+function purchase_save(array $p, ?int $id = null): int
+{
+    return tx(function (PDO $pdo) use ($p, $id) {
+        if ($id === null) {
+            $pdo->prepare('INSERT INTO purchases (number, date, doc_id, supplier, title, amount, note, created_at)
+                           VALUES (?, ?, ?, ?, ?, ?, ?, ?)')
+                ->execute([purchase_next_number(), $p['date'], $p['doc_id'], $p['supplier'], $p['title'],
+                    $p['amount'], $p['note'], now()]);
+            return (int) $pdo->lastInsertId();
+        }
+        $pdo->prepare('UPDATE purchases SET date = ?, doc_id = ?, supplier = ?, title = ?, amount = ?, note = ?
+                       WHERE id = ?')
+            ->execute([$p['date'], $p['doc_id'], $p['supplier'], $p['title'], $p['amount'], $p['note'], $id]);
+        // Payments made for this purchase follow it to its (possibly new) invoice.
+        $pdo->prepare('UPDATE expenses SET doc_id = ? WHERE purchase_id = ?')->execute([$p['doc_id'], $id]);
+        return $id;
+    });
+}
+
+function purchase_delete(int $id): void
+{
+    tx(function (PDO $pdo) use ($id) {
+        $st = $pdo->prepare('SELECT COUNT(*) FROM expenses WHERE purchase_id = ?');
+        $st->execute([$id]);
+        if ((int) $st->fetchColumn() > 0) {
+            throw new UserError('برای این خرید پرداخت ثبت شده است؛ اول پرداخت‌های آن را حذف کنید.');
+        }
+        $pdo->prepare('DELETE FROM purchases WHERE id = ?')->execute([$id]);
+    });
+}
+
+function purchases_list(string $q = '', int $docId = 0, int $limit = 300): array
+{
+    $sql = PURCHASE_SQL . ' WHERE 1 = 1';
+    $args = [];
+    if ($docId) {
+        $sql .= ' AND p.doc_id = ?';
+        $args[] = $docId;
+    }
+    if ($q !== '') {
+        $sql .= " AND (p.number LIKE ? ESCAPE '\\' OR d.number LIKE ? ESCAPE '\\' OR p.supplier LIKE ? ESCAPE '\\'
+                       OR p.title LIKE ? ESCAPE '\\' OR d.cust_name LIKE ? ESCAPE '\\')";
+        $num = '%' . like_escape(en_digits($q)) . '%';
+        $txt = '%' . like_escape(fa_norm($q)) . '%';
+        array_push($args, $num, $num, $txt, $txt, $txt);
+    }
+    $sql .= ' ORDER BY p.date DESC, p.id DESC LIMIT ' . (int) $limit;
+    $st = db()->prepare($sql);
+    $st->execute($args);
+    return $st->fetchAll();
+}
+
+/** How much of a purchase is still unpaid to its supplier. */
+function purchase_left(array $p): float
+{
+    return max(0.0, (float) $p['amount'] - (float) $p['paid']);
+}
+
+function purchase_badge(array $p): string
+{
+    $left = purchase_left($p);
+    if ($left < 0.5) {
+        return '<span class="badge ok">پرداخت‌شده</span>';
+    }
+    if ((float) $p['paid'] > 0) {
+        return '<span class="badge warn">مانده ' . money($left) . '</span>';
+    }
+    return '<span class="badge danger">پرداخت‌نشده</span>';
+}
+
+function suppliers_known(): array
+{
+    return db()->query("SELECT DISTINCT supplier FROM purchases WHERE supplier <> '' ORDER BY supplier")
+        ->fetchAll(PDO::FETCH_COLUMN);
+}
+
+// --- Expenses (money paid out: direct per invoice, or company overhead) ----
+
+const EXPENSE_SQL = "SELECT e.*, d.number AS doc_number, d.cust_name, p.number AS purchase_number
+    FROM expenses e LEFT JOIN docs d ON d.id = e.doc_id LEFT JOIN purchases p ON p.id = e.purchase_id";
+
+function expense_get(int $id): ?array
+{
+    $st = db()->prepare(EXPENSE_SQL . ' WHERE e.id = ?');
+    $st->execute([$id]);
+    return $st->fetch() ?: null;
+}
+
+function expense_validate(array $in, ?array $old = null): array
+{
+    $kind = ($in['kind'] ?? '') === 'overhead' ? 'overhead' : 'direct';
+    $method = clean_line($in['method'] ?? '', 40);
+    $e = [
+        'kind' => $kind,
+        'doc_id' => null,
+        'purchase_id' => null,
+        'category' => clean_line($in['category'] ?? '', 80),
+        'payee' => clean_line($in['payee'] ?? '', 150),
+        'amount' => amount_in($in['amount'] ?? '', 'مبلغ پرداختی'),
+        'date' => date_in($in['date'] ?? ''),
+        'method' => in_array($method, PAY_METHODS, true) ? $method : 'سایر',
+        'note' => clean_line($in['note'] ?? '', 300),
+    ];
+    if ($kind === 'direct') {
+        $pid = (int) ($in['purchase_id'] ?? 0);
+        if ($pid) {
+            $p = purchase_get($pid);
+            if (!$p) {
+                throw new UserError('خرید انتخاب‌شده پیدا نشد.');
+            }
+            // A purchase payment always belongs to that purchase's invoice.
+            $e['purchase_id'] = $pid;
+            $e['doc_id'] = (int) $p['doc_id'];
+            if ($e['category'] === '') {
+                $e['category'] = DIRECT_CATEGORIES[0];
+            }
+            if ($e['payee'] === '') {
+                $e['payee'] = $p['supplier'];
+            }
+        } else {
+            $e['doc_id'] = invoice_ref((int) ($in['doc_id'] ?? 0), $old ? (int) $old['doc_id'] : 0);
+        }
+    }
+    if ($e['category'] === '') {
+        throw new UserError('بابت چه بوده؟ دستهٔ پرداخت را بنویسید (مثلاً «پیک» یا «اجاره»).');
+    }
+    return $e;
+}
+
+function expense_save(array $e, ?int $id = null): int
+{
+    $pdo = db();
+    $vals = [$e['kind'], $e['doc_id'], $e['purchase_id'], $e['category'], $e['payee'], $e['amount'],
+        $e['date'], $e['method'], $e['note']];
+    if ($id === null) {
+        $pdo->prepare('INSERT INTO expenses (kind, doc_id, purchase_id, category, payee, amount, date, method, note,
+                           created_at) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)')
+            ->execute(array_merge($vals, [now()]));
+        return (int) $pdo->lastInsertId();
+    }
+    $pdo->prepare('UPDATE expenses SET kind = ?, doc_id = ?, purchase_id = ?, category = ?, payee = ?, amount = ?,
+                       date = ?, method = ?, note = ? WHERE id = ?')
+        ->execute(array_merge($vals, [$id]));
+    return $id;
+}
+
+function expense_delete(int $id): void
+{
+    db()->prepare('DELETE FROM expenses WHERE id = ?')->execute([$id]);
+}
+
+function expenses_list(string $kind = '', string $q = '', int $docId = 0, int $limit = 300): array
+{
+    $sql = EXPENSE_SQL . ' WHERE 1 = 1';
+    $args = [];
+    if (isset(EXPENSE_KINDS[$kind])) {
+        $sql .= ' AND e.kind = ?';
+        $args[] = $kind;
+    }
+    if ($docId) {
+        $sql .= ' AND e.doc_id = ?';
+        $args[] = $docId;
+    }
+    if ($q !== '') {
+        $sql .= " AND (e.category LIKE ? ESCAPE '\\' OR e.payee LIKE ? ESCAPE '\\' OR e.note LIKE ? ESCAPE '\\'
+                       OR d.number LIKE ? ESCAPE '\\' OR p.number LIKE ? ESCAPE '\\')";
+        $txt = '%' . like_escape(fa_norm($q)) . '%';
+        $num = '%' . like_escape(en_digits($q)) . '%';
+        array_push($args, $txt, $txt, $txt, $num, $num);
+    }
+    $sql .= ' ORDER BY e.date DESC, e.id DESC LIMIT ' . (int) $limit;
+    $st = db()->prepare($sql);
+    $st->execute($args);
+    return $st->fetchAll();
+}
+
+function expenses_of_purchase(int $purchaseId): array
+{
+    $st = db()->prepare(EXPENSE_SQL . ' WHERE e.purchase_id = ? ORDER BY e.date, e.id');
+    $st->execute([$purchaseId]);
+    return $st->fetchAll();
+}
+
+/** Payees seen before (suppliers included), for the form's suggestions. */
+function payees_known(): array
+{
+    return db()->query("SELECT payee AS n FROM expenses WHERE payee <> ''
+                        UNION SELECT supplier FROM purchases WHERE supplier <> '' ORDER BY n")
+        ->fetchAll(PDO::FETCH_COLUMN);
+}
+
+/**
+ * Cost and gross profit of one invoice. Cost = its purchases + its other
+ * direct costs (a payment linked to a purchase only settles that purchase,
+ * so it is not counted twice). Profit is on the net sale, VAT excluded.
+ */
+function invoice_costs(array $doc): array
+{
+    $id = (int) $doc['id'];
+    $st = db()->prepare('SELECT COUNT(*), COALESCE(SUM(amount), 0) FROM purchases WHERE doc_id = ?');
+    $st->execute([$id]);
+    [$pCount, $pSum] = $st->fetch(PDO::FETCH_NUM);
+    $st = db()->prepare("SELECT COUNT(*), COALESCE(SUM(amount), 0) FROM expenses
+                         WHERE doc_id = ? AND kind = 'direct' AND purchase_id IS NULL");
+    $st->execute([$id]);
+    [$oCount, $oSum] = $st->fetch(PDO::FETCH_NUM);
+    $st = db()->prepare('SELECT COALESCE(SUM(e.amount), 0) FROM expenses e
+                         JOIN purchases p ON p.id = e.purchase_id WHERE p.doc_id = ?');
+    $st->execute([$id]);
+    $paid = (float) $st->fetchColumn();
+
+    $net = (float) $doc['subtotal'] - (float) $doc['discount'];
+    $cost = (float) $pSum + (float) $oSum;
+    return [
+        'purchase_count' => (int) $pCount, 'purchases' => (float) $pSum,
+        'purchases_left' => max(0.0, (float) $pSum - $paid),
+        'other_count' => (int) $oCount, 'other' => (float) $oSum,
+        'cost' => $cost, 'net_sales' => $net, 'profit' => $net - $cost,
+        'margin' => $net > 0 ? ($net - $cost) / $net * 100 : null,
+    ];
+}
+
 // --- Dashboard --------------------------------------------------------------
 
 function dashboard_stats(): array
@@ -667,10 +991,21 @@ function dashboard_stats(): array
     [$payCount, $paySum] = $st->fetch(PDO::FETCH_NUM);
     $openQot = (int) $pdo->query("SELECT COUNT(*) FROM docs d WHERE d.type = 'qot'
         AND NOT EXISTS (SELECT 1 FROM docs x WHERE x.source_id = d.id AND x.type = 'inv')")->fetchColumn();
+    $st = $pdo->prepare('SELECT COUNT(*), COALESCE(SUM(amount), 0) FROM purchases WHERE date LIKE ?');
+    $st->execute([$month]);
+    [$purCount, $purSum] = $st->fetch(PDO::FETCH_NUM);
+    $exp = ['direct' => 0.0, 'overhead' => 0.0];
+    $st = $pdo->prepare('SELECT kind, COALESCE(SUM(amount), 0) FROM expenses WHERE date LIKE ? GROUP BY kind');
+    $st->execute([$month]);
+    foreach ($st->fetchAll(PDO::FETCH_NUM) as [$k, $sum]) {
+        $exp[$k] = (float) $sum;
+    }
     return [
         'receivable' => $receivable, 'debtors' => $debtors,
         'inv_count' => (int) $invCount, 'inv_sum' => (float) $invSum,
         'pay_count' => (int) $payCount, 'pay_sum' => (float) $paySum,
         'open_qot' => $openQot,
+        'pur_count' => (int) $purCount, 'pur_sum' => (float) $purSum,
+        'exp_direct' => $exp['direct'], 'exp_overhead' => $exp['overhead'],
     ];
 }

@@ -124,6 +124,7 @@ $left = null;
 if (!$isNew && $type === 'inv' && $doc['status'] === 'active') {
     $left = invoice_remaining((int) $doc['customer_id'])[$id] ?? (float) $doc['total'];
 }
+$costs = (!$isNew && $type === 'inv') ? invoice_costs($doc) : null;
 
 $phones = array_values(array_filter(array_map('trim', explode("\n", setting('phones'))), 'strlen'));
 $website = setting('website');
@@ -224,7 +225,7 @@ function tel_href(string $phone): string
 
 <main class="stage">
 <div class="stage-in">
-  <?php if ($source || $converted || $customer || $readOnly): ?>
+  <?php if ($source || $converted || $customer || $readOnly || $costs): ?>
   <div class="banners no-print">
     <?php if ($readOnly): ?>
       <div class="banner">این فاکتور باطل شده و در بدهی مشتری حساب نمی‌شود.</div>
@@ -241,6 +242,29 @@ function tel_href(string $phone): string
       <div class="banner">مانده کل حساب
         <a href="<?= e(url('customer', ['id' => $customer['id']])) ?>" data-guard><?= e($customer['name']) ?></a>:
         <?= balance_html($customer['balance']) ?></div>
+    <?php endif; ?>
+    <?php if ($costs): ?>
+      <div class="banner">
+        بهای تمام‌شده:
+        خرید <b><?= money($costs['purchases']) ?></b><?= $costs['purchase_count'] ? ' (' . fa($costs['purchase_count']) . ' مورد)' : '' ?>
+        + هزینهٔ مستقیم <b><?= money($costs['other']) ?></b>
+        —
+        <?php if ($costs['profit'] >= 0): ?>
+          <span class="badge ok">سود ناخالص <?= money($costs['profit']) ?><?= $costs['margin'] !== null ? ' · ' . fa((string) round($costs['margin'])) . '٪' : '' ?></span>
+        <?php else: ?>
+          <span class="badge danger">زیان <?= money($costs['profit']) ?></span>
+        <?php endif; ?>
+        <small class="muted">(بدون مالیات)</small>
+        <?php if ($costs['purchases_left'] >= 0.5): ?>
+          · <span class="badge warn">بدهی به فروشنده <?= money($costs['purchases_left']) ?></span>
+        <?php endif; ?>
+        ·
+        <?php if ($costs['purchase_count']): ?>
+          <a href="<?= e(url('purchases', ['doc' => $id])) ?>" data-guard>خریدها</a> ·
+        <?php endif; ?>
+        <a href="<?= e(url('purchases', ['doc' => $id])) ?>" data-guard>+ ثبت خرید</a> ·
+        <a href="<?= e(url('expenses', ['kind' => 'direct', 'doc' => $id])) ?>" data-guard>+ ثبت هزینهٔ مستقیم</a>
+      </div>
     <?php endif; ?>
   </div>
   <?php endif; ?>

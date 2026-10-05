@@ -59,6 +59,38 @@
       el.addEventListener('change', function () { el.form.submit(); });
     });
 
+    // Payment-out form: «سربار» hides the invoice/purchase part and switches the
+    // category suggestions; picking a purchase fills in its invoice and supplier.
+    Array.prototype.forEach.call(document.querySelectorAll('form[data-expense-form]'), function (form) {
+      var direct = form.querySelector('.direct-only');
+      var cat = form.querySelector('input[name="category"]');
+      var payee = form.querySelector('input[name="payee"]');
+      var doc = form.querySelector('select[name="doc_id"]');
+      var pur = form.querySelector('select[name="purchase_id"]');
+      function sync() {
+        var checked = form.querySelector('input[name="kind"]:checked');
+        var overhead = checked && checked.value === 'overhead';
+        if (direct) direct.hidden = overhead;
+        if (cat) {
+          cat.setAttribute('list', overhead ? 'catOverhead' : 'catDirect');
+          cat.placeholder = overhead ? 'مثلاً اجاره' : 'مثلاً پیک';
+        }
+      }
+      Array.prototype.forEach.call(form.querySelectorAll('input[name="kind"]'), function (r) {
+        r.addEventListener('change', sync);
+      });
+      if (pur) {
+        pur.addEventListener('change', function () {
+          var opt = pur.options[pur.selectedIndex];
+          if (!opt || !opt.value) return;
+          if (doc && opt.getAttribute('data-doc')) doc.value = opt.getAttribute('data-doc');
+          if (payee && !payee.value.trim()) payee.value = opt.getAttribute('data-supplier') || '';
+          if (cat && !cat.value.trim()) cat.value = 'پرداخت بابت خرید';
+        });
+      }
+      sync();
+    });
+
     // Close an open "more" menu when clicking elsewhere.
     document.addEventListener('click', function (e) {
       Array.prototype.forEach.call(document.querySelectorAll('details.more[open]'), function (d) {

@@ -14,6 +14,8 @@ $routes = [
     'docs' => true, 'doc' => true, 'doc_action' => true,
     'customers' => true, 'customer' => true,
     'payments' => true, 'payment' => true,
+    'purchases' => true, 'purchase' => true,
+    'expenses' => true, 'expense' => true,
     'assistant' => true, 'assistant_api' => true,
     'import' => true,
     'settings' => true, 'backup' => true,

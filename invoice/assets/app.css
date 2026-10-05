@@ -193,6 +193,7 @@ a.badge:hover{text-decoration:none;filter:brightness(1.05)}
 .seg button[aria-pressed="true"]{background:var(--accent-solid);color:var(--on-accent)}
 .chk{display:inline-flex;align-items:center;gap:.45rem;font-weight:600;font-size:.9rem;color:var(--ink-soft);cursor:pointer;white-space:nowrap}
 .chk input{accent-color:var(--steel);width:16px;height:16px;margin:0}
+.kind-pick{display:flex;flex-wrap:wrap;gap:.5rem 1.4rem;padding-top:.15rem}
 
 /* ---------- forms ---------- */
 .form{display:grid;gap:.9rem}

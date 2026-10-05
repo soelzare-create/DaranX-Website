@@ -139,6 +139,43 @@ function db_migrate(PDO $pdo): void
             );
             CREATE INDEX payments_customer ON payments(customer_id, date);
         ",
+        2 => "
+            -- Goods/services bought for a specific invoice (its cost price).
+            CREATE TABLE purchases (
+                id INTEGER PRIMARY KEY,
+                number TEXT NOT NULL UNIQUE,
+                date TEXT NOT NULL,
+                doc_id INTEGER NOT NULL REFERENCES docs(id),
+                supplier TEXT NOT NULL DEFAULT '',
+                title TEXT NOT NULL DEFAULT '',
+                amount INTEGER NOT NULL CHECK (amount > 0),
+                note TEXT NOT NULL DEFAULT '',
+                created_at TEXT NOT NULL
+            );
+            CREATE INDEX purchases_doc ON purchases(doc_id);
+            CREATE INDEX purchases_date ON purchases(date);
+
+            -- Money paid out. 'direct' belongs to one invoice (a purchase payment,
+            -- a courier, …); 'overhead' is a company cost not tied to any invoice.
+            -- A direct payment linked to a purchase settles that purchase rather
+            -- than adding a new cost on top of it.
+            CREATE TABLE expenses (
+                id INTEGER PRIMARY KEY,
+                kind TEXT NOT NULL CHECK (kind IN ('direct', 'overhead')),
+                doc_id INTEGER REFERENCES docs(id),
+                purchase_id INTEGER REFERENCES purchases(id),
+                category TEXT NOT NULL DEFAULT '',
+                payee TEXT NOT NULL DEFAULT '',
+                amount INTEGER NOT NULL CHECK (amount > 0),
+                date TEXT NOT NULL,
+                method TEXT NOT NULL DEFAULT '',
+                note TEXT NOT NULL DEFAULT '',
+                created_at TEXT NOT NULL
+            );
+            CREATE INDEX expenses_doc ON expenses(doc_id);
+            CREATE INDEX expenses_purchase ON expenses(purchase_id);
+            CREATE INDEX expenses_kind_date ON expenses(kind, date);
+        ",
     ];
 
     $version = (int) $pdo->query('PRAGMA user_version')->fetchColumn();

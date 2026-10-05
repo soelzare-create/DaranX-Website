@@ -17,6 +17,8 @@ layout_start('داشبورد', 'home');
     <div class="actions">
       <a class="btn btn-ghost" href="<?= e(url('doc', ['new' => 'qot'])) ?>">+ پیش‌فاکتور</a>
       <a class="btn btn-ghost" href="<?= e(url('doc', ['new' => 'inv'])) ?>">+ فاکتور</a>
+      <a class="btn btn-ghost" href="<?= e(url('purchases')) ?>">+ خرید</a>
+      <a class="btn btn-ghost" href="<?= e(url('expenses')) ?>">+ پرداخت</a>
       <a class="btn btn-primary" href="<?= e(url('payments')) ?>">+ ثبت دریافت</a>
     </div>
   </div>
@@ -41,6 +43,16 @@ layout_start('داشبورد', 'home');
       <div class="k">پیش‌فاکتورهای باز</div>
       <div class="v"><?= fa($s['open_qot']) ?></div>
       <div class="s">هنوز به فاکتور تبدیل نشده</div>
+    </a>
+    <a class="tile" href="<?= e(url('purchases')) ?>">
+      <div class="k">خریدهای این ماه</div>
+      <div class="v"><?= money($s['pur_sum']) ?> <small><?= e($unit) ?></small></div>
+      <div class="s"><?= fa($s['pur_count']) ?> خرید برای فاکتورها</div>
+    </a>
+    <a class="tile" href="<?= e(url('expenses')) ?>">
+      <div class="k">پرداختی این ماه</div>
+      <div class="v"><?= money($s['exp_direct'] + $s['exp_overhead']) ?> <small><?= e($unit) ?></small></div>
+      <div class="s">مستقیم <?= money($s['exp_direct']) ?> · سربار <?= money($s['exp_overhead']) ?></div>
     </a>
   </div>
 
