@@ -11,6 +11,7 @@ const NAV = [
     'customers' => ['مشتریان', ['p' => 'customers']],
     'payments' => ['دریافت‌ها', ['p' => 'payments']],
     'assistant' => ['دستیار', ['p' => 'assistant']],
+    'import' => ['ورود از اکسل', ['p' => 'import']],
     'settings' => ['تنظیمات', ['p' => 'settings']],
 ];
 

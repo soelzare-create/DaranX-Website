@@ -15,6 +15,7 @@ $routes = [
     'customers' => true, 'customer' => true,
     'payments' => true, 'payment' => true,
     'assistant' => true, 'assistant_api' => true,
+    'import' => true,
     'settings' => true, 'backup' => true,
 ];
 
