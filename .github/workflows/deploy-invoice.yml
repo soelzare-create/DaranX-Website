@@ -1,0 +1,75 @@
+# استقرار برنامهٔ فاکتور (پوشهٔ invoice) روی هاست cPanel از طریق FTPS.
+# Deploy the PHP invoice app (invoice/) to the host's invoice folder over FTPS.
+#
+# Separate from deploy.yml on purpose: one big FTP batch used to drop this
+# shared host's session, so this uses lftp, which retries and reconnects on
+# its own and uploads with limited parallelism.
+#
+# Never touched on the host:
+#   invoice/data/        database, sessions, imports (the live data)
+#   invoice/app/config.php  the host's own settings
+# Nothing is deleted on the host; files are only added or replaced.
+#
+# Uses the same FTP_SERVER / FTP_USERNAME / FTP_PASSWORD secrets as deploy.yml
+# (that FTP account's root is public_html, so the target is "invoice/").
+
+name: deploy-invoice
+
+on:
+  push:
+    branches: ["main"]
+    paths:
+      - "invoice/**"
+      - ".github/workflows/deploy-invoice.yml"
+  workflow_dispatch:
+
+concurrency:
+  group: deploy-invoice
+  cancel-in-progress: false
+
+jobs:
+  upload:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Install lftp
+        run: sudo apt-get update -qq && sudo apt-get install -y -qq lftp
+
+      - name: Upload invoice/ over FTPS
+        env:
+          FTP_SERVER: ${{ secrets.FTP_SERVER }}
+          FTP_USERNAME: ${{ secrets.FTP_USERNAME }}
+          LFTP_PASSWORD: ${{ secrets.FTP_PASSWORD }}
+        run: |
+          lftp --env-password -u "$FTP_USERNAME" "$FTP_SERVER" <<'LFTP'
+          set cmd:fail-exit true
+          set ftp:ssl-force true
+          set ftp:ssl-protect-data true
+          set ssl:verify-certificate no
+          set ftp:passive-mode true
+          set net:timeout 30
+          set net:max-retries 8
+          set net:reconnect-interval-base 5
+          set net:reconnect-interval-multiplier 2
+          set net:persist-retries 5
+          mirror --reverse --verbose --parallel=2 \
+            --exclude '^data/' \
+            --exclude '^app/config\.php$' \
+            --exclude '^README\.md$' \
+            ./invoice/ invoice/
+          quit
+          LFTP
+
+      - name: Check the live version
+        continue-on-error: true
+        run: |
+          want=$(grep -oE "APP_VERSION = '[^']+'" invoice/app/helpers.php | cut -d"'" -f2)
+          echo "expected version: $want"
+          for u in "https://www.daranx.com/invoice/index.php?p=login" "https://factor.daranx.com/index.php?p=login"; do
+            code=$(curl -s -o page.html -w '%{http_code}' --max-time 20 "$u" || echo 000)
+            if grep -q "app.css?v=$want" page.html 2>/dev/null; then live=yes; else live=no; fi
+            echo "$u -> HTTP $code, new version live: $live"
+          done
