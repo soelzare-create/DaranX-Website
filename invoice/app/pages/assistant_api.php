@@ -2,10 +2,12 @@
 /**
  * Assistant backend: turns a chat message into proforma/invoice/payment actions.
  *
- * The browser POSTs the running conversation; this endpoint runs an agentic
- * tool-use loop against the Claude Messages API (raw HTTPS via cURL — the app
- * has no Composer/SDK). Every tool maps to an existing model.php function, so
- * all writes go through the same validation and transactions as the UI.
+ * Runs an agentic tool-use loop against an AI service. It supports two wire
+ * formats, chosen by the Base URL in settings:
+ *   - a host containing "anthropic"  → native Anthropic Messages API
+ *   - anything else (e.g. GapGPT)     → OpenAI-compatible /chat/completions
+ * Every tool maps to an existing model.php function, so all writes go through
+ * the same validation and transactions as the UI.
  *
  * Returns JSON only. Login + CSRF are already enforced by index.php.
  */
@@ -20,28 +22,32 @@ function areply(array $data): void
 }
 
 $key = setting('assistant_api_key');
+$base = rtrim(setting('assistant_base_url') ?: 'https://api.anthropic.com', '/');
 $model = setting('assistant_model') ?: 'claude-opus-5-5';
+$provider = stripos($base, 'anthropic') !== false ? 'anthropic' : 'openai';
 if ($key === '') {
-    areply(['ok' => false, 'reply' => 'کلید API هنوز تنظیم نشده است. از صفحهٔ «تنظیمات» کلید Anthropic را وارد کنید.']);
+    areply(['ok' => false, 'reply' => 'کلید API هنوز تنظیم نشده است. از صفحهٔ «تنظیمات» کلید را وارد کنید.']);
 }
 
 $payload = json_decode((string) file_get_contents('php://input'), true);
-if (!is_array($payload) || !isset($payload['messages']) || !is_array($payload['messages'])) {
-    // Fallback: form-encoded `payload` field.
-    $payload = json_decode(post('payload'), true);
+if (!is_array($payload) || !isset($payload['messages'])) {
+    $payload = json_decode(post('payload'), true); // form-encoded fallback
 }
-$history = (is_array($payload) && isset($payload['messages'])) ? $payload['messages'] : [];
+$incoming = (is_array($payload) && isset($payload['messages']) && is_array($payload['messages'])) ? $payload['messages'] : [];
 
-// Build the API messages from {role,text} turns (keep the last 24).
-$messages = [];
-foreach (array_slice($history, -24) as $m) {
+// Provider-neutral conversation. Each turn is one of:
+//   ['kind'=>'text', 'role'=>'user'|'assistant', 'text'=>...]
+//   ['kind'=>'calls', 'text'=>..., 'calls'=>[['id','name','input'=>array], ...]]
+//   ['kind'=>'result', 'id'=>, 'name'=>, 'result'=>string]
+$turns = [];
+foreach (array_slice($incoming, -24) as $m) {
     $role = ($m['role'] ?? '') === 'assistant' ? 'assistant' : 'user';
     $text = trim((string) ($m['text'] ?? ''));
     if ($text !== '') {
-        $messages[] = ['role' => $role, 'content' => $text];
+        $turns[] = ['kind' => 'text', 'role' => $role, 'text' => $text];
     }
 }
-if (!$messages || $messages[count($messages) - 1]['role'] !== 'user') {
+if (!$turns || end($turns)['role'] !== 'user') {
     areply(['ok' => false, 'reply' => 'پیامی برای پردازش نبود.']);
 }
 
@@ -59,111 +65,189 @@ $sys = "تو دستیار صدور سند شرکت «" . setting('company_name')
     . "- پیش‌فاکتور روی حساب مشتری اثر ندارد؛ فقط فاکتور، مشتری را بدهکار می‌کند.\n"
     . "- ابطال/حذف انجام نده؛ اگر خواستند بگو این کارها را دستی در خود برنامه انجام دهند.";
 
-$tools = assistant_tools();
-
 $actions = [];
 $lastText = '';
 for ($i = 0; $i < 8; $i++) {
-    $resp = claude_messages($key, $model, $sys, $messages, $tools);
-    if (!$resp['ok']) {
-        areply(['ok' => false, 'reply' => $resp['error']]);
+    $r = ai_complete($provider, $base, $key, $model, $sys, $turns);
+    if (!$r['ok']) {
+        areply(['ok' => false, 'reply' => $r['error']]);
     }
-    $data = $resp['data'];
-    $stop = $data['stop_reason'] ?? '';
-    if ($stop === 'refusal') {
-        areply(['ok' => false, 'reply' => 'این درخواست پردازش نشد. لطفاً به شکل دیگری بیان کنید.']);
+    if (trim($r['text']) !== '') {
+        $lastText = trim($r['text']);
     }
-    $content = $data['content'] ?? [];
-    // Collect any assistant text.
-    foreach ($content as $b) {
-        if (($b['type'] ?? '') === 'text' && trim($b['text'] ?? '') !== '') {
-            $lastText = trim($b['text']);
-        }
-    }
-    if ($stop !== 'tool_use') {
+    if (empty($r['calls'])) {
         break;
     }
-    // Echo the assistant turn back, then run each tool and return results.
-    $messages[] = ['role' => 'assistant', 'content' => $content];
-    $results = [];
-    foreach ($content as $b) {
-        if (($b['type'] ?? '') !== 'tool_use') {
-            continue;
-        }
-        $out = assistant_run_tool($b['name'] ?? '', is_array($b['input'] ?? null) ? $b['input'] : [], $actions);
-        $results[] = [
-            'type' => 'tool_result',
-            'tool_use_id' => $b['id'] ?? '',
-            'content' => $out['text'],
-            'is_error' => !empty($out['error']),
-        ];
+    $turns[] = ['kind' => 'calls', 'text' => $r['text'], 'calls' => $r['calls']];
+    foreach ($r['calls'] as $call) {
+        $out = assistant_run_tool($call['name'], is_array($call['input'] ?? null) ? $call['input'] : [], $actions);
+        $turns[] = ['kind' => 'result', 'id' => $call['id'], 'name' => $call['name'], 'result' => $out['text']];
     }
-    $messages[] = ['role' => 'user', 'content' => $results];
 }
 
 areply(['ok' => true, 'reply' => $lastText !== '' ? $lastText : 'انجام شد.', 'actions' => array_values($actions)]);
 
-// --- Claude Messages API (raw HTTPS) ---------------------------------------
+// --- AI service (two wire formats, one normalized interface) ----------------
 
-function claude_messages(string $key, string $model, string $system, array $messages, array $tools): array
+function ai_complete(string $provider, string $base, string $key, string $model, string $system, array $turns): array
 {
-    $body = [
-        'model' => $model,
-        'max_tokens' => 2048,
-        'system' => $system,
-        'tools' => $tools,
-        'messages' => $messages,
-    ];
-    // effort is supported on opus/sonnet/fable; Haiku rejects it.
-    if (stripos($model, 'haiku') === false) {
-        $body['output_config'] = ['effort' => 'low'];
+    if ($provider === 'anthropic') {
+        return ai_anthropic($base, $key, $model, $system, $turns);
     }
-    $ch = curl_init('https://api.anthropic.com/v1/messages');
+    return ai_openai($base, $key, $model, $system, $turns);
+}
+
+function http_json(string $url, array $headers, array $body): array
+{
+    $ch = curl_init($url);
     curl_setopt_array($ch, [
         CURLOPT_POST => true,
         CURLOPT_RETURNTRANSFER => true,
         CURLOPT_TIMEOUT => 120,
-        CURLOPT_HTTPHEADER => [
-            'content-type: application/json',
-            'x-api-key: ' . $key,
-            'anthropic-version: 2023-06-01',
-        ],
+        CURLOPT_HTTPHEADER => $headers,
         CURLOPT_POSTFIELDS => json_encode($body, JSON_UNESCAPED_UNICODE),
     ]);
     $raw = curl_exec($ch);
-    if ($raw === false) {
-        $err = curl_error($ch);
-        curl_close($ch);
-        return ['ok' => false, 'error' => 'ارتباط با سرویس هوش مصنوعی برقرار نشد: ' . $err];
-    }
+    $err = $raw === false ? curl_error($ch) : '';
     $code = (int) curl_getinfo($ch, CURLINFO_HTTP_CODE);
     curl_close($ch);
-    $data = json_decode($raw, true);
-    if ($code !== 200 || !is_array($data)) {
-        $msg = $data['error']['message'] ?? ('کد پاسخ ' . $code);
-        if ($code === 401) {
-            $msg = 'کلید API معتبر نیست. در تنظیمات، کلید درست را وارد کنید.';
-        } elseif ($code === 429) {
-            $msg = 'محدودیت نرخ درخواست. کمی بعد دوباره تلاش کنید.';
-        }
-        return ['ok' => false, 'error' => 'خطای سرویس هوش مصنوعی: ' . $msg];
-    }
-    return ['ok' => true, 'data' => $data];
+    return ['raw' => $raw, 'err' => $err, 'code' => $code, 'data' => is_string($raw) ? json_decode($raw, true) : null];
 }
 
-// --- Tool definitions -------------------------------------------------------
-
-function assistant_tools(): array
+function ai_err(int $code, $data): string
 {
-    $item = [
-        'type' => 'object',
-        'properties' => [
-            'title' => ['type' => 'string', 'description' => 'شرح کالا یا خدمت'],
-            'qty' => ['type' => 'number', 'description' => 'تعداد (اختیاری، پیش‌فرض ۱)'],
-            'unit_price' => ['type' => 'number', 'description' => 'قیمت واحد به ' . (setting('unit') ?: 'ریال')],
-        ],
-        'required' => ['title'],
+    if ($code === 401 || $code === 403) {
+        return 'کلید API یا آدرس سرویس درست نیست. در تنظیمات بررسی کنید.';
+    }
+    if ($code === 429) {
+        return 'محدودیت نرخ درخواست. کمی بعد دوباره تلاش کنید.';
+    }
+    $m = (is_array($data) && isset($data['error'])) ? ($data['error']['message'] ?? (is_string($data['error']) ? $data['error'] : '')) : '';
+    return 'خطای سرویس هوش مصنوعی' . ($m !== '' ? ': ' . $m : (' (کد ' . $code . ')'));
+}
+
+function ai_anthropic(string $base, string $key, string $model, string $system, array $turns): array
+{
+    $url = strpos($base, '/messages') !== false ? $base : $base . '/v1/messages';
+    $messages = [];
+    foreach ($turns as $t) {
+        if ($t['kind'] === 'text') {
+            $messages[] = ['role' => $t['role'], 'content' => $t['text']];
+        } elseif ($t['kind'] === 'calls') {
+            $content = [];
+            if (trim($t['text']) !== '') {
+                $content[] = ['type' => 'text', 'text' => $t['text']];
+            }
+            foreach ($t['calls'] as $c) {
+                $content[] = ['type' => 'tool_use', 'id' => $c['id'], 'name' => $c['name'], 'input' => (object) $c['input']];
+            }
+            $messages[] = ['role' => 'assistant', 'content' => $content];
+        } else { // result
+            $messages[] = ['role' => 'user', 'content' => [[
+                'type' => 'tool_result', 'tool_use_id' => $t['id'], 'content' => $t['result'],
+            ]]];
+        }
+    }
+    $body = [
+        'model' => $model, 'max_tokens' => 2048, 'system' => $system,
+        'tools' => assistant_tools('anthropic'), 'messages' => $messages,
     ];
+    if (stripos($model, 'haiku') === false) {
+        $body['output_config'] = ['effort' => 'low'];
+    }
+    $res = http_json($url, [
+        'content-type: application/json', 'x-api-key: ' . $key, 'anthropic-version: 2023-06-01',
+    ], $body);
+    if ($res['err']) {
+        return ['ok' => false, 'error' => 'ارتباط با سرویس برقرار نشد: ' . $res['err']];
+    }
+    $data = $res['data'];
+    if ($res['code'] !== 200 || !is_array($data)) {
+        return ['ok' => false, 'error' => ai_err($res['code'], $data)];
+    }
+    if (($data['stop_reason'] ?? '') === 'refusal') {
+        return ['ok' => false, 'error' => 'این درخواست پردازش نشد. لطفاً به شکل دیگری بیان کنید.'];
+    }
+    $text = '';
+    $calls = [];
+    foreach ($data['content'] ?? [] as $b) {
+        if (($b['type'] ?? '') === 'text') {
+            $text .= $b['text'] ?? '';
+        } elseif (($b['type'] ?? '') === 'tool_use') {
+            $calls[] = ['id' => $b['id'] ?? '', 'name' => $b['name'] ?? '', 'input' => is_array($b['input'] ?? null) ? $b['input'] : []];
+        }
+    }
+    return ['ok' => true, 'text' => $text, 'calls' => $calls];
+}
+
+function ai_openai(string $base, string $key, string $model, string $system, array $turns): array
+{
+    $url = strpos($base, '/chat/completions') !== false ? $base : $base . '/chat/completions';
+    $messages = [['role' => 'system', 'content' => $system]];
+    foreach ($turns as $t) {
+        if ($t['kind'] === 'text') {
+            $messages[] = ['role' => $t['role'], 'content' => $t['text']];
+        } elseif ($t['kind'] === 'calls') {
+            $tc = [];
+            foreach ($t['calls'] as $c) {
+                $tc[] = ['id' => $c['id'], 'type' => 'function',
+                    'function' => ['name' => $c['name'], 'arguments' => json_encode($c['input'], JSON_UNESCAPED_UNICODE)]];
+            }
+            $messages[] = ['role' => 'assistant', 'content' => trim($t['text']) !== '' ? $t['text'] : null, 'tool_calls' => $tc];
+        } else { // result
+            $messages[] = ['role' => 'tool', 'tool_call_id' => $t['id'], 'content' => $t['result']];
+        }
+    }
+    $body = [
+        'model' => $model, 'max_tokens' => 2048, 'messages' => $messages,
+        'tools' => assistant_tools('openai'), 'tool_choice' => 'auto',
+    ];
+    $res = http_json($url, [
+        'content-type: application/json', 'authorization: Bearer ' . $key,
+    ], $body);
+    if ($res['err']) {
+        return ['ok' => false, 'error' => 'ارتباط با سرویس برقرار نشد: ' . $res['err']];
+    }
+    $data = $res['data'];
+    if ($res['code'] !== 200 || !is_array($data)) {
+        return ['ok' => false, 'error' => ai_err($res['code'], $data)];
+    }
+    $msg = $data['choices'][0]['message'] ?? [];
+    $text = is_string($msg['content'] ?? null) ? $msg['content'] : '';
+    $calls = [];
+    foreach ($msg['tool_calls'] ?? [] as $c) {
+        $args = json_decode($c['function']['arguments'] ?? '{}', true);
+        $calls[] = ['id' => $c['id'] ?? ('call_' . count($calls)), 'name' => $c['function']['name'] ?? '',
+            'input' => is_array($args) ? $args : []];
+    }
+    return ['ok' => true, 'text' => $text, 'calls' => $calls];
+}
+
+// --- Tool definitions (same tools, wrapped per wire format) -----------------
+
+function assistant_tools(string $provider): array
+{
+    $defs = assistant_tool_defs();
+    if ($provider === 'anthropic') {
+        return array_map(function ($t) {
+            return ['name' => $t['name'], 'description' => $t['description'], 'input_schema' => $t['schema']];
+        }, $defs);
+    }
+    return array_map(function ($t) {
+        return ['type' => 'function', 'function' => [
+            'name' => $t['name'], 'description' => $t['description'], 'parameters' => $t['schema'],
+        ]];
+    }, $defs);
+}
+
+function assistant_tool_defs(): array
+{
+    $unit = setting('unit') ?: 'ریال';
+    $item = ['type' => 'object', 'properties' => [
+        'title' => ['type' => 'string', 'description' => 'شرح کالا یا خدمت'],
+        'qty' => ['type' => 'number', 'description' => 'تعداد (اختیاری، پیش‌فرض ۱)'],
+        'unit_price' => ['type' => 'number', 'description' => 'قیمت واحد به ' . $unit],
+    ], 'required' => ['title']];
     $docFields = [
         'customer_name' => ['type' => 'string', 'description' => 'نام مشتری'],
         'phone' => ['type' => 'string', 'description' => 'تلفن مشتری (اختیاری)'],
@@ -175,56 +259,29 @@ function assistant_tools(): array
         'notes' => ['type' => 'array', 'items' => ['type' => 'string'], 'description' => 'یادداشت‌ها (اختیاری)'],
     ];
     return [
-        [
-            'name' => 'find_customers',
-            'description' => 'جستجوی مشتری بر اساس نام یا تلفن. برای رفع ابهام نام از این استفاده کن.',
-            'input_schema' => ['type' => 'object', 'properties' => [
-                'query' => ['type' => 'string', 'description' => 'بخشی از نام یا تلفن'],
-            ], 'required' => ['query']],
-        ],
-        [
-            'name' => 'customer_balance',
-            'description' => 'نمایش مانده حساب و خلاصهٔ سوابق یک مشتری.',
-            'input_schema' => ['type' => 'object', 'properties' => [
-                'customer' => ['type' => 'string', 'description' => 'نام مشتری یا شناسهٔ عددی'],
-            ], 'required' => ['customer']],
-        ],
-        [
-            'name' => 'create_proforma',
-            'description' => 'ساخت پیش‌فاکتور جدید. روی حساب مشتری اثری ندارد.',
-            'input_schema' => ['type' => 'object', 'properties' => $docFields, 'required' => ['customer_name', 'items']],
-        ],
-        [
-            'name' => 'create_invoice',
-            'description' => 'صدور فاکتور مستقیم. مشتری به اندازهٔ مبلغ قابل پرداخت بدهکار می‌شود.',
-            'input_schema' => ['type' => 'object', 'properties' => $docFields, 'required' => ['customer_name', 'items']],
-        ],
-        [
-            'name' => 'convert_proforma',
-            'description' => 'تبدیل یک پیش‌فاکتور به فاکتور با شمارهٔ آن (مثل QOT-0007).',
-            'input_schema' => ['type' => 'object', 'properties' => [
-                'number' => ['type' => 'string', 'description' => 'شمارهٔ پیش‌فاکتور'],
-            ], 'required' => ['number']],
-        ],
-        [
-            'name' => 'record_payment',
-            'description' => 'ثبت دریافتی از مشتری. از بدهی او کم می‌شود (قدیمی‌ترین بدهی اول).',
-            'input_schema' => ['type' => 'object', 'properties' => [
+        ['name' => 'find_customers', 'description' => 'جستجوی مشتری بر اساس نام یا تلفن. برای رفع ابهام نام از این استفاده کن.',
+            'schema' => ['type' => 'object', 'properties' => ['query' => ['type' => 'string', 'description' => 'بخشی از نام یا تلفن']], 'required' => ['query']]],
+        ['name' => 'customer_balance', 'description' => 'نمایش مانده حساب و خلاصهٔ سوابق یک مشتری.',
+            'schema' => ['type' => 'object', 'properties' => ['customer' => ['type' => 'string', 'description' => 'نام مشتری یا شناسهٔ عددی']], 'required' => ['customer']]],
+        ['name' => 'create_proforma', 'description' => 'ساخت پیش‌فاکتور جدید. روی حساب مشتری اثری ندارد.',
+            'schema' => ['type' => 'object', 'properties' => $docFields, 'required' => ['customer_name', 'items']]],
+        ['name' => 'create_invoice', 'description' => 'صدور فاکتور مستقیم. مشتری به اندازهٔ مبلغ قابل پرداخت بدهکار می‌شود.',
+            'schema' => ['type' => 'object', 'properties' => $docFields, 'required' => ['customer_name', 'items']]],
+        ['name' => 'convert_proforma', 'description' => 'تبدیل یک پیش‌فاکتور به فاکتور با شمارهٔ آن (مثل QOT-0007).',
+            'schema' => ['type' => 'object', 'properties' => ['number' => ['type' => 'string', 'description' => 'شمارهٔ پیش‌فاکتور']], 'required' => ['number']]],
+        ['name' => 'record_payment', 'description' => 'ثبت دریافتی از مشتری. از بدهی او کم می‌شود (قدیمی‌ترین بدهی اول).',
+            'schema' => ['type' => 'object', 'properties' => [
                 'customer' => ['type' => 'string', 'description' => 'نام مشتری یا شناسهٔ عددی'],
                 'amount' => ['type' => 'number', 'description' => 'مبلغ دریافتی'],
                 'date' => ['type' => 'string', 'description' => 'تاریخ شمسی (اختیاری)'],
                 'method' => ['type' => 'string', 'description' => 'روش: نقدی، کارت به کارت، واریز / حواله، چک، سایر (اختیاری)'],
                 'note' => ['type' => 'string', 'description' => 'یادداشت (اختیاری)'],
-            ], 'required' => ['customer', 'amount']],
-        ],
-        [
-            'name' => 'list_docs',
-            'description' => 'فهرست آخرین پیش‌فاکتورها یا فاکتورها.',
-            'input_schema' => ['type' => 'object', 'properties' => [
+            ], 'required' => ['customer', 'amount']]],
+        ['name' => 'list_docs', 'description' => 'فهرست آخرین پیش‌فاکتورها یا فاکتورها.',
+            'schema' => ['type' => 'object', 'properties' => [
                 'type' => ['type' => 'string', 'enum' => ['qot', 'inv'], 'description' => 'qot=پیش‌فاکتور، inv=فاکتور'],
                 'query' => ['type' => 'string', 'description' => 'جستجو در شماره یا نام (اختیاری)'],
-            ], 'required' => ['type']],
-        ],
+            ], 'required' => ['type']]],
     ];
 }
 
@@ -292,8 +349,7 @@ function _a_find_customers(string $q): string
     }
     $out = [];
     foreach (array_slice($list, 0, 10) as $c) {
-        $out[] = ['id' => (int) $c['id'], 'name' => $c['name'], 'phone' => $c['phone'],
-            'balance' => (int) $c['balance']];
+        $out[] = ['id' => (int) $c['id'], 'name' => $c['name'], 'phone' => $c['phone'], 'balance' => (int) $c['balance']];
     }
     return json_encode($out, JSON_UNESCAPED_UNICODE);
 }
@@ -311,10 +367,10 @@ function _a_customer_balance(string $who): string
             $pay++;
         }
     }
+    $u = setting('unit') ?: 'ریال';
     return json_encode([
-        'id' => (int) $c['id'], 'name' => $c['name'],
-        'balance' => (int) $c['balance'],
-        'balance_text' => money((float) $c['balance']) . ' ' . (setting('unit') ?: 'ریال')
+        'id' => (int) $c['id'], 'name' => $c['name'], 'balance' => (int) $c['balance'],
+        'balance_text' => money((float) $c['balance']) . ' ' . $u
             . ((float) $c['balance'] > 0 ? ' (بدهکار)' : ((float) $c['balance'] < 0 ? ' (بستانکار)' : '')),
         'invoices' => $inv, 'payments' => $pay,
     ], JSON_UNESCAPED_UNICODE);
@@ -338,21 +394,18 @@ function _a_create_doc(string $type, array $in, array &$actions): string
         'cust_phone' => (string) ($in['phone'] ?? ''),
         'cust_address' => (string) ($in['address'] ?? ''),
         'date' => trim((string) ($in['date'] ?? '')) !== '' ? (string) $in['date'] : jtoday(),
-        'number_auto' => 1,
-        'items' => $items,
-        'discount' => $in['discount'] ?? 0,
-        'vat_on' => !empty($in['vat']),
+        'number_auto' => 1, 'items' => $items,
+        'discount' => $in['discount'] ?? 0, 'vat_on' => !empty($in['vat']),
         'notes' => is_array($in['notes'] ?? null) ? $in['notes'] : default_notes($type),
     ];
     $d = doc_validate($form, $type);
     $id = doc_save($d);
     $doc = doc_get($id);
+    $u = setting('unit') ?: 'ریال';
     $actions[] = ['label' => DOC_NAMES[$type] . ' ' . $doc['number'], 'url' => url('doc', ['id' => $id])];
     return json_encode([
-        'ok' => true, 'number' => $doc['number'], 'id' => $id,
-        'total' => (int) $doc['total'],
-        'total_text' => money((float) $doc['total']) . ' ' . (setting('unit') ?: 'ریال'),
-        'type' => DOC_NAMES[$type],
+        'ok' => true, 'number' => $doc['number'], 'id' => $id, 'total' => (int) $doc['total'],
+        'total_text' => money((float) $doc['total']) . ' ' . $u, 'type' => DOC_NAMES[$type],
         'url' => url('doc', ['id' => $id]),
     ], JSON_UNESCAPED_UNICODE);
 }
@@ -368,11 +421,11 @@ function _a_convert(string $number, array &$actions): string
     }
     $invId = doc_convert($qid);
     $inv = doc_get($invId);
+    $u = setting('unit') ?: 'ریال';
     $actions[] = ['label' => 'فاکتور ' . $inv['number'], 'url' => url('doc', ['id' => $invId])];
     return json_encode([
         'ok' => true, 'invoice_number' => $inv['number'], 'id' => $invId,
-        'total_text' => money((float) $inv['total']) . ' ' . (setting('unit') ?: 'ریال'),
-        'url' => url('doc', ['id' => $invId]),
+        'total_text' => money((float) $inv['total']) . ' ' . $u, 'url' => url('doc', ['id' => $invId]),
     ], JSON_UNESCAPED_UNICODE);
 }
 
@@ -380,21 +433,19 @@ function _a_record_payment(array $in, array &$actions): string
 {
     $c = _a_resolve_customer((string) ($in['customer'] ?? ''));
     $form = [
-        'customer_id' => (int) $c['id'],
-        'amount' => $in['amount'] ?? '',
+        'customer_id' => (int) $c['id'], 'amount' => $in['amount'] ?? '',
         'date' => trim((string) ($in['date'] ?? '')) !== '' ? (string) $in['date'] : jtoday(),
-        'method' => (string) ($in['method'] ?? 'نقدی'),
-        'note' => (string) ($in['note'] ?? ''),
+        'method' => (string) ($in['method'] ?? 'نقدی'), 'note' => (string) ($in['note'] ?? ''),
     ];
     $p = payment_validate($form);
     payment_save($p);
     $fresh = customer_get((int) $c['id']);
+    $u = setting('unit') ?: 'ریال';
     $actions[] = ['label' => 'حساب ' . $c['name'], 'url' => url('customer', ['id' => (int) $c['id']])];
     return json_encode([
-        'ok' => true, 'customer' => $c['name'],
-        'amount_text' => money((float) $p['amount']) . ' ' . (setting('unit') ?: 'ریال'),
+        'ok' => true, 'customer' => $c['name'], 'amount_text' => money((float) $p['amount']) . ' ' . $u,
         'new_balance' => (int) $fresh['balance'],
-        'new_balance_text' => money((float) $fresh['balance']) . ' ' . (setting('unit') ?: 'ریال')
+        'new_balance_text' => money((float) $fresh['balance']) . ' ' . $u
             . ((float) $fresh['balance'] > 0 ? ' (بدهکار)' : ((float) $fresh['balance'] < 0 ? ' (بستانکار)' : ' (تسویه)')),
         'url' => url('customer', ['id' => (int) $c['id']]),
     ], JSON_UNESCAPED_UNICODE);
@@ -406,8 +457,7 @@ function _a_list_docs(string $type, string $q): string
     $rows = docs_list($type, $q, 0, 15);
     $out = [];
     foreach ($rows as $r) {
-        $out[] = ['number' => $r['number'], 'date' => $r['date'], 'customer' => $r['cust_name'],
-            'total' => (int) $r['total']];
+        $out[] = ['number' => $r['number'], 'date' => $r['date'], 'customer' => $r['cust_name'], 'total' => (int) $r['total']];
     }
     return json_encode($out, JSON_UNESCAPED_UNICODE);
 }

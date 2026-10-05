@@ -40,6 +40,7 @@ if (is_post()) {
             'notes_qot' => clean_text(post('notes_qot'), 2000),
             'notes_inv' => clean_text(post('notes_inv'), 2000),
             'assistant_model' => clean_line(post('assistant_model'), 60) ?: 'claude-opus-5-5',
+            'assistant_base_url' => clean_line(post('assistant_base_url'), 200) ?: 'https://api.anthropic.com',
         ];
         // Only overwrite the API key when a new one is actually typed, so the
         // masked field doesn't wipe it on every save.
@@ -115,7 +116,12 @@ layout_start('تنظیمات', 'settings', ['error' => $error]);
           <small>خالی بگذارید تا کلید فعلی بدون تغییر بماند.</small></label>
         <label class="field"><span>مدل</span>
           <input name="assistant_model" value="<?= e($s['assistant_model']) ?>" dir="ltr" maxlength="60">
-          <small>پیش‌فرض <code dir="ltr">claude-opus-5-5</code>. برای هزینهٔ کمتر: <code dir="ltr">claude-sonnet-5-5</code> یا <code dir="ltr">claude-haiku-4-5</code>.</small></label>
+          <small>برای GapGPT مثلاً <code dir="ltr">gpt-4o-mini</code> یا <code dir="ltr">gpt-4o</code>. برای Anthropic مستقیم: <code dir="ltr">claude-opus-5-5</code>.</small></label>
+      </div>
+      <div class="fgrid">
+        <label class="field"><span>آدرس سرویس (Base URL)</span>
+          <input name="assistant_base_url" value="<?= e($s['assistant_base_url']) ?>" dir="ltr" maxlength="200" placeholder="https://api.anthropic.com">
+          <small>برای GapGPT: <code dir="ltr">https://api.gapgpt.app/v1</code> — برای Anthropic مستقیم: <code dir="ltr">https://api.anthropic.com</code>. اگر آدرس شامل <code>anthropic</code> باشد فرمت بومی Anthropic، در غیر این صورت فرمت سازگار با OpenAI استفاده می‌شود.</small></label>
       </div>
       <div class="actions"><button class="btn btn-primary">ذخیره تنظیمات</button></div>
     </form>

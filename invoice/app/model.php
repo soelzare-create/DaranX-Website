@@ -25,7 +25,11 @@ const SETTING_DEFAULTS = [
     'notes_qot' => "قیمت‌های اعلامی تا پایان وقت اداری تاریخ صدور اعتبار دارد.\nاز اعتماد شما به مجموعه داران‌ایکس سپاسگزاریم.",
     'notes_inv' => "تسویه به صورت نقدی می‌باشد.\nاز اعتماد شما به مجموعه داران‌ایکس سپاسگزاریم.",
     // AI assistant (chat page). The key is stored server-side only, never sent to the browser.
+    // base_url picks the API: a host containing "anthropic" uses the native
+    // Anthropic Messages API; anything else (e.g. GapGPT) uses the
+    // OpenAI-compatible /chat/completions format.
     'assistant_api_key' => '',
+    'assistant_base_url' => 'https://api.anthropic.com',
     'assistant_model' => 'claude-opus-5-5',
 ];
 
