@@ -5,7 +5,7 @@
  */
 defined('APP_DIR') || exit;
 
-const APP_VERSION = '1.3.0';
+const APP_VERSION = '1.4.0';
 
 /** An error message meant for the user (shown in Persian, never a crash). */
 class UserError extends RuntimeException
@@ -174,6 +174,19 @@ function jtoday(?int $ts = null): string
     $ts = $ts ?? time();
     [$y, $m, $d] = g2j((int) date('Y', $ts), (int) date('n', $ts), (int) date('j', $ts));
     return sprintf('%04d/%02d/%02d', $y, $m, $d);
+}
+
+/**
+ * Approximate day number of a stored Jalali date («1405/07/12»), for day
+ * differences such as invoice age. Uses the mean year length, so it can be
+ * off by a day around Esfand; fine for 30/60/90-day buckets, not for exact
+ * calendar arithmetic.
+ */
+function jdays(string $j): int
+{
+    [$y, $m, $d] = array_map('intval', explode('/', $j) + [0, 1, 1]);
+    $dayOfYear = $m <= 6 ? ($m - 1) * 31 + $d : 186 + ($m - 7) * 30 + $d;
+    return (int) floor(($y - 1300) * 365.2422) + $dayOfYear;
 }
 
 /** Normalize a typed Jalali date (Persian digits, - or . separators); null if invalid. */

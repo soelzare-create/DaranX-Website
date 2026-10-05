@@ -1,6 +1,8 @@
-/* DaranX invoice assistant — chat client.
+/* DaranX invoice assistant: chat client.
    Keeps the conversation client-side and posts it to index.php?p=assistant_api,
-   which runs the Claude tool-use loop server-side and returns {reply, actions}. */
+   which runs the tool-use loop server-side and returns {reply, actions}.
+   Replies are rendered from a small, safe Markdown subset (tables, lists,
+   bold, code): the text is HTML-escaped first, then only our own tags are added. */
 (function () {
   'use strict';
   var log = document.getElementById('chat');
@@ -19,10 +21,75 @@
     });
   }
 
+  function inline(s) {
+    return s
+      .replace(/\*\*([^*]+)\*\*/g, '<strong>$1</strong>')
+      .replace(/`([^`]+)`/g, '<code>$1</code>');
+  }
+
+  function cells(line) {
+    return line.trim().replace(/^\|/, '').replace(/\|$/, '').split('|').map(function (c) { return c.trim(); });
+  }
+
+  // Markdown subset → HTML. Input is escaped before any tag is added.
+  function md(text) {
+    var lines = esc(text).split(/\r?\n/);
+    var out = [];
+    var para = [];
+    var hasTable = false;
+    function flush() {
+      if (para.length) out.push('<p>' + para.map(inline).join('<br>') + '</p>');
+      para = [];
+    }
+    for (var i = 0; i < lines.length; i++) {
+      var ln = lines[i];
+      if (/^\s*\|.*\|\s*$/.test(ln)) {
+        flush();
+        var rows = [];
+        while (i < lines.length && /^\s*\|.*\|\s*$/.test(lines[i])) rows.push(lines[i++]);
+        i--;
+        var head = cells(rows[0]);
+        var body = rows.slice(1).filter(function (r) { return !/^\s*\|?[\s:|-]+\|?\s*$/.test(r); });
+        var h = '<div class="md-tbl"><table><thead><tr>' + head.map(function (c) { return '<th>' + inline(c) + '</th>'; }).join('') + '</tr></thead><tbody>';
+        body.forEach(function (r) {
+          h += '<tr>' + cells(r).map(function (c) { return '<td>' + inline(c) + '</td>'; }).join('') + '</tr>';
+        });
+        out.push(h + '</tbody></table></div>');
+        hasTable = true;
+      } else if (/^\s*([-*•]|\d+[.)])\s+/.test(ln)) {
+        flush();
+        var ordered = /^\s*\d/.test(ln);
+        var items = [];
+        while (i < lines.length && /^\s*([-*•]|\d+[.)])\s+/.test(lines[i])) {
+          items.push('<li>' + inline(lines[i++].replace(/^\s*([-*•]|\d+[.)])\s+/, '')) + '</li>');
+        }
+        i--;
+        out.push((ordered ? '<ol>' : '<ul>') + items.join('') + (ordered ? '</ol>' : '</ul>'));
+      } else if (/^\s*#{1,4}\s+/.test(ln)) {
+        flush();
+        out.push('<p class="md-h">' + inline(ln.replace(/^\s*#{1,4}\s+/, '')) + '</p>');
+      } else if (/^\s*(---+|\*\*\*+)\s*$/.test(ln)) {
+        flush();
+      } else if (ln.trim() === '') {
+        flush();
+      } else {
+        para.push(ln);
+      }
+    }
+    flush();
+    return { html: out.join(''), wide: hasTable };
+  }
+
   function addMsg(role, text, actions, isErr) {
     var el = document.createElement('div');
     el.className = 'msg ' + (role === 'user' ? 'user' : 'bot') + (isErr ? ' err' : '');
-    el.innerHTML = esc(text);
+    if (role === 'user' || isErr) {
+      el.textContent = text;
+    } else {
+      var r = md(text);
+      el.innerHTML = r.html;
+      if (r.wide) el.classList.add('wide');
+    }
     if (actions && actions.length) {
       var box = document.createElement('div');
       box.className = 'acts';
@@ -77,6 +144,16 @@
       addMsg('assistant', 'خطا در ارتباط با سرور. دوباره تلاش کنید.', [], true);
     });
   }
+
+  // One-tap report buttons.
+  document.querySelectorAll('[data-ask]').forEach(function (b) {
+    b.addEventListener('click', function () {
+      if (busy) return;
+      var text = b.getAttribute('data-ask');
+      addMsg('user', text);
+      send(text);
+    });
+  });
 
   form.addEventListener('submit', function (e) {
     e.preventDefault();
