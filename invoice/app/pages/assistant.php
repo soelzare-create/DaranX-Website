@@ -7,7 +7,7 @@ layout_start('دستیار', 'assistant');
 ?>
 <style>
   .chat-card{display:flex;flex-direction:column;gap:0;padding:0;overflow:hidden}
-  .chat-log{min-height:46vh;max-height:60vh;overflow-y:auto;padding:1.1rem;display:flex;flex-direction:column;gap:.7rem}
+  .chat-log{min-height:46vh;min-height:46dvh;max-height:60vh;max-height:60dvh;overflow-y:auto;overscroll-behavior:contain;padding:1.1rem;display:flex;flex-direction:column;gap:.7rem}
   .msg{max-width:84%;padding:.6rem .9rem;border-radius:14px;line-height:1.9;white-space:pre-wrap;word-break:break-word}
   .msg.bot{white-space:normal}
   .msg.bot.wide{max-width:100%;width:100%}
@@ -72,7 +72,7 @@ layout_start('دستیار', 'assistant');
     </div>
     <?php endif; ?>
     <form id="chatForm" class="chat-input" data-csrf="<?= e(csrf_token()) ?>" data-api="<?= e(url('assistant_api')) ?>">
-      <textarea id="chatMsg" placeholder="مثلاً: برای آقای احمدی ۵ میلیون دریافتی نقدی ثبت کن" rows="1" autocomplete="off"></textarea>
+      <textarea id="chatMsg" enterkeyhint="send" placeholder="مثلاً: برای آقای احمدی ۵ میلیون دریافتی نقدی ثبت کن" rows="1" autocomplete="off"></textarea>
       <button class="btn btn-primary" type="submit">ارسال</button>
     </form>
   </section>

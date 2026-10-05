@@ -4,20 +4,23 @@
  */
 defined('APP_DIR') || exit;
 
-// key => [label, query, what it needs: null | 'admin' | [area, level]]
+// key => [label, query, what it needs: null | 'admin' | [area, level], icon, group, short label for the phone tab bar]
 const NAV = [
-    'home' => ['داشبورد', [], null],
-    'qot' => ['پیش‌فاکتورها', ['p' => 'docs', 'type' => 'qot'], ['sales', 'view']],
-    'inv' => ['فاکتورها', ['p' => 'docs', 'type' => 'inv'], ['sales', 'view']],
-    'customers' => ['مشتریان', ['p' => 'customers'], ['sales', 'view']],
-    'payments' => ['دریافت‌ها', ['p' => 'payments'], ['sales', 'view']],
-    'purchases' => ['خریدها', ['p' => 'purchases'], ['costs', 'view']],
-    'expenses' => ['پرداخت‌ها', ['p' => 'expenses'], ['costs', 'view']],
-    'assistant' => ['دستیار', ['p' => 'assistant'], ['assistant', 'use']],
-    'import' => ['ورود از اکسل', ['p' => 'import'], ['sales', 'edit']],
-    'users' => ['کاربران', ['p' => 'users'], 'admin'],
-    'settings' => ['تنظیمات', ['p' => 'settings'], null],
+    'home' => ['داشبورد', [], null, 'house', '', 'خانه'],
+    'qot' => ['پیش‌فاکتورها', ['p' => 'docs', 'type' => 'qot'], ['sales', 'view'], 'file-text', 'فروش', 'پیش‌فاکتور'],
+    'inv' => ['فاکتورها', ['p' => 'docs', 'type' => 'inv'], ['sales', 'view'], 'receipt', 'فروش', 'فاکتور'],
+    'customers' => ['مشتریان', ['p' => 'customers'], ['sales', 'view'], 'users', 'فروش', 'مشتریان'],
+    'payments' => ['دریافت‌ها', ['p' => 'payments'], ['sales', 'view'], 'arrow-circle-down', 'فروش', 'دریافت'],
+    'purchases' => ['خریدها', ['p' => 'purchases'], ['costs', 'view'], 'shopping-cart', 'خرید و هزینه', 'خرید'],
+    'expenses' => ['پرداخت‌ها', ['p' => 'expenses'], ['costs', 'view'], 'arrow-circle-up', 'خرید و هزینه', 'پرداخت'],
+    'assistant' => ['دستیار', ['p' => 'assistant'], ['assistant', 'use'], 'chat-circle-text', 'ابزارها', 'دستیار'],
+    'import' => ['ورود از اکسل', ['p' => 'import'], ['sales', 'edit'], 'file-xls', 'ابزارها', 'اکسل'],
+    'users' => ['کاربران', ['p' => 'users'], 'admin', 'user-gear', 'مدیریت', 'کاربران'],
+    'settings' => ['تنظیمات', ['p' => 'settings'], null, 'gear-six', 'مدیریت', 'تنظیمات'],
 ];
+
+/** Phone tab bar: the first four of these the user may open, then «منو». */
+const TAB_ORDER = ['home', 'inv', 'qot', 'customers', 'purchases', 'expenses', 'assistant'];
 
 function nav_allowed($need): bool
 {
@@ -61,7 +64,10 @@ function html_head(string $title, array $css = ['app.css']): void
 <html lang="fa" dir="rtl">
 <head>
 <meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, interactive-widget=resizes-content">
+<meta name="color-scheme" content="light dark">
+<meta name="theme-color" media="(prefers-color-scheme: light)" content="#F3F5F9">
+<meta name="theme-color" media="(prefers-color-scheme: dark)" content="#0A1522">
 <meta name="robots" content="noindex, nofollow">
 <title><?= e($title) ?></title>
 <link rel="icon" href="<?= e(asset('favicon.svg')) ?>" type="image/svg+xml">
@@ -81,30 +87,77 @@ function layout_start(string $title, string $active = '', array $opt = []): void
 {
     $sheet = !empty($opt['sheet']);
     html_head($title . ' | DaranX', $sheet ? ['app.css', 'sheet.css'] : ['app.css']);
-    echo '<body class="' . ($sheet ? 'sheet-page' : '') . '"' . ($opt['body_attrs'] ?? '') . ">\n";
+    echo '<body class="shell' . ($sheet ? ' sheet-page' : '') . '"' . ($opt['body_attrs'] ?? '') . ">\n";
     $user = current_user();
+    $items = [];
+    foreach (NAV as $key => [$label, $q, $need, $ic, $group, $short]) {
+        if ($user && nav_allowed($need)) {
+            $items[$key] = [
+                'label' => $key === 'settings' && !is_admin() ? 'حساب من' : $label,
+                'short' => $key === 'settings' && !is_admin() ? 'حساب من' : $short,
+                'href' => url($q['p'] ?? 'home', array_diff_key($q, ['p' => 1])),
+                'icon' => $ic, 'group' => $group,
+            ];
+        }
+    }
+    $tabs = array_slice(array_values(array_filter(TAB_ORDER, function ($k) use ($items) {
+        return isset($items[$k]);
+    })), 0, 4);
+    $cur = function (string $key) use ($active): string {
+        return $key === $active ? ' aria-current="page"' : '';
+    };
     ?>
-<nav class="nav no-print">
-  <div class="in">
+<a class="skip" href="#main">رفتن به محتوا</a>
+<aside class="side no-print" id="side" aria-label="منوی اصلی" data-menu>
+  <div class="side-hd">
     <a class="brand" href="index.php">Daran<span class="x">X</span></a>
-    <div class="links">
-      <?php foreach (NAV as $key => [$label, $q, $need]): if (!$user || !nav_allowed($need)) { continue; } ?>
-        <a href="<?= e(url($q['p'] ?? 'home', array_diff_key($q, ['p' => 1]))) ?>"<?= $key === $active ? ' aria-current="page"' : '' ?>><?= e($key === 'settings' && !is_admin() ? 'حساب من' : $label) ?></a>
-      <?php endforeach; ?>
-    </div>
-    <div class="nav-end">
-      <?php if ($user): ?>
-        <form method="post" action="<?= e(url('logout')) ?>">
-          <?= csrf_field() ?>
-          <button class="linkbtn" title="خروج <?= e(user_label($user)) ?>"><?= icon('sign-out') ?><span>خروج</span></button>
-        </form>
+    <button type="button" class="icon-btn side-close" data-menu-close aria-label="بستن منو"><?= icon('x') ?></button>
+  </div>
+  <nav class="side-nav">
+    <?php $group = null; foreach ($items as $key => $it): ?>
+      <?php if ($it['group'] !== $group): $group = $it['group']; ?>
+        <?php if ($group !== ''): ?><div class="side-group"><?= e($group) ?></div><?php endif; ?>
       <?php endif; ?>
-      <button type="button" class="theme-toggle" id="tt" aria-label="روشن/تیره" title="روشن/تیره"><?= icon('circle-half') ?></button>
+      <a href="<?= e($it['href']) ?>"<?= $cur($key) ?>><?= icon($it['icon']) ?><span><?= e($it['label']) ?></span></a>
+    <?php endforeach; ?>
+  </nav>
+  <?php if ($user): ?>
+  <div class="side-ft">
+    <a class="me" href="<?= e(url('settings')) ?>">
+      <span class="rc-mono" aria-hidden="true"><?= e(str_cut(user_label($user), 1)) ?></span>
+      <span class="me-txt"><b><?= e(user_label($user)) ?></b><small><?= e(is_admin($user) ? 'مدیر' : 'حساب من') ?></small></span>
+    </a>
+    <div class="side-tools">
+      <button type="button" class="icon-btn" id="tt" aria-label="روشن یا تیره" title="روشن یا تیره"><?= icon('circle-half') ?></button>
+      <form method="post" action="<?= e(url('logout')) ?>">
+        <?= csrf_field() ?>
+        <button class="icon-btn" aria-label="خروج از حساب" title="خروج"><?= icon('sign-out') ?></button>
+      </form>
     </div>
   </div>
-</nav>
+  <?php endif; ?>
+</aside>
+<div class="scrim no-print" data-menu-close></div>
+
+<header class="topbar no-print">
+  <a class="brand" href="index.php">Daran<span class="x">X</span></a>
+</header>
+
+<div class="app-main" id="main">
 <?php
     flashes($opt['error'] ?? null);
+    if ($user && $tabs) {
+        // Rendered here (before the page) so it is in the DOM early; CSS pins it to the bottom on phones.
+        echo '<nav class="tabbar no-print" aria-label="دسترسی سریع">';
+        foreach ($tabs as $k) {
+            echo '<a href="' . e($items[$k]['href']) . '"' . $cur($k) . '>' . icon($items[$k]['icon'])
+                . '<span>' . e($items[$k]['short']) . '</span></a>';
+        }
+        $inTabs = in_array($active, $tabs, true);
+        echo '<button type="button" data-menu-open aria-controls="side" aria-expanded="false"'
+            . (!$inTabs && $active !== '' ? ' aria-current="page"' : '') . '>' . icon('list') . '<span>منو</span></button>';
+        echo '</nav>';
+    }
 }
 
 function flashes(?string $error = null): void
@@ -127,6 +180,7 @@ function flashes(?string $error = null): void
 
 function layout_end(array $scripts = []): void
 {
+    echo "</div>\n"; // .app-main
     foreach ($scripts as $s) {
         echo '<script src="' . e(asset($s)) . '"></script>' . "\n";
     }
@@ -153,8 +207,7 @@ function auth_start(string $title, string $subtitle): void
 
 function auth_end(): void
 {
-    echo "    </div>\n  </div>\n</main>\n";
-    layout_end();
+    echo "    </div>\n  </div>\n</main>\n</body>\n</html>\n";
 }
 
 /** Minimal standalone error page (works before the DB is available). */

@@ -1,6 +1,5 @@
 /* The A4 sheet — taken from the DaranX quotation template. */
 
-.sheet-page .nav{position:static}
 .sheet-page .flashes{max-width:calc(210mm + 2 * var(--gutter))}
 
 /* ---------- action bar (not printed) ---------- */
@@ -18,7 +17,7 @@
   display:flex;flex-direction:column}
 .more .menu a,.more .menu button{display:block;width:100%;text-align:start;border:0;background:transparent;color:var(--ink);
   font-weight:700;font-size:.9rem;padding:.5rem .8rem;border-radius:8px;cursor:pointer;text-decoration:none}
-.more .menu a:hover,.more .menu button:hover{background:var(--surface-2)}
+@media (hover:hover) and (pointer:fine){.more .menu a:hover,.more .menu button:hover{background:var(--surface-2)}}
 .more .menu .danger{color:var(--danger)}
 
 /* ---------- stage ---------- */
@@ -26,7 +25,7 @@
 .stage-in{width:210mm;max-width:100%;min-width:0}
 .banners{display:grid;gap:.5rem;margin-bottom:1rem}
 .banner{border:1px solid var(--line);background:var(--surface);border-radius:var(--r-md);padding:.6rem 1rem;
-  font-weight:600;color:var(--ink-soft);font-size:.92rem;box-shadow:var(--shadow)}
+  font-weight:600;color:var(--ink-soft);font-size:.92rem}
 
 /* Cost & profit of an invoice: four figures, then its two actions. */
 .costbar{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:.75rem 1.25rem;padding:.8rem 1.1rem}
@@ -106,11 +105,11 @@
 .items input::placeholder{color:var(--ink-faint);opacity:.55}
 .rm{width:26px;height:26px;border-radius:999px;border:0;background:transparent;color:var(--ink-faint);
   font-size:1.15rem;line-height:1;cursor:pointer}
-.rm:hover{background:var(--surface-2);color:#b3261e}
+@media (hover:hover) and (pointer:fine){.rm:hover{background:var(--surface-2);color:#b3261e}}
 .addrow{display:flex;justify-content:center;margin-top:.7rem}
 .addrow button{border:1px dashed var(--line-strong);background:transparent;color:var(--steel);font-weight:800;
   border-radius:999px;padding:.4rem 1.4rem;cursor:pointer;font-size:.88rem;font-family:inherit}
-.addrow button:hover{background:var(--surface-2)}
+@media (hover:hover) and (pointer:fine){.addrow button:hover{background:var(--surface-2)}}
 
 /* totals / signature */
 .sum{display:grid;grid-template-columns:1fr 88mm;gap:5mm;padding:5mm var(--pad) 0;align-items:start}
@@ -162,6 +161,8 @@ body[data-ro] .addrow,body[data-ro] .del{display:none}
   .items .price,.items .line{width:auto}
   .tot .r input{width:24mm}
   .docbar .spacer{display:none}
+  /* Three wrapped rows of 44px buttons must not stay pinned over a phone screen. */
+  .docbar{position:static}
 }
 
 /* ---------- print ---------- */
@@ -169,7 +170,9 @@ body[data-ro] .addrow,body[data-ro] .del{display:none}
 @media print{
   html,body{background:#fff}
   *{-webkit-print-color-adjust:exact;print-color-adjust:exact}
-  .nav,.docbar,.flashes,.banners,.addrow,.del,.no-print{display:none!important}
+  .docbar,.flashes,.banners,.addrow,.del,.no-print{display:none!important}
+  body.shell{display:block}
+  .app-main{padding:0}
   .stage{padding:0;display:block}
   .stage-in{width:auto}
   .sheet{display:block;overflow:visible;box-shadow:none;border-radius:0;width:210mm;min-height:297mm;--pad:12mm;

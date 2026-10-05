@@ -26,6 +26,17 @@
   }
   window.DX = { toFa: toFa, parse: parse, fmt: fmt };
 
+  // The browser chrome / status bar follows the page: with a theme chosen by
+  // hand, both theme-color tags take that theme's top colour.
+  function syncThemeColor() {
+    var t = root.getAttribute('data-theme');
+    if (!t) return;
+    Array.prototype.forEach.call(document.querySelectorAll('meta[name="theme-color"]'), function (m) {
+      m.setAttribute('content', t === 'dark' ? '#0A1522' : '#F3F5F9');
+    });
+  }
+  syncThemeColor();
+
   document.addEventListener('DOMContentLoaded', function () {
     var tt = document.getElementById('tt');
     if (tt) {
@@ -34,9 +45,61 @@
         var dark = cur ? cur === 'dark' : matchMedia('(prefers-color-scheme: dark)').matches;
         var next = dark ? 'light' : 'dark';
         root.setAttribute('data-theme', next);
+        syncThemeColor();
         try { localStorage.setItem('dx-doc-theme', next); } catch (e) { /* ignore */ }
       });
     }
+
+    // Menu drawer (phones and tablets): «منو» opens the sidebar from the start
+    // side; the scrim, the close button, Escape or picking a link closes it.
+    // Focus moves into the drawer and back to the button that opened it.
+    var side = document.querySelector('[data-menu]');
+    var scrim = document.querySelector('.scrim');
+    var opener = null;
+    function setOpen(open, from) {
+      if (!side) return;
+      if (open) {
+        opener = from || null;
+        side.setAttribute('data-open', '');
+        if (scrim) scrim.setAttribute('data-open', '');
+        root.classList.add('menu-open');
+        var first = side.querySelector('.side-nav a[aria-current="page"]') || side.querySelector('.side-nav a');
+        if (first) first.focus({ preventScroll: true });
+      } else {
+        side.removeAttribute('data-open');
+        if (scrim) scrim.removeAttribute('data-open');
+        root.classList.remove('menu-open');
+        if (opener) opener.focus({ preventScroll: true });
+      }
+      Array.prototype.forEach.call(document.querySelectorAll('[data-menu-open]'), function (b) {
+        b.setAttribute('aria-expanded', open ? 'true' : 'false');
+      });
+    }
+    Array.prototype.forEach.call(document.querySelectorAll('[data-menu-open]'), function (b) {
+      b.addEventListener('click', function () { setOpen(!side.hasAttribute('data-open'), b); });
+    });
+    Array.prototype.forEach.call(document.querySelectorAll('[data-menu-close]'), function (b) {
+      b.addEventListener('click', function () { setOpen(false); });
+    });
+    document.addEventListener('keydown', function (e) {
+      if (e.key === 'Escape' && side && side.hasAttribute('data-open')) setOpen(false);
+    });
+    if (side) {
+      side.addEventListener('click', function (e) {
+        if (e.target.closest && e.target.closest('.side-nav a') && side.hasAttribute('data-open')) setOpen(false);
+      });
+    }
+    // Desktop width: the drawer state must not linger when the sidebar is pinned.
+    if (window.matchMedia) {
+      var wide = matchMedia('(min-width: 1100px)');
+      var onWide = function () { if (wide.matches && side && side.hasAttribute('data-open')) setOpen(false); };
+      if (wide.addEventListener) wide.addEventListener('change', onWide);
+    }
+
+    // The keyboard's return key says what it does.
+    Array.prototype.forEach.call(document.querySelectorAll('form.search input[name="q"]'), function (i) {
+      i.setAttribute('enterkeyhint', 'search');
+    });
 
     // <form data-confirm="…"> asks before submitting.
     document.addEventListener('submit', function (e) {
