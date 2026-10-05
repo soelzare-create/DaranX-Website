@@ -42,6 +42,7 @@ require APP_DIR . '/helpers.php';
 require APP_DIR . '/db.php';
 require APP_DIR . '/model.php';
 require APP_DIR . '/reports.php';
+require APP_DIR . '/access.php';
 require APP_DIR . '/layout.php';
 
 ensure_data_dir();

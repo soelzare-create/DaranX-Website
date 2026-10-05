@@ -99,7 +99,11 @@ function _r_one(string $sql, array $args): array
 
 function _r_margin(float $profit, float $net): ?string
 {
-    return $net > 0 ? fa(str_replace('.', '٫', (string) round($profit / $net * 100, 1))) . '٪' : null;
+    if ($net <= 0) {
+        return null;
+    }
+    $m = round($profit / $net * 100, 1);
+    return ($m < 0 ? '−' : '') . fa(str_replace('.', '٫', (string) abs($m))) . '٪';
 }
 
 /** Profit and loss + cash in/out for a period. */

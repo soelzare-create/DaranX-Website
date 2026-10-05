@@ -22,7 +22,7 @@ if (is_post()) {
             if ((int) $pdo->query('SELECT COUNT(*) FROM users')->fetchColumn() > 0) {
                 return 0; // someone finished setup a moment earlier
             }
-            $pdo->prepare('INSERT INTO users (username, pass_hash, created_at) VALUES (?, ?, ?)')
+            $pdo->prepare('INSERT INTO users (username, pass_hash, created_at, is_admin) VALUES (?, ?, ?, 1)')
                 ->execute([$username, password_hash($pass, PASSWORD_DEFAULT), now()]);
             return (int) $pdo->lastInsertId();
         });

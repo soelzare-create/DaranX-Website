@@ -39,11 +39,12 @@ layout_start('ویرایش دریافت', 'payments', ['error' => $error]);
 ?>
 <main class="page narrow">
   <div class="head">
-    <h1>ویرایش دریافت</h1>
+    <h1><?= can('sales', 'edit') ? 'ویرایش دریافت' : 'دریافت' ?></h1>
     <div class="actions"><a class="btn btn-ghost" href="<?= e(url('customer', ['id' => $pay['customer_id']])) ?>">→ حساب <?= e($pay['customer_name']) ?></a></div>
   </div>
   <section class="card">
     <form method="post" class="form">
+      <fieldset class="plain"<?= can('sales', 'edit') ? '' : ' disabled' ?>>
       <?= csrf_field() ?>
       <input type="hidden" name="action" value="save">
       <div class="fgrid">
@@ -67,12 +68,15 @@ layout_start('ویرایش دریافت', 'payments', ['error' => $error]);
       <label class="field"><span>توضیح</span>
         <input name="note" value="<?= e($form['note']) ?>" maxlength="300"></label>
       <div class="actions"><button class="btn btn-primary">ذخیره</button></div>
+    </fieldset>
     </form>
+    <?php if (can('sales', 'edit')): ?>
     <form method="post" class="mt" data-confirm="این دریافت حذف شود؟ مبلغ آن دوباره به بدهی مشتری اضافه می‌شود.">
       <?= csrf_field() ?>
       <input type="hidden" name="action" value="delete">
       <button class="btn btn-danger btn-sm">حذف دریافت</button>
     </form>
+    <?php endif; ?>
   </section>
 </main>
 <?php

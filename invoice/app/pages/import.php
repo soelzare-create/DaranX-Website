@@ -9,6 +9,8 @@
  * series continues cleanly after the last proforma already in the system.
  */
 defined('APP_DIR') || exit;
+
+$GLOBALS['activity_via'] = 'ورود از اکسل';
 require_once APP_DIR . '/importlib.php';
 
 $error = null;

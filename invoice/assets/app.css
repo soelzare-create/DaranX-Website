@@ -270,6 +270,59 @@ a.rc-title:hover{color:var(--steel)}
 .rcard.is-void .rc-num{text-decoration:line-through}
 .rcard.err{border-color:color-mix(in srgb,var(--danger) 35%,transparent)}
 .rcard.compact{padding:.8rem .95rem}
+.rcard.is-off{opacity:.62}
+
+/* Accounts: permission form, activity feed */
+.lead-note{margin:-.4rem 0 1.1rem;max-width:68ch}
+/* Purchase form: invoice lines to tick */
+.buy-box{display:grid;gap:.5rem;margin-top:.35rem}
+.buy-empty{margin:0;padding:.9rem 1rem;border:1px dashed var(--line-strong);border-radius:var(--r-md);font-size:.88rem}
+.buy-item{border:1px solid var(--line);border-radius:var(--r-md);background:var(--surface);padding:.65rem .85rem;
+  transition:border-color .2s var(--ease),background .2s var(--ease)}
+.buy-item.is-on{border-color:color-mix(in srgb,var(--steel) 55%,var(--line));background:color-mix(in srgb,var(--steel) 5%,var(--surface))}
+.bi-head{display:flex;align-items:flex-start;gap:.6rem;cursor:pointer}
+.bi-head input[type=checkbox]{accent-color:var(--steel);width:18px;height:18px;margin:.3rem 0 0;flex:none}
+.bi-txt{display:flex;flex-direction:column;min-width:0}
+.bi-txt b{color:var(--ink);font-weight:700}
+.bi-txt small{color:var(--ink-faint);font-size:.8rem}
+.bi-txt .bi-bought{color:var(--warn)}
+.bi-inputs{display:grid;grid-template-columns:minmax(80px,.6fr) minmax(150px,1.4fr);gap:.5rem .8rem;margin-top:.6rem;padding-inline-start:1.75rem}
+.bi-inputs .field span{font-size:.8rem}
+.bi-line{grid-column:1/-1;font-size:.84rem;font-weight:700;color:var(--ok)}
+.bi-line.neg{color:var(--danger)}
+.buy-extra{margin-top:.6rem}
+.buy-extra summary{cursor:pointer;font-size:.88rem;font-weight:700;color:var(--steel);width:max-content;max-width:100%}
+.buy-extra .fgrid{margin-top:.6rem}
+.buy-total{margin-top:.7rem;padding:.6rem .9rem;border-radius:var(--r-sm);background:var(--surface-2);color:var(--ink);font-weight:800}
+.buy-total[hidden]{display:none}
+fieldset.plain{border:0;margin:0;padding:0;min-width:0;display:grid;gap:1rem}
+fieldset.plain:disabled .actions{display:none}
+.perm-box{border:0;margin:0;padding:0;min-width:0;display:grid;gap:.15rem}
+.perm-box:disabled{opacity:.45}
+.preset-row{display:flex;flex-wrap:wrap;align-items:center;gap:.4rem;margin:.2rem 0 .5rem}
+.perm-row{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:.5rem 1rem;
+  padding:.75rem 0;border-top:1px solid var(--line)}
+.perm-k{display:flex;flex-direction:column;min-width:0;flex:1 1 220px}
+.perm-k b{color:var(--ink)}
+.perm-k small{color:var(--ink-faint)}
+.choice-group{display:inline-flex;flex-wrap:wrap;gap:.3rem;padding:.25rem;border-radius:999px;background:var(--surface-2)}
+.choice{position:relative;display:inline-flex}
+.choice input{position:absolute;inset:0;opacity:0;margin:0;cursor:pointer}
+.choice span{padding:.3rem .85rem;border-radius:999px;font-size:.84rem;font-weight:700;color:var(--ink-faint);
+  transition:background .2s var(--ease),color .2s var(--ease)}
+.choice input:checked + span{background:var(--accent-solid);color:var(--on-accent);box-shadow:var(--shadow)}
+.choice input:focus-visible + span{box-shadow:var(--ring)}
+.perm-box:disabled .choice input{cursor:not-allowed}
+.feed{display:grid;gap:.5rem}
+.feed-item{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:.3rem 1rem;
+  background:var(--surface);border:1px solid var(--line);border-radius:var(--r-md);padding:.7rem 1rem;box-shadow:var(--shadow)}
+.feed-main{display:flex;flex-direction:column;min-width:0;flex:1 1 260px}
+.feed-main b{color:var(--ink);font-size:.92rem}
+.feed-main b a{color:inherit}
+.feed-main b a:hover{color:var(--steel)}
+.feed-detail{font-size:.84rem;color:var(--ink-faint);overflow-wrap:anywhere}
+.danger-zone{display:flex;flex-wrap:wrap;gap:.5rem;margin-top:1.75rem;padding-top:1rem;border-top:1px solid var(--line)}
+.search select.input{flex:0 1 200px}
 .rcard.static:hover{transform:none;box-shadow:var(--shadow)}
 .rcard.static:not(.err):hover{border-color:var(--line)}
 .rc-file{display:inline-flex;align-items:center;gap:.35rem;min-width:0;font-size:.85rem;font-weight:600;color:var(--ink-soft)}

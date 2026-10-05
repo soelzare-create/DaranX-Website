@@ -12,14 +12,16 @@ if ($forDoc && $forDoc['type'] !== 'inv') {
 $form = [
     'doc_id' => $forDoc ? (string) $forDoc['id'] : '',
     'supplier' => '',
-    'title' => '',
-    'amount' => '',
     'date' => fa(jtoday()),
     'note' => '',
+    'picked' => [],
+    'extra_title' => '',
+    'extra_amount' => '',
 ];
 
 if (is_post()) {
-    $form = array_map(function ($v) { return is_string($v) ? $v : ''; }, $_POST) + $form;
+    $form = array_map(function ($v) { return is_string($v) ? $v : ''; }, array_intersect_key($_POST, $form)) + $form;
+    $form['picked'] = purchase_picked_from_post($_POST);
     try {
         $p = purchase_validate($_POST);
         $pid = purchase_save($p);
@@ -58,12 +60,13 @@ layout_start('خریدها', 'purchases', ['error' => $error]);
     </div>
   </div>
 
+  <?php if (can('costs', 'edit')): ?>
   <details class="card collapse"<?= $error || $forDoc ? ' open' : '' ?>>
     <summary><span class="btn btn-primary btn-sm"><?= icon('plus') ?> ثبت خرید</span></summary>
     <?php if (!$invoices): ?>
       <p class="empty">هنوز فاکتور فعالی نیست. خرید همیشه به یک فاکتور وصل می‌شود؛ اول فاکتور را صادر کنید.</p>
     <?php else: ?>
-      <form method="post" class="form mt">
+      <form method="post" class="form mt" data-buy-form>
         <?= csrf_field() ?>
         <?php purchase_fields($form, $invoices, suppliers_known()); ?>
         <div class="actions">
@@ -73,6 +76,7 @@ layout_start('خریدها', 'purchases', ['error' => $error]);
       </form>
     <?php endif; ?>
   </details>
+  <?php endif; ?>
 
   <section>
     <div class="list-tools">
@@ -104,7 +108,7 @@ layout_start('خریدها', 'purchases', ['error' => $error]);
             </div>
             <div class="rc-foot">
               <?= amount_html($p['amount']) ?>
-              <?php if (purchase_left($p) >= 0.5): ?>
+              <?php if (purchase_left($p) >= 0.5 && can('costs', 'edit')): ?>
                 <a class="btn btn-accent btn-sm" href="<?= e(url('expenses', ['kind' => 'direct', 'purchase' => $p['id'],
                     'amount' => (int) purchase_left($p)])) ?>">ثبت پرداخت</a>
               <?php endif; ?>

@@ -33,6 +33,7 @@ layout_start('مشتریان', 'customers', ['error' => $error]);
     </div>
   </div>
 
+  <?php if (can('sales', 'edit')): ?>
   <details class="card collapse"<?= $error ? ' open' : '' ?>>
     <summary><span class="btn btn-primary btn-sm"><?= icon('plus') ?> مشتری جدید</span></summary>
     <form method="post" class="form mt">
@@ -41,6 +42,7 @@ layout_start('مشتریان', 'customers', ['error' => $error]);
       <div class="actions"><button class="btn btn-primary">ثبت مشتری</button></div>
     </form>
   </details>
+  <?php endif; ?>
 
   <section>
     <div class="list-tools">

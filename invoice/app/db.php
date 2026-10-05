@@ -176,6 +176,46 @@ function db_migrate(PDO $pdo): void
             CREATE INDEX expenses_purchase ON expenses(purchase_id);
             CREATE INDEX expenses_kind_date ON expenses(kind, date);
         ",
+        3 => "
+            -- Several accounts: name, admin flag, per-area permissions (JSON),
+            -- on/off switch, and a counter that ends old sessions on a password
+            -- change or when the account is switched off. Existing users stay admins.
+            ALTER TABLE users ADD COLUMN full_name TEXT NOT NULL DEFAULT '';
+            ALTER TABLE users ADD COLUMN is_admin INTEGER NOT NULL DEFAULT 0;
+            ALTER TABLE users ADD COLUMN perms TEXT NOT NULL DEFAULT '';
+            ALTER TABLE users ADD COLUMN active INTEGER NOT NULL DEFAULT 1;
+            ALTER TABLE users ADD COLUMN session_ver INTEGER NOT NULL DEFAULT 1;
+            ALTER TABLE users ADD COLUMN last_login TEXT;
+            UPDATE users SET is_admin = 1;
+
+            -- Who did what, newest last.
+            CREATE TABLE activity (
+                id INTEGER PRIMARY KEY,
+                user_id INTEGER,
+                user_name TEXT NOT NULL DEFAULT '',
+                at TEXT NOT NULL,
+                action TEXT NOT NULL,
+                detail TEXT NOT NULL DEFAULT '',
+                url TEXT NOT NULL DEFAULT ''
+            );
+            CREATE INDEX activity_user ON activity(user_id, id);
+        ",
+        4 => "
+            -- What a purchase bought: the invoice's own lines (picked from it)
+            -- and an optional free line. purchases.title/amount stay as the
+            -- summary (joined titles, sum of lines) so lists and reports are unchanged.
+            CREATE TABLE purchase_items (
+                id INTEGER PRIMARY KEY,
+                purchase_id INTEGER NOT NULL REFERENCES purchases(id) ON DELETE CASCADE,
+                pos INTEGER NOT NULL,
+                title TEXT NOT NULL,
+                qty REAL,
+                unit_price INTEGER,
+                amount INTEGER NOT NULL,
+                from_invoice INTEGER NOT NULL DEFAULT 1
+            );
+            CREATE INDEX purchase_items_purchase ON purchase_items(purchase_id, pos);
+        ",
     ];
 
     $version = (int) $pdo->query('PRAGMA user_version')->fetchColumn();

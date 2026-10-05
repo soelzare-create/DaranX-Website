@@ -5,7 +5,7 @@
  */
 defined('APP_DIR') || exit;
 
-const APP_VERSION = '1.4.0';
+const APP_VERSION = '1.5.0';
 
 /** An error message meant for the user (shown in Persian, never a crash). */
 class UserError extends RuntimeException
@@ -288,15 +288,25 @@ function csrf_check(): void
 
 // --- Auth -------------------------------------------------------------------
 
-function current_user(): ?array
+function current_user(bool $reload = false): ?array
 {
     static $user = false;
-    if ($user === false) {
+    if ($user === false || $reload) {
         $user = null;
         if (!empty($_SESSION['uid'])) {
-            $st = db()->prepare('SELECT id, username FROM users WHERE id = ?');
+            $st = db()->prepare('SELECT * FROM users WHERE id = ?');
             $st->execute([(int) $_SESSION['uid']]);
-            $user = $st->fetch() ?: null;
+            $row = $st->fetch() ?: null;
+            if ($row && !isset($_SESSION['ver'])) {
+                $_SESSION['ver'] = (int) $row['session_ver']; // session from before accounts existed
+            }
+            // Switched off, deleted, or password changed elsewhere → signed out.
+            if ($row && $row['active'] && (int) $row['session_ver'] === (int) $_SESSION['ver']) {
+                unset($row['pass_hash']);
+                $user = $row;
+            } else {
+                unset($_SESSION['uid'], $_SESSION['ver']);
+            }
         }
     }
     return $user;
@@ -312,9 +322,14 @@ function require_login(): void
 function login_user(int $uid): void
 {
     session_regenerate_id(true);
+    $st = db()->prepare('SELECT session_ver FROM users WHERE id = ?');
+    $st->execute([$uid]);
     $_SESSION['uid'] = $uid;
+    $_SESSION['ver'] = (int) $st->fetchColumn();
     $_SESSION['seen'] = time();
     unset($_SESSION['csrf']);
+    db()->prepare('UPDATE users SET last_login = ? WHERE id = ?')->execute([now(), $uid]);
+    current_user(true);
 }
 
 function client_ip(): string

@@ -55,6 +55,7 @@ layout_start('دستیار', 'assistant');
     <div id="chat" class="chat-log">
       <div class="msg bot">سلام! هر کاری را که در برنامه انجام می‌دهید، می‌توانید اینجا بنویسید: پیش‌فاکتور و فاکتور، ثبت دریافتی، ثبت خرید برای یک فاکتور، ثبت پرداختی (مستقیم یا سربار) و هر گزارش مالی که لازم دارید. برای گزارش‌های پرکاربرد، دکمه‌های پایین را بزنید.</div>
     </div>
+    <?php if (can('reports')): ?>
     <div class="chat-chips" aria-label="گزارش‌های آماده">
 <?php foreach ([
     'سود و زیان این ماه' => 'گزارش سود و زیان این ماه را بده',
@@ -69,6 +70,7 @@ layout_start('دستیار', 'assistant');
       <button type="button" class="btn btn-ghost btn-sm" data-ask="<?= e($ask) ?>"><?= e($label) ?></button>
 <?php endforeach; ?>
     </div>
+    <?php endif; ?>
     <form id="chatForm" class="chat-input" data-csrf="<?= e(csrf_token()) ?>" data-api="<?= e(url('assistant_api')) ?>">
       <textarea id="chatMsg" placeholder="مثلاً: برای آقای احمدی ۵ میلیون دریافتی نقدی ثبت کن" rows="1" autocomplete="off"></textarea>
       <button class="btn btn-primary" type="submit">ارسال</button>

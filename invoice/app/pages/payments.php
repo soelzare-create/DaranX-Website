@@ -35,6 +35,7 @@ layout_start('دریافت‌ها', 'payments', ['error' => $error]);
 <main class="page">
   <div class="head"><h1>دریافت‌ها</h1></div>
 
+  <?php if (can('sales', 'edit')): ?>
   <section class="card">
     <h2>ثبت دریافت از مشتری</h2>
     <?php if (!$customers): ?>
@@ -72,6 +73,7 @@ layout_start('دریافت‌ها', 'payments', ['error' => $error]);
     </form>
     <?php endif; ?>
   </section>
+  <?php endif; ?>
 
   <section class="section">
     <div class="section-head"><h2>دریافت‌های ثبت‌شده</h2></div>
@@ -96,7 +98,7 @@ layout_start('دریافت‌ها', 'payments', ['error' => $error]);
             <?php if ($p['note'] !== ''): ?><p class="rc-note" title="<?= e($p['note']) ?>"><?= e($p['note']) ?></p><?php endif; ?>
             <div class="rc-foot">
               <?= amount_html($p['amount'], 'rc-amt in') ?>
-              <a class="btn btn-ghost btn-sm stretch" href="<?= e(url('payment', ['id' => $p['id']])) ?>">ویرایش</a>
+              <a class="btn btn-ghost btn-sm stretch" href="<?= e(url('payment', ['id' => $p['id']])) ?>"><?= can('sales', 'edit') ? 'ویرایش' : 'جزئیات' ?></a>
             </div>
           </article>
         <?php endforeach; ?>

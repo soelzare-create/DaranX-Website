@@ -50,9 +50,11 @@ layout_start($c['name'], 'customers', ['error' => $error]);
       <div class="sub"><?= e($c['phone']) ?><?= $c['phone'] && $c['address'] ? ' · ' : '' ?><?= e($c['address']) ?></div>
     </div>
     <div class="actions no-print">
+      <?php if (can('sales', 'edit')): ?>
       <a class="btn btn-ghost" href="<?= e(url('doc', ['new' => 'qot', 'customer' => $id])) ?>"><?= icon('plus') ?> پیش‌فاکتور</a>
       <a class="btn btn-ghost" href="<?= e(url('doc', ['new' => 'inv', 'customer' => $id])) ?>"><?= icon('plus') ?> فاکتور</a>
       <a class="btn btn-primary" href="<?= e(url('payments', ['customer' => $id] + ($balance > 0 ? ['amount' => (int) $balance] : []))) ?>"><?= icon('plus') ?> ثبت دریافت</a>
+      <?php endif; ?>
     </div>
   </div>
 
@@ -120,6 +122,7 @@ layout_start($c['name'], 'customers', ['error' => $error]);
       </section>
     <?php endif; ?>
 
+    <?php if (can('sales', 'edit')): ?>
     <details class="card collapse no-print"<?= $form ? ' open' : '' ?>>
       <summary><h2>ویرایش مشخصات</h2></summary>
         <form method="post" class="form mt">
@@ -135,6 +138,7 @@ layout_start($c['name'], 'customers', ['error' => $error]);
           <small class="muted">فقط مشتری بدون سند و دریافتی حذف می‌شود.</small>
         </form>
     </details>
+    <?php endif; ?>
   </div>
 </main>
 <?php

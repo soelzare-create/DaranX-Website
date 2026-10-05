@@ -46,21 +46,25 @@ layout_start('ویرایش پرداخت', 'expenses', ['error' => $error]);
 ?>
 <main class="page narrow">
   <div class="head">
-    <h1>ویرایش پرداخت</h1>
+    <h1><?= can('costs', 'edit') ? 'ویرایش پرداخت' : 'پرداخت' ?></h1>
     <div class="actions"><a class="btn btn-ghost" href="<?= e(url('expenses', ['kind' => $exp['kind']])) ?>">→ پرداخت‌ها</a></div>
   </div>
   <section class="card">
     <form method="post" class="form" data-expense-form>
+      <fieldset class="plain"<?= can('costs', 'edit') ? '' : ' disabled' ?>>
       <?= csrf_field() ?>
       <input type="hidden" name="action" value="save">
       <?php expense_fields($form, invoice_options((int) $form['doc_id']), $purchases, payees_known()); ?>
       <div class="actions"><button class="btn btn-primary">ذخیره</button></div>
+    </fieldset>
     </form>
+    <?php if (can('costs', 'edit')): ?>
     <form method="post" class="mt" data-confirm="این پرداخت حذف شود؟">
       <?= csrf_field() ?>
       <input type="hidden" name="action" value="delete">
       <button class="btn btn-danger btn-sm">حذف پرداخت</button>
     </form>
+    <?php endif; ?>
   </section>
 </main>
 <?php

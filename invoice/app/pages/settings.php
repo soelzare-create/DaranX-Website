@@ -1,5 +1,5 @@
 <?php
-/** Company letterhead, defaults, password, and database backup. */
+/** «My account» (password) for everyone; company letterhead, defaults and backup for admins. */
 defined('APP_DIR') || exit;
 
 $error = null;
@@ -9,19 +9,15 @@ if (is_post()) {
     try {
         if (post('action') === 'password') {
             $row = user_by_name($user['username']);
-            if (!password_verify(post('current'), $row['pass_hash'])) {
+            if (!$row || !password_verify(post('current'), $row['pass_hash'])) {
                 throw new UserError('رمز فعلی اشتباه است.');
             }
-            if (strlen(post('new')) < 8) {
-                throw new UserError('رمز جدید باید حداقل ۸ کاراکتر باشد.');
-            }
-            if (post('new') !== post('new2')) {
-                throw new UserError('تکرار رمز جدید یکسان نیست.');
-            }
-            db()->prepare('UPDATE users SET pass_hash = ? WHERE id = ?')
-                ->execute([password_hash(post('new'), PASSWORD_DEFAULT), $user['id']]);
-            flash('ok', 'رمز عبور تغییر کرد.');
+            user_set_password((int) $user['id'], password_check(post('new'), post('new2')));
+            flash('ok', 'رمز عبور تغییر کرد. اگر جای دیگری با این حساب وارد شده بودید، از آنجا خارج شدید.');
             redirect('settings');
+        }
+        if (!is_admin()) {
+            deny('تنظیمات شرکت فقط برای مدیر است.');
         }
 
         $rate = parse_num(post('vat_rate'));
@@ -52,6 +48,7 @@ if (is_post()) {
             throw new UserError('نام شرکت را وارد کنید.');
         }
         settings_save($values);
+        activity_log('تغییر تنظیمات');
         flash('ok', 'تنظیمات ذخیره شد.');
         redirect('settings');
     } catch (UserError $ex) {
@@ -66,11 +63,41 @@ if (is_post() && post('action') !== 'password') {
     }
 }
 
-layout_start('تنظیمات', 'settings', ['error' => $error]);
+$admin = is_admin();
+layout_start($admin ? 'تنظیمات' : 'حساب من', 'settings', ['error' => $error]);
 ?>
 <main class="page narrow">
-  <div class="head"><h1>تنظیمات</h1></div>
+  <div class="head"><h1><?= $admin ? 'تنظیمات' : 'حساب من' ?></h1></div>
 
+  <section class="card">
+    <div class="rc-head">
+      <span class="rc-mono" aria-hidden="true"><?= e(str_cut(user_label($user), 1)) ?></span>
+      <div>
+        <h2><?= e(user_label($user)) ?></h2>
+        <div class="muted small">نام کاربری <b dir="ltr"><?= e($user['username']) ?></b>، دسترسی: <?= e(perms_summary($user)) ?></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="card">
+    <h2>تغییر رمز عبور</h2>
+    <form method="post" class="form">
+      <?= csrf_field() ?>
+      <input type="hidden" name="action" value="password">
+      <input type="text" name="username" value="<?= e($user['username']) ?>" autocomplete="username" hidden>
+      <div class="fgrid">
+        <label class="field"><span>رمز فعلی</span>
+          <input type="password" name="current" dir="ltr" required autocomplete="current-password"></label>
+        <label class="field"><span>رمز جدید</span>
+          <input type="password" name="new" dir="ltr" required minlength="8" autocomplete="new-password"></label>
+        <label class="field"><span>تکرار رمز جدید</span>
+          <input type="password" name="new2" dir="ltr" required minlength="8" autocomplete="new-password"></label>
+      </div>
+      <div class="actions"><button class="btn btn-primary">تغییر رمز</button></div>
+    </form>
+  </section>
+
+<?php if ($admin): ?>
   <section class="card">
     <h2>سربرگ و پانویس اسناد</h2>
     <form method="post" class="form">
@@ -128,22 +155,11 @@ layout_start('تنظیمات', 'settings', ['error' => $error]);
   </section>
 
   <section class="card">
-    <h2>تغییر رمز عبور</h2>
-    <form method="post" class="form">
-      <?= csrf_field() ?>
-      <input type="hidden" name="action" value="password">
-      <input type="text" name="username" value="<?= e($user['username']) ?>" autocomplete="username" hidden>
-      <div class="fgrid">
-        <label class="field"><span>رمز فعلی</span>
-          <input type="password" name="current" dir="ltr" required autocomplete="current-password"></label>
-        <label class="field"><span>رمز جدید</span>
-          <input type="password" name="new" dir="ltr" required minlength="8" autocomplete="new-password"></label>
-        <label class="field"><span>تکرار رمز جدید</span>
-          <input type="password" name="new2" dir="ltr" required minlength="8" autocomplete="new-password"></label>
-      </div>
-      <div class="actions"><button class="btn btn-primary">تغییر رمز</button>
-        <small class="muted">نام کاربری شما: <b dir="ltr"><?= e($user['username']) ?></b></small></div>
-    </form>
+    <div class="card-head">
+      <h2>کاربران</h2>
+      <a class="btn btn-ghost btn-sm" href="<?= e(url('users')) ?>"><?= icon('users') ?> مدیریت کاربران</a>
+    </div>
+    <p class="muted">برای هر نفر یک حساب جدا بسازید و مشخص کنید به کدام بخش‌ها دسترسی دارد. کارهای همه در «گزارش فعالیت» ثبت می‌شود.</p>
   </section>
 
   <section class="card">
@@ -151,6 +167,7 @@ layout_start('تنظیمات', 'settings', ['error' => $error]);
     <p>همهٔ اطلاعات (مشتریان، اسناد و دریافت‌ها) در یک فایل ذخیره می‌شود. هر چند وقت یک بار نسخهٔ پشتیبان بگیرید و جای امنی نگه دارید.</p>
     <a class="btn btn-ghost" href="<?= e(url('backup')) ?>">دانلود فایل پشتیبان</a>
   </section>
+<?php endif; ?>
 </main>
 <?php
 layout_end();

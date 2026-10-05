@@ -182,7 +182,7 @@ function customer_validate(array $in): array
 
 function customer_save(array $c, ?int $id = null): int
 {
-    return tx(function (PDO $pdo) use ($c, $id) {
+    $rid = tx(function (PDO $pdo) use ($c, $id) {
         $key = name_key($c['name']);
         $st = $pdo->prepare('SELECT id FROM customers WHERE name_key = ? AND id <> ?');
         $st->execute([$key, $id ?? 0]);
@@ -200,10 +200,13 @@ function customer_save(array $c, ?int $id = null): int
             ->execute([$c['name'], $key, $c['phone'], $c['address'], $c['opening_balance'], $c['note'], $id]);
         return $id;
     });
+    activity_log($id === null ? 'مشتری جدید' : 'ویرایش مشتری', $c['name'], url('customer', ['id' => $rid]));
+    return $rid;
 }
 
 function customer_delete(int $id): void
 {
+    $old = customer_get($id);
     tx(function (PDO $pdo) use ($id) {
         $st = $pdo->prepare('SELECT (SELECT COUNT(*) FROM docs WHERE customer_id = ?)
                                   + (SELECT COUNT(*) FROM payments WHERE customer_id = ?)');
@@ -213,6 +216,7 @@ function customer_delete(int $id): void
         }
         $pdo->prepare('DELETE FROM customers WHERE id = ?')->execute([$id]);
     });
+    activity_log('حذف مشتری', $old ? $old['name'] : '');
 }
 
 /**
@@ -431,7 +435,7 @@ function doc_validate(array $in, string $type): array
 /** Insert (id = null) or update a document with its items. Returns its id. */
 function doc_save(array $d, ?int $id = null): int
 {
-    return tx(function (PDO $pdo) use ($d, $id) {
+    $rid = tx(function (PDO $pdo) use ($d, $id) {
         $cid = 0;
         if ($id !== null) {
             // Name on the sheet unchanged → same customer, even if they were
@@ -473,6 +477,11 @@ function doc_save(array $d, ?int $id = null): int
         doc_write_items($pdo, $id, $d['items']);
         return $id;
     });
+    $saved = doc_get($rid);
+    activity_log(($id === null ? ($d['type'] === 'inv' ? 'صدور ' : 'ثبت ') : 'ویرایش ') . DOC_NAMES[$d['type']],
+        $saved['number'] . '، ' . $saved['cust_name'] . '، ' . money($saved['total']) . ' ' . setting('unit'),
+        url('doc', ['id' => $rid]));
+    return $rid;
 }
 
 function doc_write_items(PDO $pdo, int $docId, array $items): void
@@ -487,7 +496,7 @@ function doc_write_items(PDO $pdo, int $docId, array $items): void
 /** Issue an invoice from a proforma (copy of its lines and totals). Returns the invoice id. */
 function doc_convert(int $qotId): int
 {
-    return tx(function (PDO $pdo) use ($qotId) {
+    $rid = tx(function (PDO $pdo) use ($qotId) {
         $q = doc_get($qotId);
         if (!$q || $q['type'] !== 'qot') {
             throw new UserError('پیش‌فاکتور پیدا نشد.');
@@ -508,16 +517,26 @@ function doc_convert(int $qotId): int
         doc_write_items($pdo, $invId, $st->fetchAll());
         return $invId;
     });
+    $inv = doc_get($rid);
+    activity_log('تبدیل پیش‌فاکتور به فاکتور', doc_get($qotId)['number'] . ' ← ' . $inv['number'] . '، ' . $inv['cust_name'],
+        url('doc', ['id' => $rid]));
+    return $rid;
 }
 
 function doc_set_status(int $id, string $status): void
 {
     db()->prepare("UPDATE docs SET status = ?, updated_at = ? WHERE id = ? AND type = 'inv'")
         ->execute([$status, now(), $id]);
+    $d = doc_get($id);
+    if ($d) {
+        activity_log($status === 'cancelled' ? 'ابطال فاکتور' : 'بازگردانی فاکتور', $d['number'] . '، ' . $d['cust_name'],
+            url('doc', ['id' => $id]));
+    }
 }
 
 function doc_delete(int $id): void
 {
+    $old = doc_get($id);
     tx(function (PDO $pdo) use ($id) {
         $st = $pdo->prepare('SELECT (SELECT COUNT(*) FROM purchases WHERE doc_id = ?)
                                   + (SELECT COUNT(*) FROM expenses WHERE doc_id = ?)');
@@ -527,6 +546,9 @@ function doc_delete(int $id): void
         }
         $pdo->prepare('DELETE FROM docs WHERE id = ?')->execute([$id]);
     });
+    if ($old) {
+        activity_log('حذف ' . DOC_NAMES[$old['type']], $old['number'] . '، ' . $old['cust_name'] . '، ' . money($old['total']));
+    }
 }
 
 function docs_list(string $type, string $q = '', int $customerId = 0, int $limit = 300): array
@@ -633,16 +655,30 @@ function payment_save(array $p, ?int $id = null): int
     if ($id === null) {
         $pdo->prepare('INSERT INTO payments (customer_id, amount, date, method, note, created_at) VALUES (?, ?, ?, ?, ?, ?)')
             ->execute([$p['customer_id'], $p['amount'], $p['date'], $p['method'], $p['note'], now()]);
-        return (int) $pdo->lastInsertId();
+        $id2 = (int) $pdo->lastInsertId();
+        payment_log('ثبت دریافت', $p, $id2);
+        return $id2;
     }
     $pdo->prepare('UPDATE payments SET customer_id = ?, amount = ?, date = ?, method = ?, note = ? WHERE id = ?')
         ->execute([$p['customer_id'], $p['amount'], $p['date'], $p['method'], $p['note'], $id]);
+    payment_log('ویرایش دریافت', $p, $id);
     return $id;
 }
 
 function payment_delete(int $id): void
 {
+    $old = payment_get($id);
     db()->prepare('DELETE FROM payments WHERE id = ?')->execute([$id]);
+    if ($old) {
+        activity_log('حذف دریافت', $old['customer_name'] . '، ' . money($old['amount']) . ' ' . setting('unit'));
+    }
+}
+
+function payment_log(string $action, array $p, int $id): void
+{
+    $c = customer_get((int) $p['customer_id']);
+    activity_log($action, ($c ? $c['name'] : '') . '، ' . money($p['amount']) . ' ' . setting('unit') . '، ' . $p['method'],
+        url('payment', ['id' => $id]));
 }
 
 function payments_list(string $q = '', int $limit = 300): array
@@ -730,51 +766,148 @@ function purchase_next_number(): string
     return PURCHASE_PREFIX . str_pad((string) ($max + 1), 4, '0', STR_PAD_LEFT);
 }
 
+/** An invoice's lines as purchase choices, with what was already bought for each (by title). */
+function invoice_buy_lines(int $docId, int $exceptPurchase = 0): array
+{
+    $st = db()->prepare('SELECT pos, title, qty, price, line_total FROM doc_items WHERE doc_id = ? AND title <> \'\' ORDER BY pos');
+    $st->execute([$docId]);
+    $bought = [];
+    $sb = db()->prepare('SELECT i.title, i.qty, i.amount, p.number FROM purchase_items i JOIN purchases p ON p.id = i.purchase_id
+                         WHERE p.doc_id = ? AND p.id <> ? AND i.from_invoice = 1');
+    $sb->execute([$docId, $exceptPurchase]);
+    foreach ($sb as $r) {
+        $bought[name_key($r['title'])][] = ['number' => $r['number'], 'qty' => $r['qty'] === null ? null : (float) $r['qty'],
+            'amount' => (float) $r['amount']];
+    }
+    $out = [];
+    foreach ($st as $r) {
+        $out[] = [
+            'pos' => (int) $r['pos'], 'title' => $r['title'],
+            'qty' => $r['qty'] === null ? null : (float) $r['qty'],
+            'price' => $r['price'] === null ? null : (float) $r['price'],
+            'sale' => (float) $r['line_total'],
+            'bought' => $bought[name_key($r['title'])] ?? [],
+        ];
+    }
+    return $out;
+}
+
+function purchase_items(int $purchaseId): array
+{
+    $st = db()->prepare('SELECT * FROM purchase_items WHERE purchase_id = ? ORDER BY pos');
+    $st->execute([$purchaseId]);
+    return $st->fetchAll();
+}
+
+/**
+ * A purchase: the invoice it is for, the invoice lines bought (quantity ×
+ * unit purchase price each) and/or one free line. Title and amount are
+ * derived from the lines. Without any lines, a plain title + amount (older
+ * callers) becomes the free line.
+ */
 function purchase_validate(array $in, ?array $old = null): array
 {
     $p = [
         'doc_id' => invoice_ref((int) ($in['doc_id'] ?? 0), $old ? (int) $old['doc_id'] : 0),
         'supplier' => clean_line($in['supplier'] ?? '', 150),
-        'title' => clean_line($in['title'] ?? '', 300),
-        'amount' => amount_in($in['amount'] ?? '', 'مبلغ خرید'),
         'date' => date_in($in['date'] ?? ''),
         'note' => clean_line($in['note'] ?? '', 300),
+        'items' => [],
     ];
-    if ($p['title'] === '') {
-        throw new UserError('شرح خرید را بنویسید (چه چیزی خریده شد).');
+    $docLines = [];
+    $st = db()->prepare('SELECT pos, title, qty FROM doc_items WHERE doc_id = ?');
+    $st->execute([$p['doc_id']]);
+    foreach ($st as $r) {
+        $docLines[(int) $r['pos']] = $r;
+    }
+    foreach ((is_array($in['items'] ?? null) ? $in['items'] : []) as $row) {
+        if (!is_array($row) || empty($row['on'])) {
+            continue;
+        }
+        $line = $docLines[(int) ($row['pos'] ?? 0)] ?? null;
+        if (!$line) {
+            throw new UserError('یکی از اقلام انتخاب‌شده در این فاکتور نیست؛ صفحه را دوباره باز کنید.');
+        }
+        $qty = parse_num($row['qty'] ?? '');
+        $qty = $qty ?? ($line['qty'] !== null ? (float) $line['qty'] : 1.0);
+        if ($qty <= 0 || $qty > 1e9) {
+            throw new UserError('تعداد «' . $line['title'] . '» را درست وارد کنید.');
+        }
+        $price = amount_in($row['price'] ?? '', 'قیمت خرید «' . $line['title'] . '»');
+        $p['items'][] = ['title' => $line['title'], 'qty' => $qty, 'unit_price' => $price,
+            'amount' => (int) round($qty * $price), 'from_invoice' => 1];
+    }
+    $extraAmount = trim((string) ($in['extra_amount'] ?? ''));
+    $extraTitle = clean_line($in['extra_title'] ?? '', 200);
+    if ($extraAmount === '' && !$p['items'] && trim((string) ($in['amount'] ?? '')) !== '') {
+        $extraAmount = (string) $in['amount']; // plain title + amount
+        $extraTitle = clean_line($in['title'] ?? '', 200);
+        if ($extraTitle === '') {
+            throw new UserError('شرح خرید را بنویسید (چه چیزی خریده شد).');
+        }
+    }
+    if ($extraAmount !== '') {
+        $p['items'][] = ['title' => $extraTitle !== '' ? $extraTitle : 'سایر', 'qty' => null, 'unit_price' => null,
+            'amount' => amount_in($extraAmount, 'مبلغ «' . ($extraTitle !== '' ? $extraTitle : 'سایر') . '»'), 'from_invoice' => 0];
+    } elseif ($extraTitle !== '') {
+        throw new UserError('مبلغ «' . $extraTitle . '» را بنویسید.');
+    }
+    if (!$p['items']) {
+        throw new UserError('اقلامی را که خریده‌اید علامت بزنید و قیمت خرید هر کدام را بنویسید.');
+    }
+    $p['title'] = str_cut(implode('، ', array_column($p['items'], 'title')), 300);
+    $p['amount'] = (int) array_sum(array_column($p['items'], 'amount'));
+    if ($p['amount'] > MAX_AMOUNT) {
+        throw new UserError('مبلغ خرید بیش از حد بزرگ است.');
     }
     return $p;
 }
 
 function purchase_save(array $p, ?int $id = null): int
 {
-    return tx(function (PDO $pdo) use ($p, $id) {
+    $rid = tx(function (PDO $pdo) use ($p, $id) {
         if ($id === null) {
             $pdo->prepare('INSERT INTO purchases (number, date, doc_id, supplier, title, amount, note, created_at)
                            VALUES (?, ?, ?, ?, ?, ?, ?, ?)')
                 ->execute([purchase_next_number(), $p['date'], $p['doc_id'], $p['supplier'], $p['title'],
                     $p['amount'], $p['note'], now()]);
-            return (int) $pdo->lastInsertId();
+            $id = (int) $pdo->lastInsertId();
+        } else {
+            $pdo->prepare('UPDATE purchases SET date = ?, doc_id = ?, supplier = ?, title = ?, amount = ?, note = ?
+                           WHERE id = ?')
+                ->execute([$p['date'], $p['doc_id'], $p['supplier'], $p['title'], $p['amount'], $p['note'], $id]);
+            // Payments made for this purchase follow it to its (possibly new) invoice.
+            $pdo->prepare('UPDATE expenses SET doc_id = ? WHERE purchase_id = ?')->execute([$p['doc_id'], $id]);
         }
-        $pdo->prepare('UPDATE purchases SET date = ?, doc_id = ?, supplier = ?, title = ?, amount = ?, note = ?
-                       WHERE id = ?')
-            ->execute([$p['date'], $p['doc_id'], $p['supplier'], $p['title'], $p['amount'], $p['note'], $id]);
-        // Payments made for this purchase follow it to its (possibly new) invoice.
-        $pdo->prepare('UPDATE expenses SET doc_id = ? WHERE purchase_id = ?')->execute([$p['doc_id'], $id]);
+        $pdo->prepare('DELETE FROM purchase_items WHERE purchase_id = ?')->execute([$id]);
+        $st = $pdo->prepare('INSERT INTO purchase_items (purchase_id, pos, title, qty, unit_price, amount, from_invoice)
+                             VALUES (?, ?, ?, ?, ?, ?, ?)');
+        foreach (array_values($p['items']) as $i => $it) {
+            $st->execute([$id, $i + 1, $it['title'], $it['qty'], $it['unit_price'], $it['amount'], $it['from_invoice']]);
+        }
         return $id;
     });
+    $saved = purchase_get($rid);
+    activity_log($id === null ? 'ثبت خرید' : 'ویرایش خرید', $saved['number'] . '، ' . $saved['title'] . '، '
+        . money($saved['amount']) . ' ' . setting('unit') . '، فاکتور ' . $saved['doc_number'], url('purchase', ['id' => $rid]));
+    return $rid;
 }
 
 function purchase_delete(int $id): void
 {
+    $old = purchase_get($id);
     tx(function (PDO $pdo) use ($id) {
         $st = $pdo->prepare('SELECT COUNT(*) FROM expenses WHERE purchase_id = ?');
         $st->execute([$id]);
         if ((int) $st->fetchColumn() > 0) {
             throw new UserError('برای این خرید پرداخت ثبت شده است؛ اول پرداخت‌های آن را حذف کنید.');
         }
+        $pdo->prepare('DELETE FROM purchase_items WHERE purchase_id = ?')->execute([$id]);
         $pdo->prepare('DELETE FROM purchases WHERE id = ?')->execute([$id]);
     });
+    if ($old) {
+        activity_log('حذف خرید', $old['number'] . '، ' . $old['title'] . '، ' . money($old['amount']));
+    }
 }
 
 function purchases_list(string $q = '', int $docId = 0, int $limit = 300): array
@@ -884,17 +1017,30 @@ function expense_save(array $e, ?int $id = null): int
         $pdo->prepare('INSERT INTO expenses (kind, doc_id, purchase_id, category, payee, amount, date, method, note,
                            created_at) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)')
             ->execute(array_merge($vals, [now()]));
-        return (int) $pdo->lastInsertId();
+        $id = (int) $pdo->lastInsertId();
+        activity_log('ثبت پرداختی', expense_summary($e), url('expense', ['id' => $id]));
+        return $id;
     }
     $pdo->prepare('UPDATE expenses SET kind = ?, doc_id = ?, purchase_id = ?, category = ?, payee = ?, amount = ?,
                        date = ?, method = ?, note = ? WHERE id = ?')
         ->execute(array_merge($vals, [$id]));
+    activity_log('ویرایش پرداختی', expense_summary($e), url('expense', ['id' => $id]));
     return $id;
 }
 
 function expense_delete(int $id): void
 {
+    $old = expense_get($id);
     db()->prepare('DELETE FROM expenses WHERE id = ?')->execute([$id]);
+    if ($old) {
+        activity_log('حذف پرداختی', expense_summary($old));
+    }
+}
+
+function expense_summary(array $e): string
+{
+    return EXPENSE_KIND_SHORT[$e['kind']] . '، ' . $e['category'] . ($e['payee'] !== '' ? '، ' . $e['payee'] : '')
+        . '، ' . money($e['amount']) . ' ' . setting('unit');
 }
 
 function expenses_list(string $kind = '', string $q = '', int $docId = 0, int $limit = 300): array

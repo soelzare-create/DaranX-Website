@@ -14,7 +14,7 @@ layout_start($title, $type);
   <div class="head">
     <h1><?= e($title) ?></h1>
     <div class="actions">
-      <a class="btn btn-primary" href="<?= e(url('doc', ['new' => $type])) ?>"><?= icon('plus') ?> <?= e(DOC_NAMES[$type]) ?> جدید</a>
+      <?php if (can('sales', 'edit')): ?><a class="btn btn-primary" href="<?= e(url('doc', ['new' => $type])) ?>"><?= icon('plus') ?> <?= e(DOC_NAMES[$type]) ?> جدید</a><?php endif; ?>
     </div>
   </div>
 
@@ -33,7 +33,7 @@ layout_start($title, $type);
     <?php if (!$docs): ?>
       <div class="card"><?= $q !== '' ? empty_state('magnifying-glass', 'موردی پیدا نشد.')
         : empty_state($type === 'inv' ? 'receipt' : 'file-text', 'هنوز ' . DOC_NAMES[$type] . 'ی ثبت نشده است.',
-            '<a class="btn btn-primary btn-sm" href="' . e(url('doc', ['new' => $type])) . '">' . icon('plus') . ' ' . e(DOC_NAMES[$type]) . ' جدید</a>') ?></div>
+            can('sales', 'edit') ? '<a class="btn btn-primary btn-sm" href="' . e(url('doc', ['new' => $type])) . '">' . icon('plus') . ' ' . e(DOC_NAMES[$type]) . ' جدید</a>' : '') ?></div>
     <?php else: ?>
       <div class="cards">
         <?php foreach ($docs as $d): ?><?= doc_card($d, $remaining) ?><?php endforeach; ?>

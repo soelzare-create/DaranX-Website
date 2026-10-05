@@ -15,18 +15,22 @@ if (is_post()) {
         $error = 'به دلیل چند تلاش ناموفق، ورود برای ۱۵ دقیقه قفل شد. بعداً دوباره امتحان کنید.';
     } else {
         $user = user_by_name($username);
-        if ($user && password_verify(post('password'), $user['pass_hash'])) {
+        if ($user && password_verify(post('password'), $user['pass_hash']) && !$user['active']) {
+            $error = 'این حساب غیرفعال شده است. اگر لازم است، با مدیر برنامه تماس بگیرید.';
+        } elseif ($user && password_verify(post('password'), $user['pass_hash'])) {
             login_clear($key);
             if (password_needs_rehash($user['pass_hash'], PASSWORD_DEFAULT)) {
                 db()->prepare('UPDATE users SET pass_hash = ? WHERE id = ?')
                     ->execute([password_hash(post('password'), PASSWORD_DEFAULT), $user['id']]);
             }
             login_user((int) $user['id']);
+            activity_log('ورود به برنامه');
             redirect('home');
+        } else {
+            login_failed($key);
+            usleep(400000);
+            $error = 'نام کاربری یا رمز عبور اشتباه است.';
         }
-        login_failed($key);
-        usleep(400000);
-        $error = 'نام کاربری یا رمز عبور اشتباه است.';
     }
 }
 

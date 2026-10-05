@@ -80,6 +80,7 @@ layout_start('پرداخت‌ها', 'expenses', ['error' => $error]);
     </div>
   </div>
 
+  <?php if (can('costs', 'edit')): ?>
   <details class="card collapse"<?= $error || $prePurchase || $forDoc || $kind ? ' open' : '' ?>>
     <summary><span class="btn btn-primary btn-sm"><?= icon('plus') ?> ثبت پرداخت</span></summary>
     <form method="post" class="form mt" data-expense-form>
@@ -91,6 +92,7 @@ layout_start('پرداخت‌ها', 'expenses', ['error' => $error]);
       </div>
     </form>
   </details>
+  <?php endif; ?>
 
   <section>
     <div class="list-tools">

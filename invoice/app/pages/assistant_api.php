@@ -14,6 +14,34 @@
 defined('APP_DIR') || exit;
 
 header('Content-Type: application/json; charset=utf-8');
+$GLOBALS['activity_via'] = 'دستیار';
+
+/** What each tool needs; list_records depends on what is listed. */
+const TOOL_PERMS = [
+    'find_customers' => [['sales', 'view']], 'customer_balance' => [['sales', 'view']], 'list_docs' => [['sales', 'view']],
+    'create_proforma' => [['sales', 'edit']], 'create_invoice' => [['sales', 'edit']],
+    'convert_proforma' => [['sales', 'edit']], 'record_payment' => [['sales', 'edit']],
+    'record_purchase' => [['costs', 'edit']], 'record_expense' => [['costs', 'edit']],
+    'invoice_details' => [['sales', 'view'], ['costs', 'view']],
+    'financial_report' => [['reports', 'view']],
+    'list_records' => [],
+];
+
+function tool_allowed(string $name, array $in = []): bool
+{
+    if ($name === 'list_records') {
+        if (!$in) {
+            return can('sales') || can('costs');
+        }
+        return ($in['kind'] ?? '') === 'payments' ? can('sales') : can('costs');
+    }
+    foreach (TOOL_PERMS[$name] ?? [['admin', 'edit']] as [$area, $level]) {
+        if (!can($area, $level)) {
+            return false;
+        }
+    }
+    return true;
+}
 
 function areply(array $data): void
 {
@@ -63,6 +91,7 @@ $sys = "تو دستیار مالی شرکت «" . setting('company_name') . "» 
     . "- واحد پول «{$unit}» است. مبالغ ورودی را عدد صحیح بده. «میلیون» را در ۱۰۰۰۰۰۰ و «هزار» را در ۱۰۰۰ ضرب کن (مثلاً «۵ میلیون» = 5000000، «۲.۵ میلیون» = 2500000).\n"
     . "- امروز «{$today}» شمسی است؛ اگر تاریخ گفته نشد همین را به‌کار ببر. ماه‌ها: فروردین=01، اردیبهشت=02، خرداد=03، تیر=04، مرداد=05، شهریور=06، مهر=07، آبان=08، آذر=09، دی=10، بهمن=11، اسفند=12.\n"
     . "- اگر چیزی لازم و مبهم است (مشتری، مبلغ، قلم‌ها، فاکتور مربوط به خرید، نوع پرداختی) اول با یک سؤال کوتاه بپرس، بعد ثبت کن. برای گزارش‌ها نپرس؛ اگر بازه گفته نشد «این ماه» را بگیر (برای روند ماهانه «امسال»).\n"
+    . "- خرید یعنی کدام اقلامِ فاکتور فروش خریده شد و قیمت خرید هر کدام؛ اگر کاربر اقلام یا قیمت‌ها را نگفت، با invoice_details اقلام فاکتور را ببین و بپرس کدام‌ها و با چه قیمتی خریده شد. فقط چیزی که در فاکتور نیست را با title و amount ثبت کن.\n"
     . "- هر خرید باید به یک فاکتور وصل باشد. اگر کاربر شمارهٔ فاکتور نگفت و فقط مشتری را گفت، با list_docs فاکتورهای آن مشتری را پیدا کن؛ اگر فقط یک فاکتور فعال مناسب بود همان را بگیر، وگرنه بپرس.\n"
     . "- پرداخت بابت یک خرید را با شمارهٔ خرید (PUR-...) ثبت کن تا از بدهی آن خرید کم شود. اگر کاربر هنگام ثبت خرید گفت پولش را هم داده، paid_amount را در همان record_purchase بده.\n"
     . "- پیش‌فاکتور روی حساب مشتری اثر ندارد؛ فقط فاکتور، مشتری را بدهکار می‌کند.\n"
@@ -70,7 +99,8 @@ $sys = "تو دستیار مالی شرکت «" . setting('company_name') . "» 
     . "- در گزارش‌ها فقط عددهایی را بگو که ابزار برگردانده؛ هیچ عددی را حدس نزن یا خودت حساب نکن. عددها را همان‌طور که آمده‌اند (با ارقام فارسی) بنویس. «−» یعنی منفی (زیان).\n"
     . "- گزارش را با یک جملهٔ خلاصه شروع کن، بعد یک جدول Markdown کوتاه (حداکثر ۱۵ ردیف) و در پایان اگر نکتهٔ مهمی هست (مثلاً فاکتورهایی که هنوز هزینه‌شان ثبت نشده) یک خط بگو. از **پررنگ** فقط برای عدد اصلی استفاده کن.\n"
     . "- مبنای سود: فروش خالص (بدون مالیات، بعد از تخفیف) منهای خریدها و هزینه‌های مستقیم همان فاکتورها؛ سود خالص = سود ناخالص منهای سربار.\n"
-    . "- ابطال، ویرایش یا حذف انجام نده؛ اگر خواستند بگو در خود برنامه دستی انجام دهند.";
+    . "- ابطال، ویرایش یا حذف انجام نده؛ اگر خواستند بگو در خود برنامه دستی انجام دهند.\n"
+    . "- کاربر فعلی «" . user_label(current_user()) . "» است و فقط ابزارهایی را داری که او اجازه‌اش را دارد. اگر کاری خواست که ابزارش را نداری، کوتاه بگو دسترسی این کار را ندارد و از مدیر برنامه بخواهد.";
 
 $actions = [];
 $lastText = '';
@@ -234,7 +264,9 @@ function ai_openai(string $base, string $key, string $model, string $system, arr
 
 function assistant_tools(string $provider): array
 {
-    $defs = assistant_tool_defs();
+    $defs = array_values(array_filter(assistant_tool_defs(), function ($t) {
+        return tool_allowed($t['name']);
+    }));
     if ($provider === 'anthropic') {
         return array_map(function ($t) {
             return ['name' => $t['name'], 'description' => $t['description'], 'input_schema' => $t['schema']];
@@ -289,17 +321,22 @@ function assistant_tool_defs(): array
                 'type' => ['type' => 'string', 'enum' => ['qot', 'inv'], 'description' => 'qot=پیش‌فاکتور، inv=فاکتور'],
                 'query' => ['type' => 'string', 'description' => 'جستجو در شماره یا نام مشتری (اختیاری)'],
             ], 'required' => ['type']]],
-        ['name' => 'record_purchase', 'description' => 'ثبت خرید (کالا یا خدمتی که برای یک فاکتور خریده شده). مبلغش بهای تمام‌شدهٔ همان فاکتور است و تا پرداخت نشود بدهی به فروشنده حساب می‌شود.',
+        ['name' => 'record_purchase', 'description' => 'ثبت خرید برای یک فاکتور فروش: کدام اقلامِ همان فاکتور خریده شد و قیمت خرید هر کدام. جمعش بهای تمام‌شدهٔ فاکتور است و تا پرداخت نشود بدهی به فروشنده حساب می‌شود. اقلام فاکتور را با invoice_details ببین.',
             'schema' => ['type' => 'object', 'properties' => [
                 'invoice' => ['type' => 'string', 'description' => 'شمارهٔ فاکتور فروش مربوط، مثل INV-0003'],
-                'title' => ['type' => 'string', 'description' => 'شرح خرید (چه چیزی خریده شد)'],
-                'amount' => ['type' => 'number', 'description' => 'مبلغ خرید به ' . $unit],
+                'items' => ['type' => 'array', 'description' => 'اقلامی از همان فاکتور که خریده شد', 'items' => ['type' => 'object', 'properties' => [
+                    'item' => ['type' => 'string', 'description' => 'ردیف قلم در فاکتور (۱، ۲، ...) یا شرح آن'],
+                    'qty' => ['type' => 'number', 'description' => 'تعداد خریده‌شده (اختیاری، پیش‌فرض تعداد فاکتور)'],
+                    'unit_price' => ['type' => 'number', 'description' => 'قیمت واحد خرید به ' . $unit],
+                ], 'required' => ['item', 'unit_price']]],
+                'title' => ['type' => 'string', 'description' => 'فقط برای چیزی که در فاکتور نیست: شرح آن'],
+                'amount' => ['type' => 'number', 'description' => 'فقط برای چیزی که در فاکتور نیست: مبلغ آن'],
                 'supplier' => ['type' => 'string', 'description' => 'فروشنده / تأمین‌کننده (اختیاری)'],
                 'date' => ['type' => 'string', 'description' => 'تاریخ شمسی (اختیاری)'],
                 'note' => ['type' => 'string', 'description' => 'توضیح (اختیاری)'],
                 'paid_amount' => ['type' => 'number', 'description' => 'اگر همین الان پولش (کامل یا بخشی) به فروشنده پرداخت شده، مبلغ آن (اختیاری)'],
                 'payment_method' => ['type' => 'string', 'description' => 'روش پرداخت: ' . implode('، ', PAY_METHODS) . ' (اختیاری)'],
-            ], 'required' => ['invoice', 'title', 'amount']]],
+            ], 'required' => ['invoice']]],
         ['name' => 'record_expense', 'description' => 'ثبت پرداختی (پول خارج‌شده). kind=direct برای هزینهٔ مستقیم یک فاکتور (با invoice) یا پرداخت بدهی یک خرید (با purchase)؛ kind=overhead برای هزینهٔ سربار شرکت که به هیچ فاکتوری وصل نیست.',
             'schema' => ['type' => 'object', 'properties' => [
                 'kind' => ['type' => 'string', 'enum' => ['direct', 'overhead'], 'description' => 'direct=مستقیم فاکتور، overhead=سربار شرکت'],
@@ -344,6 +381,9 @@ function assistant_tool_defs(): array
 
 function assistant_run_tool(string $name, array $in, array &$actions): array
 {
+    if (!tool_allowed($name, $in)) {
+        return ['text' => 'خطا: کاربر فعلی اجازهٔ این کار را ندارد.', 'error' => true];
+    }
     try {
         switch ($name) {
             case 'find_customers':
@@ -622,9 +662,37 @@ function _a_profit_of(int $docId): array
 function _a_record_purchase(array $in, array &$actions): string
 {
     $doc = _a_find_doc((string) ($in['invoice'] ?? ''));
+    $lines = invoice_buy_lines((int) $doc['id']);
+    $rows = [];
+    foreach ((is_array($in['items'] ?? null) ? $in['items'] : []) as $it) {
+        if (!is_array($it)) {
+            continue;
+        }
+        $ref = trim(en_digits((string) ($it['item'] ?? '')));
+        $hit = null;
+        if (ctype_digit($ref) && isset($lines[(int) $ref - 1])) {
+            $hit = $lines[(int) $ref - 1];
+        } else {
+            foreach ($lines as $l) {
+                $a = name_key($l['title']);
+                $b = name_key($ref);
+                if ($b !== '' && ($a === $b || mb_strpos($a, $b) !== false || mb_strpos($b, $a) !== false)) {
+                    $hit = $l;
+                    break;
+                }
+            }
+        }
+        if (!$hit) {
+            throw new UserError('قلم «' . $ref . '» در فاکتور ' . $doc['number'] . ' پیدا نشد. اقلام: '
+                . implode('، ', array_map(function ($l, $i) { return fa($i + 1) . ') ' . $l['title']; }, $lines, array_keys($lines))));
+        }
+        $rows[] = ['on' => 1, 'pos' => $hit['pos'], 'qty' => $it['qty'] ?? '', 'price' => $it['unit_price'] ?? ''];
+    }
     $p = purchase_validate([
-        'doc_id' => $doc['id'], 'supplier' => (string) ($in['supplier'] ?? ''), 'title' => (string) ($in['title'] ?? ''),
-        'amount' => $in['amount'] ?? '', 'note' => (string) ($in['note'] ?? ''),
+        'doc_id' => $doc['id'], 'supplier' => (string) ($in['supplier'] ?? ''), 'items' => $rows,
+        'extra_title' => $rows ? (string) ($in['title'] ?? '') : '', 'extra_amount' => $rows ? (string) ($in['amount'] ?? '') : '',
+        'title' => (string) ($in['title'] ?? ''), 'amount' => $rows ? '' : ($in['amount'] ?? ''),
+        'note' => (string) ($in['note'] ?? ''),
         'date' => trim((string) ($in['date'] ?? '')) !== '' ? (string) $in['date'] : jtoday(),
     ]);
     $paid = 0;
@@ -645,7 +713,10 @@ function _a_record_purchase(array $in, array &$actions): string
     $actions[] = ['label' => 'خرید ' . $pur['number'], 'url' => url('purchase', ['id' => $pid])];
     return _a_json([
         'ok' => true, 'purchase' => $pur['number'], 'invoice' => $pur['doc_number'], 'customer' => $pur['cust_name'],
-        'supplier' => $pur['supplier'], 'amount' => (float) $pur['amount'], 'paid' => (float) $pur['paid'],
+        'supplier' => $pur['supplier'], 'items' => array_map(function ($it) {
+            return ['title' => $it['title'], 'qty' => $it['qty'] === null ? null : qty_fa($it['qty']), 'amount' => (float) $it['amount']];
+        }, purchase_items($pid)),
+        'amount' => (float) $pur['amount'], 'paid' => (float) $pur['paid'],
         'still_owed_to_supplier' => purchase_left($pur), 'invoice_after' => _a_profit_of((int) $pur['doc_id']),
     ]);
 }
@@ -709,7 +780,12 @@ function _a_invoice_details(string $ref, array &$actions): string
         'invoice' => $doc['number'], 'customer' => $doc['cust_name'], 'date' => fa($doc['date']),
         'status' => $doc['status'] === 'cancelled' ? 'باطل‌شده' : 'فعال',
         'total_with_vat' => (float) $doc['total'], 'unpaid_by_customer' => (float) ($doc['status'] === 'active' ? $left : 0),
-        'net_sales' => (float) $c['net_sales'], 'purchases' => $purchases, 'other_direct_costs' => $direct,
+        'net_sales' => (float) $c['net_sales'],
+        'items' => array_map(function ($l, $i) {
+            return ['row' => $i + 1, 'title' => $l['title'], 'qty' => $l['qty'] === null ? null : qty_fa($l['qty']),
+                'sale' => (float) $l['sale'], 'bought_in' => array_column($l['bought'], 'number')];
+        }, invoice_buy_lines((int) $doc['id']), array_keys(invoice_buy_lines((int) $doc['id']))),
+        'purchases' => $purchases, 'other_direct_costs' => $direct,
         'cost' => (float) $c['cost'], 'profit' => (float) $c['profit'],
         'margin' => _r_margin((float) $c['profit'], (float) $c['net_sales']),
         'owed_to_suppliers' => (float) $c['purchases_left'],

@@ -14,11 +14,12 @@ $routes = [
     'docs' => true, 'doc' => true, 'doc_action' => true,
     'customers' => true, 'customer' => true,
     'payments' => true, 'payment' => true,
-    'purchases' => true, 'purchase' => true,
+    'purchases' => true, 'purchase' => true, 'purchase_lines' => true,
     'expenses' => true, 'expense' => true,
     'assistant' => true, 'assistant_api' => true,
     'import' => true,
     'settings' => true, 'backup' => true,
+    'users' => true, 'user' => true, 'activity' => true,
 ];
 
 $page = query('p', 'home');
@@ -33,6 +34,7 @@ if (is_post()) {
 }
 if ($routes[$page]) {
     require_login();
+    route_guard($page);
 }
 
 require APP_DIR . '/pages/' . $page . '.php';

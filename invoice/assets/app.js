@@ -59,6 +59,148 @@
       el.addEventListener('change', function () { el.form.submit(); });
     });
 
+    // Purchase form: the chosen invoice's lines as tickable cards. A ticked line
+    // asks for quantity and unit purchase price and shows its profit; the total
+    // under the list is the purchase amount (the server recomputes it).
+    Array.prototype.forEach.call(document.querySelectorAll('form[data-buy-form]'), function (form) {
+      var box = form.querySelector('[data-buy]');
+      var docSel = form.querySelector('[data-buy-doc]');
+      var totalEl = form.querySelector('[data-buy-total]');
+      var extra = form.querySelector('[data-buy-extra]');
+      if (!box || !docSel) return;
+      var unit = box.getAttribute('data-unit') || '';
+      var picked = {};
+      try { picked = JSON.parse(box.getAttribute('data-picked') || '{}') || {}; } catch (e) { picked = {}; }
+      function el(tag, cls, text) {
+        var n = document.createElement(tag);
+        if (cls) n.className = cls;
+        if (text != null) n.textContent = text;
+        return n;
+      }
+      function field(label, name, value, money) {
+        var l = el('label', 'field');
+        l.appendChild(el('span', null, label));
+        var i = el('input');
+        i.name = name;
+        i.inputMode = 'decimal';
+        i.value = value == null ? '' : value;
+        if (money) { i.className = 'money'; i.placeholder = '۰'; }
+        l.appendChild(i);
+        return l;
+      }
+      function total() {
+        var sum = 0, sale = 0, any = false;
+        Array.prototype.forEach.call(box.querySelectorAll('.buy-item.is-on'), function (card) {
+          var q = parse(card.querySelector('[name$="[qty]"]').value);
+          var p = parse(card.querySelector('[name$="[price]"]').value);
+          var line = q * p;
+          sum += line;
+          sale += +card.getAttribute('data-sale') * (q / (+card.getAttribute('data-qty') || q || 1));
+          any = true;
+          var out = card.querySelector('.bi-line');
+          if (p > 0) {
+            var profit = (+card.getAttribute('data-sale') * (q / (+card.getAttribute('data-qty') || q || 1))) - line;
+            out.textContent = 'خرید ' + fmt(line) + ' ' + unit + '، ' + (profit >= 0 ? 'سود ' : 'زیان ') + fmt(Math.abs(profit));
+            out.classList.toggle('neg', profit < 0);
+          } else {
+            out.textContent = 'قیمت خرید را بنویسید';
+            out.classList.remove('neg');
+          }
+        });
+        var ex = extra ? parse(extra.value) : 0;
+        if (ex > 0) { sum += ex; any = true; }
+        if (!totalEl) return;
+        totalEl.textContent = any ? 'جمع خرید: ' + fmt(sum) + ' ' + unit : '';
+        totalEl.hidden = !any;
+      }
+      function render(lines) {
+        box.textContent = '';
+        if (!lines || !lines.length) {
+          box.appendChild(el('p', 'muted buy-empty', docSel.value ? 'این فاکتور قلمی ندارد؛ از «چیز دیگری هم خریدید» استفاده کنید.' : 'اول فاکتور را انتخاب کنید تا اقلامش اینجا بیاید.'));
+          total();
+          return;
+        }
+        lines.forEach(function (l, i) {
+          var pick = picked[l.pos];
+          var card = el('div', 'buy-item' + (pick ? ' is-on' : ''));
+          card.setAttribute('data-sale', l.sale || 0);
+          card.setAttribute('data-qty', l.qty == null ? 1 : l.qty);
+          var head = el('label', 'bi-head');
+          var cb = el('input');
+          cb.type = 'checkbox';
+          cb.name = 'items[' + i + '][on]';
+          cb.value = '1';
+          cb.checked = !!pick;
+          var pos = el('input');
+          pos.type = 'hidden';
+          pos.name = 'items[' + i + '][pos]';
+          pos.value = l.pos;
+          var txt = el('span', 'bi-txt');
+          txt.appendChild(el('b', null, l.title));
+          var sold = 'فروش: ' + (l.qty == null ? '' : toFa(String(l.qty)).replace('.', '٫') + ' × ')
+            + (l.price == null ? '' : fmt(l.price)) + (l.sale ? ' = ' + fmt(l.sale) + ' ' + unit : '');
+          txt.appendChild(el('small', null, sold));
+          if (l.bought && l.bought.length) {
+            txt.appendChild(el('small', 'bi-bought', 'قبلاً خریده شده در ' + l.bought.map(function (b) { return b.number; }).join('، ')));
+          }
+          head.appendChild(cb);
+          head.appendChild(pos);
+          head.appendChild(txt);
+          card.appendChild(head);
+          var inputs = el('div', 'bi-inputs');
+          inputs.appendChild(field('تعداد', 'items[' + i + '][qty]', pick ? pick.qty : (l.qty == null ? '1' : toFa(String(l.qty)).replace('.', '٫')), false));
+          inputs.appendChild(field('قیمت واحد خرید (' + unit + ')', 'items[' + i + '][price]', pick ? pick.price : '', true));
+          inputs.appendChild(el('div', 'bi-line'));
+          inputs.hidden = !pick;
+          card.appendChild(inputs);
+          cb.addEventListener('change', function () {
+            card.classList.toggle('is-on', cb.checked);
+            inputs.hidden = !cb.checked;
+            if (cb.checked) { var pr = inputs.querySelector('[name$="[price]"]'); if (pr && !pr.value) pr.focus(); }
+            total();
+          });
+          box.appendChild(card);
+        });
+        total();
+      }
+      var initial = [];
+      try { initial = JSON.parse(box.getAttribute('data-lines') || '[]'); } catch (e) { initial = []; }
+      render(initial);
+      box.addEventListener('input', total);
+      if (extra) extra.addEventListener('input', total);
+      docSel.addEventListener('change', function () {
+        picked = {};
+        if (!docSel.value) { render([]); return; }
+        box.textContent = '';
+        box.appendChild(el('p', 'muted buy-empty', 'در حال خواندن اقلام فاکتور…'));
+        fetch(box.getAttribute('data-url') + '&doc=' + encodeURIComponent(docSel.value), { credentials: 'same-origin' })
+          .then(function (r) { return r.json(); })
+          .then(function (d) { render(d && d.lines); })
+          .catch(function () {
+            box.textContent = '';
+            box.appendChild(el('p', 'muted buy-empty', 'اقلام فاکتور خوانده نشد. صفحه را دوباره باز کنید.'));
+          });
+      });
+    });
+
+    // User form: «مدیر» switches the per-area choices off; preset buttons fill them in.
+    Array.prototype.forEach.call(document.querySelectorAll('form[data-user-form]'), function (form) {
+      var admin = form.querySelector('[data-admin-toggle]');
+      var box = form.querySelector('[data-perms]');
+      if (admin && box) {
+        admin.addEventListener('change', function () { box.disabled = admin.checked; });
+      }
+      Array.prototype.forEach.call(form.querySelectorAll('[data-preset]'), function (b) {
+        b.addEventListener('click', function () {
+          var set = JSON.parse(b.getAttribute('data-preset'));
+          Object.keys(set).forEach(function (area) {
+            var r = form.querySelector('input[name="perm_' + area + '"][value="' + set[area] + '"]');
+            if (r) r.checked = true;
+          });
+        });
+      });
+    });
+
     // Payment-out form: «سربار» hides the invoice/purchase part and switches the
     // category suggestions; picking a purchase fills in its invoice and supplier.
     Array.prototype.forEach.call(document.querySelectorAll('form[data-expense-form]'), function (form) {

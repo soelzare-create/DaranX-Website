@@ -4,18 +4,28 @@
  */
 defined('APP_DIR') || exit;
 
+// key => [label, query, what it needs: null | 'admin' | [area, level]]
 const NAV = [
-    'home' => ['داشبورد', []],
-    'qot' => ['پیش‌فاکتورها', ['p' => 'docs', 'type' => 'qot']],
-    'inv' => ['فاکتورها', ['p' => 'docs', 'type' => 'inv']],
-    'customers' => ['مشتریان', ['p' => 'customers']],
-    'payments' => ['دریافت‌ها', ['p' => 'payments']],
-    'purchases' => ['خریدها', ['p' => 'purchases']],
-    'expenses' => ['پرداخت‌ها', ['p' => 'expenses']],
-    'assistant' => ['دستیار', ['p' => 'assistant']],
-    'import' => ['ورود از اکسل', ['p' => 'import']],
-    'settings' => ['تنظیمات', ['p' => 'settings']],
+    'home' => ['داشبورد', [], null],
+    'qot' => ['پیش‌فاکتورها', ['p' => 'docs', 'type' => 'qot'], ['sales', 'view']],
+    'inv' => ['فاکتورها', ['p' => 'docs', 'type' => 'inv'], ['sales', 'view']],
+    'customers' => ['مشتریان', ['p' => 'customers'], ['sales', 'view']],
+    'payments' => ['دریافت‌ها', ['p' => 'payments'], ['sales', 'view']],
+    'purchases' => ['خریدها', ['p' => 'purchases'], ['costs', 'view']],
+    'expenses' => ['پرداخت‌ها', ['p' => 'expenses'], ['costs', 'view']],
+    'assistant' => ['دستیار', ['p' => 'assistant'], ['assistant', 'use']],
+    'import' => ['ورود از اکسل', ['p' => 'import'], ['sales', 'edit']],
+    'users' => ['کاربران', ['p' => 'users'], 'admin'],
+    'settings' => ['تنظیمات', ['p' => 'settings'], null],
 ];
+
+function nav_allowed($need): bool
+{
+    if ($need === null) {
+        return true;
+    }
+    return $need === 'admin' ? is_admin() : can($need[0], $need[1]);
+}
 
 function asset(string $file): string
 {
@@ -78,15 +88,15 @@ function layout_start(string $title, string $active = '', array $opt = []): void
   <div class="in">
     <a class="brand" href="index.php">Daran<span class="x">X</span></a>
     <div class="links">
-      <?php foreach (NAV as $key => [$label, $q]): ?>
-        <a href="<?= e(url($q['p'] ?? 'home', array_diff_key($q, ['p' => 1]))) ?>"<?= $key === $active ? ' aria-current="page"' : '' ?>><?= e($label) ?></a>
+      <?php foreach (NAV as $key => [$label, $q, $need]): if (!$user || !nav_allowed($need)) { continue; } ?>
+        <a href="<?= e(url($q['p'] ?? 'home', array_diff_key($q, ['p' => 1]))) ?>"<?= $key === $active ? ' aria-current="page"' : '' ?>><?= e($key === 'settings' && !is_admin() ? 'حساب من' : $label) ?></a>
       <?php endforeach; ?>
     </div>
     <div class="nav-end">
       <?php if ($user): ?>
         <form method="post" action="<?= e(url('logout')) ?>">
           <?= csrf_field() ?>
-          <button class="linkbtn" title="<?= e($user['username']) ?>"><?= icon('sign-out') ?><span>خروج</span></button>
+          <button class="linkbtn" title="خروج <?= e(user_label($user)) ?>"><?= icon('sign-out') ?><span>خروج</span></button>
         </form>
       <?php endif; ?>
       <button type="button" class="theme-toggle" id="tt" aria-label="روشن/تیره" title="روشن/تیره"><?= icon('circle-half') ?></button>
@@ -214,12 +224,20 @@ function invoice_option_label(array $d): string
 }
 
 /** Shared fields of the add/edit purchase form. $f holds display strings. */
-function purchase_fields(array $f, array $invoices, array $suppliers): void
+/**
+ * Purchase form: pick the invoice, tick the lines bought and give quantity and
+ * unit purchase price for each (assets/app.js draws the lines and keeps the
+ * total); an optional free line covers anything not on the invoice.
+ * $f: doc_id, supplier, date, note, picked [pos => [qty, price]], extra_title, extra_amount.
+ */
+function purchase_fields(array $f, array $invoices, array $suppliers, int $exceptPurchase = 0): void
 {
+    $lines = !empty($f['doc_id']) ? invoice_buy_lines((int) $f['doc_id'], $exceptPurchase) : [];
+    $hasExtra = ($f['extra_amount'] ?? '') !== '' || ($f['extra_title'] ?? '') !== '';
     ?>
   <div class="fgrid">
-    <label class="field"><span>فاکتور مربوط</span>
-      <select name="doc_id" required>
+    <label class="field"><span>فاکتور فروش</span>
+      <select name="doc_id" required data-buy-doc>
         <option value="">انتخاب فاکتور…</option>
         <?php foreach ($invoices as $d): ?>
           <option value="<?= (int) $d['id'] ?>"<?= (string) $d['id'] === (string) ($f['doc_id'] ?? '') ? ' selected' : '' ?>><?= e(invoice_option_label($d)) ?></option>
@@ -229,17 +247,74 @@ function purchase_fields(array $f, array $invoices, array $suppliers): void
       <input name="supplier" value="<?= e($f['supplier'] ?? '') ?>" list="supList" maxlength="150" autocomplete="off">
       <datalist id="supList"><?php foreach ($suppliers as $s): ?><option value="<?= e($s) ?>"><?php endforeach; ?></datalist></label>
   </div>
-  <label class="field"><span>شرح خرید <small>(چه چیزی خریده شد)</small></span>
-    <input name="title" value="<?= e($f['title'] ?? '') ?>" required maxlength="300"></label>
-  <div class="fgrid">
-    <label class="field"><span>مبلغ خرید (<?= e(setting('unit')) ?>)</span>
-      <input name="amount" class="money" inputmode="decimal" value="<?= e($f['amount'] ?? '') ?>" required placeholder="۰"></label>
-    <label class="field"><span>تاریخ</span>
-      <input name="date" value="<?= e($f['date'] ?? '') ?>" required placeholder="۱۴۰۵/۰۱/۰۱"></label>
+
+  <div class="field">
+    <span>اقلام خریداری‌شده <small>(هر قلمی را که خریده‌اید علامت بزنید و قیمت خرید را بنویسید)</small></span>
+    <div class="buy-box" data-buy data-unit="<?= e(setting('unit')) ?>"
+         data-url="<?= e(url('purchase_lines', ['except' => $exceptPurchase])) ?>"
+         data-lines="<?= e(json_encode($lines, JSON_UNESCAPED_UNICODE)) ?>"
+         data-picked="<?= e(json_encode((object) ($f['picked'] ?? []), JSON_UNESCAPED_UNICODE)) ?>">
+      <p class="muted buy-empty">اول فاکتور را انتخاب کنید تا اقلامش اینجا بیاید.</p>
+    </div>
+    <details class="buy-extra"<?= $hasExtra ? ' open' : '' ?>>
+      <summary>چیز دیگری هم خریدید که در فاکتور نیست؟</summary>
+      <div class="fgrid">
+        <label class="field"><span>شرح</span>
+          <input name="extra_title" value="<?= e($f['extra_title'] ?? '') ?>" maxlength="200" placeholder="مثلاً کابل و لوازم جانبی نصب"></label>
+        <label class="field"><span>مبلغ (<?= e(setting('unit')) ?>)</span>
+          <input name="extra_amount" class="money" inputmode="decimal" value="<?= e($f['extra_amount'] ?? '') ?>" placeholder="۰" data-buy-extra></label>
+      </div>
+    </details>
+    <div class="buy-total" data-buy-total aria-live="polite"></div>
   </div>
-  <label class="field"><span>توضیح <small>(اختیاری؛ مثلاً شماره فاکتور فروشنده)</small></span>
-    <input name="note" value="<?= e($f['note'] ?? '') ?>" maxlength="300"></label>
+
+  <div class="fgrid">
+    <label class="field"><span>تاریخ خرید</span>
+      <input name="date" value="<?= e($f['date'] ?? '') ?>" required placeholder="۱۴۰۵/۰۱/۰۱"></label>
+    <label class="field"><span>توضیح <small>(اختیاری؛ مثلاً شماره فاکتور فروشنده)</small></span>
+      <input name="note" value="<?= e($f['note'] ?? '') ?>" maxlength="300"></label>
+  </div>
 <?php
+}
+
+/** Ticked lines from a posted purchase form, to show them again after an error. */
+function purchase_picked_from_post(array $post): array
+{
+    $out = [];
+    foreach ((is_array($post['items'] ?? null) ? $post['items'] : []) as $row) {
+        if (is_array($row) && !empty($row['on'])) {
+            $out[(int) ($row['pos'] ?? 0)] = ['qty' => (string) ($row['qty'] ?? ''), 'price' => (string) ($row['price'] ?? '')];
+        }
+    }
+    return $out;
+}
+
+/** A saved purchase as form values: its lines matched back to the invoice's lines by title. */
+function purchase_form_from(array $pur): array
+{
+    $byKey = [];
+    foreach (invoice_buy_lines((int) $pur['doc_id'], (int) $pur['id']) as $l) {
+        $byKey[name_key($l['title'])] = $byKey[name_key($l['title'])] ?? $l['pos'];
+    }
+    $f = ['doc_id' => (string) $pur['doc_id'], 'supplier' => $pur['supplier'], 'date' => fa($pur['date']),
+        'note' => $pur['note'], 'picked' => [], 'extra_title' => '', 'extra_amount' => ''];
+    $loose = [];
+    foreach (purchase_items((int) $pur['id']) as $it) {
+        $pos = $it['from_invoice'] ? ($byKey[name_key($it['title'])] ?? null) : null;
+        if ($pos !== null && !isset($f['picked'][$pos])) {
+            $f['picked'][$pos] = ['qty' => qty_fa($it['qty']), 'price' => money($it['unit_price'])];
+        } else {
+            $loose[] = $it;
+        }
+    }
+    if (!purchase_items((int) $pur['id'])) {
+        $loose[] = ['title' => $pur['title'], 'amount' => $pur['amount']]; // bought before items existed
+    }
+    if ($loose) {
+        $f['extra_title'] = str_cut(implode('، ', array_column($loose, 'title')), 200);
+        $f['extra_amount'] = money(array_sum(array_column($loose, 'amount')));
+    }
+    return $f;
 }
 
 /**
@@ -350,6 +425,22 @@ function customer_card(array $c, bool $compact = false): string
         . ($c['phone'] !== '' ? '<div class="rc-sub tel">' . e($c['phone']) . '</div>' : '')
         . '</div></div>'
         . '<div class="rc-foot">' . balance_html($c['balance'])
-        . ($compact ? '' : '<a class="btn btn-ghost btn-sm" href="' . e(url('payments', ['customer' => $c['id']])) . '">ثبت دریافت</a>')
+        . ($compact || !can('sales', 'edit') ? '' : '<a class="btn btn-ghost btn-sm" href="' . e(url('payments', ['customer' => $c['id']])) . '">ثبت دریافت</a>')
         . '</div></article>';
+}
+
+/** One activity-log entry as a compact card: what, details, who and when. */
+function activity_item(array $a, bool $withUser = true): string
+{
+    $act = e($a['action']);
+    if ($a['url'] !== '') {
+        $act = '<a href="' . e($a['url']) . '">' . $act . '</a>';
+    }
+    return '<article class="feed-item">'
+        . '<div class="feed-main"><b>' . $act . '</b>'
+        . ($a['detail'] !== '' ? '<span class="feed-detail">' . e($a['detail']) . '</span>' : '') . '</div>'
+        . '<div class="rc-meta">'
+        . ($withUser ? '<span>' . icon('user') . e($a['user_name'] !== '' ? $a['user_name'] : 'سیستم') . '</span>' : '')
+        . '<span>' . icon('clock-counter-clockwise') . jstamp($a['at']) . '</span></div>'
+        . '</article>';
 }

@@ -8,6 +8,10 @@ defined('APP_DIR') || exit;
 
 $id = (int) query('id');
 $isNew = $id === 0;
+$canEdit = can('sales', 'edit');
+if ($isNew && !$canEdit) {
+    deny('اجازهٔ صدور سند جدید را ندارید.');
+}
 $error = null;
 $draft = null;
 
@@ -34,11 +38,12 @@ if ($isNew) {
     $type = $doc['type'];
     $items = doc_items($id);
 }
-$readOnly = !$isNew && $doc['status'] === 'cancelled';
+$isVoid = !$isNew && $doc['status'] === 'cancelled';
+$readOnly = $isVoid || !$canEdit; // the editor is locked
 
 if (is_post()) {
     $payload = json_decode(post('payload'), true);
-    if ($readOnly) {
+    if ($isVoid) {
         $error = 'فاکتور باطل‌شده قابل ویرایش نیست؛ اگر لازم است اول آن را بازگردانی کنید.';
     } elseif (!is_array($payload)) {
         $error = 'اطلاعات ارسالی نامعتبر است. دوباره تلاش کنید.';
@@ -124,7 +129,7 @@ $left = null;
 if (!$isNew && $type === 'inv' && $doc['status'] === 'active') {
     $left = invoice_remaining((int) $doc['customer_id'])[$id] ?? (float) $doc['total'];
 }
-$costs = (!$isNew && $type === 'inv') ? invoice_costs($doc) : null;
+$costs = (!$isNew && $type === 'inv' && can('costs')) ? invoice_costs($doc) : null;
 
 $phones = array_values(array_filter(array_map('trim', explode("\n", setting('phones'))), 'strlen'));
 $website = setting('website');
@@ -162,7 +167,7 @@ function tel_href(string $phone): string
 
     <label class="chk"><input type="checkbox" id="vatSw"<?= $readOnly ? ' disabled' : '' ?>> مالیات بر ارزش افزوده</label>
 
-    <?php if ($readOnly): ?>
+    <?php if ($isVoid): ?>
       <span class="badge muted">باطل‌شده</span>
     <?php elseif ($left !== null): ?>
       <?= invoice_badge($doc, [$id => $left]) ?>
@@ -177,14 +182,14 @@ function tel_href(string $phone): string
     <?php endif; ?>
     <button type="button" class="btn btn-ghost" id="pr">چاپ / PDF</button>
 
-    <?php if (!$isNew && $type === 'qot' && !$converted): ?>
+    <?php if ($canEdit && !$isNew && $type === 'qot' && !$converted): ?>
       <form method="post" action="<?= e(url('doc_action')) ?>" data-guard
             data-confirm="این پیش‌فاکتور به فاکتور تبدیل شود؟ مبلغ فاکتور به بدهی مشتری اضافه می‌شود.">
         <?= csrf_field() ?><input type="hidden" name="id" value="<?= (int) $id ?>"><input type="hidden" name="action" value="convert">
         <button class="btn btn-accent">تبدیل به فاکتور</button>
       </form>
     <?php endif; ?>
-    <?php if ($left !== null && $left > 0): ?>
+    <?php if ($canEdit && $left !== null && $left > 0): ?>
       <a class="btn btn-accent" data-guard href="<?= e(url('payments', [
           'customer' => $doc['customer_id'], 'amount' => (int) $left, 'note' => 'بابت فاکتور ' . $doc['number'],
       ])) ?>">ثبت دریافت</a>
@@ -197,20 +202,20 @@ function tel_href(string $phone): string
           <?php if ($customer): ?>
             <a href="<?= e(url('customer', ['id' => $customer['id']])) ?>" data-guard>حساب مشتری</a>
           <?php endif; ?>
-          <?php if ($type === 'inv' && $doc['status'] === 'active'): ?>
+          <?php if ($canEdit && $type === 'inv' && $doc['status'] === 'active'): ?>
             <form method="post" action="<?= e(url('doc_action')) ?>" data-guard
                   data-confirm="فاکتور باطل شود؟ مبلغ آن از بدهی مشتری کم می‌شود (قابل بازگردانی است).">
               <?= csrf_field() ?><input type="hidden" name="id" value="<?= (int) $id ?>"><input type="hidden" name="action" value="cancel">
               <button class="danger">ابطال فاکتور</button>
             </form>
           <?php endif; ?>
-          <?php if ($readOnly): ?>
+          <?php if ($canEdit && $isVoid): ?>
             <form method="post" action="<?= e(url('doc_action')) ?>">
               <?= csrf_field() ?><input type="hidden" name="id" value="<?= (int) $id ?>"><input type="hidden" name="action" value="restore">
               <button>بازگردانی فاکتور</button>
             </form>
           <?php endif; ?>
-          <?php if ($type === 'qot' || $readOnly): ?>
+          <?php if ($canEdit && ($type === 'qot' || $isVoid)): ?>
             <form method="post" action="<?= e(url('doc_action')) ?>" data-guard
                   data-confirm="<?= e(DOC_NAMES[$type]) ?> برای همیشه حذف شود؟">
               <?= csrf_field() ?><input type="hidden" name="id" value="<?= (int) $id ?>"><input type="hidden" name="action" value="delete">
@@ -225,9 +230,9 @@ function tel_href(string $phone): string
 
 <main class="stage">
 <div class="stage-in">
-  <?php if ($source || $converted || $customer || $readOnly || $costs): ?>
+  <?php if ($source || $converted || $customer || $isVoid || $costs): ?>
   <div class="banners no-print">
-    <?php if ($readOnly): ?>
+    <?php if ($isVoid): ?>
       <div class="banner">این فاکتور باطل شده و در بدهی مشتری حساب نمی‌شود.</div>
     <?php endif; ?>
     <?php if ($source): ?>
@@ -257,16 +262,20 @@ function tel_href(string $phone): string
           <?php endif; ?>
         </dl>
         <div class="actions">
+          <?php if (can('costs', 'edit') || $costs['purchase_count']): ?>
           <a class="btn btn-ghost btn-sm" href="<?= e(url('purchases', ['doc' => $id])) ?>" data-guard>
             <?= $costs['purchase_count'] ? 'خریدها (' . fa($costs['purchase_count']) . ')' : icon('plus') . ' ثبت خرید' ?></a>
+          <?php endif; ?>
+          <?php if (can('costs', 'edit')): ?>
           <a class="btn btn-ghost btn-sm" href="<?= e(url('expenses', ['kind' => 'direct', 'doc' => $id])) ?>" data-guard><?= icon('plus') ?> هزینهٔ مستقیم</a>
+          <?php endif; ?>
         </div>
       </div>
     <?php endif; ?>
   </div>
   <?php endif; ?>
 
-<article class="sheet<?= $readOnly ? ' void' : '' ?>" id="sheet">
+<article class="sheet<?= $isVoid ? ' void' : '' ?>" id="sheet">
   <div class="main">
   <header class="hd">
     <div class="co">

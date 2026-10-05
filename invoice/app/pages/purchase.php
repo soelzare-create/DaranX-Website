@@ -9,14 +9,7 @@ if (!$pur) {
 }
 
 $error = null;
-$form = [
-    'doc_id' => (string) $pur['doc_id'],
-    'supplier' => $pur['supplier'],
-    'title' => $pur['title'],
-    'amount' => money($pur['amount']),
-    'date' => fa($pur['date']),
-    'note' => $pur['note'],
-];
+$form = purchase_form_from($pur);
 
 if (is_post()) {
     try {
@@ -25,7 +18,8 @@ if (is_post()) {
             flash('ok', 'خرید ' . $pur['number'] . ' حذف شد.');
             redirect('purchases', ['doc' => $pur['doc_id']]);
         }
-        $form = array_map(function ($v) { return is_string($v) ? $v : ''; }, $_POST) + $form;
+        $form = array_map(function ($v) { return is_string($v) ? $v : ''; }, array_intersect_key($_POST, $form)) + $form;
+        $form['picked'] = purchase_picked_from_post($_POST);
         $p = purchase_validate($_POST, $pur);
         purchase_save($p, $id);
         flash('ok', 'خرید ' . $pur['number'] . ' ویرایش شد.');
@@ -48,18 +42,20 @@ layout_start('خرید ' . $pur['number'], 'purchases', ['error' => $error]);
   </div>
 
   <section class="card">
-    <form method="post" class="form">
+    <form method="post" class="form" data-buy-form>
+      <fieldset class="plain"<?= can('costs', 'edit') ? '' : ' disabled' ?>>
       <?= csrf_field() ?>
       <input type="hidden" name="action" value="save">
-      <?php purchase_fields($form, invoice_options((int) $pur['doc_id']), suppliers_known()); ?>
+      <?php purchase_fields($form, invoice_options((int) $pur['doc_id']), suppliers_known(), $id); ?>
       <div class="actions"><button class="btn btn-primary">ذخیره</button></div>
+    </fieldset>
     </form>
   </section>
 
   <section class="card">
     <div class="card-head">
       <h2>پرداخت‌های این خرید</h2>
-      <?php if (purchase_left($pur) >= 0.5): ?>
+      <?php if (purchase_left($pur) >= 0.5 && can('costs', 'edit')): ?>
         <a class="btn btn-accent btn-sm" href="<?= e(url('expenses', ['kind' => 'direct', 'purchase' => $id,
             'amount' => (int) purchase_left($pur)])) ?>"><?= icon('plus') ?> ثبت پرداخت (مانده <?= money(purchase_left($pur)) ?>)</a>
       <?php endif; ?>
@@ -84,11 +80,13 @@ layout_start('خرید ' . $pur['number'], 'purchases', ['error' => $error]);
     <?php endif; ?>
   </section>
 
+  <?php if (can('costs', 'edit')): ?>
   <form method="post" class="mt" data-confirm="خرید <?= e($pur['number']) ?> حذف شود؟">
     <?= csrf_field() ?>
     <input type="hidden" name="action" value="delete">
     <button class="btn btn-danger btn-sm">حذف خرید</button>
   </form>
+  <?php endif; ?>
 </main>
 <?php
 layout_end();
