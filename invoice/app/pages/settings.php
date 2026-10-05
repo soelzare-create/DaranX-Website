@@ -39,7 +39,14 @@ if (is_post()) {
             'vat_rate' => (string) $rate,
             'notes_qot' => clean_text(post('notes_qot'), 2000),
             'notes_inv' => clean_text(post('notes_inv'), 2000),
+            'assistant_model' => clean_line(post('assistant_model'), 60) ?: 'claude-opus-5-5',
         ];
+        // Only overwrite the API key when a new one is actually typed, so the
+        // masked field doesn't wipe it on every save.
+        $ak = trim(post('assistant_api_key'));
+        if ($ak !== '') {
+            $values['assistant_api_key'] = clean_line($ak, 200);
+        }
         if ($values['company_name'] === '') {
             throw new UserError('نام شرکت را وارد کنید.');
         }
@@ -98,6 +105,17 @@ layout_start('تنظیمات', 'settings', ['error' => $error]);
           <textarea name="notes_qot" rows="4"><?= e($s['notes_qot']) ?></textarea></label>
         <label class="field"><span>توضیحات پیش‌فرض فاکتور <small>(هر بند در یک خط)</small></span>
           <textarea name="notes_inv" rows="4"><?= e($s['notes_inv']) ?></textarea></label>
+      </div>
+      <h2 class="mt">دستیار هوشمند (چت)</h2>
+      <p class="muted" style="margin:.2rem 0 .8rem">برای فعال‌شدن صفحهٔ «دستیار»، یک کلید API از Anthropic وارد کنید. کلید فقط روی سرور ذخیره می‌شود و در مرورگر دیده نمی‌شود. مصرف این کلید هزینهٔ جداگانه (پرداختی به Anthropic) دارد.</p>
+      <div class="fgrid">
+        <label class="field"><span>کلید API کلود <small>(Anthropic API key)</small></span>
+          <input type="password" name="assistant_api_key" dir="ltr" autocomplete="off"
+                 placeholder="<?= $s['assistant_api_key'] !== '' ? 'ذخیره‌شده — برای تغییر، کلید جدید وارد کنید' : 'sk-ant-...' ?>">
+          <small>خالی بگذارید تا کلید فعلی بدون تغییر بماند.</small></label>
+        <label class="field"><span>مدل</span>
+          <input name="assistant_model" value="<?= e($s['assistant_model']) ?>" dir="ltr" maxlength="60">
+          <small>پیش‌فرض <code dir="ltr">claude-opus-5-5</code>. برای هزینهٔ کمتر: <code dir="ltr">claude-sonnet-5-5</code> یا <code dir="ltr">claude-haiku-4-5</code>.</small></label>
       </div>
       <div class="actions"><button class="btn btn-primary">ذخیره تنظیمات</button></div>
     </form>

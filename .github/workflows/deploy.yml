@@ -56,3 +56,8 @@ jobs:
             **/node_modules/**
             README.md
             .gitignore
+            # The PHP invoice app is uploaded to the host manually (its large
+            # file batch trips this shared host's FTP session). Kept in the repo
+            # for versioning, but excluded from the auto-deploy so site pushes
+            # stay green.
+            invoice/**

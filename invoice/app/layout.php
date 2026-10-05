@@ -10,6 +10,7 @@ const NAV = [
     'inv' => ['فاکتورها', ['p' => 'docs', 'type' => 'inv']],
     'customers' => ['مشتریان', ['p' => 'customers']],
     'payments' => ['دریافت‌ها', ['p' => 'payments']],
+    'assistant' => ['دستیار', ['p' => 'assistant']],
     'settings' => ['تنظیمات', ['p' => 'settings']],
 ];
 

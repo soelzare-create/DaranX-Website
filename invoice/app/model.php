@@ -24,6 +24,9 @@ const SETTING_DEFAULTS = [
     'vat_rate' => '10',
     'notes_qot' => "قیمت‌های اعلامی تا پایان وقت اداری تاریخ صدور اعتبار دارد.\nاز اعتماد شما به مجموعه داران‌ایکس سپاسگزاریم.",
     'notes_inv' => "تسویه به صورت نقدی می‌باشد.\nاز اعتماد شما به مجموعه داران‌ایکس سپاسگزاریم.",
+    // AI assistant (chat page). The key is stored server-side only, never sent to the browser.
+    'assistant_api_key' => '',
+    'assistant_model' => 'claude-opus-5-5',
 ];
 
 const BALANCE_SQL = "(c.opening_balance
