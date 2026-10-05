@@ -47,7 +47,7 @@ layout_start('خریدها', 'purchases', ['error' => $error]);
 ?>
 <main class="page">
   <div class="head">
-    <h1>خریدها<?= $forDoc ? ' — فاکتور <span class="mono">' . e($forDoc['number']) . '</span>' : '' ?></h1>
+    <h1>خریدها<?php if ($forDoc): ?> <span class="badge info">فاکتور <span class="mono"><?= e($forDoc['number']) ?></span></span><?php endif; ?></h1>
     <div class="actions">
       <span class="muted">جمع: <b class="ink"><?= money($sum) ?> <?= e($unit) ?></b>
         <?php if ($left >= 0.5): ?> · پرداخت‌نشده: <b class="ink"><?= money($left) ?></b><?php endif; ?></span>
@@ -59,7 +59,7 @@ layout_start('خریدها', 'purchases', ['error' => $error]);
   </div>
 
   <details class="card collapse"<?= $error || $forDoc ? ' open' : '' ?>>
-    <summary><span class="btn btn-primary btn-sm">+ ثبت خرید</span></summary>
+    <summary><span class="btn btn-primary btn-sm"><?= icon('plus') ?> ثبت خرید</span></summary>
     <?php if (!$invoices): ?>
       <p class="empty">هنوز فاکتور فعالی نیست. خرید همیشه به یک فاکتور وصل می‌شود؛ اول فاکتور را صادر کنید.</p>
     <?php else: ?>
@@ -82,7 +82,7 @@ layout_start('خریدها', 'purchases', ['error' => $error]);
       <button class="btn btn-ghost">جستجو</button>
     </form>
     <?php if (!$list): ?>
-      <p class="empty"><?= $q !== '' ? 'موردی پیدا نشد.' : 'هنوز خریدی ثبت نشده.' ?></p>
+      <?= $q !== '' ? empty_state('magnifying-glass', 'موردی پیدا نشد.') : empty_state('shopping-cart', 'هنوز خریدی ثبت نشده. هر خرید به یک فاکتور وصل می‌شود.') ?>
     <?php else: ?>
       <div class="tbl"><table class="list wide">
         <thead><tr><th>شماره</th><th>تاریخ</th><th>فاکتور</th><th>فروشنده</th><th>شرح</th>

@@ -62,7 +62,7 @@ layout_start('خرید ' . $pur['number'], 'purchases', ['error' => $error]);
       <h2>پرداخت‌های این خرید</h2>
       <?php if (purchase_left($pur) >= 0.5): ?>
         <a class="btn btn-accent btn-sm" href="<?= e(url('expenses', ['kind' => 'direct', 'purchase' => $id,
-            'amount' => (int) purchase_left($pur)])) ?>">+ ثبت پرداخت (مانده <?= money(purchase_left($pur)) ?>)</a>
+            'amount' => (int) purchase_left($pur)])) ?>"><?= icon('plus') ?> ثبت پرداخت (مانده <?= money(purchase_left($pur)) ?>)</a>
       <?php endif; ?>
     </div>
     <?php if (!$payments): ?>

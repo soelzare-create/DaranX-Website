@@ -112,7 +112,7 @@ layout_start('تنظیمات', 'settings', ['error' => $error]);
       <div class="fgrid">
         <label class="field"><span>کلید API کلود <small>(Anthropic API key)</small></span>
           <input type="password" name="assistant_api_key" dir="ltr" autocomplete="off"
-                 placeholder="<?= $s['assistant_api_key'] !== '' ? 'ذخیره‌شده — برای تغییر، کلید جدید وارد کنید' : 'sk-ant-...' ?>">
+                 placeholder="<?= $s['assistant_api_key'] !== '' ? 'ذخیره‌شده؛ برای تغییر، کلید جدید وارد کنید' : 'sk-ant-...' ?>">
           <small>خالی بگذارید تا کلید فعلی بدون تغییر بماند.</small></label>
         <label class="field"><span>مدل</span>
           <input name="assistant_model" value="<?= e($s['assistant_model']) ?>" dir="ltr" maxlength="60">
@@ -121,7 +121,7 @@ layout_start('تنظیمات', 'settings', ['error' => $error]);
       <div class="fgrid">
         <label class="field"><span>آدرس سرویس (Base URL)</span>
           <input name="assistant_base_url" value="<?= e($s['assistant_base_url']) ?>" dir="ltr" maxlength="200" placeholder="https://api.anthropic.com">
-          <small>برای GapGPT: <code dir="ltr">https://api.gapgpt.app/v1</code> — برای Anthropic مستقیم: <code dir="ltr">https://api.anthropic.com</code>. اگر آدرس شامل <code>anthropic</code> باشد فرمت بومی Anthropic، در غیر این صورت فرمت سازگار با OpenAI استفاده می‌شود.</small></label>
+          <small>برای GapGPT: <code dir="ltr">https://api.gapgpt.app/v1</code>. برای Anthropic مستقیم: <code dir="ltr">https://api.anthropic.com</code>. اگر آدرس شامل <code>anthropic</code> باشد فرمت بومی Anthropic، در غیر این صورت فرمت سازگار با OpenAI استفاده می‌شود.</small></label>
       </div>
       <div class="actions"><button class="btn btn-primary">ذخیره تنظیمات</button></div>
     </form>

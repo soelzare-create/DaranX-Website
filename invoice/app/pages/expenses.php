@@ -68,7 +68,7 @@ layout_start('پرداخت‌ها', 'expenses', ['error' => $error]);
 ?>
 <main class="page">
   <div class="head">
-    <h1>پرداخت‌ها<?= $forDoc ? ' — فاکتور <span class="mono">' . e($forDoc['number']) . '</span>' : '' ?></h1>
+    <h1>پرداخت‌ها<?php if ($forDoc): ?> <span class="badge info">فاکتور <span class="mono"><?= e($forDoc['number']) ?></span></span><?php endif; ?></h1>
     <div class="actions">
       <?php foreach (['' => 'همه', 'direct' => 'مستقیم فاکتورها', 'overhead' => 'سربار شرکت'] as $k => $label): ?>
         <a class="btn btn-sm <?= $k === $kind ? 'btn-primary' : 'btn-ghost' ?>"
@@ -81,7 +81,7 @@ layout_start('پرداخت‌ها', 'expenses', ['error' => $error]);
   </div>
 
   <details class="card collapse"<?= $error || $prePurchase || $forDoc || $kind ? ' open' : '' ?>>
-    <summary><span class="btn btn-primary btn-sm">+ ثبت پرداخت</span></summary>
+    <summary><span class="btn btn-primary btn-sm"><?= icon('plus') ?> ثبت پرداخت</span></summary>
     <form method="post" class="form mt" data-expense-form>
       <?= csrf_field() ?>
       <?php expense_fields($form, invoice_options((int) $form['doc_id']), $purchases, payees_known()); ?>
@@ -109,7 +109,7 @@ layout_start('پرداخت‌ها', 'expenses', ['error' => $error]);
       </span>
     </div>
     <?php if (!$list): ?>
-      <p class="empty"><?= $q !== '' ? 'موردی پیدا نشد.' : 'هنوز پرداختی ثبت نشده.' ?></p>
+      <?= $q !== '' ? empty_state('magnifying-glass', 'موردی پیدا نشد.') : empty_state('arrow-circle-up', 'هنوز پرداختی ثبت نشده.') ?>
     <?php else: ?>
       <div class="tbl"><table class="list wide">
         <thead><tr><th>تاریخ</th><th>نوع</th><th>بابت</th><th>فاکتور / خرید</th><th>گیرنده</th><th>روش</th>
@@ -127,7 +127,7 @@ layout_start('پرداخت‌ها', 'expenses', ['error' => $error]);
               <?php if ($e['purchase_id']): ?>
                 · <a class="mono" href="<?= e(url('purchase', ['id' => $e['purchase_id']])) ?>"><?= e($e['purchase_number']) ?></a>
               <?php endif; ?>
-              <?php if (!$e['doc_id']): ?><span class="muted">—</span><?php endif; ?>
+              <?php if (!$e['doc_id']): ?><span class="muted">-</span><?php endif; ?>
             </td>
             <td><?= e($e['payee']) ?></td>
             <td class="nowrap"><?= e($e['method']) ?></td>

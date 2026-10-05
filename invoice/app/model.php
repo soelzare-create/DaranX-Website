@@ -257,7 +257,7 @@ function customer_ledger(array $c): array
     $st->execute([$c['id']]);
     foreach ($st as $r) {
         $rows[] = ['kind' => 'pay', 'id' => (int) $r['id'], 'date' => $r['date'], 'at' => $r['created_at'],
-            'label' => 'دریافت' . ($r['method'] !== '' ? ' — ' . $r['method'] : ''), 'note' => $r['note'],
+            'label' => 'دریافت' . ($r['method'] !== '' ? ' (' . $r['method'] . ')' : ''), 'note' => $r['note'],
             'debit' => 0.0, 'credit' => (float) $r['amount']];
     }
     usort($rows, function ($a, $b) {

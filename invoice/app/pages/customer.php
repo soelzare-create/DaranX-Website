@@ -41,7 +41,7 @@ layout_start($c['name'], 'customers', ['error' => $error]);
 <main class="page">
   <div class="print-only print-head">
     <b><?= e(setting('company_name')) ?></b>
-    <span>صورت‌حساب مشتری — تاریخ <?= fa(jtoday()) ?></span>
+    <span>صورت‌حساب مشتری، تاریخ <?= fa(jtoday()) ?></span>
   </div>
 
   <div class="head">
@@ -50,19 +50,19 @@ layout_start($c['name'], 'customers', ['error' => $error]);
       <div class="sub"><?= e($c['phone']) ?><?= $c['phone'] && $c['address'] ? ' · ' : '' ?><?= e($c['address']) ?></div>
     </div>
     <div class="actions no-print">
-      <a class="btn btn-ghost" href="<?= e(url('doc', ['new' => 'qot', 'customer' => $id])) ?>">+ پیش‌فاکتور</a>
-      <a class="btn btn-ghost" href="<?= e(url('doc', ['new' => 'inv', 'customer' => $id])) ?>">+ فاکتور</a>
-      <a class="btn btn-primary" href="<?= e(url('payments', ['customer' => $id] + ($balance > 0 ? ['amount' => (int) $balance] : []))) ?>">+ ثبت دریافت</a>
+      <a class="btn btn-ghost" href="<?= e(url('doc', ['new' => 'qot', 'customer' => $id])) ?>"><?= icon('plus') ?> پیش‌فاکتور</a>
+      <a class="btn btn-ghost" href="<?= e(url('doc', ['new' => 'inv', 'customer' => $id])) ?>"><?= icon('plus') ?> فاکتور</a>
+      <a class="btn btn-primary" href="<?= e(url('payments', ['customer' => $id] + ($balance > 0 ? ['amount' => (int) $balance] : []))) ?>"><?= icon('plus') ?> ثبت دریافت</a>
     </div>
   </div>
 
   <div class="balance-card <?= $balance > 0.5 ? 'debt' : ($balance < -0.5 ? 'credit' : 'zero') ?>">
     <span>مانده حساب</span>
     <b><?= abs($balance) < 0.5 ? 'تسویه' : money($balance) . ' ' . e($unit) ?></b>
-    <span><?= $balance > 0.5 ? 'بدهکار — مشتری باید پرداخت کند' : ($balance < -0.5 ? 'بستانکار — مشتری اضافه پرداخت کرده' : 'حساب صاف است') ?></span>
+    <span><?= $balance > 0.5 ? 'بدهکار: مشتری باید پرداخت کند' : ($balance < -0.5 ? 'بستانکار: مشتری اضافه پرداخت کرده' : 'حساب صاف است') ?></span>
   </div>
 
-  <div class="grid-main">
+  <div class="stack">
     <section class="card">
       <div class="card-head">
         <h2>صورت‌حساب</h2>
@@ -104,7 +104,7 @@ layout_start($c['name'], 'customers', ['error' => $error]);
       <?php endif; ?>
     </section>
 
-    <div class="stack no-print">
+    <div class="grid2 no-print">
       <section class="card">
         <h2>پیش‌فاکتورها</h2>
         <?php if (!$proformas): ?>

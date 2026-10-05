@@ -22,6 +22,29 @@ function asset(string $file): string
     return 'assets/' . $file . '?v=' . APP_VERSION;
 }
 
+/**
+ * Inline SVG icon from assets/icons (Phosphor Icons, regular weight, MIT —
+ * see assets/icons/LICENSE-phosphor.txt). Inline so it inherits currentColor
+ * and needs no extra request; decorative, so hidden from screen readers.
+ */
+function icon(string $name, string $class = 'ic'): string
+{
+    static $cache = [];
+    if (!isset($cache[$name])) {
+        $file = ROOT_DIR . '/assets/icons/' . basename($name) . '.svg';
+        $svg = is_file($file) ? (string) file_get_contents($file) : '';
+        $cache[$name] = preg_replace('/^<svg /', '<svg aria-hidden="true" focusable="false" ', trim($svg)) ?? '';
+    }
+    return $cache[$name] === '' ? '' : preg_replace('/^<svg /', '<svg class="' . e($class) . '" ', $cache[$name]);
+}
+
+/** A composed empty state: icon, one line of text, and optionally the next step. */
+function empty_state(string $iconName, string $text, string $actionHtml = ''): string
+{
+    return '<div class="empty-state">' . icon($iconName, 'ic ic-lg') . '<p>' . e($text) . '</p>'
+        . ($actionHtml !== '' ? '<div class="actions">' . $actionHtml . '</div>' : '') . '</div>';
+}
+
 function html_head(string $title, array $css = ['app.css']): void
 {
     ?><!doctype html>
@@ -47,7 +70,7 @@ function html_head(string $title, array $css = ['app.css']): void
 function layout_start(string $title, string $active = '', array $opt = []): void
 {
     $sheet = !empty($opt['sheet']);
-    html_head($title . ' — DaranX', $sheet ? ['app.css', 'sheet.css'] : ['app.css']);
+    html_head($title . ' | DaranX', $sheet ? ['app.css', 'sheet.css'] : ['app.css']);
     echo '<body class="' . ($sheet ? 'sheet-page' : '') . '"' . ($opt['body_attrs'] ?? '') . ">\n";
     $user = current_user();
     ?>
@@ -63,10 +86,10 @@ function layout_start(string $title, string $active = '', array $opt = []): void
       <?php if ($user): ?>
         <form method="post" action="<?= e(url('logout')) ?>">
           <?= csrf_field() ?>
-          <button class="linkbtn" title="<?= e($user['username']) ?>">خروج</button>
+          <button class="linkbtn" title="<?= e($user['username']) ?>"><?= icon('sign-out') ?><span>خروج</span></button>
         </form>
       <?php endif; ?>
-      <button type="button" class="theme-toggle" id="tt" aria-label="روشن/تیره"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="8"/><path d="M12 4a8 8 0 0 1 0 16z" fill="currentColor"/></svg></button>
+      <button type="button" class="theme-toggle" id="tt" aria-label="روشن/تیره" title="روشن/تیره"><?= icon('circle-half') ?></button>
     </div>
   </div>
 </nav>
@@ -85,7 +108,9 @@ function flashes(?string $error = null): void
     }
     echo '<div class="flashes no-print">';
     foreach ($list as [$type, $msg]) {
-        echo '<div class="flash ' . ($type === 'ok' ? 'ok' : 'err') . '" role="status">' . e($msg) . '</div>';
+        $ok = $type === 'ok';
+        echo '<div class="flash ' . ($ok ? 'ok' : 'err') . '" role="status">'
+            . icon($ok ? 'check-circle' : 'warning-circle') . '<span>' . e($msg) . '</span></div>';
     }
     echo '</div>';
 }
@@ -101,7 +126,7 @@ function layout_end(array $scripts = []): void
 /** Centered card used by the login and first-run setup screens. */
 function auth_start(string $title, string $subtitle): void
 {
-    html_head($title . ' — DaranX');
+    html_head($title . ' | DaranX');
     ?>
 <body>
 <main class="auth">
@@ -184,7 +209,7 @@ function customer_fields(array $c): void
 /** «INV-0003 — customer» label for an invoice in a <select>. */
 function invoice_option_label(array $d): string
 {
-    return $d['number'] . ' — ' . $d['cust_name'] . ' — ' . money($d['total'])
+    return $d['number'] . '، ' . $d['cust_name'] . '، ' . money($d['total'])
         . ($d['status'] === 'cancelled' ? ' (باطل‌شده)' : '');
 }
 
@@ -195,7 +220,7 @@ function purchase_fields(array $f, array $invoices, array $suppliers): void
   <div class="fgrid">
     <label class="field"><span>فاکتور مربوط</span>
       <select name="doc_id" required>
-        <option value="">— انتخاب فاکتور —</option>
+        <option value="">انتخاب فاکتور…</option>
         <?php foreach ($invoices as $d): ?>
           <option value="<?= (int) $d['id'] ?>"<?= (string) $d['id'] === (string) ($f['doc_id'] ?? '') ? ' selected' : '' ?>><?= e(invoice_option_label($d)) ?></option>
         <?php endforeach; ?>
@@ -236,19 +261,19 @@ function expense_fields(array $f, array $invoices, array $purchases, array $paye
   <div class="fgrid direct-only"<?= $kind === 'overhead' ? ' hidden' : '' ?>>
     <label class="field"><span>فاکتور مربوط</span>
       <select name="doc_id">
-        <option value="">— انتخاب فاکتور —</option>
+        <option value="">انتخاب فاکتور…</option>
         <?php foreach ($invoices as $d): ?>
           <option value="<?= (int) $d['id'] ?>"<?= (string) $d['id'] === (string) ($f['doc_id'] ?? '') ? ' selected' : '' ?>><?= e(invoice_option_label($d)) ?></option>
         <?php endforeach; ?>
       </select></label>
     <label class="field"><span>بابت خرید <small>(اختیاری)</small></span>
       <select name="purchase_id">
-        <option value="">— بدون خرید (هزینهٔ دیگر، مثل پیک) —</option>
+        <option value="">بدون خرید (هزینهٔ دیگر، مثل پیک)</option>
         <?php foreach ($purchases as $p): ?>
           <option value="<?= (int) $p['id'] ?>" data-doc="<?= (int) $p['doc_id'] ?>" data-supplier="<?= e($p['supplier']) ?>"
-            <?= (string) $p['id'] === (string) ($f['purchase_id'] ?? '') ? ' selected' : '' ?>><?= e($p['number'] . ' — ' . $p['title']
-              . ($p['supplier'] !== '' ? ' (' . $p['supplier'] . ')' : '') . ' — ' . $p['doc_number']
-              . (purchase_left($p) >= 0.5 ? ' — مانده ' . money(purchase_left($p)) : ' — پرداخت‌شده')) ?></option>
+            <?= (string) $p['id'] === (string) ($f['purchase_id'] ?? '') ? ' selected' : '' ?>><?= e($p['number'] . '، ' . $p['title']
+              . ($p['supplier'] !== '' ? ' (' . $p['supplier'] . ')' : '') . '، ' . $p['doc_number']
+              . (purchase_left($p) >= 0.5 ? '، مانده ' . money(purchase_left($p)) : '، پرداخت‌شده')) ?></option>
         <?php endforeach; ?>
       </select>
       <small class="muted">پرداخت بابت یک خرید، همان خرید را تسویه می‌کند و هزینهٔ جدیدی به فاکتور اضافه نمی‌کند.</small></label>

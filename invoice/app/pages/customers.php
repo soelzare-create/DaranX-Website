@@ -34,7 +34,7 @@ layout_start('مشتریان', 'customers', ['error' => $error]);
   </div>
 
   <details class="card collapse"<?= $error ? ' open' : '' ?>>
-    <summary><span class="btn btn-primary btn-sm">+ مشتری جدید</span></summary>
+    <summary><span class="btn btn-primary btn-sm"><?= icon('plus') ?> مشتری جدید</span></summary>
     <form method="post" class="form mt">
       <?= csrf_field() ?>
       <?php customer_fields($form ? array_map(function ($v) { return is_string($v) ? $v : ''; }, $form) + ['opening_balance' => 0] : []); ?>
@@ -51,7 +51,8 @@ layout_start('مشتریان', 'customers', ['error' => $error]);
     </form>
 
     <?php if (!$list): ?>
-      <p class="empty"><?= ($q !== '' || $debtorsOnly) ? 'موردی پیدا نشد.' : 'هنوز مشتری‌ای ثبت نشده. با اولین پیش‌فاکتور یا فاکتور، مشتری خودکار ساخته می‌شود.' ?></p>
+      <?= ($q !== '' || $debtorsOnly) ? empty_state('magnifying-glass', 'موردی پیدا نشد.')
+        : empty_state('users', 'هنوز مشتری‌ای ثبت نشده. با اولین پیش‌فاکتور یا فاکتور، مشتری خودکار ساخته می‌شود.') ?>
     <?php else: ?>
       <div class="tbl"><table class="list wide">
         <thead><tr><th>مشتری</th><th>شماره تماس</th><th>مانده حساب</th><th></th></tr></thead>

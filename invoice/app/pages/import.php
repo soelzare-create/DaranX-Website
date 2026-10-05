@@ -140,7 +140,7 @@ layout_start('ورود از اکسل', 'import', ['error' => $error]);
                   <span class="badge ok">✓ پیش‌فاکتور
                     <a href="<?= e(url('doc', ['id' => $r['id']])) ?>" dir="ltr"><?= e($r['number']) ?></a>
                     ثبت شد</span>
-                  <?php if (!empty($r['warn'])): ?><small class="muted"> — <?= e($r['warn']) ?></small><?php endif; ?>
+                  <?php if (!empty($r['warn'])): ?><br><small class="muted"><?= e($r['warn']) ?></small><?php endif; ?>
                 <?php else: ?>
                   <span class="badge danger">✗ <?= e($r['msg']) ?></span>
                 <?php endif; ?>

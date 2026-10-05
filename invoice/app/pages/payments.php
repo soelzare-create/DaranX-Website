@@ -45,10 +45,10 @@ layout_start('دریافت‌ها', 'payments', ['error' => $error]);
       <div class="fgrid">
         <label class="field"><span>مشتری</span>
           <select name="customer_id" required>
-            <option value="">— انتخاب کنید —</option>
+            <option value="">انتخاب مشتری…</option>
             <?php foreach ($customers as $c): ?>
               <option value="<?= (int) $c['id'] ?>"<?= (string) $c['id'] === (string) $form['customer_id'] ? ' selected' : '' ?>>
-                <?= e($c['name']) ?><?= (float) $c['balance'] > 0.5 ? ' — بدهی ' . money($c['balance']) : '' ?>
+                <?= e($c['name']) ?><?= (float) $c['balance'] > 0.5 ? '، بدهی ' . money($c['balance']) : '' ?>
               </option>
             <?php endforeach; ?>
           </select></label>
@@ -81,7 +81,7 @@ layout_start('دریافت‌ها', 'payments', ['error' => $error]);
       <button class="btn btn-ghost">جستجو</button>
     </form>
     <?php if (!$list): ?>
-      <p class="empty"><?= $q !== '' ? 'موردی پیدا نشد.' : 'هنوز دریافتی ثبت نشده.' ?></p>
+      <?= $q !== '' ? empty_state('magnifying-glass', 'موردی پیدا نشد.') : empty_state('arrow-circle-down', 'هنوز دریافتی ثبت نشده.') ?>
     <?php else: ?>
       <div class="tbl"><table class="list wide">
         <thead><tr><th>تاریخ</th><th>مشتری</th><th class="num">مبلغ (<?= e($unit) ?>)</th><th>روش</th><th>توضیح</th><th></th></tr></thead>

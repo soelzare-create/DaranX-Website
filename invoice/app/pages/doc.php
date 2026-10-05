@@ -244,26 +244,23 @@ function tel_href(string $phone): string
         <?= balance_html($customer['balance']) ?></div>
     <?php endif; ?>
     <?php if ($costs): ?>
-      <div class="banner">
-        بهای تمام‌شده:
-        خرید <b><?= money($costs['purchases']) ?></b><?= $costs['purchase_count'] ? ' (' . fa($costs['purchase_count']) . ' مورد)' : '' ?>
-        + هزینهٔ مستقیم <b><?= money($costs['other']) ?></b>
-        —
-        <?php if ($costs['profit'] >= 0): ?>
-          <span class="badge ok">سود ناخالص <?= money($costs['profit']) ?><?= $costs['margin'] !== null ? ' · ' . fa((string) round($costs['margin'])) . '٪' : '' ?></span>
-        <?php else: ?>
-          <span class="badge danger">زیان <?= money($costs['profit']) ?></span>
-        <?php endif; ?>
-        <small class="muted">(بدون مالیات)</small>
-        <?php if ($costs['purchases_left'] >= 0.5): ?>
-          · <span class="badge warn">بدهی به فروشنده <?= money($costs['purchases_left']) ?></span>
-        <?php endif; ?>
-        ·
-        <?php if ($costs['purchase_count']): ?>
-          <a href="<?= e(url('purchases', ['doc' => $id])) ?>" data-guard>خریدها</a> ·
-        <?php endif; ?>
-        <a href="<?= e(url('purchases', ['doc' => $id])) ?>" data-guard>+ ثبت خرید</a> ·
-        <a href="<?= e(url('expenses', ['kind' => 'direct', 'doc' => $id])) ?>" data-guard>+ ثبت هزینهٔ مستقیم</a>
+      <div class="banner costbar">
+        <dl class="stats">
+          <div><dt>خرید</dt><dd><?= money($costs['purchases']) ?></dd></div>
+          <div><dt>هزینهٔ مستقیم</dt><dd><?= money($costs['other']) ?></dd></div>
+          <div class="<?= $costs['profit'] >= 0 ? 'pos' : 'neg' ?>">
+            <dt><?= $costs['profit'] >= 0 ? 'سود ناخالص' : 'زیان' ?> <small>(بدون مالیات)</small></dt>
+            <dd><?= money($costs['profit']) ?><?php if ($costs['profit'] >= 0 && $costs['margin'] !== null): ?> <small><?= fa((string) round($costs['margin'])) ?>٪</small><?php endif; ?></dd>
+          </div>
+          <?php if ($costs['purchases_left'] >= 0.5): ?>
+            <div class="owe"><dt>بدهی به فروشنده</dt><dd><?= money($costs['purchases_left']) ?></dd></div>
+          <?php endif; ?>
+        </dl>
+        <div class="actions">
+          <a class="btn btn-ghost btn-sm" href="<?= e(url('purchases', ['doc' => $id])) ?>" data-guard>
+            <?= $costs['purchase_count'] ? 'خریدها (' . fa($costs['purchase_count']) . ')' : icon('plus') . ' ثبت خرید' ?></a>
+          <a class="btn btn-ghost btn-sm" href="<?= e(url('expenses', ['kind' => 'direct', 'doc' => $id])) ?>" data-guard><?= icon('plus') ?> هزینهٔ مستقیم</a>
+        </div>
       </div>
     <?php endif; ?>
   </div>

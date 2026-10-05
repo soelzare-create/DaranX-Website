@@ -189,7 +189,7 @@
   }
   function setTitle() {
     var c = custIn.value.trim();
-    document.title = TYPES[type].fa + ' ' + text($('#docNo')) + (c ? ' — ' + c : '') + ' — DaranX';
+    document.title = TYPES[type].fa + ' ' + text($('#docNo')) + (c ? '، ' + c : '') + ' | DaranX';
   }
   function setType(k, init) {
     var prev = type, t = TYPES[k];
