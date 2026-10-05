@@ -104,36 +104,24 @@ layout_start($c['name'], 'customers', ['error' => $error]);
       <?php endif; ?>
     </section>
 
-    <div class="grid2 no-print">
-      <section class="card">
-        <h2>پیش‌فاکتورها</h2>
-        <?php if (!$proformas): ?>
-          <p class="empty small">پیش‌فاکتوری ندارد.</p>
-        <?php else: ?>
-          <ul class="mini">
-            <?php foreach ($proformas as $d): ?>
-              <li>
-                <a class="mono" href="<?= e(url('doc', ['id' => $d['id']])) ?>"><?= e($d['number']) ?></a>
-                <span class="muted"><?= fa($d['date']) ?></span>
-                <span class="num"><?= money($d['total']) ?></span>
-                <?= $d['inv_id'] ? '<span class="badge ok">فاکتور شد</span>' : '<span class="badge info">باز</span>' ?>
-              </li>
-            <?php endforeach; ?>
-          </ul>
-        <?php endif; ?>
-        <?php if ($cancelled): ?>
-          <h2 class="mt">فاکتورهای باطل‌شده</h2>
-          <ul class="mini">
-            <?php foreach ($cancelled as $d): ?>
-              <li><a class="mono" href="<?= e(url('doc', ['id' => $d['id']])) ?>"><?= e($d['number']) ?></a>
-                <span class="muted"><?= fa($d['date']) ?></span><span class="num"><?= money($d['total']) ?></span></li>
-            <?php endforeach; ?>
-          </ul>
-        <?php endif; ?>
-      </section>
+    <section class="section no-print">
+      <div class="section-head"><h2>پیش‌فاکتورها</h2></div>
+      <?php if (!$proformas): ?>
+        <div class="card"><?= empty_state('file-text', 'پیش‌فاکتوری ندارد.') ?></div>
+      <?php else: ?>
+        <div class="cards tight"><?php foreach ($proformas as $d) { echo doc_card($d, [], true, false); } ?></div>
+      <?php endif; ?>
+    </section>
 
-      <details class="card collapse"<?= $form ? ' open' : '' ?>>
-        <summary><h2>ویرایش مشخصات</h2></summary>
+    <?php if ($cancelled): ?>
+      <section class="section no-print">
+        <div class="section-head"><h2>فاکتورهای باطل‌شده</h2></div>
+        <div class="cards tight"><?php foreach ($cancelled as $d) { echo doc_card($d, [], true, false); } ?></div>
+      </section>
+    <?php endif; ?>
+
+    <details class="card collapse no-print"<?= $form ? ' open' : '' ?>>
+      <summary><h2>ویرایش مشخصات</h2></summary>
         <form method="post" class="form mt">
           <?= csrf_field() ?>
           <input type="hidden" name="action" value="save">
@@ -146,8 +134,7 @@ layout_start($c['name'], 'customers', ['error' => $error]);
           <button class="btn btn-danger btn-sm">حذف مشتری</button>
           <small class="muted">فقط مشتری بدون سند و دریافتی حذف می‌شود.</small>
         </form>
-      </details>
-    </div>
+    </details>
   </div>
 </main>
 <?php

@@ -92,8 +92,8 @@ layout_start('پرداخت‌ها', 'expenses', ['error' => $error]);
     </form>
   </details>
 
-  <section class="card">
-    <div class="card-head">
+  <section>
+    <div class="list-tools">
       <form class="search" method="get">
         <input type="hidden" name="p" value="expenses">
         <?php if ($kind): ?><input type="hidden" name="kind" value="<?= e($kind) ?>"><?php endif; ?>
@@ -101,7 +101,7 @@ layout_start('پرداخت‌ها', 'expenses', ['error' => $error]);
         <input class="input" name="q" value="<?= e($q) ?>" placeholder="جستجو در بابت، گیرنده، فاکتور یا توضیح…" aria-label="جستجو">
         <button class="btn btn-ghost">جستجو</button>
       </form>
-      <span class="muted">
+      <span class="sum">
         <?php if ($kind !== 'overhead'): ?>مستقیم: <b class="ink"><?= money($sums['direct']) ?></b><?php endif; ?>
         <?php if ($kind === ''): ?> · <?php endif; ?>
         <?php if ($kind !== 'direct'): ?>سربار: <b class="ink"><?= money($sums['overhead']) ?></b><?php endif; ?>
@@ -109,34 +109,35 @@ layout_start('پرداخت‌ها', 'expenses', ['error' => $error]);
       </span>
     </div>
     <?php if (!$list): ?>
-      <?= $q !== '' ? empty_state('magnifying-glass', 'موردی پیدا نشد.') : empty_state('arrow-circle-up', 'هنوز پرداختی ثبت نشده.') ?>
+      <div class="card"><?= $q !== '' ? empty_state('magnifying-glass', 'موردی پیدا نشد.') : empty_state('arrow-circle-up', 'هنوز پرداختی ثبت نشده.') ?></div>
     <?php else: ?>
-      <div class="tbl"><table class="list wide">
-        <thead><tr><th>تاریخ</th><th>نوع</th><th>بابت</th><th>فاکتور / خرید</th><th>گیرنده</th><th>روش</th>
-          <th class="num">مبلغ (<?= e($unit) ?>)</th><th></th></tr></thead>
-        <tbody>
+      <div class="cards">
         <?php foreach ($list as $e): ?>
-          <tr>
-            <td class="nowrap"><?= fa($e['date']) ?></td>
-            <td class="nowrap"><span class="badge <?= $e['kind'] === 'direct' ? 'info' : 'muted' ?>"><?= e(EXPENSE_KIND_SHORT[$e['kind']]) ?></span></td>
-            <td><?= e($e['category']) ?><?php if ($e['note'] !== ''): ?><br><small class="muted"><?= e($e['note']) ?></small><?php endif; ?></td>
-            <td class="nowrap">
-              <?php if ($e['doc_id']): ?>
-                <a class="mono" href="<?= e(url('doc', ['id' => $e['doc_id']])) ?>"><?= e($e['doc_number']) ?></a>
-              <?php endif; ?>
-              <?php if ($e['purchase_id']): ?>
-                · <a class="mono" href="<?= e(url('purchase', ['id' => $e['purchase_id']])) ?>"><?= e($e['purchase_number']) ?></a>
-              <?php endif; ?>
-              <?php if (!$e['doc_id']): ?><span class="muted">-</span><?php endif; ?>
-            </td>
-            <td><?= e($e['payee']) ?></td>
-            <td class="nowrap"><?= e($e['method']) ?></td>
-            <td class="num"><?= money($e['amount']) ?></td>
-            <td class="row-actions"><a class="btn btn-ghost btn-sm" href="<?= e(url('expense', ['id' => $e['id']])) ?>">ویرایش</a></td>
-          </tr>
+          <article class="rcard">
+            <div class="rc-top">
+              <a class="rc-title stretch" href="<?= e(url('expense', ['id' => $e['id']])) ?>"><?= e($e['category']) ?></a>
+              <span class="badge <?= $e['kind'] === 'direct' ? 'info' : 'muted' ?>"><?= e(EXPENSE_KIND_SHORT[$e['kind']]) ?></span>
+            </div>
+            <div class="rc-meta">
+              <?php if ($e['payee'] !== ''): ?><span><?= icon('user') ?><?= e($e['payee']) ?></span><?php endif; ?>
+              <span><?= icon('calendar-blank') ?><?= fa($e['date']) ?></span>
+              <span><?= icon('credit-card') ?><?= e($e['method']) ?></span>
+            </div>
+            <?php if ($e['doc_id']): ?>
+              <div class="rc-meta">
+                <a href="<?= e(url('doc', ['id' => $e['doc_id']])) ?>"><?= icon('receipt') ?><span class="mono"><?= e($e['doc_number']) ?></span></a>
+                <?php if ($e['purchase_id']): ?>
+                  <a href="<?= e(url('purchase', ['id' => $e['purchase_id']])) ?>"><?= icon('shopping-cart') ?><span class="mono"><?= e($e['purchase_number']) ?></span></a>
+                <?php endif; ?>
+              </div>
+            <?php endif; ?>
+            <?php if ($e['note'] !== ''): ?><p class="rc-note"><?= e($e['note']) ?></p><?php endif; ?>
+            <div class="rc-foot">
+              <?= amount_html($e['amount']) ?>
+            </div>
+          </article>
         <?php endforeach; ?>
-        </tbody>
-      </table></div>
+      </div>
     <?php endif; ?>
   </section>
 </main>

@@ -129,7 +129,7 @@ function import_read_csv(string $path): array
         if ($bom !== "\xEF\xBB\xBF") {
             rewind($h);
         }
-        while (($row = fgetcsv($h)) !== false) {
+        while (($row = fgetcsv($h, 0, ",", "\"", "\\")) !== false) {
             $grid[] = array_map(function ($v) {
                 return (string) $v;
             }, $row);

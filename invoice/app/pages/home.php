@@ -49,66 +49,41 @@ foreach ($tiles as [$cls, $ic, $href, $label, $value, $withUnit, $sub]): ?>
 <?php endforeach; ?>
   </div>
 
-  <div class="grid2">
-    <section class="card">
+  <section class="section">
+    <div class="section-head">
       <h2>بدهکاران</h2>
-      <?php if (!$debtors): ?>
-        <?= empty_state('check-circle', 'هیچ مشتری بدهکاری ندارید.') ?>
-      <?php else: ?>
-        <div class="tbl"><table class="list">
-          <thead><tr><th>مشتری</th><th class="num">بدهی</th></tr></thead>
-          <tbody>
-          <?php foreach ($debtors as $c): ?>
-            <tr>
-              <td><a class="strong" href="<?= e(url('customer', ['id' => $c['id']])) ?>"><?= e($c['name']) ?></a></td>
-              <td class="num"><?= money($c['balance']) ?></td>
-            </tr>
-          <?php endforeach; ?>
-          </tbody>
-        </table></div>
-      <?php endif; ?>
-    </section>
+      <?php if ($debtors): ?><a class="btn btn-ghost btn-sm" href="<?= e(url('customers', ['debtors' => 1])) ?>">همه</a><?php endif; ?>
+    </div>
+    <?php if (!$debtors): ?>
+      <div class="card"><?= empty_state('check-circle', 'هیچ مشتری بدهکاری ندارید.') ?></div>
+    <?php else: ?>
+      <div class="cards tight"><?php foreach ($debtors as $c) { echo customer_card($c, true); } ?></div>
+    <?php endif; ?>
+  </section>
 
-    <section class="card">
+  <section class="section">
+    <div class="section-head">
       <h2>آخرین فاکتورها</h2>
-      <?php if (!$recentInv): ?>
-        <?= empty_state('receipt', 'هنوز فاکتوری صادر نشده.') ?>
-      <?php else: ?>
-        <div class="tbl"><table class="list">
-          <thead><tr><th>شماره</th><th>مشتری</th><th class="num">مبلغ</th><th>وضعیت</th></tr></thead>
-          <tbody>
-          <?php foreach ($recentInv as $d): ?>
-            <tr>
-              <td><a class="mono" href="<?= e(url('doc', ['id' => $d['id']])) ?>"><?= e($d['number']) ?></a></td>
-              <td><?= e($d['cust_name']) ?></td>
-              <td class="num"><?= money($d['total']) ?></td>
-              <td><?= invoice_badge($d, $remaining) ?></td>
-            </tr>
-          <?php endforeach; ?>
-          </tbody>
-        </table></div>
-      <?php endif; ?>
+      <?php if ($recentInv): ?><a class="btn btn-ghost btn-sm" href="<?= e(url('docs', ['type' => 'inv'])) ?>">همه</a><?php endif; ?>
+    </div>
+    <?php if (!$recentInv): ?>
+      <div class="card"><?= empty_state('receipt', 'هنوز فاکتوری صادر نشده.') ?></div>
+    <?php else: ?>
+      <div class="cards tight"><?php foreach ($recentInv as $d) { echo doc_card($d, $remaining, true); } ?></div>
+    <?php endif; ?>
+  </section>
 
-      <h2 class="mt">آخرین پیش‌فاکتورها</h2>
-      <?php if (!$recentQot): ?>
-        <?= empty_state('file-text', 'هنوز پیش‌فاکتوری ثبت نشده.') ?>
-      <?php else: ?>
-        <div class="tbl"><table class="list">
-          <thead><tr><th>شماره</th><th>مشتری</th><th class="num">مبلغ</th><th>وضعیت</th></tr></thead>
-          <tbody>
-          <?php foreach ($recentQot as $d): ?>
-            <tr>
-              <td><a class="mono" href="<?= e(url('doc', ['id' => $d['id']])) ?>"><?= e($d['number']) ?></a></td>
-              <td><?= e($d['cust_name']) ?></td>
-              <td class="num"><?= money($d['total']) ?></td>
-              <td><?= $d['inv_id'] ? '<span class="badge ok">فاکتور شد</span>' : '<span class="badge info">باز</span>' ?></td>
-            </tr>
-          <?php endforeach; ?>
-          </tbody>
-        </table></div>
-      <?php endif; ?>
-    </section>
-  </div>
+  <section class="section">
+    <div class="section-head">
+      <h2>آخرین پیش‌فاکتورها</h2>
+      <?php if ($recentQot): ?><a class="btn btn-ghost btn-sm" href="<?= e(url('docs', ['type' => 'qot'])) ?>">همه</a><?php endif; ?>
+    </div>
+    <?php if (!$recentQot): ?>
+      <div class="card"><?= empty_state('file-text', 'هنوز پیش‌فاکتوری ثبت نشده.') ?></div>
+    <?php else: ?>
+      <div class="cards tight"><?php foreach ($recentQot as $d) { echo doc_card($d, [], true); } ?></div>
+    <?php endif; ?>
+  </section>
 </main>
 <?php
 layout_end();

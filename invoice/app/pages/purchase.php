@@ -36,7 +36,6 @@ if (is_post()) {
 }
 
 $payments = expenses_of_purchase($id);
-$unit = setting('unit');
 
 layout_start('خرید ' . $pur['number'], 'purchases', ['error' => $error]);
 ?>
@@ -66,26 +65,26 @@ layout_start('خرید ' . $pur['number'], 'purchases', ['error' => $error]);
       <?php endif; ?>
     </div>
     <?php if (!$payments): ?>
-      <p class="empty">هنوز پرداختی بابت این خرید ثبت نشده.</p>
+      <?= empty_state('arrow-circle-up', 'هنوز پرداختی بابت این خرید ثبت نشده.') ?>
     <?php else: ?>
-      <div class="tbl"><table class="list">
-        <thead><tr><th>تاریخ</th><th>گیرنده</th><th>روش</th><th class="num">مبلغ (<?= e($unit) ?>)</th><th></th></tr></thead>
-        <tbody>
+      <div class="cards tight">
         <?php foreach ($payments as $e): ?>
-          <tr>
-            <td class="nowrap"><?= fa($e['date']) ?></td>
-            <td><?= e($e['payee']) ?></td>
-            <td class="nowrap"><?= e($e['method']) ?></td>
-            <td class="num"><?= money($e['amount']) ?></td>
-            <td class="row-actions"><a class="btn btn-ghost btn-sm" href="<?= e(url('expense', ['id' => $e['id']])) ?>">ویرایش</a></td>
-          </tr>
+          <article class="rcard compact">
+            <div class="rc-top">
+              <a class="rc-title stretch" href="<?= e(url('expense', ['id' => $e['id']])) ?>"><?= e($e['payee'] !== '' ? $e['payee'] : $e['category']) ?></a>
+            </div>
+            <div class="rc-meta">
+              <span><?= icon('calendar-blank') ?><?= fa($e['date']) ?></span>
+              <span><?= icon('credit-card') ?><?= e($e['method']) ?></span>
+            </div>
+            <div class="rc-foot"><?= amount_html($e['amount']) ?></div>
+          </article>
         <?php endforeach; ?>
-        </tbody>
-      </table></div>
+      </div>
     <?php endif; ?>
   </section>
 
-  <form method="post" data-confirm="خرید <?= e($pur['number']) ?> حذف شود؟">
+  <form method="post" class="mt" data-confirm="خرید <?= e($pur['number']) ?> حذف شود؟">
     <?= csrf_field() ?>
     <input type="hidden" name="action" value="delete">
     <button class="btn btn-danger btn-sm">حذف خرید</button>

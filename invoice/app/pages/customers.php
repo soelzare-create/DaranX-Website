@@ -42,33 +42,24 @@ layout_start('مشتریان', 'customers', ['error' => $error]);
     </form>
   </details>
 
-  <section class="card">
-    <form class="search" method="get">
-      <input type="hidden" name="p" value="customers">
-      <input class="input" name="q" value="<?= e($q) ?>" placeholder="جستجو در نام یا شماره تماس…" aria-label="جستجو">
-      <label class="chk"><input type="checkbox" name="debtors" value="1"<?= $debtorsOnly ? ' checked' : '' ?> data-autosubmit> فقط بدهکاران</label>
-      <button class="btn btn-ghost">جستجو</button>
-    </form>
+  <section>
+    <div class="list-tools">
+      <form class="search" method="get">
+        <input type="hidden" name="p" value="customers">
+        <input class="input" name="q" value="<?= e($q) ?>" placeholder="جستجو در نام یا شماره تماس…" aria-label="جستجو">
+        <label class="chk"><input type="checkbox" name="debtors" value="1"<?= $debtorsOnly ? ' checked' : '' ?> data-autosubmit> فقط بدهکاران</label>
+        <button class="btn btn-ghost">جستجو</button>
+      </form>
+      <?php if ($list): ?><span class="sum"><?= fa(count($list)) ?> مشتری</span><?php endif; ?>
+    </div>
 
     <?php if (!$list): ?>
-      <?= ($q !== '' || $debtorsOnly) ? empty_state('magnifying-glass', 'موردی پیدا نشد.')
-        : empty_state('users', 'هنوز مشتری‌ای ثبت نشده. با اولین پیش‌فاکتور یا فاکتور، مشتری خودکار ساخته می‌شود.') ?>
+      <div class="card"><?= ($q !== '' || $debtorsOnly) ? empty_state('magnifying-glass', 'موردی پیدا نشد.')
+        : empty_state('users', 'هنوز مشتری‌ای ثبت نشده. با اولین پیش‌فاکتور یا فاکتور، مشتری خودکار ساخته می‌شود.') ?></div>
     <?php else: ?>
-      <div class="tbl"><table class="list wide">
-        <thead><tr><th>مشتری</th><th>شماره تماس</th><th>مانده حساب</th><th></th></tr></thead>
-        <tbody>
-        <?php foreach ($list as $c): ?>
-          <tr>
-            <td><a class="strong" href="<?= e(url('customer', ['id' => $c['id']])) ?>"><?= e($c['name']) ?></a></td>
-            <td><?= e($c['phone']) ?></td>
-            <td><?= balance_html($c['balance']) ?></td>
-            <td class="row-actions">
-              <a class="btn btn-ghost btn-sm" href="<?= e(url('payments', ['customer' => $c['id']])) ?>">ثبت دریافت</a>
-            </td>
-          </tr>
-        <?php endforeach; ?>
-        </tbody>
-      </table></div>
+      <div class="cards">
+        <?php foreach ($list as $c): ?><?= customer_card($c) ?><?php endforeach; ?>
+      </div>
     <?php endif; ?>
   </section>
 </main>

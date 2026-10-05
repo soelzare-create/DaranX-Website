@@ -18,42 +18,26 @@ layout_start($title, $type);
     </div>
   </div>
 
-  <section class="card">
-    <form class="search" method="get">
-      <input type="hidden" name="p" value="docs">
-      <input type="hidden" name="type" value="<?= e($type) ?>">
-      <input class="input" name="q" value="<?= e($q) ?>" placeholder="جستجو در شماره یا نام مشتری…" aria-label="جستجو">
-      <button class="btn btn-ghost">جستجو</button>
-      <?php if ($q !== ''): ?><a class="btn btn-link" href="<?= e(url('docs', ['type' => $type])) ?>">نمایش همه</a><?php endif; ?>
-    </form>
+  <section>
+    <div class="list-tools">
+      <form class="search" method="get">
+        <input type="hidden" name="p" value="docs">
+        <input type="hidden" name="type" value="<?= e($type) ?>">
+        <input class="input" name="q" value="<?= e($q) ?>" placeholder="جستجو در شماره یا نام مشتری…" aria-label="جستجو">
+        <button class="btn btn-ghost">جستجو</button>
+        <?php if ($q !== ''): ?><a class="btn btn-link" href="<?= e(url('docs', ['type' => $type])) ?>">نمایش همه</a><?php endif; ?>
+      </form>
+      <?php if ($docs): ?><span class="sum"><?= fa(count($docs)) ?> <?= e(DOC_NAMES[$type]) ?></span><?php endif; ?>
+    </div>
 
     <?php if (!$docs): ?>
-      <?= $q !== '' ? empty_state('magnifying-glass', 'موردی پیدا نشد.')
+      <div class="card"><?= $q !== '' ? empty_state('magnifying-glass', 'موردی پیدا نشد.')
         : empty_state($type === 'inv' ? 'receipt' : 'file-text', 'هنوز ' . DOC_NAMES[$type] . 'ی ثبت نشده است.',
-            '<a class="btn btn-primary btn-sm" href="' . e(url('doc', ['new' => $type])) . '">' . icon('plus') . ' ' . e(DOC_NAMES[$type]) . ' جدید</a>') ?>
+            '<a class="btn btn-primary btn-sm" href="' . e(url('doc', ['new' => $type])) . '">' . icon('plus') . ' ' . e(DOC_NAMES[$type]) . ' جدید</a>') ?></div>
     <?php else: ?>
-      <div class="tbl"><table class="list wide">
-        <thead><tr><th>شماره</th><th>تاریخ</th><th>مشتری</th><th class="num">مبلغ (<?= e(setting('unit')) ?>)</th><th>وضعیت</th></tr></thead>
-        <tbody>
-        <?php foreach ($docs as $d): ?>
-          <tr class="<?= $d['status'] === 'cancelled' ? 'is-void' : '' ?>">
-            <td><a class="mono" href="<?= e(url('doc', ['id' => $d['id']])) ?>"><?= e($d['number']) ?></a></td>
-            <td><?= fa($d['date']) ?></td>
-            <td><a href="<?= e(url('customer', ['id' => $d['customer_id']])) ?>"><?= e($d['cust_name']) ?></a></td>
-            <td class="num"><?= money($d['total']) ?></td>
-            <td>
-              <?php if ($type === 'inv'): ?>
-                <?= invoice_badge($d, $remaining) ?>
-              <?php elseif ($d['inv_id']): ?>
-                <a class="badge ok" href="<?= e(url('doc', ['id' => $d['inv_id']])) ?>">فاکتور شد: <span dir="ltr"><?= e($d['inv_number']) ?></span></a>
-              <?php else: ?>
-                <span class="badge info">باز</span>
-              <?php endif; ?>
-            </td>
-          </tr>
-        <?php endforeach; ?>
-        </tbody>
-      </table></div>
+      <div class="cards">
+        <?php foreach ($docs as $d): ?><?= doc_card($d, $remaining) ?><?php endforeach; ?>
+      </div>
     <?php endif; ?>
   </section>
 </main>

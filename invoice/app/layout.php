@@ -304,3 +304,52 @@ function expense_fields(array $f, array $invoices, array $purchases, array $paye
     <input name="note" value="<?= e($f['note'] ?? '') ?>" maxlength="300"></label>
 <?php
 }
+
+// --- Record cards (shared by the list pages and the dashboard) -------------
+
+/** «۱۲۰٬۰۰۰ ریال» with the unit set smaller, for card footers. */
+function amount_html($n, string $class = 'rc-amt'): string
+{
+    return '<span class="' . e($class) . '">' . money($n) . '<small>' . e(setting('unit')) . '</small></span>';
+}
+
+/** Status badge of a proforma: converted (links to its invoice) or still open. */
+function qot_badge(array $d): string
+{
+    if (!empty($d['inv_id'])) {
+        return '<a class="badge ok" href="' . e(url('doc', ['id' => $d['inv_id']])) . '">فاکتور شد: <span dir="ltr">'
+            . e($d['inv_number']) . '</span></a>';
+    }
+    return '<span class="badge info">باز</span>';
+}
+
+/** One proforma/invoice as a card; the whole card opens the document. */
+function doc_card(array $d, array $remaining = [], bool $compact = false, bool $withCustomer = true): string
+{
+    $isInv = $d['type'] === 'inv';
+    $void = $d['status'] === 'cancelled';
+    $badge = $isInv ? invoice_badge($d, $remaining) : qot_badge($d);
+    return '<article class="rcard' . ($compact ? ' compact' : '') . ($void ? ' is-void' : '') . '">'
+        . '<div class="rc-top"><a class="rc-num mono stretch" href="' . e(url('doc', ['id' => $d['id']])) . '">'
+        . e($d['number']) . '</a>' . $badge . '</div>'
+        . ($withCustomer ? '<a class="rc-title" href="' . e(url('customer', ['id' => $d['customer_id']])) . '">'
+            . e($d['cust_name']) . '</a>' : '')
+        . '<div class="rc-meta"><span>' . icon('calendar-blank') . fa($d['date']) . '</span></div>'
+        . '<div class="rc-foot">' . amount_html($d['total']) . '</div>'
+        . '</article>';
+}
+
+/** One customer as a card: monogram, name, phone, balance and the receipt shortcut. */
+function customer_card(array $c, bool $compact = false): string
+{
+    $initial = str_cut(trim((string) $c['name']), 1) ?: '؟';
+    return '<article class="rcard' . ($compact ? ' compact' : '') . '">'
+        . '<div class="rc-head"><span class="rc-mono" aria-hidden="true">' . e($initial) . '</span>'
+        . '<div><a class="rc-title stretch" href="' . e(url('customer', ['id' => $c['id']])) . '">'
+        . e($c['name']) . '</a>'
+        . ($c['phone'] !== '' ? '<div class="rc-sub tel">' . e($c['phone']) . '</div>' : '')
+        . '</div></div>'
+        . '<div class="rc-foot">' . balance_html($c['balance'])
+        . ($compact ? '' : '<a class="btn btn-ghost btn-sm" href="' . e(url('payments', ['customer' => $c['id']])) . '">ثبت دریافت</a>')
+        . '</div></article>';
+}

@@ -127,79 +127,73 @@ layout_start('ورود از اکسل', 'import', ['error' => $error]);
   </section>
 
   <?php if ($results !== null): ?>
-    <section class="card">
-      <h2>نتیجهٔ ورود</h2>
-      <div class="tbl"><table class="list wide">
-        <thead><tr><th>فایل</th><th>وضعیت</th></tr></thead>
-        <tbody>
-          <?php foreach ($results as $r): ?>
-            <tr>
-              <td dir="ltr" style="text-align:right"><?= e($r['name']) ?></td>
-              <td>
-                <?php if ($r['ok']): ?>
-                  <span class="badge ok">✓ پیش‌فاکتور
-                    <a href="<?= e(url('doc', ['id' => $r['id']])) ?>" dir="ltr"><?= e($r['number']) ?></a>
-                    ثبت شد</span>
-                  <?php if (!empty($r['warn'])): ?><br><small class="muted"><?= e($r['warn']) ?></small><?php endif; ?>
-                <?php else: ?>
-                  <span class="badge danger">✗ <?= e($r['msg']) ?></span>
-                <?php endif; ?>
-              </td>
-            </tr>
-          <?php endforeach; ?>
-        </tbody>
-      </table></div>
-      <p class="muted">فایل‌های ثبت‌شده به پوشهٔ <code dir="ltr"><?= e($importsPath) ?>done/</code> منتقل شدند تا دوباره وارد نشوند.</p>
+    <section class="section">
+      <div class="section-head"><h2>نتیجهٔ ورود</h2></div>
+      <div class="cards">
+        <?php foreach ($results as $r): ?>
+          <article class="rcard static<?= $r['ok'] ? '' : ' err' ?>">
+            <div class="rc-top">
+              <span class="rc-file"><?= icon('file-xls') ?><span dir="ltr"><?= e($r['name']) ?></span></span>
+              <?php if ($r['ok']): ?><span class="badge ok">ثبت شد</span><?php else: ?><span class="badge danger">خطا</span><?php endif; ?>
+            </div>
+            <?php if ($r['ok']): ?>
+              <div class="rc-meta"><a href="<?= e(url('doc', ['id' => $r['id']])) ?>"><?= icon('file-text') ?>پیش‌فاکتور <span class="mono"><?= e($r['number']) ?></span></a></div>
+              <?php if (!empty($r['warn'])): ?><p class="rc-note wrap"><?= icon('warning-circle') ?><?= e($r['warn']) ?></p><?php endif; ?>
+            <?php else: ?>
+              <p class="rc-note wrap danger"><?= icon('warning-circle') ?><?= e($r['msg']) ?></p>
+            <?php endif; ?>
+          </article>
+        <?php endforeach; ?>
+      </div>
+      <p class="muted mt">فایل‌های ثبت‌شده به پوشهٔ <code dir="ltr"><?= e($importsPath) ?>done/</code> منتقل شدند تا دوباره وارد نشوند.</p>
     </section>
   <?php endif; ?>
 
-  <section class="card">
-    <h2>فایل‌های آمادهٔ ورود</h2>
+  <section class="section">
+    <div class="section-head">
+      <h2>فایل‌های آمادهٔ ورود</h2>
+      <?php if ($okCount > 0): ?>
+        <form method="post"
+              data-confirm="<?= e(fa((string) $okCount)) ?> فایل سالم به‌عنوان پیش‌فاکتور جدید ثبت شوند؟ هر کدام شمارهٔ تازه می‌گیرند.">
+          <?= csrf_field() ?>
+          <input type="hidden" name="action" value="import_all">
+          <button class="btn btn-accent btn-sm">ثبت همهٔ فایل‌های سالم (<?= e(fa((string) $okCount)) ?>)</button>
+        </form>
+      <?php endif; ?>
+    </div>
     <?php if (!$pending): ?>
+      <div class="card">
       <p>هنوز فایلی آپلود نشده است.</p>
       <p class="muted">از کادر «آپلود فایل از کامپیوتر» در بالا، فایل اکسل را انتخاب و آپلود کنید.
         (به‌جای آپلود، می‌توانید فایل‌ها را از طریق File Manager هاست در پوشهٔ
         <code dir="ltr"><?= e($importsPath) ?></code> ، کنار <code dir="ltr">index.php</code> ← پوشهٔ data، هم بگذارید.)</p>
+      </div>
     <?php else: ?>
-      <div class="tbl"><table class="list wide">
-        <thead>
-          <tr><th>فایل</th><th>مشتری</th><th>تاریخ</th><th>اقلام</th><th>جمع کل (<?= e($unit) ?>)</th><th></th></tr>
-        </thead>
-        <tbody>
-          <?php foreach ($pending as $p): ?>
-            <tr>
-              <td dir="ltr" style="text-align:right"><?= e($p['name']) ?></td>
-              <?php if ($p['ok']): ?>
-                <td><?= e($p['cust']) ?></td>
-                <td dir="ltr"><?= e(fa($p['date'])) ?><?php if (!$p['date_ok']): ?>
-                  <small class="muted" title="تاریخ فایل خوانده نشد؛ تاریخ امروز پیشنهاد شد">⚠</small><?php endif; ?></td>
-                <td><?= e(fa((string) $p['items'])) ?></td>
-                <td><?= e(money($p['total'])) ?></td>
-                <td>
-                  <form method="post" style="margin:0">
-                    <?= csrf_field() ?>
-                    <input type="hidden" name="action" value="import">
-                    <input type="hidden" name="name" value="<?= e($p['name']) ?>">
-                    <button class="btn btn-primary btn-sm">ثبت این فایل</button>
-                  </form>
-                </td>
-              <?php else: ?>
-                <td colspan="4"><span class="badge danger"><?= e($p['error']) ?></span></td>
-                <td></td>
-              <?php endif; ?>
-            </tr>
-          <?php endforeach; ?>
-        </tbody>
-      </table></div>
-
-      <?php if ($okCount > 0): ?>
-        <form method="post" class="actions" style="margin-top:1rem"
-              data-confirm="<?= e(fa((string) $okCount)) ?> فایل سالم به‌عنوان پیش‌فاکتور جدید ثبت شوند؟ هر کدام شمارهٔ تازه می‌گیرند.">
-          <?= csrf_field() ?>
-          <input type="hidden" name="action" value="import_all">
-          <button class="btn btn-accent">ثبت همهٔ فایل‌های سالم (<?= e(fa((string) $okCount)) ?>)</button>
-        </form>
-      <?php endif; ?>
+      <div class="cards">
+        <?php foreach ($pending as $p): ?>
+          <article class="rcard static<?= $p['ok'] ? '' : ' err' ?>">
+            <span class="rc-file"><?= icon('file-xls') ?><span dir="ltr"><?= e($p['name']) ?></span></span>
+            <?php if ($p['ok']): ?>
+              <div class="rc-title"><?= e($p['cust']) ?></div>
+              <div class="rc-meta">
+                <span<?= $p['date_ok'] ? '' : ' title="تاریخ فایل خوانده نشد؛ تاریخ امروز پیشنهاد شد"' ?>><?= icon($p['date_ok'] ? 'calendar-blank' : 'warning-circle') ?><?= e(fa($p['date'])) ?></span>
+                <span><?= icon('tag') ?><?= e(fa((string) $p['items'])) ?> قلم</span>
+              </div>
+              <div class="rc-foot">
+                <?= amount_html($p['total']) ?>
+                <form method="post">
+                  <?= csrf_field() ?>
+                  <input type="hidden" name="action" value="import">
+                  <input type="hidden" name="name" value="<?= e($p['name']) ?>">
+                  <button class="btn btn-primary btn-sm">ثبت این فایل</button>
+                </form>
+              </div>
+            <?php else: ?>
+              <p class="rc-note wrap danger"><?= icon('warning-circle') ?><?= e($p['error']) ?></p>
+            <?php endif; ?>
+          </article>
+        <?php endforeach; ?>
+      </div>
     <?php endif; ?>
   </section>
 

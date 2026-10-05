@@ -74,41 +74,44 @@ layout_start('خریدها', 'purchases', ['error' => $error]);
     <?php endif; ?>
   </details>
 
-  <section class="card">
-    <form class="search" method="get">
-      <input type="hidden" name="p" value="purchases">
-      <?php if ($docId): ?><input type="hidden" name="doc" value="<?= (int) $docId ?>"><?php endif; ?>
-      <input class="input" name="q" value="<?= e($q) ?>" placeholder="جستجو در شماره، فاکتور، فروشنده یا شرح…" aria-label="جستجو">
-      <button class="btn btn-ghost">جستجو</button>
-    </form>
+  <section>
+    <div class="list-tools">
+      <form class="search" method="get">
+        <input type="hidden" name="p" value="purchases">
+        <?php if ($docId): ?><input type="hidden" name="doc" value="<?= (int) $docId ?>"><?php endif; ?>
+        <input class="input" name="q" value="<?= e($q) ?>" placeholder="جستجو در شماره، فاکتور، فروشنده یا شرح…" aria-label="جستجو">
+        <button class="btn btn-ghost">جستجو</button>
+      </form>
+    </div>
     <?php if (!$list): ?>
-      <?= $q !== '' ? empty_state('magnifying-glass', 'موردی پیدا نشد.') : empty_state('shopping-cart', 'هنوز خریدی ثبت نشده. هر خرید به یک فاکتور وصل می‌شود.') ?>
+      <div class="card"><?= $q !== '' ? empty_state('magnifying-glass', 'موردی پیدا نشد.') : empty_state('shopping-cart', 'هنوز خریدی ثبت نشده. هر خرید به یک فاکتور وصل می‌شود.') ?></div>
     <?php else: ?>
-      <div class="tbl"><table class="list wide">
-        <thead><tr><th>شماره</th><th>تاریخ</th><th>فاکتور</th><th>فروشنده</th><th>شرح</th>
-          <th class="num">مبلغ (<?= e($unit) ?>)</th><th>پرداخت</th><th></th></tr></thead>
-        <tbody>
+      <div class="cards">
         <?php foreach ($list as $p): ?>
-          <tr>
-            <td class="mono nowrap"><?= e($p['number']) ?></td>
-            <td class="nowrap"><?= fa($p['date']) ?></td>
-            <td class="nowrap"><a class="mono" href="<?= e(url('doc', ['id' => $p['doc_id']])) ?>"><?= e($p['doc_number']) ?></a>
-              <small class="muted"><?= e($p['cust_name']) ?></small></td>
-            <td><?= e($p['supplier']) ?></td>
-            <td class="small"><?= e($p['title']) ?></td>
-            <td class="num"><?= money($p['amount']) ?></td>
-            <td class="nowrap"><?= purchase_badge($p) ?></td>
-            <td class="row-actions nowrap">
+          <article class="rcard">
+            <div class="rc-top">
+              <a class="rc-num mono stretch" href="<?= e(url('purchase', ['id' => $p['id']])) ?>"><?= e($p['number']) ?></a>
+              <?= purchase_badge($p) ?>
+            </div>
+            <div class="rc-title"><?= e($p['title']) ?></div>
+            <div class="rc-meta">
+              <?php if ($p['supplier'] !== ''): ?><span><?= icon('storefront') ?><?= e($p['supplier']) ?></span><?php endif; ?>
+              <span><?= icon('calendar-blank') ?><?= fa($p['date']) ?></span>
+            </div>
+            <div class="rc-meta">
+              <a href="<?= e(url('doc', ['id' => $p['doc_id']])) ?>"><?= icon('receipt') ?><span class="mono"><?= e($p['doc_number']) ?></span></a>
+              <span><?= e($p['cust_name']) ?></span>
+            </div>
+            <div class="rc-foot">
+              <?= amount_html($p['amount']) ?>
               <?php if (purchase_left($p) >= 0.5): ?>
                 <a class="btn btn-accent btn-sm" href="<?= e(url('expenses', ['kind' => 'direct', 'purchase' => $p['id'],
                     'amount' => (int) purchase_left($p)])) ?>">ثبت پرداخت</a>
               <?php endif; ?>
-              <a class="btn btn-ghost btn-sm" href="<?= e(url('purchase', ['id' => $p['id']])) ?>">ویرایش</a>
-            </td>
-          </tr>
+            </div>
+          </article>
         <?php endforeach; ?>
-        </tbody>
-      </table></div>
+      </div>
     <?php endif; ?>
   </section>
 </main>

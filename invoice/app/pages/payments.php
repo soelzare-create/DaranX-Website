@@ -73,31 +73,34 @@ layout_start('دریافت‌ها', 'payments', ['error' => $error]);
     <?php endif; ?>
   </section>
 
-  <section class="card">
-    <h2>دریافت‌های ثبت‌شده</h2>
-    <form class="search" method="get">
-      <input type="hidden" name="p" value="payments">
-      <input class="input" name="q" value="<?= e($q) ?>" placeholder="جستجو در نام مشتری یا توضیح…" aria-label="جستجو">
-      <button class="btn btn-ghost">جستجو</button>
-    </form>
+  <section class="section">
+    <div class="section-head"><h2>دریافت‌های ثبت‌شده</h2></div>
+    <div class="list-tools">
+      <form class="search" method="get">
+        <input type="hidden" name="p" value="payments">
+        <input class="input" name="q" value="<?= e($q) ?>" placeholder="جستجو در نام مشتری یا توضیح…" aria-label="جستجو">
+        <button class="btn btn-ghost">جستجو</button>
+      </form>
+    </div>
     <?php if (!$list): ?>
-      <?= $q !== '' ? empty_state('magnifying-glass', 'موردی پیدا نشد.') : empty_state('arrow-circle-down', 'هنوز دریافتی ثبت نشده.') ?>
+      <div class="card"><?= $q !== '' ? empty_state('magnifying-glass', 'موردی پیدا نشد.') : empty_state('arrow-circle-down', 'هنوز دریافتی ثبت نشده.') ?></div>
     <?php else: ?>
-      <div class="tbl"><table class="list wide">
-        <thead><tr><th>تاریخ</th><th>مشتری</th><th class="num">مبلغ (<?= e($unit) ?>)</th><th>روش</th><th>توضیح</th><th></th></tr></thead>
-        <tbody>
+      <div class="cards">
         <?php foreach ($list as $p): ?>
-          <tr>
-            <td class="nowrap"><?= fa($p['date']) ?></td>
-            <td><a href="<?= e(url('customer', ['id' => $p['customer_id']])) ?>"><?= e($p['customer_name']) ?></a></td>
-            <td class="num"><?= money($p['amount']) ?></td>
-            <td class="nowrap"><?= e($p['method']) ?></td>
-            <td class="small"><?= e($p['note']) ?></td>
-            <td class="row-actions"><a class="btn btn-ghost btn-sm" href="<?= e(url('payment', ['id' => $p['id']])) ?>">ویرایش</a></td>
-          </tr>
+          <article class="rcard">
+            <div class="rc-top">
+              <a class="rc-title" href="<?= e(url('customer', ['id' => $p['customer_id']])) ?>"><?= e($p['customer_name']) ?></a>
+              <span class="badge muted"><?= e($p['method']) ?></span>
+            </div>
+            <div class="rc-meta"><span><?= icon('calendar-blank') ?><?= fa($p['date']) ?></span></div>
+            <?php if ($p['note'] !== ''): ?><p class="rc-note" title="<?= e($p['note']) ?>"><?= e($p['note']) ?></p><?php endif; ?>
+            <div class="rc-foot">
+              <?= amount_html($p['amount'], 'rc-amt in') ?>
+              <a class="btn btn-ghost btn-sm stretch" href="<?= e(url('payment', ['id' => $p['id']])) ?>">ویرایش</a>
+            </div>
+          </article>
         <?php endforeach; ?>
-        </tbody>
-      </table></div>
+      </div>
     <?php endif; ?>
   </section>
 </main>
