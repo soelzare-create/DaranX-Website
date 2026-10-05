@@ -19,6 +19,22 @@ import_dir(); // make sure data/imports (+ done) exist
 if (is_post()) {
     try {
         $action = post('action');
+        if ($action === 'upload') {
+            [$saved, $errs] = import_save_uploads($_FILES['files'] ?? []);
+            if (!$saved && !$errs) {
+                throw new UserError('فایلی برای آپلود انتخاب نشده بود.');
+            }
+            if ($saved) {
+                flash('ok', count($saved) === 1
+                    ? 'فایل «' . $saved[0] . '» آپلود شد. حالا پیش‌نمایش آن را ببینید و ثبت کنید.'
+                    : fa((string) count($saved)) . ' فایل آپلود شد. حالا آن‌ها را ثبت کنید.');
+            }
+            foreach ($errs as $m) {
+                flash('err', $m);
+            }
+            redirect('import');
+        }
+
         $names = [];
         if ($action === 'import_all') {
             $names = import_files();
@@ -95,6 +111,21 @@ layout_start('ورود از اکسل', 'import', ['error' => $error]);
 <main class="page">
   <div class="head"><h1>ورود پیش‌فاکتور از اکسل</h1></div>
 
+  <section class="card">
+    <h2>آپلود فایل از کامپیوتر</h2>
+    <p class="muted">فایل اکسل پیش‌فاکتور خود را (<code dir="ltr">.xlsx</code> یا <code dir="ltr">.csv</code>) انتخاب و آپلود کنید.
+      می‌توانید چند فایل را با هم انتخاب کنید؛ هر فایل یک پیش‌فاکتور است.</p>
+    <form method="post" enctype="multipart/form-data" class="form">
+      <?= csrf_field() ?>
+      <input type="hidden" name="action" value="upload">
+      <div class="actions" style="gap:.6rem;flex-wrap:wrap">
+        <input type="file" name="files[]" accept=".xlsx,.csv" multiple required
+               aria-label="انتخاب فایل اکسل">
+        <button class="btn btn-primary">آپلود</button>
+      </div>
+    </form>
+  </section>
+
   <?php if ($results !== null): ?>
     <section class="card">
       <h2>نتیجهٔ ورود</h2>
@@ -125,11 +156,10 @@ layout_start('ورود از اکسل', 'import', ['error' => $error]);
   <section class="card">
     <h2>فایل‌های آمادهٔ ورود</h2>
     <?php if (!$pending): ?>
-      <p>هیچ فایلی در پوشهٔ ورود نیست.</p>
-      <p class="muted">فایل‌های اکسل خود را (هر پیش‌فاکتور در یک فایل، با پسوند
-        <code dir="ltr">.xlsx</code> یا <code dir="ltr">.csv</code>) از طریق File Manager هاست
-        در پوشهٔ <code dir="ltr"><?= e($importsPath) ?></code> (کنار <code dir="ltr">index.php</code> ← پوشهٔ data) بگذارید،
-        سپس این صفحه را تازه کنید.</p>
+      <p>هنوز فایلی آپلود نشده است.</p>
+      <p class="muted">از کادر «آپلود فایل از کامپیوتر» در بالا، فایل اکسل را انتخاب و آپلود کنید.
+        (به‌جای آپلود، می‌توانید فایل‌ها را از طریق File Manager هاست در پوشهٔ
+        <code dir="ltr"><?= e($importsPath) ?></code> ، کنار <code dir="ltr">index.php</code> ← پوشهٔ data، هم بگذارید.)</p>
     <?php else: ?>
       <div class="tbl"><table class="list wide">
         <thead>

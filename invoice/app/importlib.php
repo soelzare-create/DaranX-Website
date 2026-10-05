@@ -40,6 +40,61 @@ function import_files(): array
     return $out;
 }
 
+/**
+ * Save browser-uploaded files into the imports dir. Accepts the $_FILES entry
+ * of a `name="files[]" multiple` field. Returns [savedNames[], errors[]].
+ * Only .xlsx / .csv are kept; names are basename-sanitised and de-duplicated.
+ */
+function import_save_uploads(array $files): array
+{
+    $dir = import_dir();
+    $saved = [];
+    $errors = [];
+    $names = $files['name'] ?? null;
+    if (!is_array($names)) {
+        // A single (non-array) file field — normalise to the array shape.
+        $files = [
+            'name' => [$files['name'] ?? ''], 'tmp_name' => [$files['tmp_name'] ?? ''],
+            'error' => [$files['error'] ?? UPLOAD_ERR_NO_FILE], 'size' => [$files['size'] ?? 0],
+        ];
+        $names = $files['name'];
+    }
+    $n = count($names);
+    for ($i = 0; $i < $n; $i++) {
+        $err = (int) ($files['error'][$i] ?? UPLOAD_ERR_NO_FILE);
+        if ($err === UPLOAD_ERR_NO_FILE) {
+            continue; // empty slot
+        }
+        $name = basename((string) ($files['name'][$i] ?? ''));
+        $label = $name !== '' ? $name : 'فایل ' . ($i + 1);
+        if ($err !== UPLOAD_ERR_OK) {
+            $errors[] = $label . ': آپلود کامل نشد'
+                . ($err === UPLOAD_ERR_INI_SIZE || $err === UPLOAD_ERR_FORM_SIZE ? ' (حجم زیاد)' : '');
+            continue;
+        }
+        $ext = strtolower(pathinfo($name, PATHINFO_EXTENSION));
+        if (!in_array($ext, ['xlsx', 'csv'], true)) {
+            $errors[] = $label . ': فقط فایل xlsx یا csv پذیرفته می‌شود';
+            continue;
+        }
+        $tmp = (string) ($files['tmp_name'][$i] ?? '');
+        if ($tmp === '' || !is_uploaded_file($tmp)) {
+            $errors[] = $label . ': فایل نامعتبر';
+            continue;
+        }
+        $dest = $dir . '/' . $name;
+        if (is_file($dest) || is_file($dir . '/done/' . $name)) {
+            $dest = $dir . '/' . pathinfo($name, PATHINFO_FILENAME) . '-' . date('His') . '.' . $ext;
+        }
+        if (@move_uploaded_file($tmp, $dest)) {
+            $saved[] = basename($dest);
+        } else {
+            $errors[] = $label . ': ذخیره روی سرور ناموفق بود';
+        }
+    }
+    return [$saved, $errors];
+}
+
 /** A safe absolute path for a file name inside the imports dir (no traversal). */
 function import_path(string $name): string
 {
