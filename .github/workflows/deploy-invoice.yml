@@ -68,8 +68,7 @@ jobs:
         run: |
           want=$(grep -oE "APP_VERSION = '[^']+'" invoice/app/helpers.php | cut -d"'" -f2)
           echo "expected version: $want"
-          for u in "https://www.daranx.com/invoice/index.php?p=login" "https://factor.daranx.com/index.php?p=login"; do
-            code=$(curl -s -o page.html -w '%{http_code}' --max-time 20 "$u" || echo 000)
-            if grep -q "app.css?v=$want" page.html 2>/dev/null; then live=yes; else live=no; fi
-            echo "$u -> HTTP $code, new version live: $live"
-          done
+          u="https://www.daranx.com/invoice/index.php?p=login"
+          code=$(curl -s -o page.html -w '%{http_code}' --max-time 20 "$u") || code=000
+          if [ "$code" = 200 ] && grep -q "app.css?v=$want" page.html; then live=yes; else live=no; fi
+          echo "$u -> HTTP $code, new version live: $live"
