@@ -493,7 +493,7 @@ $SKPOLY
   9
 $TDCREATE
  40
-2461320.6969097224
+2461320.723935185
   9
 $TDUCREATE
  40
@@ -501,7 +501,7 @@ $TDUCREATE
   9
 $TDUPDATE
  40
-2461320.6969097224
+2461320.723935185
   9
 $TDUUPDATE
  40
@@ -937,7 +937,7 @@ $FINGERPRINTGUID
   9
 $VERSIONGUID
   2
-{E9F1C189-6935-49B1-B51B-D3D8CDF611D6}
+{7387EDD9-665F-451F-AFE5-52D80563F277}
   9
 $EXTNAMES
 290
@@ -169437,7 +169437,7 @@ AcDbMText
  71
 5
   1
-گروه کالایی ۲: بهداشتی، نظافت و کاغذی\PPersonal care, cleaning & paper
+گروه کالایی ۲: بهداشتی، سلولزی و صبحانه\PPersonal care, paper & breakfast
   7
 DX-FA
   0
@@ -169581,7 +169581,7 @@ AcDbMText
  71
 5
   1
-گروه کالایی ۳: ظرفشویی و لباسشویی\PDishwash & laundry
+گروه کالایی ۳: ظرفشویی، لباسشویی و ظروف\PDishwash, laundry & disposables
   7
 DX-FA
   0
@@ -170039,7 +170039,7 @@ AcDbMText
  71
 5
   1
-گروه کالایی ۶: خوراکی خشک و روغن\PDry food & oil
+گروه کالایی ۶: تنقلات، خوراکی خشک و روغن\PSnacks, dry food & oil
   7
 DX-FA
   0
@@ -171079,11 +171079,11 @@ AcDbMText
  30
 0.0
  40
-0.13528717948717936
+0.17088906882591076
  71
 5
   1
-R1 - شامپو و دهان‌ودندان
+R1 - شامپو و آرایشی
   7
 DX-FA
  50
@@ -171211,11 +171211,11 @@ AcDbMText
  30
 0.0
  40
-0.1352871794871795
+0.17088906882591098
  71
 5
   1
-R2 - شامپو و دهان‌ودندان
+R2 - شامپو و آرایشی
   7
 DX-FA
  50
@@ -171347,7 +171347,7 @@ AcDbMText
  71
 5
   1
-B3E - دستشویی و آرایشی
+B3E - دستشویی و نظافت
   7
 DX-FA
  50
@@ -171629,7 +171629,7 @@ DX-ZONE
  62
 7
 420
-4864679
+1814394
 440
 33554572
 100
@@ -171697,7 +171697,7 @@ AcDbEntity
   8
 DX-ZONE
 420
-4864679
+1814394
 100
 AcDbPolyline
  90
@@ -171743,7 +171743,7 @@ AcDbMText
  71
 5
   1
-B2W - نظافت منزل
+B2W - پودر کیک و سوپ
   7
 DX-FA
  50
@@ -171761,7 +171761,7 @@ DX-ZONE
  62
 7
 420
-4864679
+15573248
 440
 33554572
 100
@@ -171829,7 +171829,7 @@ AcDbEntity
   8
 DX-ZONE
 420
-4864679
+15573248
 100
 AcDbPolyline
  90
@@ -171875,7 +171875,7 @@ AcDbMText
  71
 5
   1
-B1E - ظروف یک‌بارمصرف
+B1E - صبحانه
   7
 DX-FA
  50
@@ -173987,11 +173987,11 @@ AcDbMText
  30
 0.0
  40
-0.186
+0.12285538461538432
  71
 5
   1
-V4 - آجیل
+V4 - حبوبات فله
   7
 DX-FA
   0
@@ -175057,7 +175057,7 @@ DX-ZONE
  62
 7
 420
-15573248
+15427636
 440
 33554572
 100
@@ -175125,7 +175125,7 @@ AcDbEntity
   8
 DX-ZONE
 420
-15573248
+15427636
 100
 AcDbPolyline
  90
@@ -175171,7 +175171,7 @@ AcDbMText
  71
 5
   1
-A2W - صبحانه
+A2W - تنقلات
   7
 DX-FA
  50
@@ -175435,7 +175435,7 @@ AcDbMText
  71
 5
   1
-A3W - آرد، ادویه، کنسرو
+A3W - سس، ادویه و کنسرو
   7
 DX-FA
  50
@@ -176760,8 +176760,10 @@ AcDbMText
 1
   3
 M3  Cheese, butter, cream, eggs  —  پنیر، کره، خامه، تخم‌مرغ\PM2  Milk, yogurt, doogh  —  شیر، ماست، دوغ\PV3  Olives & loose cheese  —  زیتون، ترشی و پنیر وزنی\PV1  Cold cuts  —  کالباس، سوسیس، ژامبون\PV2  Salads & ready meals  —  سالاد، غذای آماده، 
+  3
+دسر\PZ1  Frozen; ice cream nearest tills  —  منجمد: مرغ، گوشت، سبزی؛ بستنی سمت صندوق\PV4  Bulk pulses, spices, nuts & chocolate  —  حبوبات، ادویه، آجیل و شکلات فله\PL2  Chips & puffs  —  چیپس و پفک\PL3  Chips & puffs  —  چیپس و پفک\PK1  Till impulse 
   1
-دسر\PZ1  Frozen; ice cream nearest tills  —  منجمد: مرغ، گوشت، سبزی؛ بستنی سمت صندوق\PV4  Nuts & dried fruit  —  آجیل و خشکبار وزنی\PL2  Chips & puffs  —  چیپس و پفک\PL3  Chips & puffs  —  چیپس و پفک\PK1  Till impulse  —  آدامس، شکلات، باتری
+ —  آدامس، شکلات، باتری
   7
 DX-FA
   0
@@ -176789,9 +176791,11 @@ AcDbMText
  71
 1
   3
-A1W  Chocolate, gum & pastilles  —  شکلات، آدامس و پاستیل\PA1E  Cakes & biscuits  —  کیک و بیسکویت\PX1  Rice  —  برنج (کیسه‌های ۵ تا ۱۰ کیلویی)\PA2E  Pulses & pasta  —  حبوبات، پاستا و ماکارونی\PA3W  Flour, spices, cans & paste  —  آرد، ادویه، کنسرو 
+A1W  Chocolate, gum & pastilles  —  شکلات، آدامس و پاستیل\PA1E  Cakes & biscuits  —  کیک و بیسکویت\PA2W  Seeds, packed nuts, wafers, dried fruit snacks  —  تنقلات (تخمه، آجیل بسته‌بندی، ویفر، آلوچه و لواشک)\PX1  Rice  —  برنج (کیسه‌های ۵ تا ۱۰ کیلویی
+  3
+)\PB2W  Cake mix, soup & ready meals  —  پودر کیک، سوپ و غذاهای نیمه‌آماده\PA2E  Pulses & pasta  —  حبوبات، پاستا و ماکارونی\PA3W  Sauces, spices & cans  —  سس، ادویه و کنسرو\PA3E  Cooking oils  —  انواع روغن\PA2S  End cap  —  بستهٔ حجیم حبوبات\PA3S 
   1
-و رب\PA3E  Cooking oil  —  روغن خوراکی\PA2S  End cap  —  بستهٔ حجیم حبوبات\PA3S  End cap  —  روغن بستهٔ حجیم\PB1W  Tea, coffee & sugar  —  چای، قهوه و قند\PA2W  Breakfast  —  صبحانه
+ End cap  —  روغن بستهٔ حجیم
   7
 DX-FA
   0
@@ -176819,9 +176823,9 @@ AcDbMText
  71
 1
   3
-M1  Cold drinks  —  نوشابه، آبمیوه و آب سرد\PL1  Soft drinks & water  —  نوشابه و آب معدنی\PA1S  End cap  —  آب معدنی بستهٔ حجیم\PF1  Fruit & veg  —  میوه و سبزی\PF2  Packed herbs, salad, mushroom  —  سبزی بسته‌ای، سالاد، قارچ\PF3  Produce scale  —  
+B1E  Breakfast (chocolate spread, jam…)  —  صبحانه (شکلات، مربا و...)\PB1W  Tea, coffee & sugar  —  چای، قهوه و قند\PM1  Cold drinks  —  نوشابه، آبمیوه و آب سرد\PL1  Soft drinks & water  —  نوشابه و آب معدنی\PA1S  End cap  —  آب معدنی بستهٔ حجیم\PF1 
   1
-ترازوی میوه\PF4  Bread  —  نان\PF5  Daily cakes  —  کیک و کلوچهٔ روز\PR1  Shampoo, soap, oral care  —  شامپو، صابون، بهداشت دهان و دندان\PR2  Shampoo, soap, oral care  —  شامپو، صابون، بهداشت دهان و دندان
+ Fruit & veg  —  میوه و سبزی\PF2  Packed herbs, salad, mushroom  —  سبزی بسته‌ای، سالاد، قارچ\PF3  Produce scale  —  ترازوی میوه\PF4  Bread  —  نان\PF5  Daily cakes  —  کیک و کلوچهٔ روز
   7
 DX-FA
   0
@@ -176849,11 +176853,11 @@ AcDbMText
  71
 1
   3
-B3E  Hand wash, sprays & cosmetics  —  مایع دستشویی، اسپری و آرایشی\PB3W  Diapers & feminine care  —  پوشک و نوار بهداشتی\PB2E  Tissue & wet wipes  —  سلولزی و دستمال مرطوب\PB2W  Home cleaning & surface sprays  —  نظافت منزل و اسپری‌های سطوح\PB1E  Di
+R1  Shampoo, oral care, cosmetics & sprays  —  شامپو، دهان و دندان، آرایشی و اسپری\PR2  Shampoo, oral care, cosmetics & sprays  —  شامپو، دهان و دندان، آرایشی و اسپری\PB3E  Hand wash, home cleaning & surface sprays  —  دستشویی، نظافت منزل و اسپری سطو
   3
-sposables & plastics  —  ظروف یک‌بارمصرف و پلیمری\PT1  Dishwash & laundry liquids  —  مایع ظرفشویی و لباسشویی\PD1  Dishwash & laundry liquids  —  مایع ظرفشویی و لباسشویی\PL4  Batteries & small items  —  باتری و لوازم کوچک\PX2  Baskets & carts  —  سبد
+ح\PB3W  Diapers & feminine care  —  پوشک و نوار بهداشتی\PB2E  Tissue & wet wipes  —  سلولزی و دستمال مرطوب\PT1  Dishwash & laundry liquids  —  مایع ظرفشویی و لباسشویی\PD1  Plastics & disposables  —  پلیمری و ظروف یک‌بارمصرف\PL4  Batteries & small ite
   1
- و چرخ‌دستی\PB3S  End cap  —  پیشنهاد بهداشتی
+ms  —  باتری و لوازم کوچک\PX2  Baskets & carts  —  سبد و چرخ‌دستی\PB3S  End cap  —  پیشنهاد بهداشتی
   7
 DX-FA
   0
@@ -208311,7 +208315,7 @@ DictionaryVariables
 280
 0
   1
-1.4.4 @ 2026-10-06T16:43:33.629773+00:00
+1.4.4 @ 2026-10-06T17:22:28.608799+00:00
   0
 ENDSEC
   0
