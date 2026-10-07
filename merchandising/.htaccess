@@ -1,0 +1,9 @@
+# Everything under /merchandising/ goes through the login gate (gate.php).
+# Needs PHP + mod_rewrite (both already used by this site). Fails closed: if PHP breaks, nothing is served.
+Options -Indexes
+DirectoryIndex gate.php
+<IfModule mod_rewrite.c>
+  RewriteEngine On
+  RewriteCond %{REQUEST_URI} !/gate\.php$
+  RewriteRule ^ gate.php [L]
+</IfModule>
