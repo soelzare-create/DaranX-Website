@@ -818,6 +818,27 @@
   @media (hover:hover) and (pointer:fine){.cpb-btn:hover{transform:translateY(-2px)}}
   .cpb-btn svg{width:18px;height:18px}
   @media (max-width:560px){.cphonebar{bottom:3.4rem;gap:.5rem .8rem;padding:.7rem 1.1rem}.cpb-phones a{font-size:1.05rem}}
+
+  /* First screen: the photo as before. Wide screens: no overlay text (it is in
+     the photo), only a light bottom fade; cropped screens: real text. */
+  .cover--hero::before{background:linear-gradient(180deg,rgba(8,20,34,.18),transparent 22%,transparent 70%,rgba(8,20,34,.35))}
+  .cover--hero .cover-bg{object-position:center}
+  .cv-text{position:absolute;width:1px;height:1px;margin:-1px;padding:0;overflow:hidden;clip:rect(0 0 0 0);clip-path:inset(50%);white-space:nowrap;border:0}
+  @media (max-aspect-ratio: 16/10){
+    .cover--hero{place-items:end center}
+    .cover--hero .cover-bg{object-position:28% center}
+    .cover--hero::before{background:linear-gradient(180deg,rgba(8,20,34,.35),transparent 30%,rgba(8,20,34,.55) 62%,rgba(8,20,34,.9))}
+    .cv-text{position:relative;width:auto;height:auto;margin:0;overflow:visible;clip:auto;clip-path:none;white-space:normal;
+      z-index:1;max-width:640px;padding:0 1.4rem calc(8.75rem + env(safe-area-inset-bottom,0px));color:#fff;text-align:start;justify-self:start;align-self:flex-start}
+    .cv-text h1{font-size:clamp(2.3rem,7vw,3.6rem);font-weight:900;line-height:1.25;color:#fff;margin:0;text-shadow:0 2px 22px rgba(0,0,0,.4)}
+    .cv-text h1 span{display:block;color:#9cc4ea}
+    .cv-text p{margin-top:.9rem;font-size:clamp(1rem,2.6vw,1.15rem);line-height:1.9;color:rgba(255,255,255,.92);max-width:40ch}
+    .cv-more{display:inline-flex;align-items:center;gap:.5rem;margin-top:1.1rem;color:#fff;font-weight:800;text-decoration:none}
+    .cv-more svg{width:20px;height:20px}
+    /* tablets in deck mode: text at the bottom over the dark fade, clear of the bar */
+    html.deck #top>.cover--hero{justify-content:flex-end!important}
+    html.deck .cv-text{padding-bottom:1rem;padding-inline:clamp(1.4rem,5vw,3.5rem)}
+  }
 </style>
 <style id="desccss">
   /* ---- description panel: full-width banner + wide horizontal text ---- */
@@ -892,24 +913,21 @@
   <main id="top">
 
 
-    <!-- SCREEN 2: full-bleed image + centered horizontal text -->
-    <section class="hero fold-hero fh-full">
-      <img class="fh-bg" src="assets/photos/home-2.jpg" alt="" loading="eager" fetchpriority="high" decoding="async"
-           onerror="this.closest('.fh-full').classList.add('noimg')">
-      <div class="wrap fh-center reveal">
-        <span class="hero-pill"><span class="dot"></span>شریک فناوری سازمان‌ها و کسب‌وکارها</span>
-        <h1>
-          <span class="ln"><span>همه چیز</span></span>
-          <span class="ln"><span class="grad-text">سر جای درستش.</span></span>
-        </h1>
-        <p class="lead">DaranX زیرساخت، امنیت و فناوری‌های هوشمند را از شناخت و طراحی تا اجرا و پشتیبانی، به‌عنوان اجزای یک راهکار واحد طراحی می‌کند — نه مجموعه‌ای از تجهیزات کنار هم.</p>
-        <div class="hero-actions">
-          <a href="#contact" class="btn btn-primary">گفتگو درباره مسئله شما</a>
-          <a href="#services" class="btn btn-ghost">دیدن حوزه‌های کاری</a>
-        </div>
-        <div class="hero-tagline">
-          <span><b>شناخت</b></span><span><b>طراحی</b></span><span><b>اجرا</b></span><span><b>پشتیبانی</b></span>
-        </div>
+    <!-- FIRST SCREEN: the DaranX photo (Milad tower beside the data center).
+         On wide screens the photo itself carries the logo, headline and tagline,
+         so the same words are in the page only for search engines and screen
+         readers. Where the photo is cropped (phones, tablets) a text-free crop
+         is used and the words are shown as real text. -->
+    <section class="cover cover--hero" aria-labelledby="hero-title">
+      <picture>
+        <source media="(max-aspect-ratio: 16/10)" srcset="assets/photos/home-m.jpg">
+        <img class="cover-bg" src="assets/photos/home.jpg" alt="" width="1600" height="901" loading="eager" fetchpriority="high" decoding="async"
+             onerror="this.closest('.cover').classList.add('noimg')">
+      </picture>
+      <div class="cv-text">
+        <h1 id="hero-title">همه چیز <span>سر جای درستش.</span></h1>
+        <p>زیرساخت، امنیت و هوشمندسازی کسب‌وکار شما؛ با راهکارهای یکپارچه و پشتیبانی مطمئن.</p>
+        <a class="cv-more" href="#about">درباره داران ایکس بیشتر بدانید<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M19 12H5M11 18l-6-6 6-6"/></svg></a>
       </div>
     </section>
     <!-- نمونه‌کارها (screen 3) -->
@@ -1441,6 +1459,7 @@
       });
     }
     function targets(p){
+      if(p.classList.contains('cover'))return [].slice.call(p.querySelectorAll('.cv-text'));
       var grids=p.querySelectorAll('.cards,.hub-cards,.subs,.mstrip,.pf-grid,.cols,.idx-cards');
       var out=[];
       if(grids.length){
