@@ -60,3 +60,17 @@ jobs:
             # lftp with retries): its large file batch trips this shared
             # host's FTP session here, so it is excluded from this deploy.
             invoice/**
+
+      # بعد از آپلود: صفحهٔ زندهٔ سایت را می‌خوانیم و گزارش می‌دهیم که تغییرات
+      # واقعاً سرو می‌شوند یا نه (و آیا یک CDN/کش نسخهٔ قدیمی را نگه داشته).
+      - name: Check the live site
+        continue-on-error: true
+        run: |
+          for u in "https://www.daranx.com/" "https://daranx.com/" "https://www.daranx.com/cctv.html"; do
+            code=$(curl -s -o page.html -D head.txt -w '%{http_code}' --max-time 20 -H 'Cache-Control: no-cache' "$u") || code=000
+            if grep -q "behsarmaholding.com" page.html 2>/dev/null; then hold=yes; else hold=no; fi
+            if grep -q 'class="foot-parent"' page.html 2>/dev/null; then fp=yes; else fp=no; fi
+            echo "$u -> HTTP $code | holding link: $hold | footer box: $fp"
+            grep -iE '^(server|cf-cache-status|age|cache-control|x-cache|last-modified):' head.txt | sed 's/^/    /' || true
+            rm -f page.html head.txt
+          done
