@@ -18,6 +18,10 @@ on:
     branches: ["main"]
   workflow_dispatch:        # اجرای دستی از تب Actions همچنان ممکن است
 
+# The job only reads the repo; the token gets no write access.
+permissions:
+  contents: read
+
 concurrency:
   group: deploy-${{ github.ref }}
   cancel-in-progress: true
@@ -27,10 +31,27 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4.4.0
 
+      # Report whether the FTP server's certificate is valid for the FTP_SERVER
+      # name. Once it is, "security: loose" below can become "strict" so the
+      # FTP password cannot be intercepted by a man-in-the-middle.
+      - name: Check the FTP server's TLS certificate
+        continue-on-error: true
+        env:
+          FTP_SERVER: ${{ secrets.FTP_SERVER }}
+        run: |
+          if timeout 20 openssl s_client -starttls ftp -connect "$FTP_SERVER:21" -servername "$FTP_SERVER" \
+               -verify_hostname "$FTP_SERVER" -verify_return_error </dev/null >tls.txt 2>&1; then ok=yes; else ok=no; fi
+          echo "certificate valid for the FTP_SERVER name: $ok"
+          grep -E 'Verify return code|verify error' tls.txt | head -3 || true
+          timeout 20 openssl s_client -starttls ftp -connect "$FTP_SERVER:21" </dev/null 2>/dev/null \
+            | openssl x509 -noout -subject -issuer -enddate -ext subjectAltName 2>/dev/null | sed 's/^/    /' || true
+          rm -f tls.txt
+
+      # Third-party action pinned to a commit, so a moved tag cannot change what runs with the FTP password.
       - name: Deploy via FTP
-        uses: SamKirkland/FTP-Deploy-Action@v4.3.5
+        uses: SamKirkland/FTP-Deploy-Action@8e83cea8672e3fbcbb9fdafff34debf6ae4c5f65 # v4.3.5
         with:
           server: ${{ secrets.FTP_SERVER }}
           username: ${{ secrets.FTP_USERNAME }}
@@ -66,11 +87,16 @@ jobs:
       - name: Check the live site
         continue-on-error: true
         run: |
-          for u in "https://www.daranx.com/" "https://daranx.com/" "https://www.daranx.com/cctv.html"; do
+          for u in "https://www.daranx.com/" "https://www.daranx.com/cctv.html"; do
             code=$(curl -s -o page.html -D head.txt -w '%{http_code}' --max-time 20 -H 'Cache-Control: no-cache' "$u") || code=000
             if grep -q "behsarmaholding.com" page.html 2>/dev/null; then hold=yes; else hold=no; fi
             if grep -q 'class="foot-parent"' page.html 2>/dev/null; then fp=yes; else fp=no; fi
             echo "$u -> HTTP $code | holding link: $hold | footer box: $fp"
-            grep -iE '^(server|cf-cache-status|age|cache-control|x-cache|last-modified):' head.txt | sed 's/^/    /' || true
+            grep -iE '^(server|cf-cache-status|age|cache-control|x-cache|last-modified|strict-transport-security|x-frame-options|referrer-policy):' head.txt | sed 's/^/    /' || true
             rm -f page.html head.txt
+          done
+          # Every other spelling of the address must 301 to https://www.daranx.com
+          for u in "http://daranx.com/" "http://www.daranx.com/" "https://daranx.com/cctv.html"; do
+            r=$(curl -s -o /dev/null -w '%{http_code} -> %{redirect_url}' --max-time 20 "$u") || r="000"
+            echo "$u -> $r"
           done
