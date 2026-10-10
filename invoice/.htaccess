@@ -12,9 +12,6 @@ DirectoryIndex index.php
   </IfModule>
 </FilesMatch>
 
-# Send everyone to HTTPS (uncomment after an SSL certificate is active on the domain).
-# <IfModule mod_rewrite.c>
-#   RewriteEngine On
-#   RewriteCond %{HTTPS} !=on
-#   RewriteRule ^ https://%{HTTP_HOST}%{REQUEST_URI} [L,R=301]
-# </IfModule>
+# HTTPS: the site root's .htaccess redirects every http:// or non-www request
+# to https://www.daranx.com (this folder has no RewriteEngine of its own, so
+# those rules apply here too). Do not add rewrite rules here without repeating it.

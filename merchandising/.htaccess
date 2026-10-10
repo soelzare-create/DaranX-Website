@@ -4,6 +4,12 @@ Options -Indexes
 DirectoryIndex gate.php
 <IfModule mod_rewrite.c>
   RewriteEngine On
+  # Same canonical https://www redirect as the site root (a folder with its own
+  # RewriteEngine does not inherit the root rules).
+  RewriteCond %{HTTP:X-Forwarded-Proto} !https
+  RewriteCond %{HTTPS} off [OR]
+  RewriteCond %{HTTP_HOST} !^www\. [NC]
+  RewriteRule ^ https://www.daranx.com%{REQUEST_URI} [R=301,L]
   RewriteCond %{REQUEST_URI} !/gate\.php$
   RewriteRule ^ gate.php [L]
 </IfModule>

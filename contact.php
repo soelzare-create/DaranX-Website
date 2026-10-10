@@ -54,19 +54,47 @@ if (($_SERVER['REQUEST_METHOD'] ?? 'GET') !== 'POST') {
     respond(false, 'روش درخواست نامعتبر است.');
 }
 
+// --- Only from our own pages: a browser posting from another site sends its
+// own Origin, so cross-site form spam is refused (no Origin = old browser, ok).
+$origin = $_SERVER['HTTP_ORIGIN'] ?? '';
+if ($origin !== '') {
+    $oh = strtolower((string) parse_url($origin, PHP_URL_HOST));
+    $me = strtolower(preg_replace('/:\d+$/', '', $_SERVER['HTTP_HOST'] ?? ''));
+    if ($oh === '' || preg_replace('/^www\./', '', $oh) !== preg_replace('/^www\./', '', $me)) {
+        respond(false, 'درخواست نامعتبر است.');
+    }
+}
+
 // --- Honeypot: real users never fill "website" ------------------------------
 if (!empty($_POST['website'])) {
     // Pretend success so bots don't learn they were caught.
     respond(true);
 }
 
-// --- Light per-IP throttle (best-effort; ignored if temp dir isn't writable) -
+// --- Too fast to be human: the page's script sends how many seconds the form
+// was open ("el"). A person needs more than 3; bots that run the script don't.
+if (isset($_POST['el']) && (int) $_POST['el'] < 3) {
+    respond(true);
+}
+
+// --- Per-IP throttle: 20 s between messages and at most 5 per hour
+// (best-effort; skipped if the temp dir isn't writable).
 $ip = $_SERVER['REMOTE_ADDR'] ?? '0.0.0.0';
 $throttle = sys_get_temp_dir() . '/daranx_cf_' . md5($ip);
-if (is_file($throttle) && (time() - filemtime($throttle)) < 20) {
+$now = time();
+$sent = [];
+if (is_file($throttle)) {
+    $sent = array_values(array_filter(
+        array_map('intval', explode(',', (string) @file_get_contents($throttle))),
+        fn($t) => $t > $now - 3600
+    ));
+}
+if ($sent && $now - max($sent) < 20) {
     respond(false, 'کمی صبر کنید و دوباره ارسال کنید.');
 }
-@touch($throttle);
+if (count($sent) >= 5) {
+    respond(false, 'تعداد پیام‌ها از این دستگاه زیاد شده است. لطفاً تلفنی تماس بگیرید.');
+}
 
 // --- Read + validate fields -------------------------------------------------
 $name    = clean_header($_POST['name']    ?? '');
@@ -84,6 +112,10 @@ if ($errors) {
 }
 if (mb_strlen($message) > 5000) {
     respond(false, 'پیام بیش از حد طولانی است.');
+}
+// Link spam: real enquiries rarely carry more than a couple of links.
+if (preg_match_all('~https?://|www\.~i', $message . ' ' . $company) > 3) {
+    respond(false, 'لطفاً پیام را بدون لینک‌های متعدد بفرستید.');
 }
 
 $valid_email = ($email !== '' && filter_var($email, FILTER_VALIDATE_EMAIL)) ? $email : '';
@@ -108,10 +140,16 @@ $headers[] = 'MIME-Version: 1.0';
 $headers[] = 'Content-Type: text/plain; charset=UTF-8';
 $headers[] = 'Content-Transfer-Encoding: 8bit';
 $headers[] = 'From: DaranX Website <' . $FROM . '>';
+// The display name is encoded, so characters like < , or " in it can never
+// add or change addresses.
 $headers[] = 'Reply-To: ' . ($valid_email !== ''
-    ? $name . ' <' . $valid_email . '>'
+    ? encode_subject($name) . ' <' . $valid_email . '>'
     : $FROM);
-$headers[] = 'X-Mailer: PHP/' . phpversion();
+
+// Count this message toward the throttle only now that it is valid, so fixing
+// a typo and resending is never blocked.
+$sent[] = $now;
+@file_put_contents($throttle, implode(',', $sent), LOCK_EX);
 
 $ok = @mail($TO, $subject, $body, implode("\r\n", $headers), '-f' . $FROM);
 

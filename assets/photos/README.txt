@@ -6,3 +6,7 @@
 زیرمجموعه‌ها:      network.jpg · datacenter-server.jpg · storage.jpg · power-ups.jpg · passive.jpg
                    network-security.jpg · cctv.jpg · access-monitoring.jpg · access-control.jpg
                    ai-solutions.jpg · data-analytics.jpg · automation.jpg · software-models.jpg
+
+نکته برای زیرمجموعه‌ها: تا وقتی عکس یک صفحه نیامده، بنرش در HTML داخل کامنت
+<!-- banner: add assets/photos/NAME.jpg ... --> خاموش است تا مرورگر دنبال فایلِ
+ناموجود نگردد (خطای 404). بعد از گذاشتن عکس، آن دو خط کامنت را بردارید.

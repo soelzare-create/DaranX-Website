@@ -15,7 +15,7 @@
     --ease-out:cubic-bezier(.23,1,.32,1); --ease-in-out:cubic-bezier(.77,0,.175,1);
     --navy:#153A62;
     --navy-deep:#0E2749;
-    --steel:#3E7BB6;
+    --steel:#326CA4;
     --steel-soft:#6FA3D2;
     --silver:#D9D9D9;
     --ground:#F3F6FA;
@@ -28,7 +28,7 @@
     --line-strong:#C2D0E0;
     --on-navy:#EAF1F8;
     --on-navy-soft:#AEC4DB;
-    --on-navy-faint:#6E89A6;
+    --on-navy-faint:#92A8C0;
     --accent-solid:#153A62;
     --on-accent:#FFFFFF;
     --grad:linear-gradient(120deg,#153A62 0%,#2E6098 55%,#3E7BB6 100%);
@@ -394,7 +394,7 @@
   .foot-grid{display:grid;grid-template-columns:1.5fr 1fr 1fr 1.2fr;gap:2rem}
   .foot-brand .brand{color:#fff;margin-bottom:.9rem}
   .foot-brand p{max-width:34ch;font-size:.95rem;color:var(--on-navy-faint)}
-  .foot-col h4{color:#fff;font-size:.9rem;letter-spacing:.05em;margin-bottom:1rem;font-weight:700}
+  .foot-col h2{color:#fff;font-size:.9rem;letter-spacing:.05em;margin-bottom:1rem;font-weight:700}
   .foot-col a{display:block;color:var(--on-navy-soft);font-size:.94rem;padding:.28rem 0;transition:color .2s}
   @media (hover:hover) and (pointer:fine){.foot-col a:hover{color:#fff}}
   .foot-col .fc-line{color:var(--on-navy-soft);font-size:.9rem;padding:.28rem 0;font-variant-numeric:tabular-nums;line-height:1.7}
@@ -623,8 +623,21 @@
   }
 }
 </script>
+<style id="a11yfix">
+/* keyboard + touch accessibility: skip link, focus clear of the fixed bar, bigger holding link */
+  .fbar-hold a{display:inline-block;padding:.45rem .25rem;margin:-.45rem -.25rem}
+  html{scroll-padding-bottom:6.5rem}
+  html.deck #top>.dpanel{scroll-padding-bottom:calc(84px + 1.5rem)}
+  @media (max-width:760px){html{scroll-padding-bottom:8.5rem}}
+  .skip-link{position:fixed;top:.6rem;inset-inline-start:.6rem;z-index:2000;padding:.7rem 1.1rem;border-radius:10px;background:#0E2749;color:#fff;font-weight:700;text-decoration:none;box-shadow:0 6px 20px rgba(8,22,39,.35);transform:translateY(-160%)}
+  .skip-link:focus{transform:none;outline:2px solid #7FB0DF;outline-offset:2px}
+  #top:focus{outline:none}
+  /* while typing in the contact form, section snapping must not pull the field under the fixed bar */
+  html:has(.cform :focus){scroll-snap-type:none}
+</style>
 </head>
 <body>
+<a class="skip-link" href="#top">پرش به محتوای اصلی</a>
 <style>
   .fold-hero{position:relative;overflow:hidden;padding-block:clamp(2.5rem,5vw,4.5rem) var(--sp)}
   .fh-grid{display:grid;grid-template-columns:1.02fr .98fr;gap:clamp(2rem,5vw,4rem);align-items:center;position:relative;z-index:1}
@@ -699,7 +712,7 @@
     border-radius:var(--r-sm);padding:.7rem .85rem;transition:border-color .2s,background .2s,box-shadow .2s var(--ease-out)}
   .cform textarea{resize:vertical;min-height:96px;line-height:1.7}
   .cform input::placeholder,.cform textarea::placeholder{color:rgba(255,255,255,.42)}
-  .cform input:focus,.cform textarea:focus{outline:none;border-color:var(--steel-soft);
+  .cform input:focus,.cform textarea:focus{outline:2px solid var(--steel-soft);outline-offset:2px;border-color:var(--steel-soft);
     background:rgba(255,255,255,.1);box-shadow:0 0 0 3px rgba(111,163,210,.25)}
   .cform input:user-invalid,.cform textarea:user-invalid{border-color:#f2a3a0}
   .cf-hp{position:absolute;left:-9999px;width:1px;height:1px;overflow:hidden}
@@ -770,7 +783,7 @@
     @media (max-width:600px){html.deck .ddots{inset-inline-end:9px;gap:.65rem}}
   }
 </style>
-<div class="ddots" id="ddots" aria-label="ناوبری بخش‌ها"></div>
+<nav class="ddots" id="ddots" aria-label="ناوبری بخش‌ها"></nav>
 <style id="covercss">
 /* ---- full-screen cover (first screen of each landing) ---- */
   .cover{position:relative;min-height:100svh;min-height:100vh;display:grid;place-items:center;overflow:hidden;isolation:isolate;text-align:center;scroll-snap-align:start}
@@ -910,7 +923,7 @@
     </div>
   </header>
 
-  <main id="top">
+  <main id="top" tabindex="-1">
 
 
     <!-- FIRST SCREEN: the DaranX photo (Milad tower beside the data center).
@@ -942,7 +955,7 @@
             <article class="pf-card reveal">
               <figure class="pf-media">
                 <span class="pf-num">۱</span>
-                <img src="assets/portfolio/home-1.jpg" alt="نمونه‌کار راهکارهای یکپارچه 1" loading="lazy"
+                <img width="1200" height="900" src="assets/portfolio/home-1.jpg" alt="نمونه‌کار راهکارهای یکپارچه 1" loading="lazy"
                      onerror="this.closest('.pf-media').classList.add('noimg')">
                 <div class="ph" aria-hidden="true">
                   <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><rect x="3" y="4" width="18" height="14" rx="2"/><circle cx="8.5" cy="9" r="1.6"/><path d="M4 16l4.5-4 3 2.5L15 10l5 5"/></svg>
@@ -960,7 +973,7 @@
             <article class="pf-card reveal">
               <figure class="pf-media">
                 <span class="pf-num">۲</span>
-                <img src="assets/portfolio/home-2.jpg" alt="نمونه‌کار راهکارهای یکپارچه 2" loading="lazy"
+                <img width="1200" height="900" src="assets/portfolio/home-2.jpg" alt="نمونه‌کار راهکارهای یکپارچه 2" loading="lazy"
                      onerror="this.closest('.pf-media').classList.add('noimg')">
                 <div class="ph" aria-hidden="true">
                   <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><rect x="3" y="4" width="18" height="14" rx="2"/><circle cx="8.5" cy="9" r="1.6"/><path d="M4 16l4.5-4 3 2.5L15 10l5 5"/></svg>
@@ -978,7 +991,7 @@
             <article class="pf-card reveal">
               <figure class="pf-media">
                 <span class="pf-num">۳</span>
-                <img src="assets/portfolio/home-3.jpg" alt="نمونه‌کار راهکارهای یکپارچه 3" loading="lazy"
+                <img width="1200" height="900" src="assets/portfolio/home-3.jpg" alt="نمونه‌کار راهکارهای یکپارچه 3" loading="lazy"
                      onerror="this.closest('.pf-media').classList.add('noimg')">
                 <div class="ph" aria-hidden="true">
                   <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><rect x="3" y="4" width="18" height="14" rx="2"/><circle cx="8.5" cy="9" r="1.6"/><path d="M4 16l4.5-4 3 2.5L15 10l5 5"/></svg>
@@ -1000,7 +1013,7 @@
     <section class="fold-motion desc">
       <div class="wrap">
         <figure class="fm-banner reveal">
-          <img src="assets/photos/home.jpg" alt="تصویر DaranX" loading="lazy"
+          <img width="1600" height="901" src="assets/photos/home.jpg" alt="تصویر DaranX" loading="lazy"
                onerror="this.closest('.fm-banner').classList.add('noimg')">
           <div class="ph" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 3v18M3 12h18"/><circle cx="12" cy="12" r="9"/></svg><b>تصویر بنر — DaranX</b></div>
         </figure>
@@ -1254,15 +1267,15 @@
           <p>شریک فناوری سازمان‌ها و کسب‌وکارها. زیرساخت، امنیت و فناوری‌های هوشمند را طراحی و اجرا می‌کنیم، مسئولیت نتیجه را به عهده می‌گیریم و پشتیبانی می‌کنیم.</p>
         </div>
         <div class="foot-col">
-          <h4>حوزه‌ها</h4>
+          <h2>حوزه‌ها</h2>
           <a href="#services">Infrastructure</a><a href="#services">Security</a><a href="#services">Intelligence</a><a href="#venture">PlanoGram</a>
         </div>
         <div class="foot-col">
-          <h4>مسیر</h4>
+          <h2>مسیر</h2>
           <a href="#method">شناخت</a><a href="#method">طراحی</a><a href="#method">اجرا</a><a href="#method">پشتیبانی</a>
         </div>
         <div class="foot-col">
-          <h4>تماس</h4>
+          <h2>تماس</h2>
           <div class="fc-line"><a href="tel:+982188964116">۰۲۱-۸۸۹۶۴۱۱۶</a></div><div class="fc-line"><a href="tel:+982188966904">۸۸۹۶۶۹۰۴</a></div>
           <div class="fc-line"><a href="tel:+989359370910">۰۹۳۵-۹۳۷۰۹۱۰</a></div>
           <div class="fc-line">تهران، میدان فاطمی، نبش چهلستون، ساختمان چهلستون، طبقه ۲، واحد ۲۰۲</div>
@@ -1361,6 +1374,7 @@
     if(!form) return;
     var statusEl = document.getElementById('cfStatus');
     var btn = form.querySelector('.cf-submit');
+    var openedAt = Date.now(); // seconds the form was open go to contact.php (bot check)
     function show(kind, msg){
       statusEl.className = 'cf-status ' + kind;
       statusEl.textContent = msg;
@@ -1370,6 +1384,7 @@
       e.preventDefault();
       if(!form.checkValidity()){ form.reportValidity(); return; }
       var data = new FormData(form);
+      data.append('el', String(Math.round((Date.now() - openedAt) / 1000)));
       btn.disabled = true;
       var original = btn.textContent;
       btn.textContent = 'در حال ارسال…';
@@ -1607,6 +1622,37 @@
     [mqWide,mqMotion].forEach(function(m){ if(m.addEventListener) m.addEventListener('change',sync); });
     sync();
   })();
+</script>
+<script id="a11yjs">
+/* Keyboard focus must never sit under the fixed contact bar: when a focused
+   field or link ends up (partly) behind it, scroll it just clear of the bar. */
+(function(){
+  /* Skip link: move keyboard focus into <main> itself (the homepage slide
+     deck would otherwise swallow the #top jump without moving focus). */
+  var skip=document.querySelector('.skip-link'), main=document.getElementById('top');
+  if(skip&&main) skip.addEventListener('click',function(e){
+    e.preventDefault(); e.stopPropagation();
+    var deck=document.documentElement.classList.contains('deck');
+    main.focus({preventScroll:deck}); if(!deck) main.scrollIntoView();
+  });
+  var bar=document.querySelector('.fbar'); if(!bar) return;
+  function scroller(el){
+    for(var p=el.parentElement;p&&p!==document.body;p=p.parentElement){
+      var o=getComputedStyle(p).overflowY;
+      if((o==='auto'||o==='scroll')&&p.scrollHeight>p.clientHeight) return p;
+    }
+    return null;
+  }
+  document.addEventListener('focusin',function(e){
+    var t=e.target; if(!t||!t.getBoundingClientRect||bar.contains(t)) return;
+    requestAnimationFrame(function(){
+      var r=t.getBoundingClientRect(), limit=bar.getBoundingClientRect().top-12;
+      if(r.bottom<=limit||r.top>=window.innerHeight||r.height>limit-90) return;
+      var by=r.bottom-limit, sc=scroller(t);
+      if(sc) sc.scrollTop+=by; else window.scrollBy(0,by);
+    });
+  });
+})();
 </script>
 </body>
 </html>
