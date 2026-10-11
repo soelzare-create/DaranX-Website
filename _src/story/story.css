@@ -301,14 +301,6 @@ html{scroll-padding-bottom:6.5rem}
 .chip.hype rect{stroke-dasharray:5 5;fill:rgba(8,22,39,.6)}
 
 /* ---------------- sales landing pages ---------------- */
-.lp-hero{background-color:#0A1F38;background-image:linear-gradient(rgba(127,176,223,.07) 1px,transparent 1px),linear-gradient(90deg,rgba(127,176,223,.07) 1px,transparent 1px);background-size:40px 40px;
-  color:var(--st-ink);padding-block:clamp(3rem,7vw,5.5rem)}
-.lp-hero h1{color:var(--st-ink);margin-top:.9rem;max-width:20ch}
-.lp-hero h1 em{font-style:normal;color:var(--brand)}
-.lp-crumbs{font-size:.86rem;color:var(--st-ink-3);margin-bottom:.8rem}
-.lp-crumbs a{color:var(--st-ink-2);text-decoration:underline;text-decoration-color:rgba(180,200,221,.45);text-underline-offset:3px}
-.lp-badge{display:inline-flex;border:1px solid var(--st-line-2);border-radius:999px;padding:.25rem .9rem;font-size:.85rem;font-weight:800;color:var(--st-ink-2)}
-.lp-lead{margin-top:1rem;max-width:56ch;font-size:clamp(1rem,.95rem + .3vw,1.15rem);color:var(--st-ink-2)}
 .lp-cards{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:1rem;margin-top:1.4rem}
 .lp-card{background:var(--surface);border:1px solid var(--line);border-radius:22px;padding:1.4rem 1.4rem 1.2rem}
 .lp-card h3{margin:.6rem 0 .5rem}
