@@ -203,8 +203,8 @@ def sections(P):
   <h2 id="h-more" data-reveal>{R['h2']}</h2>
   <nav class="links" aria-label="{esc(plain(R['h2']))}" data-reveal>{''.join(f'<a href="{u}">{n}</a>' for n, u in R['links'])}</nav>
 </div></section>''')
-    C = P['cta']
-    out.append(f'''<section class="sec" id="contact-cta" aria-labelledby="h-cta"><div class="wrap">
+    C = P.get('cta')
+    if C: out.append(f'''<section class="sec" id="contact-cta" aria-labelledby="h-cta"><div class="wrap">
   <div class="cta-box" data-reveal>
     <h2 id="h-cta">{C['h2']}</h2>
     <p>{C['p']}</p>
@@ -278,11 +278,11 @@ def page(P, css_href, js_href, banner_href):
     icons = ('<svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false"><defs>'
              '<marker id="arrowhead" viewBox="0 0 10 10" refX="7" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">'
              '<path d="M0 0L10 5L0 10z" fill="context-stroke"/></marker>' + kit.icon_symbols() + '</defs></svg>')
-    return (head(P, css_href) + f'<link rel="stylesheet" href="{banner_href}">\n'
+    return (head(P, css_href) + f'<link rel="stylesheet" href="{banner_href}">\n' + P.get('head_extra', '')
             + f'<style>\n{state_css(P["states"])}\n{P.get("css", "")}\n</style>\n</head>\n<body>\n'
             + icons + '\n<a class="skip" href="#what">پرش به خلاصهٔ متنی صفحه</a>\n'
             + topbar(P) + '\n<div id="doc"><main id="top" tabindex="-1">\n' + banner.banner(P['file']) + '\n'
             + P.get('hero_html', '') + acts + '\n'
-            + P.get('before_sections', '') + sections(P) + '\n</main>\n' + FOOTER + '\n</div>\n' + FBAR + '\n'
+            + P.get('before_sections', '') + sections(P) + P.get('after_sections', '') + '\n</main>\n' + FOOTER + '\n</div>\n' + FBAR + '\n'
             + f'<script>window.STORY={timeline(P)};</script>\n'
-            + f'<script src="{js_href}" defer></script>\n</body>\n</html>\n')
+            + f'<script src="{js_href}" defer></script>\n' + P.get('scripts', '') + '</body>\n</html>\n')

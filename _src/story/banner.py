@@ -2,8 +2,7 @@
 then the five equipment groups, each linking to its landing page.
 
 The banner carries its own icon sprite (ids prefixed b-) and its own stylesheet
-(assets/banner.css), so the same markup works on the story pages and on the
-hand-written homepage, whose styles are separate.
+(assets/banner.css); layout.page() puts it first in every page's main.
 """
 import re
 from pathlib import Path
@@ -56,20 +55,3 @@ def banner(current=None):
 </section>
 <!-- /dx-banner -->'''
 
-
-def inject_index(root, css_href):
-    """put the banner (and its stylesheet) at the top of the hand-written homepage"""
-    p = root / 'index.html'
-    s = p.read_text(encoding='utf-8')
-    link = f'<!-- dx-banner-css --><link rel="stylesheet" href="{css_href}"><!-- /dx-banner-css -->'
-    if '<!-- dx-banner-css -->' in s:
-        s = re.sub(r'<!-- dx-banner-css -->.*?<!-- /dx-banner-css -->', lambda m: link, s, flags=re.S)
-    else:
-        s = s.replace('</head>', link + '\n</head>', 1)
-    if '<!-- dx-banner -->' in s:
-        s = re.sub(r'<!-- dx-banner -->.*?<!-- /dx-banner -->', lambda m: banner(), s, flags=re.S)
-    else:
-        anchor = '<main id="top" tabindex="-1">'
-        assert s.count(anchor) == 1
-        s = s.replace(anchor, anchor + '\n' + banner(), 1)
-    p.write_text(s, encoding='utf-8')

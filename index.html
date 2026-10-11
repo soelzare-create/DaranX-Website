@@ -2,929 +2,70 @@
 <html lang="fa" dir="rtl">
 <head>
 <meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<style>:root{color-scheme:light}html,body{margin:0}img{max-width:100%}[hidden]{display:none!important}</style>
-<title>DaranX — شریک فناوری سازمان‌ها</title>
-<link rel="preload" href="assets/fonts/Vazirmatn-VF.woff2" as="font" type="font/woff2" crossorigin>
-<link rel="stylesheet" href="assets/leaflet/leaflet.css">
-<style id="fontface">
-@font-face{font-family:"Vazirmatn";src:url("assets/fonts/Vazirmatn-VF.woff2") format("woff2");font-weight:100 900;font-style:normal;font-display:swap}
-</style>
-<style>
-  :root{
-    --ease-out:cubic-bezier(.23,1,.32,1); --ease-in-out:cubic-bezier(.77,0,.175,1);
-    --navy:#153A62;
-    --navy-deep:#0E2749;
-    --steel:#326CA4;
-    --steel-soft:#6FA3D2;
-    --silver:#D9D9D9;
-    --ground:#F3F6FA;
-    --surface:#FFFFFF;
-    --surface-2:#EAF0F7;
-    --ink:#12233A;
-    --ink-soft:#43566E;
-    --ink-faint:#5E6E86;
-    --line:#DCE4EE;
-    --line-strong:#C2D0E0;
-    --on-navy:#EAF1F8;
-    --on-navy-soft:#AEC4DB;
-    --on-navy-faint:#92A8C0;
-    --accent-solid:#153A62;
-    --on-accent:#FFFFFF;
-    --grad:linear-gradient(120deg,#153A62 0%,#2E6098 55%,#3E7BB6 100%);
-    --grad-soft:linear-gradient(120deg,#153A62,#3E7BB6);
-    --blob-1:rgba(62,123,182,.30);
-    --blob-2:rgba(21,58,98,.22);
-    --blob-3:rgba(111,163,210,.28);
-    --shadow:0 1px 2px rgba(21,58,98,.06), 0 10px 30px rgba(21,58,98,.08);
-    --shadow-lift:0 2px 8px rgba(21,58,98,.09), 0 22px 60px rgba(21,58,98,.16);
-    --r-sm:10px; --r-md:16px; --r-lg:26px;
-    --maxw:1160px;
-    --gutter:clamp(1rem,4vw,2.5rem);
-    --sp-section:clamp(4rem,8vw,7.5rem);
-    --font:"Vazirmatn",-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
-    --logo:url("assets/daranx-logo.svg");
-  }
-  @media (prefers-color-scheme:dark){
-    :root:not([data-theme="light"]){
-      --navy:#0C2036;
-      --navy-deep:#081627;
-      --steel:#5B95CE;
-      --steel-soft:#7FB0DF;
-      --silver:#31465D;
-      --ground:#081320;
-      --surface:#0F2338;
-      --surface-2:#142B45;
-      --ink:#E9F0F8;
-      --ink-soft:#A6BACF;
-      --ink-faint:#8398AF;
-      --line:#1E3450;
-      --line-strong:#2A4666;
-      --on-navy:#EAF1F8;
-      --on-navy-soft:#AEC4DB;
-      --on-navy-faint:#7189A6;
-      --accent-solid:#5B95CE;
-      --on-accent:#08151f;
-      --grad:linear-gradient(120deg,#1B4C7A 0%,#3E7BB6 55%,#7FB0DF 100%);
-      --grad-soft:linear-gradient(120deg,#2E6098,#7FB0DF);
-      --blob-1:rgba(91,149,206,.22);
-      --blob-2:rgba(46,96,152,.20);
-      --blob-3:rgba(127,176,223,.18);
-      --shadow:0 1px 2px rgba(0,0,0,.35), 0 12px 34px rgba(0,0,0,.4);
-      --shadow-lift:0 2px 8px rgba(0,0,0,.45), 0 26px 64px rgba(0,0,0,.55);
-    }
-  }
-  :root[data-theme="dark"]{
-    --navy:#0C2036;
-    --navy-deep:#081627;
-    --steel:#5B95CE;
-    --steel-soft:#7FB0DF;
-    --silver:#31465D;
-    --ground:#081320;
-    --surface:#0F2338;
-    --surface-2:#142B45;
-    --ink:#E9F0F8;
-    --ink-soft:#A6BACF;
-    --ink-faint:#8398AF;
-    --line:#1E3450;
-    --line-strong:#2A4666;
-    --on-navy:#EAF1F8;
-    --on-navy-soft:#AEC4DB;
-    --on-navy-faint:#7189A6;
-    --accent-solid:#5B95CE;
-    --on-accent:#08151f;
-    --grad:linear-gradient(120deg,#1B4C7A 0%,#3E7BB6 55%,#7FB0DF 100%);
-    --grad-soft:linear-gradient(120deg,#2E6098,#7FB0DF);
-    --blob-1:rgba(91,149,206,.22);
-    --blob-2:rgba(46,96,152,.20);
-    --blob-3:rgba(127,176,223,.18);
-    --shadow:0 1px 2px rgba(0,0,0,.35), 0 12px 34px rgba(0,0,0,.4);
-    --shadow-lift:0 2px 8px rgba(0,0,0,.45), 0 26px 64px rgba(0,0,0,.55);
-  }
-
-  *{box-sizing:border-box}
-  html{scroll-behavior:smooth}
-  body{
-    margin:0;font-family:var(--font);background:var(--ground);color:var(--ink);
-    line-height:1.75;-webkit-font-smoothing:antialiased;text-rendering:optimizeLegibility;overflow-x:hidden;
-  }
-  @media (prefers-reduced-motion:reduce){
-    html{scroll-behavior:auto}
-    *,*::before,*::after{animation-duration:.001ms!important;animation-iteration-count:1!important;transition-duration:.001ms!important}
-  }
-  a{color:inherit;text-decoration:none}
-  h1,h2,h3,h4{margin:0;font-weight:800;line-height:1.22;text-wrap:balance;color:var(--ink);letter-spacing:-.01em}
-  p{margin:0}
-  .wrap{max-width:var(--maxw);margin:0 auto;padding-inline:var(--gutter)}
-  .grad-text{background:var(--grad);-webkit-background-clip:text;background-clip:text;color:transparent}
-  .eyebrow{
-    font-size:.78rem;font-weight:700;letter-spacing:.16em;color:var(--steel);
-    text-transform:uppercase;display:inline-flex;align-items:center;gap:.55rem;
-  }
-  .eyebrow::before{content:"";width:26px;height:2px;background:currentColor;border-radius:2px;display:inline-block}
-  .lead{font-size:clamp(1.02rem,.95rem + .4vw,1.2rem);color:var(--ink-soft);font-weight:400}
-
-  /* scroll progress */
-  .progress{position:fixed;top:0;inset-inline:0;height:3px;z-index:60;background:transparent;pointer-events:none}
-  .progress span{display:block;height:100%;width:0;background:var(--grad-soft);
-    box-shadow:0 0 12px rgba(62,123,182,.6);transition:width .12s linear}
-
-  /* ---------- Nav ---------- */
-  header.nav{
-    position:sticky;top:env(safe-area-inset-top,0px);z-index:50;
-    background:color-mix(in srgb, var(--ground) 82%, transparent);
-    backdrop-filter:blur(14px) saturate(1.4);-webkit-backdrop-filter:blur(14px) saturate(1.4);
-    border-bottom:1px solid transparent;transition:border-color .3s,background .3s;
-  }
-  header.nav.scrolled{border-bottom-color:var(--line);background:color-mix(in srgb, var(--ground) 92%, transparent)}
-  /* transparent bar over the homepage hero so the image (and its DaranX logo) shows through */
-  header.nav.over-hero{background:transparent;backdrop-filter:none;-webkit-backdrop-filter:none;border-bottom-color:transparent}
-  header.nav.over-hero .brand,header.nav.over-hero .nav-links a{color:#fff;text-shadow:0 1px 12px rgba(0,0,0,.35)}
-  header.nav.over-hero .brand .x{color:var(--steel-soft)}
-  header.nav.over-hero .logomark{filter:brightness(0) invert(1)}
-  header.nav.over-hero .theme-toggle{color:#fff;border-color:rgba(255,255,255,.45)}
-  header.nav.over-hero .menu-btn{color:#fff}
-  .nav-inner{display:flex;align-items:center;justify-content:space-between;gap:1rem;height:72px}
-  .brand{display:flex;align-items:center;gap:.6rem;font-weight:900;font-size:1.3rem;color:var(--ink)}
-  .brand .x{color:var(--steel)}
-  .logomark{width:28px;height:34px;flex:none;background:var(--logo) no-repeat left center;background-size:auto 100%}
-  .nav-links{display:flex;align-items:center;gap:.25rem}
-  .nav-links a{font-size:.95rem;font-weight:500;color:var(--ink-soft);padding:.5rem .8rem;border-radius:var(--r-sm);transition:color .2s,background .2s}
-  @media (hover:hover) and (pointer:fine){.nav-links a:hover{color:var(--ink);background:var(--surface-2)}}
-  .nav-cta{font-weight:600;color:var(--on-accent)!important;background:var(--accent-solid);
-    padding:.55rem 1.2rem!important;border-radius:999px;transition:transform .2s var(--ease-out),box-shadow .2s var(--ease-out),filter .2s var(--ease-out)}
-  @media (hover:hover) and (pointer:fine){.nav-cta:hover{filter:brightness(.94);transform:translateY(-1px);box-shadow:var(--shadow)}}
-  .menu-btn{display:none;background:none;border:1px solid var(--line-strong);border-radius:var(--r-sm);color:var(--ink);width:44px;height:44px;cursor:pointer;font-size:1.2rem}
-  .theme-toggle{background:none;border:1px solid var(--line-strong);border-radius:var(--r-sm);width:44px;height:44px;cursor:pointer;color:var(--ink);display:grid;place-items:center;flex:none;transition:color .2s,border-color .2s}
-  @media (hover:hover) and (pointer:fine){.theme-toggle:hover{border-color:var(--steel);color:var(--steel)}}
-  .theme-toggle svg{width:20px;height:20px}
-  .theme-toggle .moon{display:none}
-  :root[data-theme="dark"] .theme-toggle .sun{display:none}
-  :root[data-theme="dark"] .theme-toggle .moon{display:block}
-  @media (prefers-color-scheme:dark){:root:not([data-theme="light"]) .theme-toggle .sun{display:none}:root:not([data-theme="light"]) .theme-toggle .moon{display:block}}
-
-  /* ---------- Hero ---------- */
-  .hero{position:relative;overflow:hidden;padding-block:clamp(3rem,6vw,5.5rem) var(--sp-section)}
-  .blobs{position:absolute;inset:-20% -10%;z-index:0;filter:blur(60px);pointer-events:none;opacity:.9}
-  .blob{position:absolute;border-radius:50%;will-change:transform}
-  .blob.b1{width:44vw;height:44vw;max-width:560px;max-height:560px;top:-6%;inset-inline-start:-4%;background:radial-gradient(circle at 30% 30%,var(--blob-1),transparent 70%);animation:drift1 22s ease-in-out infinite}
-  .blob.b2{width:40vw;height:40vw;max-width:520px;max-height:520px;bottom:-14%;inset-inline-end:-6%;background:radial-gradient(circle at 60% 40%,var(--blob-3),transparent 70%);animation:drift2 26s ease-in-out infinite}
-  .blob.b3{width:30vw;height:30vw;max-width:380px;max-height:380px;top:30%;inset-inline-end:26%;background:radial-gradient(circle at 50% 50%,var(--blob-2),transparent 70%);animation:drift3 30s ease-in-out infinite}
-  @keyframes drift1{0%,100%{transform:translate(0,0) scale(1)}50%{transform:translate(6%,8%) scale(1.12)}}
-  @keyframes drift2{0%,100%{transform:translate(0,0) scale(1)}50%{transform:translate(-8%,-6%) scale(1.08)}}
-  @keyframes drift3{0%,100%{transform:translate(0,0) scale(1)}50%{transform:translate(4%,-10%) scale(1.15)}}
-  .hero-grid{position:relative;z-index:1;display:grid;grid-template-columns:1.12fr .88fr;gap:clamp(2rem,5vw,4.5rem);align-items:center}
-  .hero-pill{display:inline-flex;align-items:center;gap:.55rem;background:color-mix(in srgb,var(--surface) 70%,transparent);
-    border:1px solid var(--line);border-radius:999px;padding:.4rem .95rem;font-size:.82rem;font-weight:600;color:var(--ink-soft);
-    backdrop-filter:blur(6px);box-shadow:var(--shadow)}
-  .hero-pill .dot{width:8px;height:8px;border-radius:50%;background:var(--steel);box-shadow:0 0 0 0 rgba(62,123,182,.5);animation:pulse 2.4s infinite}
-  @keyframes pulse{0%{box-shadow:0 0 0 0 rgba(62,123,182,.5)}70%{box-shadow:0 0 0 8px rgba(62,123,182,0)}100%{box-shadow:0 0 0 0 rgba(62,123,182,0)}}
-  .hero h1{font-size:clamp(2.4rem,3.4vw + 1.4rem,4.4rem);font-weight:900;line-height:1.1;margin-top:1.3rem}
-  .hero h1 .ln{display:block;overflow:hidden}
-  .hero h1 .ln>span{display:inline-block;transform:translateY(110%);animation:lineUp .9s cubic-bezier(.2,.7,.2,1) forwards}
-  .hero h1 .ln:nth-child(2)>span{animation-delay:.12s}
-  @keyframes lineUp{to{transform:translateY(0)}}
-  .hero .lead{margin-top:1.5rem;max-width:36ch;opacity:0;animation:fadeUp .8s ease .4s forwards}
-  .hero-actions{display:flex;flex-wrap:wrap;gap:.9rem;margin-top:2.1rem;opacity:0;animation:fadeUp .8s ease .55s forwards}
-  @keyframes fadeUp{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:none}}
-  .btn{display:inline-flex;align-items:center;gap:.55rem;font-weight:600;font-size:1rem;padding:.9rem 1.7rem;border-radius:999px;cursor:pointer;
-    border:1px solid transparent;transition:transform .2s var(--ease-out),box-shadow .2s var(--ease-out),filter .2s var(--ease-out),border-color .2s,color .2s;position:relative;overflow:hidden}
-  .btn-primary{background:var(--grad-soft);color:#fff;background-size:160% 160%;background-position:0% 50%;transition:transform .2s var(--ease-out),box-shadow .2s var(--ease-out),background-position .5s}
-  @media (hover:hover) and (pointer:fine){.btn-primary:hover{background-position:100% 50%;transform:translateY(-2px);box-shadow:var(--shadow-lift)}}
-  :root[data-theme="dark"] .btn-primary{color:#08151f}
-  .btn-ghost{background:transparent;color:var(--ink);border-color:var(--line-strong)}
-  @media (hover:hover) and (pointer:fine){.btn-ghost:hover{border-color:var(--steel);color:var(--steel);transform:translateY(-2px)}}
-  .hero-tagline{margin-top:2.6rem;display:flex;flex-wrap:wrap;align-items:center;gap:.7rem;font-size:.9rem;color:var(--ink-faint);font-weight:600;
-    opacity:0;animation:fadeUp .8s ease .7s forwards}
-  .hero-tagline b{color:var(--ink-soft);font-weight:700}
-  .hero-tagline span{display:inline-flex;align-items:center;gap:.7rem}
-  .hero-tagline span::after{content:"←";color:var(--silver)}
-  .hero-tagline span:last-child::after{content:""}
-
-  /* hero visual */
-  .hero-visual{position:relative;aspect-ratio:1/1;max-width:440px;margin-inline:auto;width:100%;opacity:0;animation:fadeUp 1s ease .3s forwards}
-  .hv-lines{position:absolute;inset:0;width:100%;height:100%;overflow:visible}
-  .hv-lines path{stroke:var(--steel);stroke-width:.6;fill:none;stroke-dasharray:4 4;opacity:.5;animation:dash 3s linear infinite}
-  @keyframes dash{to{stroke-dashoffset:-16}}
-  .hv-ring{position:absolute;border:1px solid var(--line-strong);border-radius:50%;opacity:.7}
-  .hv-ring.r1{inset:0}.hv-ring.r2{inset:14%}.hv-ring.r3{inset:30%}
-  .orbit{position:absolute;inset:0;border-radius:50%;animation:spin 18s linear infinite}
-  .orbit.o2{inset:14%;animation:spin 13s linear infinite reverse}
-  .orbit.o3{inset:30%;animation:spin 9s linear infinite}
-  @keyframes spin{to{transform:rotate(360deg)}}
-  .orbit-dot{position:absolute;top:-4px;left:50%;transform:translateX(-50%);width:9px;height:9px;border-radius:50%;background:var(--steel);box-shadow:0 0 10px rgba(62,123,182,.7)}
-  .orbit.o2 .orbit-dot{background:var(--steel-soft);width:7px;height:7px}
-  .orbit.o3 .orbit-dot{background:var(--navy);width:6px;height:6px}
-  :root[data-theme="dark"] .orbit.o3 .orbit-dot{background:#fff}
-  .hv-core{position:absolute;inset:36%;border-radius:50%;background:#fff;display:grid;place-items:center;
-    box-shadow:var(--shadow-lift);animation:corePulse 3.4s ease-in-out infinite}
-  .hv-core .logomark{width:42px;height:51px;max-width:60%;max-height:70%}
-  @keyframes corePulse{0%,100%{box-shadow:var(--shadow-lift),0 0 0 0 rgba(62,123,182,.35)}50%{box-shadow:var(--shadow-lift),0 0 0 14px rgba(62,123,182,0)}}
-  .hv-node{position:absolute;width:clamp(56px,15%,70px);height:clamp(56px,15%,70px);background:var(--surface);border:1px solid var(--line);
-    border-radius:var(--r-md);display:grid;place-items:center;box-shadow:var(--shadow);color:var(--steel);transform:translate(-50%,-50%);
-    animation:float 5s ease-in-out infinite}
-  .hv-node svg{width:44%;height:44%}
-  .hv-node.n1{top:8%;left:50%;animation-delay:0s}
-  .hv-node.n2{top:50%;left:92%;animation-delay:.6s}
-  .hv-node.n3{top:92%;left:50%;animation-delay:1.2s}
-  .hv-node.n4{top:50%;left:8%;animation-delay:1.8s}
-  @keyframes float{0%,100%{transform:translate(-50%,-50%)}50%{transform:translate(-50%,-58%)}}
-  .hv-node .lbl{position:absolute;font-size:.64rem;font-weight:700;color:var(--ink-faint);white-space:nowrap}
-  .hv-node.n1 .lbl{top:-1.5rem}
-  .hv-node.n2 .lbl{left:calc(100% + .5rem)}
-  .hv-node.n3 .lbl{bottom:-1.5rem}
-  .hv-node.n4 .lbl{right:calc(100% + .5rem)}
-
-  /* section basics */
-  section{scroll-margin-top:92px}
-  .sec-head{max-width:58ch}
-  .sec-head h2{font-size:clamp(1.8rem,1.4rem + 1.8vw,2.7rem);margin-top:1rem}
-  .sec-head .lead{margin-top:1rem}
-
-  /* philosophy */
-  .philosophy{background:var(--navy);color:var(--on-navy);padding-block:var(--sp-section);position:relative;overflow:hidden}
-  .philosophy::before{content:"";position:absolute;inset:0;background:
-    radial-gradient(600px 300px at 85% 0%,rgba(62,123,182,.28),transparent 70%),
-    radial-gradient(500px 260px at 5% 100%,rgba(111,163,210,.18),transparent 70%);pointer-events:none}
-  .philosophy>.wrap{position:relative}
-  .philosophy .eyebrow{color:var(--steel-soft)}
-  .philosophy h2{color:#fff;font-size:clamp(1.9rem,1.3rem + 2.4vw,3.1rem);max-width:20ch;line-height:1.2}
-  .phi-grid{display:grid;grid-template-columns:1fr 1fr;gap:clamp(2rem,5vw,4rem);align-items:start;margin-top:1.6rem}
-  .phi-belief{border-inline-start:3px solid var(--steel-soft);padding-inline-start:1.4rem;font-size:clamp(1.15rem,1rem + .6vw,1.45rem);color:#fff;font-weight:700;line-height:1.5}
-  .phi-body p{color:var(--on-navy-soft);font-size:1.05rem}
-  .phi-body p + p{margin-top:1rem}
-
-  /* method */
-  .method{padding-block:var(--sp-section)}
-  .steps{position:relative;display:grid;grid-template-columns:repeat(4,1fr);gap:1.2rem;margin-top:2.8rem}
-  .steps::before{content:"";position:absolute;top:2.8rem;inset-inline:6%;height:2px;background:var(--line);z-index:0}
-  .steps::after{content:"";position:absolute;top:2.8rem;inset-inline-end:6%;height:2px;width:0;background:var(--grad-soft);z-index:1;transition:width 1.3s ease}
-  .steps.drawn::after{width:88%}
-  .step{position:relative;z-index:2;background:var(--surface);border:1px solid var(--line);border-radius:var(--r-md);
-    padding:1.6rem 1.5rem 1.7rem;box-shadow:var(--shadow);transition:transform .25s var(--ease-out),box-shadow .25s var(--ease-out),border-color .25s}
-  @media (hover:hover) and (pointer:fine){.step:hover{transform:translateY(-5px);box-shadow:var(--shadow-lift);border-color:var(--steel)}}
-  .step-num{display:inline-grid;place-items:center;width:2.4rem;height:2.4rem;border-radius:50%;background:var(--surface);
-    border:2px solid var(--steel);color:var(--steel);font-weight:800;font-size:.95rem;font-variant-numeric:tabular-nums;
-    margin-top:-2.9rem;margin-bottom:.8rem;box-shadow:0 0 0 5px var(--surface)}
-  @media (hover:hover) and (pointer:fine){.step:hover .step-num{background:var(--grad-soft);color:#fff;border-color:transparent}}
-  @media (hover:hover) and (pointer:fine){:root[data-theme="dark"] .step:hover .step-num{color:#08151f}}
-  .step h3{font-size:1.3rem}
-  .step p{color:var(--ink-soft);font-size:.96rem;margin-top:.6rem}
-  .method-note{margin-top:2rem;font-size:1rem;color:var(--ink-soft);background:var(--surface-2);border-radius:var(--r-md);
-    padding:1.15rem 1.35rem;border-inline-start:3px solid var(--steel)}
-
-  /* differentiation */
-  .diff{padding-block:var(--sp-section);text-align:center}
-  .diff-quote{font-size:clamp(1.55rem,1.1rem + 2.4vw,2.9rem);font-weight:800;line-height:1.4;max-width:22ch;margin:1.3rem auto 0}
-  .diff-quote em{font-style:normal}
-  .diff-sub{max-width:52ch;margin:1.6rem auto 0;color:var(--ink-soft);font-size:1.06rem}
-
-  /* services */
-  .services{padding-block:var(--sp-section);background:var(--surface-2);position:relative;overflow:hidden}
-  .design-layer{display:flex;align-items:center;justify-content:center;gap:.8rem;margin:2.4rem auto 0;background:var(--grad-soft);
-    color:#fff;border-radius:999px;padding:.9rem 1.9rem;width:fit-content;max-width:100%;flex-wrap:wrap;text-align:center;font-weight:700;box-shadow:var(--shadow-lift)}
-  :root[data-theme="dark"] .design-layer{color:#08151f}
-  .design-layer .dl-note{font-weight:400;color:color-mix(in srgb,#fff 78%,transparent);font-size:.9rem}
-  :root[data-theme="dark"] .design-layer .dl-note{color:color-mix(in srgb,#08151f 70%,transparent)}
-  .connector{display:flex;justify-content:center}
-  .connector svg{width:min(560px,90%);height:46px;color:var(--line-strong)}
-  .svc-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1.3rem}
-  .svc{position:relative;background:var(--surface);border:1px solid var(--line);border-radius:var(--r-lg);padding:2.1rem 1.9rem;
-    box-shadow:var(--shadow);display:flex;flex-direction:column;transition:transform .28s var(--ease-out),box-shadow .28s var(--ease-out);overflow:hidden}
-  .svc::before{content:"";position:absolute;inset:0 0 auto 0;height:4px;background:var(--grad-soft);transform:scaleX(0);transform-origin:right;transition:transform .35s ease}
-  @media (hover:hover) and (pointer:fine){.svc:hover{transform:translateY(-6px);box-shadow:var(--shadow-lift)}}
-  @media (hover:hover) and (pointer:fine){.svc:hover::before{transform:scaleX(1)}}
-  .svc-icon{width:54px;height:54px;border-radius:var(--r-md);background:var(--grad-soft);color:#fff;display:grid;place-items:center;margin-bottom:1.2rem;box-shadow:var(--shadow)}
-  :root[data-theme="dark"] .svc-icon{color:#08151f}
-  .svc-icon svg{width:26px;height:26px}
-  .svc h3{font-size:1.42rem}
-  .svc .svc-fa{color:var(--ink-faint);font-size:.9rem;font-weight:600;margin-top:.15rem}
-  .svc p{color:var(--ink-soft);margin-top:.9rem;font-size:.97rem}
-  .svc ul{list-style:none;padding:0;margin:1.3rem 0 0;display:flex;flex-direction:column;gap:.55rem}
-  .svc li{display:flex;align-items:center;gap:.6rem;font-size:.95rem;color:var(--ink)}
-  .svc li::before{content:"";width:6px;height:6px;border-radius:50%;background:var(--steel);flex:none}
-  a.svc{color:inherit;cursor:pointer}
-  .svc-more{margin-top:auto;padding-top:1.4rem;color:var(--steel);font-weight:700;font-size:.95rem;display:inline-flex;align-items:center;gap:.4rem}
-  .svc-more svg{width:16px;height:16px;transition:transform .25s var(--ease-out)}
-  @media (hover:hover) and (pointer:fine){.svc:hover .svc-more svg{transform:translateX(-5px)}}
-
-  /* about */
-  .about{padding-block:var(--sp-section)}
-  .about-grid{display:grid;grid-template-columns:1fr 1fr;gap:clamp(2rem,5vw,4rem);align-items:start}
-  .about-list{list-style:none;padding:0;margin:1.6rem 0 0;display:flex;flex-direction:column;gap:1rem}
-  .about-list li{display:flex;gap:.9rem;color:var(--ink-soft);font-size:1.02rem}
-  .about-list .no{color:var(--ink-faint)}
-  .about-list s{text-decoration-color:var(--silver)}
-  .about-list .yes{color:var(--ink);margin-top:.3rem;align-items:flex-start}
-  .about-list .yes b{font-weight:700}
-  .about-list .yes span{flex:none;width:24px;height:24px;border-radius:50%;display:grid;place-items:center;background:var(--grad-soft);color:#fff;margin-top:.15rem}
-  :root[data-theme="dark"] .about-list .yes span{color:#08151f}
-  .about-list .yes span svg{width:14px;height:14px}
-  .about-promise{position:relative;overflow:hidden;background:var(--navy);color:#fff;border-radius:var(--r-lg);padding:2.3rem;box-shadow:var(--shadow-lift)}
-  .about-promise::before{content:"";position:absolute;inset:0;background:radial-gradient(400px 200px at 90% 0,rgba(62,123,182,.35),transparent 70%);pointer-events:none}
-  .about-promise>*{position:relative}
-  .about-promise .eyebrow{color:var(--steel-soft)}
-  .about-promise .big{font-size:clamp(1.4rem,1.1rem + 1.4vw,1.95rem);font-weight:800;line-height:1.4;margin-top:1rem;color:#fff}
-  .about-promise .sub{color:var(--on-navy-soft);margin-top:1rem}
-  .aud-tags{display:flex;flex-wrap:wrap;gap:.6rem;margin-top:1.6rem}
-  .aud-tags span{background:var(--surface);border:1px solid var(--line);border-radius:999px;padding:.45rem 1rem;font-size:.9rem;color:var(--ink-soft);font-weight:500;transition:transform .2s var(--ease-out),border-color .2s}
-  @media (hover:hover) and (pointer:fine){.aud-tags span:hover{transform:translateY(-2px);border-color:var(--steel)}}
-
-  /* venture */
-  .venture{padding-block:var(--sp-section);background:var(--surface-2)}
-  .venture-card{background:var(--surface);border:1px solid var(--line);border-radius:var(--r-lg);padding:clamp(1.8rem,4vw,3rem);
-    box-shadow:var(--shadow);display:grid;grid-template-columns:1fr 1fr;gap:clamp(1.5rem,4vw,3rem);align-items:center}
-  .venture-tag{display:inline-flex;align-items:center;gap:.5rem;font-size:.76rem;font-weight:800;letter-spacing:.1em;text-transform:uppercase;
-    color:var(--steel);border:1px solid var(--line-strong);border-radius:999px;padding:.35rem .9rem}
-  .venture-card h3{font-size:clamp(1.7rem,1.2rem + 1.8vw,2.4rem);margin-top:1.1rem}
-  .venture-card p{color:var(--ink-soft);margin-top:1rem;font-size:1.02rem}
-  .venture-list{list-style:none;padding:0;margin:1.3rem 0 0;display:grid;gap:.6rem}
-  .venture-list li{display:flex;gap:.6rem;align-items:center;color:var(--ink);font-size:.96rem}
-  .venture-list li::before{content:"›";color:var(--steel);font-weight:800}
-  .venture-tree{background:var(--ground);border:1px solid var(--line);border-radius:var(--r-md);padding:1.7rem}
-  .vt-root{font-weight:900;color:var(--ink);font-size:1.1rem;display:flex;align-items:center;gap:.5rem}
-  .vt-root .x{color:var(--steel)}
-  .vt-branch{display:flex;flex-direction:column;gap:.55rem;margin-top:.9rem;padding-inline-start:.4rem}
-  .vt-item{display:flex;align-items:center;gap:.6rem;color:var(--ink-soft);font-size:.95rem}
-  .vt-item::before{content:"├─";color:var(--silver);font-family:monospace}
-  .vt-item.venture-node{color:var(--ink);font-weight:700}
-  .vt-item.venture-node::before{content:"└─";color:var(--steel)}
-  .vt-item.venture-node .pg{color:var(--steel)}
-
-  /* contact */
-  .contact{padding-block:var(--sp-section)}
-  .contact-grid{display:grid;grid-template-columns:1.05fr .95fr;gap:clamp(1.6rem,4vw,3rem);align-items:stretch}
-  .contact-info{display:flex;flex-direction:column}
-  .contact-info h2{font-size:clamp(1.7rem,1.3rem + 1.8vw,2.6rem);margin-top:1rem}
-  .contact-info .lead{margin-top:1rem;max-width:44ch}
-  .ci-list{display:grid;gap:1rem;margin-top:2rem}
-  .ci-item{display:flex;gap:1rem;align-items:flex-start;background:var(--surface);border:1px solid var(--line);border-radius:var(--r-md);
-    padding:1.15rem 1.25rem;box-shadow:var(--shadow);transition:transform .22s var(--ease-out),border-color .22s,box-shadow .22s var(--ease-out)}
-  @media (hover:hover) and (pointer:fine){.ci-item:hover{transform:translateY(-3px);border-color:var(--steel);box-shadow:var(--shadow-lift)}}
-  .ci-ico{width:46px;height:46px;flex:none;border-radius:var(--r-sm);background:var(--surface-2);color:var(--steel);display:grid;place-items:center}
-  .ci-ico svg{width:22px;height:22px}
-  .ci-item .k{font-size:.82rem;color:var(--ink-faint);font-weight:600}
-  .ci-item .v{display:flex;flex-direction:column;gap:.15rem;margin-top:.25rem;font-weight:600;color:var(--ink);font-variant-numeric:tabular-nums}
-  .ci-item .v a{transition:color .2s}
-  @media (hover:hover) and (pointer:fine){.ci-item .v a:hover{color:var(--steel)}}
-  .ci-item .v.addr{font-weight:500;line-height:1.7;color:var(--ink-soft)}
-  .contact-cta{position:relative;overflow:hidden;background:var(--navy);color:#fff;border-radius:var(--r-lg);
-    padding:clamp(2rem,4vw,3rem);display:flex;flex-direction:column;justify-content:center;box-shadow:var(--shadow-lift)}
-  .contact-cta::before{content:"";position:absolute;inset:0;background:
-    radial-gradient(420px 240px at 15% 10%,rgba(62,123,182,.4),transparent 70%),
-    radial-gradient(360px 220px at 100% 100%,rgba(111,163,210,.25),transparent 70%);pointer-events:none}
-  .contact-cta>*{position:relative}
-  .contact-cta .eyebrow{color:var(--steel-soft)}
-  .contact-cta h3{color:#fff;font-size:clamp(1.4rem,1.1rem + 1.4vw,2rem);line-height:1.35;margin-top:1rem}
-  .contact-cta p{color:var(--on-navy-soft);margin-top:1rem}
-  .contact-actions{display:flex;flex-wrap:wrap;gap:.9rem;margin-top:1.8rem}
-  .btn-light{background:#fff;color:var(--navy)}
-  @media (hover:hover) and (pointer:fine){.btn-light:hover{transform:translateY(-2px);box-shadow:var(--shadow-lift)}}
-  .btn-outline{background:transparent;color:#fff;border-color:rgba(255,255,255,.35)}
-  @media (hover:hover) and (pointer:fine){.btn-outline:hover{border-color:#fff;transform:translateY(-2px)}}
-  .map-embed{margin-top:1.6rem;border-radius:var(--r-md);overflow:hidden;border:1px solid rgba(255,255,255,.18);aspect-ratio:16/7;position:relative;background:rgba(255,255,255,.05)}
-  .map-embed svg{position:absolute;inset:0;width:100%;height:100%}
-  .map-pin{position:absolute;top:44%;left:50%;transform:translate(-50%,-50%);color:#fff;display:grid;place-items:center}
-  .map-pin .pin{width:16px;height:16px;border-radius:50%;background:var(--steel-soft);box-shadow:0 0 0 0 rgba(111,163,210,.6);animation:pulse2 2.2s infinite}
-  @keyframes pulse2{0%{box-shadow:0 0 0 0 rgba(111,163,210,.6)}70%{box-shadow:0 0 0 16px rgba(111,163,210,0)}100%{box-shadow:0 0 0 0 rgba(111,163,210,0)}}
-  .map-cap{position:absolute;bottom:.6rem;inset-inline-start:.8rem;font-size:.78rem;color:var(--on-navy-soft);background:rgba(8,20,32,.5);padding:.25rem .6rem;border-radius:6px;backdrop-filter:blur(4px)}
-
-  /* footer */
-  footer.site{background:var(--navy-deep);color:var(--on-navy-soft);padding-block:3.4rem 2.2rem}
-  .foot-grid{display:grid;grid-template-columns:1.5fr 1fr 1fr 1.2fr;gap:2rem}
-  .foot-brand .brand{color:#fff;margin-bottom:.9rem}
-  .foot-brand p{max-width:34ch;font-size:.95rem;color:var(--on-navy-faint)}
-  .foot-col h2{color:#fff;font-size:.9rem;letter-spacing:.05em;margin-bottom:1rem;font-weight:700}
-  .foot-col a{display:block;color:var(--on-navy-soft);font-size:.94rem;padding:.28rem 0;transition:color .2s}
-  @media (hover:hover) and (pointer:fine){.foot-col a:hover{color:#fff}}
-  .foot-col .fc-line{color:var(--on-navy-soft);font-size:.9rem;padding:.28rem 0;font-variant-numeric:tabular-nums;line-height:1.7}
-  .foot-bottom{border-top:1px solid rgba(255,255,255,.1);margin-top:2.6rem;padding-top:1.6rem;display:flex;flex-wrap:wrap;gap:.8rem;
-    justify-content:space-between;align-items:center;font-size:.86rem;color:var(--on-navy-faint)}
-  .foot-bottom a{color:var(--on-navy-soft)}
-  @media (hover:hover) and (pointer:fine){.foot-bottom a:hover{color:#fff}}
-  .foot-bottom .core{color:var(--on-navy-soft)}
-
-  /* reveal — visible at rest; only animates in */
-  @keyframes dx-rise{from{opacity:0;transform:translateY(22px)}to{opacity:1;transform:none}}
-  .reveal.in{animation:dx-rise .7s ease both}
-  .reveal.in .stagger{animation:dx-rise .6s ease both}
-  .reveal.in .stagger:nth-child(2){animation-delay:.08s}
-  .reveal.in .stagger:nth-child(3){animation-delay:.16s}
-  .reveal.in .stagger:nth-child(4){animation-delay:.24s}
-  @media (prefers-reduced-motion:reduce){.reveal.in,.reveal.in .stagger{animation:none}}
-
-  /* ---------- icon & micro motion ---------- */
-  .ico-rays{transform-box:view-box;transform-origin:12px 12px;animation:spin 9s linear infinite}
-  .ico-pulse{transform-box:view-box;transform-origin:12px 12px;animation:icoPulse 3.2s ease-in-out infinite}
-  .ico-led{animation:led 1.9s ease-in-out infinite}
-  .ico-led.l2{animation-delay:.7s}
-  @keyframes icoPulse{0%,100%{transform:scale(1)}50%{transform:scale(1.12)}}
-  @keyframes led{0%,100%{opacity:.3}50%{opacity:1}}
-  .svc-icon{transition:transform .35s cubic-bezier(.2,.7,.2,1)}
-  @media (hover:hover) and (pointer:fine){.svc:hover .svc-icon{transform:rotate(-6deg) scale(1.08)}}
-  @media (hover:hover) and (pointer:fine){.svc:hover .ico-rays{animation-duration:2.4s}}
-  @media (hover:hover) and (pointer:fine){.svc:hover .ico-pulse{animation-duration:1.1s}}
-  @media (hover:hover) and (pointer:fine){.svc:hover .ico-led{animation-duration:.65s}}
-  .hv-node svg{transform-box:view-box;transform-origin:12px 12px;animation:icoBreath 4.6s ease-in-out infinite}
-  .hv-node.n2 svg{animation-delay:.5s}.hv-node.n3 svg{animation-delay:1s}.hv-node.n4 svg{animation-delay:1.5s}
-  @keyframes icoBreath{0%,100%{transform:scale(1)}50%{transform:scale(1.14)}}
-  .design-layer>svg{transform-box:view-box;transform-origin:12px 12px;animation:spin 16s linear infinite}
-  /* rotating glow behind hero mark */
-  .hv-core::before{content:"";position:absolute;inset:-15%;border-radius:50%;z-index:-1;filter:blur(3px);
-    background:conic-gradient(from 0deg,transparent 0deg,rgba(62,123,182,.55) 90deg,transparent 200deg);animation:spin 6s linear infinite}
-  /* button shine sweep */
-  .btn-primary::after{content:"";position:absolute;top:0;inset-inline-start:-70%;width:45%;height:100%;pointer-events:none;
-    background:linear-gradient(120deg,transparent,rgba(255,255,255,.45),transparent);transform:skewX(-18deg)}
-  @media (hover:hover) and (pointer:fine){.btn-primary:hover::after{animation:shine .85s ease}}
-  @keyframes shine{from{inset-inline-start:-70%}to{inset-inline-start:130%}}
-  /* nav link underline */
-  .nav-links a:not(.nav-cta){position:relative}
-  .nav-links a:not(.nav-cta)::after{content:"";position:absolute;bottom:.35rem;inset-inline:.8rem;height:2px;border-radius:2px;
-    background:var(--grad-soft);transform:scaleX(0);transform-origin:right;transition:transform .28s ease}
-  @media (hover:hover) and (pointer:fine){.nav-links a:not(.nav-cta):hover::after{transform:scaleX(1)}}
-  /* contact icon hover */
-  @keyframes wiggle{0%,100%{transform:rotate(0)}22%{transform:rotate(-13deg)}62%{transform:rotate(11deg)}}
-  .ci-ico{transition:background .25s,color .25s,transform .25s var(--ease-out)}
-  @media (hover:hover) and (pointer:fine){.ci-item:hover .ci-ico{background:var(--grad-soft);color:#fff;transform:scale(1.06)}}
-  @media (hover:hover) and (pointer:fine){:root[data-theme="dark"] .ci-item:hover .ci-ico{color:#08151f}}
-  @media (hover:hover) and (pointer:fine){.ci-item:hover .ci-ico svg{animation:wiggle .55s ease}}
-  /* logomark subtle sheen on brand hover */
-  .brand{transition:transform .25s var(--ease-out)}
-  @media (hover:hover) and (pointer:fine){.brand:hover{transform:translateY(-1px)}}
-  .hero-visual{will-change:transform}
-  .blobs{will-change:transform}
-
-  :focus-visible{outline:2px solid var(--steel);outline-offset:3px;border-radius:4px}
-
-  /* responsive */
-  @media (max-width:980px){
-    .hero-grid{grid-template-columns:1fr;gap:2.5rem}
-    .hero-visual{max-width:360px;order:-1}
-    .phi-grid,.about-grid,.venture-card,.contact-grid{grid-template-columns:1fr}
-    .steps{grid-template-columns:1fr 1fr}
-    .steps::before,.steps::after{display:none}
-    .step-num{margin-top:0}
-    .svc-grid{grid-template-columns:1fr;max-width:470px;margin-inline:auto}
-    .connector{display:none}
-    .foot-grid{grid-template-columns:1fr 1fr;gap:2rem}
-  }
-  @media (max-width:640px){
-    .nav-links{display:none}
-    .nav-links.open{display:flex;flex-direction:column;position:absolute;top:72px;inset-inline:0;background:var(--surface);
-      border-bottom:1px solid var(--line);padding:1rem var(--gutter);gap:.3rem;box-shadow:var(--shadow)}
-    .nav-links.open a{padding:.7rem .8rem}
-    .menu-btn{display:grid;place-items:center}
-    .steps{grid-template-columns:1fr}
-    .foot-grid{grid-template-columns:1fr;gap:1.8rem}
-    .hero-tagline span::after{content:"↓"}
-  }
-
-  /* Press feedback (Emil Kowalski): controls answer the finger/click at once. */
-  :is(.btn,.btn-primary,.btn-ghost,.btn-light,.btn-outline,.nav-cta,.cbtn,.cpb-btn,.chip-link,.subnav a):active{transform:scale(.97);transition-duration:.12s}
-  :is(.svc,.step,.ci-item,.pf-card,.sub-card,.hub-card,.idx-card,.card):active{transform:scale(.985);transition-duration:.12s}
-  /* Icon micro-animations play when their card is hovered or focused, not all at once at rest. */
-  :is(.ico-rays,.ico-pulse,.ico-led){animation-play-state:paused}
-  :is(.svc,.sub-card,.hub-card,.card,.idx-card,a,article):is(:hover,:focus-within) :is(.ico-rays,.ico-pulse,.ico-led){animation-play-state:running}
-  @media (prefers-reduced-motion:reduce){:is(.btn,.btn-primary,.btn-ghost,.btn-light,.btn-outline,.nav-cta,.cbtn,.cpb-btn,.svc,.step,.ci-item,.pf-card,.sub-card,.hub-card,.idx-card,.card):active{transform:none}}
-
-  /* Mobile platform baseline (mobile-native): no grey flash on tap, no font
-     inflation, taps fire at once, controls don't select on long-press, and
-     form fields are 16px so iOS doesn't zoom the page. */
-  html{-webkit-tap-highlight-color:transparent;-webkit-text-size-adjust:100%;text-size-adjust:100%}
-  a,button,summary,label,[role="button"]{touch-action:manipulation}
-  button,.btn,.btn-primary,.btn-ghost,.btn-light,.btn-outline,.nav-cta,.cbtn,.cpb-btn{-webkit-user-select:none;user-select:none}
-  input,select,textarea{font-size:max(16px,1em)}
-
-  /* Merged hero: the free-consultation phone strip lives inside the main hero
-     (one first screen instead of a phone-only cover followed by the hero). */
-  .hphone-row{display:flex;justify-content:center;margin-top:1.7rem}
-  .hphone{display:inline-flex;flex-wrap:wrap;align-items:center;justify-content:center;gap:.55rem 1.1rem;max-width:100%;
-    padding:.55rem .55rem .55rem 1.2rem;padding-inline:1.2rem .55rem;border-radius:999px;color:#fff;
-    background:rgba(8,20,34,.42);border:1px solid rgba(255,255,255,.24);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px)}
-  .hp-label{font-size:.9rem;font-weight:600;color:rgba(255,255,255,.86)}
-  .hp-phones{display:inline-flex;flex-wrap:wrap;justify-content:center;gap:.25rem 1rem}
-  .hp-phones a{color:#fff;font-weight:800;font-size:1.08rem;letter-spacing:.02em;white-space:nowrap;font-variant-numeric:tabular-nums}
-  .hp-btn{display:inline-flex;align-items:center;gap:.45rem;padding:.55rem 1.15rem;border-radius:999px;background:#fff;color:#0c2038;
-    font-weight:800;font-size:.92rem;white-space:nowrap;transition:transform .2s var(--ease-out),box-shadow .2s var(--ease-out)}
-  .hp-btn svg{width:18px;height:18px}
-  .hp-btn:active{transform:scale(.97);transition-duration:.12s}
-  @media (hover:hover) and (pointer:fine){.hp-phones a:hover{color:var(--steel-soft)}.hp-btn:hover{transform:translateY(-2px);box-shadow:0 10px 26px rgba(0,0,0,.28)}}
-  @media (max-width:560px){.hphone{border-radius:22px;padding:.8rem .9rem;flex-direction:column;gap:.5rem}.hp-label{text-align:center}}
-
-  /* Footer: parent holding, stated in full on every page. */
-  .foot-parent{margin-top:2.2rem;padding:1.15rem 1.3rem;border:1px solid rgba(255,255,255,.14);border-radius:var(--r-md);
-    background:rgba(255,255,255,.04);display:flex;flex-wrap:wrap;align-items:center;gap:.6rem 1.2rem}
-  .fp-label{font-size:.78rem;font-weight:800;letter-spacing:.02em;color:var(--steel-soft);border:1px solid rgba(127,176,223,.45);
-    border-radius:999px;padding:.15rem .75rem;white-space:nowrap}
-  .fp-main{display:flex;flex-direction:column;gap:.15rem;min-width:0;flex:1 1 260px}
-  .fp-main a{color:#fff;font-weight:800;font-size:1.05rem;text-decoration:none}
-  .fp-main small{color:var(--on-navy-soft);font-size:.86rem}
-  .fp-en{color:var(--on-navy-faint);font-size:.84rem;direction:ltr;unicode-bidi:isolate}
-  @media (hover:hover) and (pointer:fine){.fp-main a:hover{color:var(--steel-soft)}}
-
-  /* Fixed contact bar (every page): pinned to the bottom of the screen, static:
-     no scroll-linked motion, no reveal. The footer leaves room so it never
-     covers the last line of a page. */
-  .fbar{position:fixed;z-index:60;inset-inline:0;bottom:calc(14px + env(safe-area-inset-bottom,0px));display:flex;justify-content:center;
-    padding-inline:12px;pointer-events:none}
-  .fbar-in{pointer-events:auto;display:flex;align-items:center;gap:.6rem 1.15rem;width:min(100%,900px);justify-content:center;flex-wrap:wrap;
-    padding:.6rem .6rem .6rem 1.4rem;padding-inline:1.4rem .6rem;border-radius:999px;color:#fff;
-    background:rgba(10,24,40,.84);border:1px solid rgba(255,255,255,.2);box-shadow:0 14px 40px rgba(4,12,24,.35);
-    backdrop-filter:blur(14px) saturate(1.2);-webkit-backdrop-filter:blur(14px) saturate(1.2)}
-  .fbar-call{display:flex;align-items:center;gap:.5rem 1.1rem;flex-wrap:wrap;justify-content:center}
-  .fbar-label{font-size:.9rem;font-weight:600;color:rgba(255,255,255,.85);white-space:nowrap}
-  .fbar-phones{display:inline-flex;gap:1.1rem}
-  .fbar-phones a{color:#fff;font-weight:800;font-size:1.06rem;letter-spacing:.02em;white-space:nowrap;text-decoration:none}
-  .fbar-btn{display:inline-flex;align-items:center;gap:.45rem;padding:.55rem 1.15rem;border-radius:999px;background:#fff;color:#0c2038;
-    font-weight:800;font-size:.92rem;white-space:nowrap;text-decoration:none}
-  .fbar-btn svg{width:18px;height:18px;flex:none}
-  .fbar-btn:active{transform:scale(.97)}
-  .fbar-sep{width:1px;align-self:stretch;margin-block:.35rem;background:rgba(255,255,255,.24)}
-  .fbar-hold{font-size:.92rem;font-weight:600;color:rgba(255,255,255,.88);white-space:nowrap;padding-inline-end:.4rem}
-  .fbar-hold a{color:#fff;font-weight:800;text-decoration:underline;text-decoration-color:rgba(127,176,223,.8);text-underline-offset:4px}
-  @media (hover:hover) and (pointer:fine){.fbar-phones a:hover,.fbar-hold a:hover{color:#9cc4ea}.fbar-btn:hover{background:#eaf2fb}}
-  footer.site{padding-bottom:calc(5.6rem + env(safe-area-inset-bottom,0px))!important}
-  @media (max-width:760px){
-    .fbar{bottom:0;padding-inline:0}
-    .fbar-in{width:100%;border-radius:20px 20px 0 0;border-bottom:0;gap:.35rem .8rem;
-      padding:.6rem .9rem calc(.6rem + env(safe-area-inset-bottom,0px))}
-    .fbar-label,.fbar-mob,.fbar-sep{display:none}
-    .fbar-call{flex-wrap:nowrap;width:100%;justify-content:space-between}
-    .fbar-phones a{font-size:1rem}
-    .fbar-btn{padding:.5rem 1rem;font-size:.88rem}
-    .fbar-hold{width:100%;text-align:center;font-size:.85rem;padding:0}
-    footer.site{padding-bottom:calc(7.5rem + env(safe-area-inset-bottom,0px))!important}
-  }
-  @media print{.fbar{display:none}}
-  /* Slides keep their last line above the fixed bar. */
-  html.deck #top>.dpanel.dpanel{padding-bottom:calc(clamp(1.2rem,3vh,2.5rem) + 84px)!important}
-</style>
-<!-- seo -->
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>DaranX | شریک فناوری سازمان‌ها و کسب‌وکارها</title>
 <meta name="description" content="DaranX شریک فناوری سازمان‌ها و کسب‌وکارهاست: زیرساخت، امنیت و هوشمندی را از شناخت و طراحی تا اجرا و پشتیبانی، به‌عنوان یک راهکار یکپارچه طراحی می‌کند.">
-<meta name="robots" content="index,follow">
-<meta name="theme-color" media="(prefers-color-scheme: light)" content="#153A62">
-<meta name="theme-color" media="(prefers-color-scheme: dark)" content="#081320">
+<meta name="keywords" content="DaranX, داران ایکس, شریک فناوری, زیرساخت شبکه و سرور, امنیت سازمان, هوش مصنوعی, فروش و نصب تجهیزات شبکه, مشاوره فناوری">
+<meta name="robots" content="index,follow,max-image-preview:large,max-snippet:-1,max-video-preview:-1">
 <link rel="canonical" href="https://www.daranx.com/">
+<link rel="alternate" hreflang="fa-IR" href="https://www.daranx.com/"><link rel="alternate" hreflang="x-default" href="https://www.daranx.com/">
+<meta name="theme-color" content="#081627">
+<meta name="color-scheme" content="light dark">
+<meta name="author" content="DaranX">
 <link rel="icon" type="image/svg+xml" href="assets/favicon.svg">
 <link rel="icon" type="image/png" sizes="32x32" href="assets/favicon-32.png">
 <link rel="apple-touch-icon" href="assets/apple-touch-icon.png">
-<meta property="og:type" content="website">
-<meta property="og:site_name" content="DaranX">
-<meta property="og:locale" content="fa_IR">
-<meta property="og:title" content="DaranX — شریک فناوری سازمان‌ها">
+<meta property="og:type" content="website"><meta property="og:site_name" content="DaranX"><meta property="og:locale" content="fa_IR">
+<meta property="og:title" content="DaranX | شریک فناوری سازمان‌ها و کسب‌وکارها">
 <meta property="og:description" content="DaranX شریک فناوری سازمان‌ها و کسب‌وکارهاست: زیرساخت، امنیت و هوشمندی را از شناخت و طراحی تا اجرا و پشتیبانی، به‌عنوان یک راهکار یکپارچه طراحی می‌کند.">
-<meta property="og:url" content="https://www.daranx.com/">
-<meta property="og:image" content="https://www.daranx.com/assets/og.jpg">
-<meta property="og:image:width" content="1200">
-<meta property="og:image:height" content="630">
-<meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:title" content="DaranX — شریک فناوری سازمان‌ها">
-<meta name="twitter:description" content="DaranX شریک فناوری سازمان‌ها و کسب‌وکارهاست: زیرساخت، امنیت و هوشمندی را از شناخت و طراحی تا اجرا و پشتیبانی، به‌عنوان یک راهکار یکپارچه طراحی می‌کند.">
-<meta name="twitter:image" content="https://www.daranx.com/assets/og.jpg">
-<script type="application/ld+json" id="ld-org">
-{
-  "@context": "https://schema.org",
-  "@type": "Organization",
-  "@id": "https://www.daranx.com/#organization",
-  "name": "DaranX",
-  "alternateName": "داران ایکس",
-  "url": "https://www.daranx.com/",
-  "logo": "https://www.daranx.com/assets/daranx-logo.svg",
-  "image": "https://www.daranx.com/assets/og.jpg",
-  "description": "DaranX شریک فناوری سازمان‌ها و کسب‌وکارهاست: زیرساخت، امنیت و هوشمندی را از شناخت و طراحی تا اجرا و پشتیبانی، به‌عنوان یک راهکار یکپارچه طراحی می‌کند.",
-  "address": {
-    "@type": "PostalAddress",
-    "streetAddress": "میدان فاطمی، نبش چهلستون، ساختمان چهلستون، طبقه ۲، واحد ۲۰۲",
-    "addressLocality": "تهران",
-    "addressCountry": "IR"
-  },
-  "telephone": [
-    "+982188964116",
-    "+982188966904",
-    "+989359370910"
-  ],
-  "contactPoint": [
-    {
-      "@type": "ContactPoint",
-      "telephone": "+982188964116",
-      "contactType": "customer service",
-      "areaServed": "IR",
-      "availableLanguage": [
-        "fa"
-      ]
-    }
-  ],
-  "parentOrganization": {
-    "@type": "Organization",
-    "@id": "https://behsarmaholding.com/#organization",
-    "name": "هلدینگ بهسرما",
-    "alternateName": "Behsarma Holding",
-    "url": "https://behsarmaholding.com/"
-  }
-}
+<meta property="og:url" content="https://www.daranx.com/"><meta property="og:image" content="https://www.daranx.com/assets/og.jpg">
+<meta property="og:image:width" content="1200"><meta property="og:image:height" content="630"><meta property="og:image:alt" content="DaranX، همه چیز سر جای درستش.">
+<meta name="twitter:card" content="summary_large_image"><meta name="twitter:title" content="DaranX | شریک فناوری سازمان‌ها و کسب‌وکارها"><meta name="twitter:description" content="DaranX شریک فناوری سازمان‌ها و کسب‌وکارهاست: زیرساخت، امنیت و هوشمندی را از شناخت و طراحی تا اجرا و پشتیبانی، به‌عنوان یک راهکار یکپارچه طراحی می‌کند."><meta name="twitter:image" content="https://www.daranx.com/assets/og.jpg">
+<link rel="preload" href="assets/fonts/Vazirmatn-VF.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="assets/story/story.css?v=da5ba3fc6a">
+<script>document.documentElement.classList.add('js');</script>
+<script type="application/ld+json">
+{"@context":"https://schema.org","@graph":[{"@type":"Organization","@id":"https://www.daranx.com/#org","name":"DaranX","alternateName":["داران ایکس","Daran X"],"url":"https://www.daranx.com/","logo":"https://www.daranx.com/assets/daranx-logo.svg","image":"https://www.daranx.com/assets/og.jpg","slogan":"همه چیز سر جای درستش.","description":"DaranX شریک فناوری سازمان‌ها و کسب‌وکارهاست: زیرساخت، امنیت و هوشمندی را از شناخت و طراحی تا اجرا و پشتیبانی، به‌عنوان یک راهکار یکپارچه طراحی می‌کند.","telephone":"+982188964116","contactPoint":[{"@type":"ContactPoint","telephone":"+982188964116","contactType":"customer service","areaServed":"IR","availableLanguage":["fa"]},{"@type":"ContactPoint","telephone":"+989359370910","contactType":"sales","areaServed":"IR","availableLanguage":["fa"]}],"address":{"@type":"PostalAddress","streetAddress":"میدان فاطمی، نبش چهلستون، ساختمان چهلستون، طبقه ۲، واحد ۲۰۲","addressLocality":"تهران","addressCountry":"IR"},"parentOrganization":{"@type":"Organization","name":"هلدینگ بهسرما","alternateName":"Behsarma Holding","url":"https://behsarmaholding.com/"}},{"@type":"WebSite","@id":"https://www.daranx.com/#website","url":"https://www.daranx.com/","name":"DaranX","inLanguage":"fa-IR","publisher":{"@id":"https://www.daranx.com/#org"}},{"@type":"WebPage","@id":"https://www.daranx.com/#webpage","url":"https://www.daranx.com/","name":"DaranX | شریک فناوری سازمان‌ها و کسب‌وکارها","description":"DaranX شریک فناوری سازمان‌ها و کسب‌وکارهاست: زیرساخت، امنیت و هوشمندی را از شناخت و طراحی تا اجرا و پشتیبانی، به‌عنوان یک راهکار یکپارچه طراحی می‌کند.","inLanguage":"fa-IR","isPartOf":{"@id":"https://www.daranx.com/#website"},"breadcrumb":{"@id":"https://www.daranx.com/#breadcrumb"},"primaryImageOfPage":"https://www.daranx.com/assets/og.jpg","dateModified":"2026-10-11","speakable":{"@type":"SpeakableSpecification","cssSelector":["#what h2","#what .prose p"]},"about":{"@id":"https://www.daranx.com/#service"},"mainEntity":{"@id":"https://www.daranx.com/#service"}},{"@type":"BreadcrumbList","@id":"https://www.daranx.com/#breadcrumb","itemListElement":[{"@type":"ListItem","position":1,"name":"DaranX","item":"https://www.daranx.com/"}]},{"@type":"Service","@id":"https://www.daranx.com/#service","name":"راهکارهای یکپارچهٔ فناوری DaranX","serviceType":"Technology partner: infrastructure, security and intelligence","description":"طراحی، اجرا و پشتیبانی راهکار یکپارچه در سه حوزهٔ زیرساخت، امنیت و هوشمندی، و فروش، نصب و راه‌اندازی تجهیزات.","provider":{"@id":"https://www.daranx.com/#org"},"areaServed":{"@type":"Country","name":"Iran"},"url":"https://www.daranx.com/","availableLanguage":"fa","hasOfferCatalog":{"@type":"OfferCatalog","name":"راهکارهای یکپارچهٔ فناوری DaranX","itemListElement":[{"@type":"Offer","itemOffered":{"@type":"Service","name":"زیرساخت","url":"https://www.daranx.com/infrastructure.html"}},{"@type":"Offer","itemOffered":{"@type":"Service","name":"امنیت","url":"https://www.daranx.com/security.html"}},{"@type":"Offer","itemOffered":{"@type":"Service","name":"هوشمندی","url":"https://www.daranx.com/intelligence.html"}}]}},{"@type":"FAQPage","@id":"https://www.daranx.com/#faq","mainEntity":[{"@type":"Question","name":"DaranX چه کاری انجام می‌دهد؟","acceptedAnswer":{"@type":"Answer","text":"DaranX شریک فناوری سازمان‌ها و کسب‌وکارهاست و زیرساخت، امنیت و هوشمندی را از شناخت و طراحی تا اجرا و پشتیبانی، به‌عنوان یک راهکار یکپارچه طراحی می‌کند."}},{"@type":"Question","name":"آیا DaranX تجهیزات هم می‌فروشد و نصب می‌کند؟","acceptedAnswer":{"@type":"Answer","text":"بله. فروش، نصب و راه‌اندازی شبکه، سرور، سوئیچ و روتر، کامپیوتر و لپ‌تاپ و UPS و برق اضطراری، متناسب با نیاز واقعی سازمان."}},{"@type":"Question","name":"روش کار DaranX چیست؟","acceptedAnswer":{"@type":"Answer","text":"چهار مرحلهٔ پیوسته: شناخت، طراحی، اجرا و پشتیبانی. پیش از هر تصمیم فنی، مسئلهٔ واقعی سازمان را می‌فهمیم."}},{"@type":"Question","name":"دفتر DaranX کجاست؟","acceptedAnswer":{"@type":"Answer","text":"تهران، میدان فاطمی، نبش چهلستون، ساختمان چهلستون، طبقه ۲، واحد ۲۰۲. تلفن: ۰۲۱-۸۸۹۶۴۱۱۶."}},{"@type":"Question","name":"DaranX عضو کدام مجموعه است؟","acceptedAnswer":{"@type":"Answer","text":"DaranX یکی از مجموعه‌های هلدینگ بهسرما است."}}]}]}
 </script>
-<style id="a11yfix">
-/* keyboard + touch accessibility: skip link, focus clear of the fixed bar, bigger holding link */
-  .fbar-hold a{display:inline-block;padding:.45rem .25rem;margin:-.45rem -.25rem}
-  html{scroll-padding-bottom:6.5rem}
-  html.deck #top>.dpanel{scroll-padding-bottom:calc(84px + 1.5rem)}
-  @media (max-width:760px){html{scroll-padding-bottom:8.5rem}}
-  .skip-link{position:fixed;top:.6rem;inset-inline-start:.6rem;z-index:2000;padding:.7rem 1.1rem;border-radius:10px;background:#0E2749;color:#fff;font-weight:700;text-decoration:none;box-shadow:0 6px 20px rgba(8,22,39,.35);transform:translateY(-160%)}
-  .skip-link:focus{transform:none;outline:2px solid #7FB0DF;outline-offset:2px}
-  #top:focus{outline:none}
-  /* while typing in the contact form, section snapping must not pull the field under the fixed bar */
-  html:has(.cform :focus){scroll-snap-type:none}
+<link rel="stylesheet" href="assets/banner.css?v=377a2d49fe">
+<link rel="stylesheet" href="assets/leaflet/leaflet.css">
+<style>
+#a1[data-sc="1"] .mess,body.no-story #a1 .mess,html:not(.js) #a1 .mess{opacity:1}
+#a1[data-sc="2"] .wrong,body.no-story #a1 .wrong,html:not(.js) #a1 .wrong{opacity:1}
+#a1[data-sc="2"] .mess{opacity:0}
+#a2[data-sc="0"] :is(.ask,.hot,.hot-t),#a2[data-sc="1"] :is(.ask,.hot,.hot-t),body.no-story #a2 :is(.ask,.hot,.hot-t),html:not(.js) #a2 :is(.ask,.hot,.hot-t){opacity:1}
+#a2[data-sc="2"] .plan,body.no-story #a2 .plan,html:not(.js) #a2 .plan{opacity:1}
+#a2[data-sc="3"] .built,#a2[data-sc="4"] .built,body.no-story #a2 .built,html:not(.js) #a2 .built{opacity:1}
+#a2[data-sc="4"] :is(.care,.care .mon-p),body.no-story #a2 :is(.care,.care .mon-p),html:not(.js) #a2 :is(.care,.care .mon-p){opacity:1}
+#a2[data-sc="4"] :is(.flow,.riser,.uplink,.lane){stroke:var(--brand);stroke-dasharray:4 14;animation:flow 1.1s linear infinite}
+#a3[data-sc="1"] .l-infra,#a3[data-sc="2"] .l-infra,#a3[data-sc="3"] .l-infra,#a3[data-sc="4"] .l-infra,body.no-story #a3 .l-infra,html:not(.js) #a3 .l-infra{opacity:1}
+#a3[data-sc="2"] .l-sec,#a3[data-sc="3"] .l-sec,#a3[data-sc="4"] .l-sec,body.no-story #a3 .l-sec,html:not(.js) #a3 .l-sec{opacity:1}
+#a3[data-sc="3"] .l-int,#a3[data-sc="4"] .l-int,body.no-story #a3 .l-int,html:not(.js) #a3 .l-int{opacity:1}
+#a3[data-sc="3"] .l-int .bar,#a3[data-sc="4"] .l-int .bar,body.no-story #a3 .l-int .bar,html:not(.js) #a3 .l-int .bar{transform:none}
+#a3[data-sc="3"] :is(.dk-f3-3,.dk-f3-4),#a3[data-sc="4"] :is(.dk-f3-3,.dk-f3-4),body.no-story #a3 :is(.dk-f3-3,.dk-f3-4),html:not(.js) #a3 :is(.dk-f3-3,.dk-f3-4){opacity:0}
+#a3[data-sc="4"] .dsg,body.no-story #a3 .dsg,html:not(.js) #a3 .dsg{opacity:1}
+#a3[data-sc="3"] :is(.flow,.riser,.uplink),#a3[data-sc="4"] :is(.flow,.riser,.uplink){stroke:var(--brand);stroke-dasharray:4 14;animation:flow 1.1s linear infinite}
+.mess,.wrong,.plan,.built,.care,.l-infra,.l-sec,.l-int,.dsg{opacity:0;transition:opacity .6s var(--ease-out)}
+.messy{fill:#E2A35A}
+.plan .cab{stroke:var(--brand);stroke-dasharray:6 8;stroke-width:2;opacity:.75}
+.plan-rk{fill:none;stroke:var(--brand);stroke-width:2;stroke-dasharray:6 6}
+.care .ic{fill:var(--brand)}
+.desk{transition:opacity .4s ease}
+.talk{fill:var(--brand)}
+.dsg-b{fill:none;stroke:var(--brand);stroke-width:2.5;stroke-dasharray:3 9}
+.cap-link{display:inline-flex;margin-top:.7rem;font-weight:800;color:var(--brand);border-bottom:1px solid rgba(127,176,223,.5)}
 </style>
-<!-- dx-banner-css --><link rel="stylesheet" href="assets/banner.css?v=377a2d49fe"><!-- /dx-banner-css -->
 </head>
 <body>
-<a class="skip-link" href="#top">پرش به محتوای اصلی</a>
-<style>
-  .fold-hero{position:relative;overflow:hidden;padding-block:clamp(2.5rem,5vw,4.5rem) var(--sp)}
-  .fh-grid{display:grid;grid-template-columns:1.02fr .98fr;gap:clamp(2rem,5vw,4rem);align-items:center;position:relative;z-index:1}
-  .fh-title{font-size:clamp(2.2rem,2.4vw + 1.4rem,3.7rem);font-weight:900;line-height:1.1;margin-top:1rem}
-  .fh-lead{margin-top:1.3rem;max-width:48ch}
-  .fh-photo{position:relative;margin:0;border-radius:var(--r-lg);overflow:hidden;border:1px solid var(--line);box-shadow:var(--shadow-lift);aspect-ratio:4/3;background:var(--surface-2)}
-  .fh-photo img{width:100%;height:100%;object-fit:cover;display:block}
-  .fh-photo figcaption{position:absolute;inset-inline:0;bottom:0;padding:.6rem .9rem;font-size:.82rem;color:#fff;background:linear-gradient(transparent,rgba(8,20,32,.6))}
-  .fh-photo .ph{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:.7rem;text-align:center;padding:1.6rem;background:radial-gradient(120% 120% at 80% 0,color-mix(in srgb,var(--steel) 16%,transparent),transparent 60%),var(--surface-2)}
-  .fh-photo .ph svg{width:54px;height:54px;color:var(--steel);opacity:.85}
-  .fh-photo .ph b{color:var(--ink);font-weight:700;font-size:1.02rem}
-  .fh-photo .ph span{color:var(--ink-faint);font-size:.85rem}
-  .fh-photo.noimg img,.fh-photo.noimg figcaption{display:none}
-  .fh-photo:not(.noimg) .ph{display:none}
-  .fold-motion{padding-block:var(--sp)}
-  .fm-grid{display:grid;grid-template-columns:.82fr 1.18fr;gap:clamp(2rem,5vw,4.5rem);align-items:center}
-  .longcopy{margin-top:1rem;color:var(--ink-soft);font-size:1.03rem;line-height:1.95;max-width:66ch}
-  .longcopy p{margin-top:1.1rem}.longcopy p:first-child{margin-top:0}
-  @media (max-width:900px){
-    .fh-grid{grid-template-columns:1fr;gap:2rem}.fh-photo{order:-1}
-    .fm-grid{grid-template-columns:1fr;gap:2.2rem}.fold-motion .dhero-visual{order:-1;max-width:320px}
-  }
-</style>
-<style id="snapfix">
-  html{scroll-snap-type:y proximity;scroll-padding-top:78px}
-  .hero,.fold-hero,.fold-motion,.sec,.philosophy,.method,.diff,.services,.about,.venture,.contact{scroll-snap-align:start}
-  @media (max-width:640px){html{scroll-snap-type:none}}
-  @media (prefers-reduced-motion:reduce){html{scroll-snap-type:none}}
-</style>
-<script>(function(){try{if('scrollRestoration' in history)history.scrollRestoration='manual';}catch(e){}function t(){if(!location.hash)window.scrollTo(0,0);}t();window.addEventListener('load',t);window.addEventListener('pageshow',t);})();</script>
-<style id="pfcss">
-  /* ---- portfolio / work-history ---- */
-  .portfolio .sec-head{text-align:center;max-width:60ch;margin-inline:auto}
-  .portfolio .sec-head h2{font-size:clamp(1.6rem,1.3rem+1.4vw,2.3rem)}
-  .portfolio .sec-head p{color:var(--ink-soft);margin-top:.8rem}
-  .pf-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1.3rem;margin-top:2.2rem}
-  .pf-card{position:relative;background:var(--surface);border:1px solid var(--line);border-radius:var(--r-lg);overflow:hidden;box-shadow:var(--shadow);display:flex;flex-direction:column;transition:transform .25s var(--ease-out),box-shadow .25s var(--ease-out)}
-  @media (hover:hover) and (pointer:fine){.pf-card:hover{transform:translateY(-6px);box-shadow:var(--shadow-lift)}}
-  .pf-media{position:relative;aspect-ratio:16/10;background:var(--surface-2);overflow:hidden}
-  .pf-media img{width:100%;height:100%;object-fit:cover;display:block}
-  .pf-media .ph{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:.55rem;text-align:center;padding:1.2rem;
-    background:radial-gradient(120% 120% at 80% 0,color-mix(in srgb,var(--steel) 14%,transparent),transparent 60%),var(--surface-2)}
-  .pf-media .ph svg{width:40px;height:40px;color:var(--steel);opacity:.8}
-  .pf-media .ph b{color:var(--ink);font-weight:700;font-size:.92rem}
-  .pf-media .ph span{color:var(--ink-faint);font-size:.78rem;line-height:1.6}
-  .pf-media.noimg img{display:none}
-  .pf-media:not(.noimg) .ph{display:none}
-  .pf-num{position:absolute;top:.7rem;inset-inline-start:.7rem;z-index:2;width:30px;height:30px;border-radius:9px;display:grid;place-items:center;font-weight:800;font-size:.9rem;color:#fff;background:var(--grad-soft);box-shadow:var(--shadow)}
-  :root[data-theme="dark"] .pf-num{color:#08151f}
-  .pf-body{padding:1.25rem 1.35rem 1.45rem;display:flex;flex-direction:column;gap:.6rem;flex:1}
-  .pf-tag{align-self:flex-start;font-size:.76rem;font-weight:700;color:var(--steel);background:var(--surface-2);border:1px solid var(--line);border-radius:999px;padding:.24rem .7rem}
-  .pf-body h3{font-size:1.06rem;line-height:1.45;margin:0}
-  .pf-body p{color:var(--ink-soft);font-size:.92rem;line-height:1.75;margin:0}
-  .pf-meta{margin-top:.2rem;display:flex;flex-wrap:wrap;gap:.4rem}
-  .pf-meta span{font-size:.78rem;color:var(--ink-faint);background:var(--surface-2);border-radius:999px;padding:.22rem .6rem}
-  .pf-note{margin-top:1.6rem;text-align:center;color:var(--ink-faint);font-size:.9rem;line-height:1.8}
-  .pf-note code{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:.82rem;color:var(--steel);background:var(--surface-2);border-radius:6px;padding:.1rem .4rem;direction:ltr;display:inline-block}
-  @media (max-width:900px){.pf-grid{grid-template-columns:1fr 1fr}}
-  @media (max-width:640px){.pf-grid{grid-template-columns:1fr}}
-
-</style>
-<style id="cfcss">
-  .cform{margin-top:1.8rem;display:grid;gap:1rem}
-  .cf-row{display:grid;grid-template-columns:1fr 1fr;gap:1rem}
-  .cf-field{display:flex;flex-direction:column;gap:.4rem;min-width:0}
-  .cf-field label{font-size:.86rem;font-weight:600;color:var(--on-navy-soft)}
-  .cf-field label .req{color:var(--steel-soft)}
-  .cf-field label .opt{color:var(--on-navy-faint);font-weight:500;font-size:.8rem}
-  .cform input,.cform textarea{
-    width:100%;box-sizing:border-box;font:inherit;color:#fff;
-    background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.2);
-    border-radius:var(--r-sm);padding:.7rem .85rem;transition:border-color .2s,background .2s,box-shadow .2s var(--ease-out)}
-  .cform textarea{resize:vertical;min-height:96px;line-height:1.7}
-  .cform input::placeholder,.cform textarea::placeholder{color:rgba(255,255,255,.42)}
-  .cform input:focus,.cform textarea:focus{outline:2px solid var(--steel-soft);outline-offset:2px;border-color:var(--steel-soft);
-    background:rgba(255,255,255,.1);box-shadow:0 0 0 3px rgba(111,163,210,.25)}
-  .cform input:user-invalid,.cform textarea:user-invalid{border-color:#f2a3a0}
-  .cf-hp{position:absolute;left:-9999px;width:1px;height:1px;overflow:hidden}
-  .cf-actions{display:flex;flex-wrap:wrap;gap:.9rem;margin-top:.4rem;align-items:center}
-  .cf-submit[disabled]{opacity:.6;cursor:progress}
-  .cf-status{margin:0;font-size:.92rem;font-weight:600;padding:.7rem .9rem;border-radius:var(--r-sm)}
-  .cf-status.ok{background:rgba(90,190,140,.16);border:1px solid rgba(90,190,140,.5);color:#d5f2e2}
-  .cf-status.err{background:rgba(230,120,116,.14);border:1px solid rgba(230,120,116,.5);color:#f7d4d2}
-  .cf-note{margin:.2rem 0 0;font-size:.8rem;color:var(--on-navy-faint)}
-  @media (max-width:520px){.cf-row{grid-template-columns:1fr}}
-  /* ---- location map (Leaflet) ---- */
-  .mapsec{padding-block:var(--sp-section)}
-  .map-head{display:flex;justify-content:space-between;align-items:flex-end;gap:1.5rem;flex-wrap:wrap;margin-bottom:1.4rem}
-  .map-head h2{font-size:clamp(1.5rem,1.2rem + 1.4vw,2.2rem);margin-top:.7rem}
-  .map-addr{color:var(--ink-soft);margin-top:.7rem;max-width:52ch;line-height:1.9}
-  .map-actions{display:flex;gap:.7rem;flex-wrap:wrap}
-  .map{height:clamp(320px,42vh,460px);border-radius:var(--r-lg);overflow:hidden;border:1px solid var(--line);box-shadow:var(--shadow-lift);position:relative;z-index:0;isolation:isolate;background:var(--surface-2)}
-  .map-hint{margin:.8rem 0 0;font-size:.82rem;color:var(--ink-faint)}
-  .map .leaflet-control-attribution{font-size:.68rem}
-  .map .leaflet-popup-content{font-weight:600;line-height:1.8}
-</style>
-<style id="mobilefix">
-  @media (max-width:640px){
-    /* Hero ring: keep the animated diagram, but drop the tiny node labels —
-       on phones the side labels spilled off-screen (horizontal scroll) and
-       collided with the tagline. The same four ideas appear in the sections
-       below. */
-    .hv-node .lbl{display:none}
-    .hero-visual{max-width:300px}
-    .fold-motion{overflow-x:clip}
-    .hero.fold-hero{overflow:hidden}
-    /* Final safety net: never allow sideways scrolling on phones. */
-    html,body{overflow-x:hidden}
-  }
-</style>
-<style id="deckcss">
-  @media (prefers-reduced-motion:no-preference){
-    html.deck,html.deck body{height:100%;overflow:hidden;overscroll-behavior:none}
-    html.deck #top{position:fixed;inset:0;z-index:1}
-    html.deck #top>.dpanel{position:absolute;inset:0;opacity:0;visibility:hidden;overflow-y:auto;overscroll-behavior:contain;
-      display:flex;flex-direction:column;justify-content:center;justify-content:safe center;
-      padding-block:clamp(5rem,9vh,6.5rem) clamp(2.2rem,6vh,4rem)!important;
-      transition:opacity .45s var(--ease-out),visibility .45s;scrollbar-width:thin;scrollbar-color:rgba(62,123,182,.35) transparent}
-    html.deck #top>.dpanel.active{opacity:1;visibility:visible}
-    html.deck #top>.dpanel.out{opacity:0;visibility:visible;transition:opacity .3s var(--ease-out),visibility .3s}
-    /* keep the decorative blobs from inflating a scrollable panel's height */
-    html.deck #top>.dpanel .blobs{position:absolute;inset:0;overflow:hidden;pointer-events:none}
-    /* fit the tall opening panels to one screen (others already fit) */
-    html.deck #top>.hero{padding-block:clamp(4rem,7vh,5.5rem) clamp(1.2rem,3vh,2.5rem)!important}
-    html.deck .hero .fh-photo{aspect-ratio:auto;height:38vh;max-height:340px}
-    html.deck .hero .fh-title{font-size:clamp(2rem,1.5rem+1.8vw,3.1rem);margin-top:.6rem}
-    html.deck .hero .fh-lead{margin-top:.9rem}
-    html.deck #top>.fold-motion{padding-block:clamp(3.5rem,6vh,5rem) clamp(1.2rem,3vh,2.5rem)!important}
-    html.deck .fold-motion .dhero-visual{max-width:230px}
-    html.deck #top>.contact,html.deck #top>.services{padding-block:clamp(4rem,7vh,5.5rem) clamp(1.2rem,3vh,2.5rem)!important}
-    /* let the deck engine drive motion; silence the scroll-observer animation */
-    html.deck .reveal.in,html.deck .reveal.in .stagger{animation:none}
-    html.deck .snapfix{display:none}
-    /* The footer (with the parent holding) is the end of the last slide. */
-    html.deck #top>.dpanel>footer.site{flex:none;margin-top:clamp(2rem,5vh,3.5rem);margin-inline:calc(var(--gutter) * -1);
-      margin-bottom:calc(clamp(2.2rem,6vh,4rem) * -1)}
-    html.deck .ddots{position:fixed;top:50%;inset-inline-end:max(12px,1.8vw);transform:translateY(-50%);z-index:40;
-      display:flex;flex-direction:column;gap:.8rem}
-    .ddots{display:none}
-    .ddots button{width:11px;height:11px;padding:0;border-radius:50%;border:1px solid var(--steel);background:transparent;
-      cursor:pointer;transition:transform .3s var(--ease-out),background .3s}
-    .ddots button[aria-current="true"]{background:var(--steel);transform:scale(1.4)}
-    @media (max-width:600px){html.deck .ddots{inset-inline-end:9px;gap:.65rem}}
-  }
-</style>
-<nav class="ddots" id="ddots" aria-label="ناوبری بخش‌ها"></nav>
-<style id="covercss">
-/* ---- full-screen cover (first screen of each landing) ---- */
-  .cover{position:relative;min-height:100svh;min-height:100vh;display:grid;place-items:center;overflow:hidden;isolation:isolate;text-align:center;scroll-snap-align:start}
-  .cover-bg{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;z-index:-2}
-  .cover.noimg .cover-bg{display:none}
-  .cover::before{content:"";position:absolute;inset:0;z-index:-1;
-    background:linear-gradient(180deg,rgba(8,20,34,.74),rgba(8,20,34,.5) 42%,rgba(8,20,34,.86))}
-  .cover.noimg{background:radial-gradient(120% 95% at 72% 8%,var(--steel),var(--navy) 62%)}
-  .cover.noimg::before{background:linear-gradient(180deg,rgba(8,20,34,.35),transparent 40%,rgba(8,20,34,.5))}
-  .cwrap{position:relative;z-index:1;max-width:920px;padding:6.5rem 1.4rem 5.5rem;color:#fff}
-  .ceyebrow{display:inline-flex;align-items:center;gap:.5rem;font-size:.85rem;font-weight:700;letter-spacing:.14em;
-    text-transform:uppercase;color:#cfe0f2}
-  .ceyebrow::before{content:"";width:26px;height:2px;background:var(--steel-soft);border-radius:2px}
-  .cover h1{font-size:clamp(1.9rem,2.8vw + 1rem,3.5rem);font-weight:900;line-height:1.35;color:#fff;
-    text-wrap:balance;margin:1.1rem auto 0;max-width:20ch;text-shadow:0 2px 24px rgba(0,0,0,.35)}
-  .cphones{display:flex;flex-wrap:wrap;justify-content:center;gap:.4rem 1.6rem;margin-top:1.9rem;
-    font-size:clamp(1.5rem,1rem + 1.8vw,2.4rem);font-weight:800;font-variant-numeric:tabular-nums;direction:ltr}
-  .cphones a{color:#fff;transition:color .2s}@media (hover:hover) and (pointer:fine){.cphones a:hover{color:var(--steel-soft)}}
-  .cactions{margin-top:2rem;display:flex;justify-content:center;gap:1rem;flex-wrap:wrap}
-  .cbtn{display:inline-flex;align-items:center;gap:.6rem;background:#fff;color:var(--navy);font:inherit;font-weight:800;
-    font-size:1.05rem;border-radius:999px;padding:1rem 2.3rem;box-shadow:0 18px 44px -18px rgba(0,0,0,.5);transition:transform .2s var(--ease-out),box-shadow .2s var(--ease-out)}
-  @media (hover:hover) and (pointer:fine){.cbtn:hover{transform:translateY(-2px);box-shadow:0 24px 54px -20px rgba(0,0,0,.55)}}
-  .cbtn svg{width:20px;height:20px}
-  .cscroll{position:absolute;bottom:1.5rem;left:0;right:0;display:flex;justify-content:center;color:rgba(255,255,255,.85);
-    background:transparent;border:0;cursor:pointer;animation:cbob 1.8s ease-in-out infinite}
-  .cscroll svg{width:30px;height:30px}
-  @keyframes cbob{0%,100%{transform:translateY(0)}50%{transform:translateY(8px)}}
-  @media (prefers-reduced-motion:reduce){.cscroll{animation:none}}
-  html.deck #top>.cover{padding:0!important;overflow:hidden}
-  html.deck #top>.cover .cwrap{padding-block:clamp(5rem,10vh,7rem)}
-  /* homepage hero cover: the image already carries the headline/logo/CTA →
-     show it fully and add only a compact phone bar at the bottom. */
-  .cover--hero::before{background:linear-gradient(180deg,transparent 46%,rgba(8,20,34,.62))}
-  .cphonebar{position:absolute;left:50%;bottom:5rem;transform:translateX(-50%);z-index:1;
-    display:inline-flex;align-items:center;flex-wrap:wrap;justify-content:center;width:max-content;max-width:92vw;
-    gap:.55rem 1.2rem;padding:.8rem 1.5rem;border-radius:999px;color:#fff;
-    background:rgba(9,20,34,.5);backdrop-filter:blur(9px);-webkit-backdrop-filter:blur(9px);
-    border:1px solid rgba(255,255,255,.2);box-shadow:0 18px 50px -22px rgba(0,0,0,.6)}
-  .cpb-label{font-weight:700;color:#d3e2f3;font-size:.95rem}
-  .cpb-phones{display:inline-flex;flex-wrap:wrap;gap:.2rem 1.1rem;direction:ltr}
-  .cpb-phones a{color:#fff;font-weight:800;font-size:1.2rem;font-variant-numeric:tabular-nums}
-  @media (hover:hover) and (pointer:fine){.cpb-phones a:hover{color:var(--steel-soft)}}
-  .cpb-btn{display:inline-flex;align-items:center;gap:.5rem;background:#fff;color:var(--navy);font-weight:800;font-size:.98rem;
-    border-radius:999px;padding:.55rem 1.35rem;transition:transform .2s var(--ease-out)}
-  @media (hover:hover) and (pointer:fine){.cpb-btn:hover{transform:translateY(-2px)}}
-  .cpb-btn svg{width:18px;height:18px}
-  @media (max-width:560px){.cphonebar{bottom:3.4rem;gap:.5rem .8rem;padding:.7rem 1.1rem}.cpb-phones a{font-size:1.05rem}}
-
-  /* First screen: the photo as before. Wide screens: no overlay text (it is in
-     the photo), only a light bottom fade; cropped screens: real text. */
-  .cover--hero::before{background:linear-gradient(180deg,rgba(8,20,34,.18),transparent 22%,transparent 70%,rgba(8,20,34,.35))}
-  .cover--hero .cover-bg{object-position:center}
-  .cv-text{position:absolute;width:1px;height:1px;margin:-1px;padding:0;overflow:hidden;clip:rect(0 0 0 0);clip-path:inset(50%);white-space:nowrap;border:0}
-  @media (max-aspect-ratio: 16/10){
-    .cover--hero{place-items:end center}
-    .cover--hero .cover-bg{object-position:28% center}
-    .cover--hero::before{background:linear-gradient(180deg,rgba(8,20,34,.35),transparent 30%,rgba(8,20,34,.55) 62%,rgba(8,20,34,.9))}
-    .cv-text{position:relative;width:auto;height:auto;margin:0;overflow:visible;clip:auto;clip-path:none;white-space:normal;
-      z-index:1;max-width:640px;padding:0 1.4rem calc(8.75rem + env(safe-area-inset-bottom,0px));color:#fff;text-align:start;justify-self:start;align-self:flex-start}
-    .cv-text h1{font-size:clamp(2.3rem,7vw,3.6rem);font-weight:900;line-height:1.25;color:#fff;margin:0;text-shadow:0 2px 22px rgba(0,0,0,.4)}
-    .cv-text h1 span{display:block;color:#9cc4ea}
-    .cv-text p{margin-top:.9rem;font-size:clamp(1rem,2.6vw,1.15rem);line-height:1.9;color:rgba(255,255,255,.92);max-width:40ch}
-    .cv-more{display:inline-flex;align-items:center;gap:.5rem;margin-top:1.1rem;color:#fff;font-weight:800;text-decoration:none}
-    .cv-more svg{width:20px;height:20px}
-    /* tablets in deck mode: text at the bottom over the dark fade, clear of the bar */
-    html.deck #top>.cover--hero{justify-content:flex-end!important}
-    html.deck .cv-text{padding-bottom:1rem;padding-inline:clamp(1.4rem,5vw,3.5rem)}
-  }
-</style>
-<style id="desccss">
-  /* ---- description panel: full-width banner + wide horizontal text ---- */
-  .fold-motion.desc .wrap{max-width:940px}
-  .fm-banner{position:relative;margin:0;height:24vh;min-height:150px;max-height:280px;border-radius:var(--r-lg);
-    overflow:hidden;border:1px solid var(--line);box-shadow:var(--shadow-lift);background:var(--surface-2)}
-  .fm-banner img{width:100%;height:100%;object-fit:cover;display:block}
-  .fm-banner.noimg img{display:none}
-  .fm-banner .ph{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;gap:.55rem;
-    color:var(--ink-faint);font-weight:700;font-size:.95rem;
-    background:radial-gradient(120% 130% at 80% 0,color-mix(in srgb,var(--steel) 16%,transparent),transparent 60%),var(--surface-2)}
-  .fm-banner .ph svg{width:30px;height:30px;color:var(--steel);opacity:.8}
-  .fm-banner:not(.noimg) .ph{display:none}
-  .fm-banner.noimg{display:none}
-  .fm-head{margin-top:1.5rem;text-align:center}
-  .fm-head h2{font-size:clamp(1.6rem,1.3rem+1.4vw,2.4rem);margin-top:.5rem}
-  .longcopy.cols3{margin-top:1.6rem;max-width:none;columns:2 30ch;column-gap:clamp(2rem,4vw,3.5rem);color:var(--ink-soft);line-height:2.05;font-size:1.04rem}
-  .longcopy.cols3 p{margin:0 0 1.1rem;break-inside:avoid}
-</style>
-<style id="fhfullcss">
-  /* SCREEN 2: full-bleed image hero with centered horizontal text */
-  .fh-full{position:relative;min-height:100vh;display:grid;place-items:center;overflow:hidden;text-align:center;isolation:isolate;padding-block:5rem}
-  .fh-full .blobs{display:none}
-  .fh-bg{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;z-index:-2}
-  .fh-full.noimg .fh-bg{display:none}
-  .fh-full::before{content:"";position:absolute;inset:0;z-index:-1;
-    background:linear-gradient(180deg,rgba(8,20,34,.74),rgba(8,20,34,.55) 45%,rgba(8,20,34,.85))}
-  .fh-full.noimg{background:radial-gradient(120% 95% at 72% 8%,var(--steel),var(--navy) 62%)}
-  .fh-center{position:relative;z-index:1;max-width:1000px;color:#fff}
-  .fh-center .hero-pill{color:#eaf2fb;background:rgba(255,255,255,.12);border-color:rgba(255,255,255,.28)}
-  .fh-full h1{color:#fff;text-shadow:0 2px 26px rgba(0,0,0,.4)}
-  .fh-full h1 .grad-text{background:linear-gradient(90deg,#c7ddf5,#6ea8dd);-webkit-background-clip:text;background-clip:text;color:transparent}
-  .fh-full .lead{color:rgba(255,255,255,.92);max-width:62ch;margin:1.2rem auto 0;font-size:1.12rem;text-shadow:0 1px 16px rgba(0,0,0,.35)}
-  .fh-full .hero-actions{justify-content:center;margin-top:1.9rem}
-  .fh-full .btn-ghost{color:#fff;border-color:rgba(255,255,255,.55)}
-  @media (hover:hover) and (pointer:fine){.fh-full .btn-ghost:hover{background:rgba(255,255,255,.12)}}
-  .fh-full .hero-tagline{margin-top:2.3rem;display:flex;flex-wrap:wrap;justify-content:center;gap:.7rem 1rem;border:0;padding:0}
-  .fh-full .hero-tagline span{display:inline-flex;align-items:center;color:#fff;font-size:1.08rem;font-weight:800;
-    background:rgba(255,255,255,.12);border:1px solid rgba(255,255,255,.26);border-radius:999px;padding:.55rem 1.35rem;
-    backdrop-filter:blur(6px);-webkit-backdrop-filter:blur(6px)}
-  .fh-full .hero-tagline span::after,.fh-full .hero-tagline span:last-child::after{content:none}
-  @media (max-width:560px){.fh-full{padding-block:4rem}.fh-full .hero-tagline span{font-size:.95rem;padding:.45rem 1rem}}
-</style>
-<div class="progress" aria-hidden="true"><span id="prog"></span></div>
-
-<div dir="rtl" lang="fa">
-
-  <header class="nav" id="nav">
-    <div class="wrap nav-inner">
-      <a href="#top" class="brand" aria-label="DaranX">
-        <span class="logomark" aria-hidden="true"></span>
-        <span>Daran<span class="x">X</span></span>
-      </a>
-      <nav class="nav-links" id="navLinks" aria-label="ناوبری اصلی">
-        <a href="#method">روش کار</a>
-        <a href="#services">خدمات</a>
-        <a href="#about">درباره</a>
-        <a href="#venture">PlanoGram</a>
-        <a href="#contact">تماس</a>
-        <a href="#contact" class="nav-cta">شروع گفتگو</a>
-      </nav>
-      <div style="display:flex;align-items:center;gap:.5rem">
-        <button class="theme-toggle" id="themeToggle" aria-label="تغییر روشنایی" title="روشن/تیره">
-          <svg class="sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/></svg>
-          <svg class="moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z"/></svg>
-        </button>
-        <button class="menu-btn" id="menuBtn" aria-label="منو" aria-expanded="false">☰</button>
-      </div>
-    </div>
-  </header>
-
-  <main id="top" tabindex="-1">
+<svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false"><defs><marker id="arrowhead" viewBox="0 0 10 10" refX="7" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="context-stroke"/></marker><symbol id="i-battery-charging" viewBox="0 0 256 256"><path d="M200,56H32A24,24,0,0,0,8,80v96a24,24,0,0,0,24,24H200a24,24,0,0,0,24-24V80A24,24,0,0,0,200,56Zm8,120a8,8,0,0,1-8,8H32a8,8,0,0,1-8-8V80a8,8,0,0,1,8-8H200a8,8,0,0,1,8,8Zm48-80v64a8,8,0,0,1-16,0V96a8,8,0,0,1,16,0ZM138.81,123.79a8,8,0,0,1,.35,7.79l-16,32a8,8,0,0,1-14.32-7.16L119.06,136H100a8,8,0,0,1-7.16-11.58l16-32a8,8,0,1,1,14.32,7.16L112.94,120H132A8,8,0,0,1,138.81,123.79Z"/></symbol><symbol id="i-chart-bar" viewBox="0 0 256 256"><path d="M224,200h-8V40a8,8,0,0,0-8-8H152a8,8,0,0,0-8,8V80H96a8,8,0,0,0-8,8v40H48a8,8,0,0,0-8,8v64H32a8,8,0,0,0,0,16H224a8,8,0,0,0,0-16ZM160,48h40V200H160ZM104,96h40V200H104ZM56,144H88v56H56Z"/></symbol><symbol id="i-chat-circle-dots" viewBox="0 0 256 256"><path d="M140,128a12,12,0,1,1-12-12A12,12,0,0,1,140,128ZM84,116a12,12,0,1,0,12,12A12,12,0,0,0,84,116Zm88,0a12,12,0,1,0,12,12A12,12,0,0,0,172,116Zm60,12A104,104,0,0,1,79.12,219.82L45.07,231.17a16,16,0,0,1-20.24-20.24l11.35-34.05A104,104,0,1,1,232,128Zm-16,0A88,88,0,1,0,51.81,172.06a8,8,0,0,1,.66,6.54L40,216,77.4,203.53a7.85,7.85,0,0,1,2.53-.42,8,8,0,0,1,4,1.08A88,88,0,0,0,216,128Z"/></symbol><symbol id="i-cloud" viewBox="0 0 256 256"><path d="M160,40A88.09,88.09,0,0,0,81.29,88.67,64,64,0,1,0,72,216h88a88,88,0,0,0,0-176Zm0,160H72a48,48,0,0,1,0-96c1.1,0,2.2,0,3.29.11A88,88,0,0,0,72,128a8,8,0,0,0,16,0,72,72,0,1,1,72,72Z"/></symbol><symbol id="i-hard-drives" viewBox="0 0 256 256"><path d="M208,136H48a16,16,0,0,0-16,16v48a16,16,0,0,0,16,16H208a16,16,0,0,0,16-16V152A16,16,0,0,0,208,136Zm0,64H48V152H208v48Zm0-160H48A16,16,0,0,0,32,56v48a16,16,0,0,0,16,16H208a16,16,0,0,0,16-16V56A16,16,0,0,0,208,40Zm0,64H48V56H208v48ZM192,80a12,12,0,1,1-12-12A12,12,0,0,1,192,80Zm0,96a12,12,0,1,1-12-12A12,12,0,0,1,192,176Z"/></symbol><symbol id="i-headset" viewBox="0 0 256 256"><path d="M201.89,54.66A103.43,103.43,0,0,0,128.79,24H128A104,104,0,0,0,24,128v56a24,24,0,0,0,24,24H64a24,24,0,0,0,24-24V144a24,24,0,0,0-24-24H40.36A88.12,88.12,0,0,1,190.54,65.93,87.39,87.39,0,0,1,215.65,120H192a24,24,0,0,0-24,24v40a24,24,0,0,0,24,24h24a24,24,0,0,1-24,24H136a8,8,0,0,0,0,16h56a40,40,0,0,0,40-40V128A103.41,103.41,0,0,0,201.89,54.66ZM64,136a8,8,0,0,1,8,8v40a8,8,0,0,1-8,8H48a8,8,0,0,1-8-8V136Zm128,56a8,8,0,0,1-8-8V144a8,8,0,0,1,8-8h24v56Z"/></symbol><symbol id="i-pencil-ruler" viewBox="0 0 256 256"><path d="M208,32H160a16,16,0,0,0-16,16V208a16,16,0,0,0,16,16h48a16,16,0,0,0,16-16V48A16,16,0,0,0,208,32Zm0,176H160V176h24a8,8,0,0,0,0-16H160V136h24a8,8,0,0,0,0-16H160V96h24a8,8,0,0,0,0-16H160V48h48V208ZM77.66,26.34a8,8,0,0,0-11.32,0l-32,32A8,8,0,0,0,32,64V208a16,16,0,0,0,16,16H96a16,16,0,0,0,16-16V64a8,8,0,0,0-2.34-5.66ZM48,176V80H64v96ZM80,80H96v96H80ZM72,43.31,92.69,64H51.31ZM48,208V192H96v16Z"/></symbol><symbol id="i-phone" viewBox="0 0 256 256"><path d="M222.37,158.46l-47.11-21.11-.13-.06a16,16,0,0,0-15.17,1.4,8.12,8.12,0,0,0-.75.56L134.87,160c-15.42-7.49-31.34-23.29-38.83-38.51l20.78-24.71c.2-.25.39-.5.57-.77a16,16,0,0,0,1.32-15.06l0-.12L97.54,33.64a16,16,0,0,0-16.62-9.52A56.26,56.26,0,0,0,32,80c0,79.4,64.6,144,144,144a56.26,56.26,0,0,0,55.88-48.92A16,16,0,0,0,222.37,158.46ZM176,208A128.14,128.14,0,0,1,48,80,40.2,40.2,0,0,1,82.87,40a.61.61,0,0,0,0,.12l21,47L83.2,111.86a6.13,6.13,0,0,0-.57.77,16,16,0,0,0-1,15.7c9.06,18.53,27.73,37.06,46.46,46.11a16,16,0,0,0,15.75-1.14,8.44,8.44,0,0,0,.74-.56L168.89,152l47,21.05h0s.08,0,.11,0A40.21,40.21,0,0,1,176,208Z"/></symbol><symbol id="i-question" viewBox="0 0 256 256"><path d="M140,180a12,12,0,1,1-12-12A12,12,0,0,1,140,180ZM128,72c-22.06,0-40,16.15-40,36v4a8,8,0,0,0,16,0v-4c0-11,10.77-20,24-20s24,9,24,20-10.77,20-24,20a8,8,0,0,0-8,8v8a8,8,0,0,0,16,0v-.72c18.24-3.35,32-17.9,32-35.28C168,88.15,150.06,72,128,72Zm104,56A104,104,0,1,1,128,24,104.11,104.11,0,0,1,232,128Zm-16,0a88,88,0,1,0-88,88A88.1,88.1,0,0,0,216,128Z"/></symbol><symbol id="i-robot" viewBox="0 0 256 256"><path d="M200,48H136V16a8,8,0,0,0-16,0V48H56A32,32,0,0,0,24,80V192a32,32,0,0,0,32,32H200a32,32,0,0,0,32-32V80A32,32,0,0,0,200,48Zm16,144a16,16,0,0,1-16,16H56a16,16,0,0,1-16-16V80A16,16,0,0,1,56,64H200a16,16,0,0,1,16,16Zm-52-56H92a28,28,0,0,0,0,56h72a28,28,0,0,0,0-56Zm-24,16v24H116V152ZM80,164a12,12,0,0,1,12-12h8v24H92A12,12,0,0,1,80,164Zm84,12h-8V152h8a12,12,0,0,1,0,24ZM72,108a12,12,0,1,1,12,12A12,12,0,0,1,72,108Zm88,0a12,12,0,1,1,12,12A12,12,0,0,1,160,108Z"/></symbol><symbol id="i-shield-check" viewBox="0 0 256 256"><path d="M208,40H48A16,16,0,0,0,32,56v56c0,52.72,25.52,84.67,46.93,102.19,23.06,18.86,46,25.26,47,25.53a8,8,0,0,0,4.2,0c1-.27,23.91-6.67,47-25.53C198.48,196.67,224,164.72,224,112V56A16,16,0,0,0,208,40Zm0,72c0,37.07-13.66,67.16-40.6,89.42A129.3,129.3,0,0,1,128,223.62a128.25,128.25,0,0,1-38.92-21.81C61.82,179.51,48,149.3,48,112l0-56,160,0ZM82.34,141.66a8,8,0,0,1,11.32-11.32L112,148.69l50.34-50.35a8,8,0,0,1,11.32,11.32l-56,56a8,8,0,0,1-11.32,0Z"/></symbol><symbol id="i-video-camera" viewBox="0 0 256 256"><path d="M251.77,73a8,8,0,0,0-8.21.39L208,97.05V72a16,16,0,0,0-16-16H32A16,16,0,0,0,16,72V184a16,16,0,0,0,16,16H192a16,16,0,0,0,16-16V159l35.56,23.71A8,8,0,0,0,248,184a8,8,0,0,0,8-8V80A8,8,0,0,0,251.77,73ZM192,184H32V72H192V184Zm48-22.95-32-21.33V116.28L240,95Z"/></symbol><symbol id="i-warning" viewBox="0 0 256 256"><path d="M236.8,188.09,149.35,36.22h0a24.76,24.76,0,0,0-42.7,0L19.2,188.09a23.51,23.51,0,0,0,0,23.72A24.35,24.35,0,0,0,40.55,224h174.9a24.35,24.35,0,0,0,21.33-12.19A23.51,23.51,0,0,0,236.8,188.09ZM222.93,203.8a8.5,8.5,0,0,1-7.48,4.2H40.55a8.5,8.5,0,0,1-7.48-4.2,7.59,7.59,0,0,1,0-7.72L120.52,44.21a8.75,8.75,0,0,1,15,0l87.45,151.87A7.59,7.59,0,0,1,222.93,203.8ZM120,144V104a8,8,0,0,1,16,0v40a8,8,0,0,1-16,0Zm20,36a12,12,0,1,1-12-12A12,12,0,0,1,140,180Z"/></symbol><symbol id="i-wifi-high" viewBox="0 0 256 256"><path d="M140,204a12,12,0,1,1-12-12A12,12,0,0,1,140,204ZM237.08,87A172,172,0,0,0,18.92,87,8,8,0,0,0,29.08,99.37a156,156,0,0,1,197.84,0A8,8,0,0,0,237.08,87ZM205,122.77a124,124,0,0,0-153.94,0A8,8,0,0,0,61,135.31a108,108,0,0,1,134.06,0,8,8,0,0,0,11.24-1.3A8,8,0,0,0,205,122.77Zm-32.26,35.76a76.05,76.05,0,0,0-89.42,0,8,8,0,0,0,9.42,12.94,60,60,0,0,1,70.58,0,8,8,0,1,0,9.42-12.94Z"/></symbol></defs></svg>
+<a class="skip" href="#what">پرش به خلاصهٔ متنی صفحه</a>
+<header class="topbar" id="topbar"><div class="wrap">
+  <a href="index.html" class="wm" aria-label="DaranX، صفحهٔ اصلی"><span class="logomark" aria-hidden="true"></span><b>Daran<span>X</span></b></a>
+  <nav class="nav" id="nav" aria-label="ناوبری اصلی"><a href="solutions.html">همه راهکارها</a><a href="infrastructure.html">زیرساخت</a><a href="security.html">امنیت</a><a href="intelligence.html">هوشمندی</a><a href="index.html#contact">تماس</a></nav>
+  <div class="tb-end"><a class="btn btn-brand btn-sm" href="index.html#contact">درخواست مشاوره</a>
+  <button class="menu-btn" id="menuBtn" type="button" aria-expanded="false" aria-controls="nav" aria-label="منو"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 7h16M4 12h16M4 17h16"/></svg></button></div>
+</div><div class="progress" aria-hidden="true"><i id="prog"></i></div></header>
+<div id="doc"><main id="top" tabindex="-1">
 <!-- dx-banner -->
 <section class="dxb" aria-label="فروش، نصب و راه‌اندازی تجهیزات">
   <svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false"><defs><symbol id="b-arrow-left" viewBox="0 0 256 256"><path d="M224,128a8,8,0,0,1-8,8H59.31l58.35,58.34a8,8,0,0,1-11.32,11.32l-72-72a8,8,0,0,1,0-11.32l72-72a8,8,0,0,1,11.32,11.32L59.31,120H216A8,8,0,0,1,224,128Z"/></symbol><symbol id="b-battery-charging" viewBox="0 0 256 256"><path d="M200,56H32A24,24,0,0,0,8,80v96a24,24,0,0,0,24,24H200a24,24,0,0,0,24-24V80A24,24,0,0,0,200,56Zm8,120a8,8,0,0,1-8,8H32a8,8,0,0,1-8-8V80a8,8,0,0,1,8-8H200a8,8,0,0,1,8,8Zm48-80v64a8,8,0,0,1-16,0V96a8,8,0,0,1,16,0ZM138.81,123.79a8,8,0,0,1,.35,7.79l-16,32a8,8,0,0,1-14.32-7.16L119.06,136H100a8,8,0,0,1-7.16-11.58l16-32a8,8,0,1,1,14.32,7.16L112.94,120H132A8,8,0,0,1,138.81,123.79Z"/></symbol><symbol id="b-hard-drives" viewBox="0 0 256 256"><path d="M208,136H48a16,16,0,0,0-16,16v48a16,16,0,0,0,16,16H208a16,16,0,0,0,16-16V152A16,16,0,0,0,208,136Zm0,64H48V152H208v48Zm0-160H48A16,16,0,0,0,32,56v48a16,16,0,0,0,16,16H208a16,16,0,0,0,16-16V56A16,16,0,0,0,208,40Zm0,64H48V56H208v48ZM192,80a12,12,0,1,1-12-12A12,12,0,0,1,192,80Zm0,96a12,12,0,1,1-12-12A12,12,0,0,1,192,176Z"/></symbol><symbol id="b-laptop" viewBox="0 0 256 256"><path d="M232,168h-8V72a24,24,0,0,0-24-24H56A24,24,0,0,0,32,72v96H24a8,8,0,0,0-8,8v16a24,24,0,0,0,24,24H216a24,24,0,0,0,24-24V176A8,8,0,0,0,232,168ZM48,72a8,8,0,0,1,8-8H200a8,8,0,0,1,8,8v96H48ZM224,192a8,8,0,0,1-8,8H40a8,8,0,0,1-8-8v-8H224ZM152,88a8,8,0,0,1-8,8H112a8,8,0,0,1,0-16h32A8,8,0,0,1,152,88Z"/></symbol><symbol id="b-network" viewBox="0 0 256 256"><path d="M232,112H136V88h8a16,16,0,0,0,16-16V40a16,16,0,0,0-16-16H112A16,16,0,0,0,96,40V72a16,16,0,0,0,16,16h8v24H24a8,8,0,0,0,0,16H56v32H48a16,16,0,0,0-16,16v32a16,16,0,0,0,16,16H80a16,16,0,0,0,16-16V176a16,16,0,0,0-16-16H72V128H184v32h-8a16,16,0,0,0-16,16v32a16,16,0,0,0,16,16h32a16,16,0,0,0,16-16V176a16,16,0,0,0-16-16h-8V128h32a8,8,0,0,0,0-16ZM112,40h32V72H112ZM80,208H48V176H80Zm128,0H176V176h32Z"/></symbol><symbol id="b-rocket-launch" viewBox="0 0 256 256"><path d="M223.85,47.12a16,16,0,0,0-15-15c-12.58-.75-44.73.4-71.41,27.07L132.69,64H74.36A15.91,15.91,0,0,0,63,68.68L28.7,103a16,16,0,0,0,9.07,27.16l38.47,5.37,44.21,44.21,5.37,38.49a15.94,15.94,0,0,0,10.78,12.92,16.11,16.11,0,0,0,5.1.83A15.91,15.91,0,0,0,153,227.3L187.32,193A15.91,15.91,0,0,0,192,181.64V123.31l4.77-4.77C223.45,91.86,224.6,59.71,223.85,47.12ZM74.36,80h42.33L77.16,119.52,40,114.34Zm74.41-9.45a76.65,76.65,0,0,1,59.11-22.47,76.46,76.46,0,0,1-22.42,59.16L128,164.68,91.32,128ZM176,181.64,141.67,216l-5.19-37.17L176,139.31Zm-74.16,9.5C97.34,201,82.29,224,40,224a8,8,0,0,1-8-8c0-42.29,23-57.34,32.86-61.85a8,8,0,0,1,6.64,14.56c-6.43,2.93-20.62,12.36-23.12,38.91,26.55-2.5,36-16.69,38.91-23.12a8,8,0,1,1,14.56,6.64Z"/></symbol><symbol id="b-share-network" viewBox="0 0 256 256"><path d="M176,160a39.89,39.89,0,0,0-28.62,12.09l-46.1-29.63a39.8,39.8,0,0,0,0-28.92l46.1-29.63a40,40,0,1,0-8.66-13.45l-46.1,29.63a40,40,0,1,0,0,55.82l46.1,29.63A40,40,0,1,0,176,160Zm0-128a24,24,0,1,1-24,24A24,24,0,0,1,176,32ZM64,152a24,24,0,1,1,24-24A24,24,0,0,1,64,152Zm112,72a24,24,0,1,1,24-24A24,24,0,0,1,176,224Z"/></symbol><symbol id="b-shopping-cart" viewBox="0 0 256 256"><path d="M230.14,58.87A8,8,0,0,0,224,56H62.68L56.6,22.57A8,8,0,0,0,48.73,16H24a8,8,0,0,0,0,16h18L67.56,172.29a24,24,0,0,0,5.33,11.27,28,28,0,1,0,44.4,8.44h45.42A27.75,27.75,0,0,0,160,204a28,28,0,1,0,28-28H91.17a8,8,0,0,1-7.87-6.57L80.13,152h116a24,24,0,0,0,23.61-19.71l12.16-66.86A8,8,0,0,0,230.14,58.87ZM104,204a12,12,0,1,1-12-12A12,12,0,0,1,104,204Zm96,0a12,12,0,1,1-12-12A12,12,0,0,1,200,204Zm4-74.57A8,8,0,0,1,196.1,136H77.22L65.59,72H214.41Z"/></symbol><symbol id="b-wrench" viewBox="0 0 256 256"><path d="M226.76,69a8,8,0,0,0-12.84-2.88l-40.3,37.19-17.23-3.7-3.7-17.23,37.19-40.3A8,8,0,0,0,187,29.24,72,72,0,0,0,88,96,72.34,72.34,0,0,0,94,124.94L33.79,177c-.15.12-.29.26-.43.39a32,32,0,0,0,45.26,45.26c.13-.13.27-.28.39-.42L131.06,162A72,72,0,0,0,232,96,71.56,71.56,0,0,0,226.76,69ZM160,152a56.14,56.14,0,0,1-27.07-7,8,8,0,0,0-9.92,1.77L67.11,211.51a16,16,0,0,1-22.62-22.62L109.18,133a8,8,0,0,0,1.77-9.93,56,56,0,0,1,58.36-82.31l-31.2,33.81a8,8,0,0,0-1.94,7.1L141.83,108a8,8,0,0,0,6.14,6.14l26.35,5.66a8,8,0,0,0,7.1-1.94l33.81-31.2A56.06,56.06,0,0,1,160,152Z"/></symbol></defs></svg>
@@ -937,379 +78,140 @@
   </div>
 </section>
 <!-- /dx-banner -->
-
-
-    <!-- FIRST SCREEN: the DaranX photo (Milad tower beside the data center).
-         On wide screens the photo itself carries the logo, headline and tagline,
-         so the same words are in the page only for search engines and screen
-         readers. Where the photo is cropped (phones, tablets) a text-free crop
-         is used and the words are shown as real text. -->
-    <section class="cover cover--hero" aria-labelledby="hero-title">
-      <picture>
-        <source media="(max-aspect-ratio: 16/10)" srcset="assets/photos/home-m.jpg">
-        <img class="cover-bg" src="assets/photos/home.jpg" alt="" width="1600" height="901" loading="eager" fetchpriority="high" decoding="async"
-             onerror="this.closest('.cover').classList.add('noimg')">
-      </picture>
-      <div class="cv-text">
-        <h1 id="hero-title">همه چیز <span>سر جای درستش.</span></h1>
-        <p>زیرساخت، امنیت و هوشمندسازی کسب‌وکار شما؛ با راهکارهای یکپارچه و پشتیبانی مطمئن.</p>
-        <a class="cv-more" href="#about">درباره داران ایکس بیشتر بدانید<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M19 12H5M11 18l-6-6 6-6"/></svg></a>
-      </div>
-    </section>
-    <!-- نمونه‌کارها (screen 3) -->
-    <div class="sec portfolio" hidden>
-        <div class="wrap reveal">
-          <div class="sec-head">
-            <span class="eyebrow">نمونه‌کارها</span>
-            <h2>سابقهٔ کاری ما در راهکارهای یکپارچه</h2>
-            <p>گزیده‌ای از نمونه‌کارها؛ ساختار هر پروژه از شناخت تا پشتیبانی، مطابق روش کار DaranX.</p>
-          </div>
-          <div class="pf-grid">
-            <article class="pf-card reveal">
-              <figure class="pf-media">
-                <span class="pf-num">۱</span>
-                <img width="1200" height="900" src="assets/portfolio/home-1.jpg" alt="نمونه‌کار راهکارهای یکپارچه 1" loading="lazy"
-                     onerror="this.closest('.pf-media').classList.add('noimg')">
-                <div class="ph" aria-hidden="true">
-                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><rect x="3" y="4" width="18" height="14" rx="2"/><circle cx="8.5" cy="9" r="1.6"/><path d="M4 16l4.5-4 3 2.5L15 10l5 5"/></svg>
-                  <b>تصویر نمونه‌کار</b>
-                  <span>assets/portfolio/home-1.jpg</span>
-                </div>
-              </figure>
-              <div class="pf-body">
-                <span class="pf-tag">راهکار یکپارچه</span>
-                <h3>طراحی و اجرای راهکار یکپارچه از صفر</h3>
-                <p>از شناخت نیاز تا تحویل و پشتیبانی؛ راهکار یکپارچهی متناسب با بار واقعی سازمان و آماده برای توسعهٔ آینده.</p>
-                <div class="pf-meta"><span>شناخت</span><span>طراحی</span><span>اجرا</span><span>پشتیبانی</span></div>
-              </div>
-            </article>
-            <article class="pf-card reveal">
-              <figure class="pf-media">
-                <span class="pf-num">۲</span>
-                <img width="1200" height="900" src="assets/portfolio/home-2.jpg" alt="نمونه‌کار راهکارهای یکپارچه 2" loading="lazy"
-                     onerror="this.closest('.pf-media').classList.add('noimg')">
-                <div class="ph" aria-hidden="true">
-                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><rect x="3" y="4" width="18" height="14" rx="2"/><circle cx="8.5" cy="9" r="1.6"/><path d="M4 16l4.5-4 3 2.5L15 10l5 5"/></svg>
-                  <b>تصویر نمونه‌کار</b>
-                  <span>assets/portfolio/home-2.jpg</span>
-                </div>
-              </figure>
-              <div class="pf-body">
-                <span class="pf-tag">راهکار یکپارچه</span>
-                <h3>بازطراحی و بهبود راهکار یکپارچه موجود</h3>
-                <p>رفع نقاط ضعف، افزایش پایداری و ساده‌تر شدن نگهداری — بدون توقف جریان کسب‌وکار.</p>
-                <div class="pf-meta"><span>ارزیابی وضعیت</span><span>بهینه‌سازی</span><span>تحویل تدریجی</span></div>
-              </div>
-            </article>
-            <article class="pf-card reveal">
-              <figure class="pf-media">
-                <span class="pf-num">۳</span>
-                <img width="1200" height="900" src="assets/portfolio/home-3.jpg" alt="نمونه‌کار راهکارهای یکپارچه 3" loading="lazy"
-                     onerror="this.closest('.pf-media').classList.add('noimg')">
-                <div class="ph" aria-hidden="true">
-                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><rect x="3" y="4" width="18" height="14" rx="2"/><circle cx="8.5" cy="9" r="1.6"/><path d="M4 16l4.5-4 3 2.5L15 10l5 5"/></svg>
-                  <b>تصویر نمونه‌کار</b>
-                  <span>assets/portfolio/home-3.jpg</span>
-                </div>
-              </figure>
-              <div class="pf-body">
-                <span class="pf-tag">راهکار یکپارچه</span>
-                <h3>راهکار یکپارچه با سایر حوزه‌ها</h3>
-                <p>هماهنگ‌کردن راهکار یکپارچه با زیرساخت، امنیت و هوشمندی در یک راهکار واحد و منسجم.</p>
-                <div class="pf-meta"><span>طراحی یکپارچه</span><span>هماهنگی حوزه‌ها</span></div>
-              </div>
-            </article>
-          </div>
-        </div>
-      </div>
-
-    <section class="fold-motion desc">
-      <div class="wrap">
-        <figure class="fm-banner reveal">
-          <img width="1600" height="901" src="assets/photos/home.jpg" alt="تصویر DaranX" loading="lazy"
-               onerror="this.closest('.fm-banner').classList.add('noimg')">
-          <div class="ph" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 3v18M3 12h18"/><circle cx="12" cy="12" r="9"/></svg><b>تصویر بنر — DaranX</b></div>
-        </figure>
-        <div class="fm-head reveal">
-          <span class="eyebrow">دربارهٔ DaranX</span>
-          <h2>همه چیز، سرِ جای درستش.</h2>
-        </div>
-        <div class="longcopy cols3 reveal">
-            <p>DaranX یک شریکِ فناوری برای سازمان‌ها و کسب‌وکارهاست. ما زیرساخت، امنیت و فناوری‌های هوشمند را از مرحلهٔ شناخت و طراحی تا اجرا و پشتیبانی، به‌عنوان اجزای یک راهکارِ واحد می‌بینیم — نه مجموعه‌ای از تجهیزات که کنارِ هم چیده شده‌اند. باورِ اصلیِ ما ساده است: همه چیز باید سرِ جای درستش باشد، و این نتیجهٔ یک اتفاق نیست، بلکه حاصلِ شناختِ درست، طراحیِ درست و اجرای درست است.</p>
-            <p>برای ما، طراحی مقدم بر اجراست. پیش از انتخابِ تجهیز، نصبِ سرور یا پیاده‌سازیِ هر راهکار، اول مسئلهٔ واقعیِ سازمان را می‌فهمیم: نیازِ واقعی چیست، چه چیزی امروز لازم است و چه چیزی ممکن است فردا لازم شود. طراحی برای ما یعنی پیداکردنِ جای درستِ هر فناوری، متناسب با مسئلهٔ واقعیِ کسب‌وکار؛ چون اجرای دقیقِ یک طراحیِ اشتباه، همچنان یک نتیجهٔ اشتباه است.</p>
-            <p>روشِ کارِ ما یک زنجیرهٔ پیوسته است: شناخت، طراحی، اجرا و پشتیبانی. مسئله را می‌فهمیم، راهکار را طراحی می‌کنیم، آن را اجرا می‌کنیم و از آن پشتیبانی می‌کنیم. پشتیبانی برای ما مرحله‌ای بعد از پروژه نیست؛ نگاهِ پشتیبانی از همان مرحلهٔ طراحی آغاز می‌شود، چون اگر قرار است فردا نگهدارِ چیزی باشیم، امروز آن را طوری می‌سازیم که دردسر نسازد.</p>
-            <p>تمایزِ ما در تعداد یا تنوعِ خدمات نیست. ارزشِ واقعی زمانی ساخته می‌شود که اجزای مختلف بر اساسِ مسئلهٔ واقعیِ سازمان انتخاب شوند، جای مشخصی در راهکار داشته باشند و برای یک هدفِ مشترک با هم طراحی شوند. به‌همین‌دلیل می‌گوییم: ما خدمات مختلف را کنارِ هم نمی‌گذاریم؛ آن‌ها را با هم طراحی می‌کنیم و مسئولیتِ نتیجه را به عهده می‌گیریم.</p>
-            <p>توانمندی‌های ما در سه حوزه سازمان می‌یابند: زیرساخت برای ساختنِ بسترِ درست، امنیت برای محافظت از آنچه ساخته‌ایم، و هوشمندی برای ارزش‌آفرینی از داده. طراحی، لایهٔ مشترکی است که هر سه را به هم متصل می‌کند؛ چون طراحی است که فناوری‌های مختلف را از مجموعه‌ای از تجهیزات، به یک راهکارِ واحد تبدیل می‌کند.</p>
-            <p>مخاطبِ ما الزاماً متخصصِ فناوری نیست؛ برای همین ارزشِ فناوری را با زبانِ کسب‌وکار توضیح می‌دهیم: هزینه، ریسک، پایداری، بهره‌وری، امنیت و توسعه. هدفِ نهایی این است که فناوری در خدمتِ کسب‌وکار قرار بگیرد و به رشدِ پایدارِ آن کمک کند، نه اینکه خودش به یک مسئلهٔ تازه تبدیل شود.</p>
-          </div>
-      </div>
-    </section>
-
-    <!-- PHILOSOPHY -->
-    <section class="philosophy reveal">
-      <div class="wrap">
-        <span class="eyebrow">فلسفه برند</span>
-        <div class="phi-grid">
-          <h2>طراحی مقدم بر اجراست.</h2>
-          <div class="phi-body">
-            <div class="phi-belief">اجرای دقیقِ یک طراحی اشتباه، همچنان یک نتیجه اشتباه است.</div>
-            <p style="margin-top:1.4rem">قبل از انتخاب تجهیز، نصب سرور یا پیاده‌سازی هر راهکار، اول مسئله واقعی سازمان را می‌فهمیم: نیاز واقعی چیست، چه چیزی امروز لازم است و چه چیزی ممکن است فردا لازم شود.</p>
-            <p>برای ما، طراحی یعنی پیدا کردن جای درست هر فناوری، متناسب با مسئله واقعی کسب‌وکار — نه یک مرحله تزئینی، بلکه نقطه شروع اجرای درست.</p>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <!-- METHOD -->
-    <section id="method" class="method reveal">
-      <div class="wrap">
-        <div class="sec-head">
-          <span class="eyebrow">روش کار</span>
-          <h2>یک مسیر، از مسئله تا پایداری</h2>
-          <p class="lead">هر پروژه از یک زنجیره پیوسته عبور می‌کند. پشتیبانی برای ما مرحله‌ای بعد از پروژه نیست؛ نگاه پشتیبانی از همان مرحله طراحی آغاز می‌شود.</p>
-        </div>
-        <div class="steps" id="steps">
-          <div class="step stagger"><div class="step-num">۰۱</div><h3>شناخت</h3><p>بررسی مسئله، نیاز، شرایط موجود و اهداف آینده سازمان — پیش از هر تصمیم فنی.</p></div>
-          <div class="step stagger"><div class="step-num">۰۲</div><h3>طراحی</h3><p>طراحی راهکار متناسب با نیاز واقعی و مشخص‌کردن جایگاه، ارتباط و نقش هر جزء.</p></div>
-          <div class="step stagger"><div class="step-num">۰۳</div><h3>اجرا</h3><p>تبدیل طراحی به راهکاری واقعی با تجهیزات، فناوری و روش اجرایی مناسب.</p></div>
-          <div class="step stagger"><div class="step-num">۰۴</div><h3>پشتیبانی</h3><p>ادامه مسئولیت نگهداری، توسعه و عملکرد راهکار؛ پروژه با تحویل تمام نمی‌شود.</p></div>
-        </div>
-        <p class="method-note">اگر قرار است فردا پشتیبان چیزی باشیم، امروز آن را طوری طراحی و اجرا می‌کنیم که فردا برای مشتری و برای خودمان دردسر نسازد.</p>
-      </div>
-    </section>
-
-    <!-- DIFFERENTIATION -->
-    <section class="diff reveal">
-      <div class="wrap">
-        <span class="eyebrow" style="justify-content:center">تمایز ما</span>
-        <p class="diff-quote">ما خدمات مختلف را کنار هم نمی‌گذاریم؛ <em class="grad-text">آن‌ها را با هم طراحی می‌کنیم.</em></p>
-        <p class="diff-sub">تمایز DaranX در تعداد یا تنوع خدمات نیست؛ در دیدن کل مسئله، طراحی ارتباط میان اجزا و پذیرفتن مسئولیت نتیجه نهایی است.</p>
-      </div>
-    </section>
-
-    <!-- SERVICES -->
-    <section id="services" class="services reveal">
-      <div class="wrap">
-        <div class="sec-head" style="margin-inline:auto;text-align:center">
-          <span class="eyebrow" style="justify-content:center">معماری خدمات</span>
-          <h2>سه حوزه، یک لایه مشترک</h2>
-          <p class="lead" style="margin-inline:auto">Design یک خدمت در کنار بقیه نیست؛ لایه‌ای مشترک است که هر سه حوزه را به هم متصل می‌کند.</p>
-        </div>
-        <div class="design-layer">
-          <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 2v20M2 12h20"/><circle cx="12" cy="12" r="9"/></svg>
-          <span>Design — طراحی</span><span class="dl-note">Design + Technology = Solution</span>
-        </div>
-        <div class="connector" aria-hidden="true">
-          <svg viewBox="0 0 560 46" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M280 0 V16 M280 16 H100 V44 M280 16 H460 V44 M280 16 V44"/></svg>
-        </div>
-        <div class="svc-grid">
-          <a class="svc stagger" href="infrastructure.html">
-            <div class="svc-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="4" width="18" height="6" rx="1.5"/><rect x="3" y="14" width="18" height="6" rx="1.5"/><path class="ico-led" stroke-linecap="round" d="M7 7h.01"/><path class="ico-led l2" stroke-linecap="round" d="M7 17h.01"/></svg></div>
-            <h3>Infrastructure</h3><div class="svc-fa">ساختن بستر درست</div>
-            <p>زیرساختی که فناوری و عملیات سازمان روی آن قرار می‌گیرند.</p>
-            <ul><li>Network</li><li>Datacenter &amp; Server</li><li>Storage</li><li>Power &amp; UPS</li><li>Passive Infrastructure</li></ul>
-            <span class="svc-more">مشاهدهٔ حوزهٔ زیرساخت <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M15 6l-6 6 6 6"/></svg></span>
-          </a>
-          <a class="svc stagger" href="security.html">
-            <div class="svc-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path class="ico-pulse" d="M12 3l7 3v5c0 4.5-3 7.5-7 9-4-1.5-7-4.5-7-9V6l7-3z"/><path stroke-linecap="round" stroke-linejoin="round" d="M9 11.8l2 2 4-4"/></svg></div>
-            <h3>Security</h3><div class="svc-fa">محافظت از آنچه ساخته‌ایم</div>
-            <p>راهکارهایی برای محافظت از زیرساخت، محیط و دسترسی‌های سازمان.</p>
-            <ul><li>Network Security</li><li>CCTV</li><li>Access &amp; Monitoring</li><li>کنترل تردد</li></ul>
-            <span class="svc-more">مشاهدهٔ حوزهٔ امنیت <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M15 6l-6 6 6 6"/></svg></span>
-          </a>
-          <a class="svc stagger" href="intelligence.html">
-            <div class="svc-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle class="ico-pulse" cx="12" cy="12" r="3"/><g class="ico-rays"><path d="M12 3v3M12 18v3M3 12h3M18 12h3M6 6l2 2M16 16l2 2M18 6l-2 2M8 16l-2 2"/></g></svg></div>
-            <h3>Intelligence</h3><div class="svc-fa">هوشمندکردن آنچه ساخته و محافظت کرده‌ایم</div>
-            <p>فناوری برای استفاده بهتر از داده، خودکارسازی و تصمیم‌گیری دقیق‌تر.</p>
-            <ul><li>AI Solutions &amp; Assistants</li><li>Data &amp; Analytics</li><li>Intelligent Automation</li><li>Software &amp; Custom AI Models</li></ul>
-            <span class="svc-more">مشاهدهٔ حوزهٔ هوشمندی <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M15 6l-6 6 6 6"/></svg></span>
-          </a>
-        </div>
-      </div>
-    </section>
-
-    <!-- ABOUT -->
-    <section id="about" class="about reveal">
-      <div class="wrap about-grid">
-        <div>
-          <span class="eyebrow">DaranX چیست؟</span>
-          <h2 style="font-size:clamp(1.7rem,1.4rem + 1.6vw,2.6rem);margin-top:1rem">شریک فناوری، نه فروشنده تجهیزات</h2>
-          <p class="lead" style="margin-top:1rem">DaranX برای مسئله واقعی کسب‌وکار راهکار طراحی می‌کند، مسئولیت نتیجه را به عهده می‌گیرد و پشتیبانی می‌کند.</p>
-          <ul class="about-list">
-            <li class="no"><span>—</span><s>صرفاً تجهیزات نمی‌فروشد.</s></li>
-            <li class="no"><span>—</span><s>صرفاً پروژه اجرا نمی‌کند.</s></li>
-            <li class="no"><span>—</span><s>صرفاً خدمات پشتیبانی ارائه نمی‌دهد.</s></li>
-            <li class="yes"><span aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg></span><b>سیستمِ درست را طراحی می‌کند، مسئولیت نتیجه را به عهده می‌گیرد و آن را پشتیبانی می‌کند.</b></li>
-          </ul>
-          <div class="aud-tags">
-            <span>سازمان‌ها</span><span>شرکت‌ها</span><span>کسب‌وکارهای متوسط و بزرگ</span>
-            <span>مجموعه‌های دارای زیرساخت فناوری</span><span>در حال نوسازی زیرساخت</span>
-          </div>
-        </div>
-        <div class="about-promise">
-          <span class="eyebrow">وعده برند</span>
-          <p class="big">فناوری قابل اعتماد برای رشد پایدار کسب‌وکارها.</p>
-          <p class="sub">مخاطب ما الزاماً متخصص IT نیست؛ برای همین ارزش فناوری را با زبان کسب‌وکار توضیح می‌دهیم: هزینه، ریسک، پایداری، بهره‌وری، امنیت و توسعه.</p>
-        </div>
-      </div>
-    </section>
-
-    <!-- VENTURE -->
-    <section id="venture" class="venture reveal">
-      <div class="wrap">
-        <div class="venture-card">
-          <div>
-            <span class="venture-tag">Venture تحت DaranX</span>
-            <h3>PlanoGram</h3>
-            <p>راهکار نرم‌افزاری در حوزه چیدمان فروشگاهی، مدیریت قفسه‌ها و Planogram؛ استفاده از داده و نرم‌افزار برای تصمیم‌گیری بهتر درباره فضای فروش.</p>
-            <ul class="venture-list">
-              <li>طراحی و مدیریت چیدمان فروشگاه</li>
-              <li>مدیریت قفسه‌ها و استانداردسازی چیدمان</li>
-              <li>تصمیم‌گیری داده‌محور درباره فضای فروش</li>
-            </ul>
-          </div>
-          <div class="venture-tree" aria-hidden="true">
-            <div class="vt-root">Daran<span class="x">X</span></div>
-            <div class="vt-branch">
-              <div class="vt-item">Infrastructure</div>
-              <div class="vt-item">Security</div>
-              <div class="vt-item">Intelligence</div>
-              <div class="vt-item venture-node">Ventures › <span class="pg">PlanoGram</span></div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    
-
-
-    
-<!-- CONTACT -->
-    <section id="contact" class="contact reveal">
-      <div class="wrap contact-grid">
-        <div class="contact-info">
-          <span class="eyebrow">تماس با ما</span>
-          <h2>شروع از یک گفتگو</h2>
-          <p class="lead">اول مسئله شما را می‌فهمیم، بعد می‌گوییم چه چیزی واقعاً لازم دارید. برای شروع کافی است تماس بگیرید یا به دفتر ما سر بزنید.</p>
-          <div class="ci-list">
-            <div class="ci-item stagger">
-              <span class="ci-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M22 16.9v3a2 2 0 0 1-2.2 2 19.8 19.8 0 0 1-8.6-3 19.5 19.5 0 0 1-6-6 19.8 19.8 0 0 1-3-8.6A2 2 0 0 1 4.1 2h3a2 2 0 0 1 2 1.7c.1 1 .4 1.9.7 2.8a2 2 0 0 1-.5 2.1L8.1 9.9a16 16 0 0 0 6 6l1.3-1.3a2 2 0 0 1 2.1-.4c.9.3 1.8.6 2.8.7a2 2 0 0 1 1.7 2z"/></svg></span>
-              <div><div class="k">تلفن ثابت</div><div class="v"><a href="tel:+982188964116">۰۲۱-۸۸۹۶۴۱۱۶</a><a href="tel:+982188966904">۰۲۱-۸۸۹۶۶۹۰۴</a></div></div>
-            </div>
-            <div class="ci-item stagger">
-              <span class="ci-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="6" y="2" width="12" height="20" rx="2.5"/><path d="M11 18h2"/></svg></span>
-              <div><div class="k">موبایل</div><div class="v"><a href="tel:+989359370910">۰۹۳۵-۹۳۷۰۹۱۰</a></div></div>
-            </div>
-            <div class="ci-item stagger">
-              <span class="ci-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 21s-7-6-7-11a7 7 0 0 1 14 0c0 5-7 11-7 11z"/><circle cx="12" cy="10" r="2.5"/></svg></span>
-              <div><div class="k">آدرس دفتر</div><div class="v addr">تهران، میدان فاطمی، نبش چهلستون، ساختمان چهلستون، طبقه ۲، واحد ۲۰۲</div></div>
-            </div>
-          </div>
-        </div>
-        <div class="contact-cta">
-          <span class="eyebrow">شروع از شناخت</span>
-          <h3>مسئله سازمان‌تان را با ما در میان بگذارید.</h3>
-          <p>یک گفتگو درباره وضعیت فعلی و اهداف، اولین قدم طراحی راهکاری است که سر جای درستش قرار می‌گیرد.</p>
-          <form class="cform" id="contactForm" method="post" action="contact.php" novalidate>
-            <div class="cf-row">
-              <div class="cf-field">
-                <label for="cf-name">نام و نام خانوادگی <span class="req">*</span></label>
-                <input id="cf-name" name="name" type="text" autocomplete="name" required maxlength="80" placeholder="مثلاً علی رضایی">
-              </div>
-              <div class="cf-field">
-                <label for="cf-phone">شماره تماس <span class="req">*</span></label>
-                <input id="cf-phone" name="phone" type="tel" inputmode="tel" autocomplete="tel" required maxlength="25" placeholder="۰۹۱۲ ۳۴۵ ۶۷۸۹">
-              </div>
-            </div>
-            <div class="cf-row">
-              <div class="cf-field">
-                <label for="cf-email">ایمیل <span class="opt">(اختیاری)</span></label>
-                <input id="cf-email" name="email" type="email" autocomplete="email" maxlength="120" placeholder="you@example.com">
-              </div>
-              <div class="cf-field">
-                <label for="cf-company">سازمان / موضوع <span class="opt">(اختیاری)</span></label>
-                <input id="cf-company" name="company" type="text" maxlength="100" placeholder="نام شرکت یا موضوع">
-              </div>
-            </div>
-            <div class="cf-field">
-              <label for="cf-message">پیام شما <span class="req">*</span></label>
-              <textarea id="cf-message" name="message" rows="4" required maxlength="2000" placeholder="کوتاه بگویید با چه مسئله‌ای درگیر هستید…"></textarea>
-            </div>
-            <!-- honeypot: must stay empty; bots fill it -->
-            <div class="cf-hp" aria-hidden="true"><label>این فیلد را خالی بگذارید<input name="website" tabindex="-1" autocomplete="off"></label></div>
-            <div class="cf-actions">
-              <button type="submit" class="btn btn-light cf-submit">ارسال پیام</button>
-              <a href="tel:+982188964116" class="btn btn-outline">یا تماس بگیرید</a>
-            </div>
-            <p class="cf-status" id="cfStatus" role="status" aria-live="polite" hidden></p>
-            <p class="cf-note">اطلاعات شما فقط برای پاسخ‌گویی استفاده می‌شود و در اختیار کسی قرار نمی‌گیرد.</p>
-          </form>
-        </div>
-      </div>
-    </section>
-
-    <!-- LOCATION MAP -->
-    <section id="location" class="mapsec reveal" aria-label="موقعیت دفتر DaranX">
-      <div class="wrap">
-        <div class="map-head">
-          <div>
-            <span class="eyebrow">موقعیت ما</span>
-            <h2>روی نقشه پیدامان کنید</h2>
-            <p class="map-addr">تهران، میدان فاطمی، نبش چهلستون، ساختمان چهلستون، طبقه ۲، واحد ۲۰۲</p>
-          </div>
-          <div class="map-actions">
-            <a class="btn btn-primary" id="mapDir" href="https://www.openstreetmap.org/" target="_blank" rel="noopener">مسیریابی (گوگل مپ)</a>
-            <a class="btn btn-ghost" id="mapNeshan" href="https://neshan.org/" target="_blank" rel="noopener">نشان</a>
-          </div>
-        </div>
-        <div id="map" class="map" role="application" aria-label="نقشهٔ موقعیت دفتر DaranX"></div>
-        <p class="map-hint">برای بزرگ‌نمایی، روی نقشه کلیک کنید و سپس با اسکرول زوم کنید.</p>
-      </div>
-    </section>
-  </main>
-
-  <footer class="site">
-    <div class="wrap">
-      <div class="foot-grid">
-        <div class="foot-brand">
-          <div class="brand">
-            <span class="logomark" aria-hidden="true"></span>
-            <span>Daran<span style="color:var(--steel-soft)">X</span></span>
-          </div>
-          <p>شریک فناوری سازمان‌ها و کسب‌وکارها. زیرساخت، امنیت و فناوری‌های هوشمند را طراحی و اجرا می‌کنیم، مسئولیت نتیجه را به عهده می‌گیریم و پشتیبانی می‌کنیم.</p>
-        </div>
-        <div class="foot-col">
-          <h2>حوزه‌ها</h2>
-          <a href="solutions.html">همه راهکارها</a><a href="infrastructure.html">زیرساخت</a><a href="security.html">امنیت</a><a href="intelligence.html">هوشمندی</a><a href="#venture">PlanoGram</a>
-        </div>
-        <div class="foot-col">
-          <h2>خدمات</h2>
-          <a href="network.html">شبکه</a><a href="datacenter-server.html">دیتاسنتر و سرور</a><a href="network-security.html">امنیت شبکه</a><a href="cctv.html">دوربین مداربسته</a><a href="ai-solutions.html">هوش مصنوعی</a><a href="data-analytics.html">داده و تحلیل</a>
-        </div>
-        <div class="foot-col">
-          <h2>تماس</h2>
-          <div class="fc-line"><a href="tel:+982188964116">۰۲۱-۸۸۹۶۴۱۱۶</a></div><div class="fc-line"><a href="tel:+982188966904">۸۸۹۶۶۹۰۴</a></div>
-          <div class="fc-line"><a href="tel:+989359370910">۰۹۳۵-۹۳۷۰۹۱۰</a></div>
-          <div class="fc-line">تهران، میدان فاطمی، نبش چهلستون، ساختمان چهلستون، طبقه ۲، واحد ۲۰۲</div>
-        </div>
-      </div>
-      <div class="foot-parent">
-        <span class="fp-label">هلدینگ مادر</span>
-        <div class="fp-main">
-          <a href="https://behsarmaholding.com/" title="هلدینگ بهسرما">عضو هلدینگ بهسرما</a>
-          <small>DaranX یکی از مجموعه‌های هلدینگ بهسرما است.</small>
-        </div>
-        <span class="fp-en">Behsarma Holding · behsarmaholding.com</span>
-      </div>
-      <div class="foot-bottom">
-        <span class="core">همه چیز سر جای درستش.</span>
-        
-        <span>© ۱۴۰۵ DaranX — تمامی حقوق محفوظ است.</span>
-      </div>
+<section class="story" id="a1" data-hero style="--len:420svh" aria-label="وقتی همه چیز سر جایش نیست">
+  <div class="stage">
+    <svg class="scene world w-a1 " id="w-a1" viewBox="0 0 1600 900" preserveAspectRatio="xMidYMid slice" aria-hidden="true" focusable="false"><rect class="sky" x="-2000" y="-2000" width="5600" height="4900"/><g class="cam" id="cam-a1"><rect class="earth" x="-2000" y="660" width="5600" height="2000"/><line class="ground" x1="-2000" y1="660" x2="3600" y2="660"/><rect class="room room-f3" x="200" y="150" width="800" height="170"/><rect class="room room-f2" x="200" y="320" width="800" height="170"/><rect class="room room-f1" x="200" y="490" width="800" height="170"/><rect class="room room-b" x="200" y="660" width="800" height="140"/><rect class="shell" x="200" y="150" width="800" height="650" rx="6"/><line class="slab" x1="200" y1="320" x2="1000" y2="320"/><line class="slab" x1="200" y1="490" x2="1000" y2="490"/><line class="slab" x1="200" y1="660" x2="1000" y2="660"/><rect class="shaft" x="936" y="160" width="28" height="630" rx="4"/><text class="lbl flr" x="240" y="182" text-anchor="start" direction="ltr">مدیریت و مالی</text><text class="lbl flr" x="240" y="352" text-anchor="start" direction="ltr">فروش و کارشناسان</text><text class="lbl flr" x="240" y="522" text-anchor="start" direction="ltr">پذیرش و دوربین‌ها</text><text class="lbl flr" x="240" y="692" text-anchor="start" direction="ltr">اتاق سرور</text><g class="desk dk-f3-0"><rect class="mon" x="272" y="238" width="36" height="26" rx="3"/><rect class="stand" x="287" y="264" width="6" height="10"/><rect class="top" x="250" y="274" width="80" height="7" rx="2"/><rect class="leg" x="256" y="281" width="5" height="39"/><rect class="leg" x="319" y="281" width="5" height="39"/></g><g class="desk dk-f3-1"><rect class="mon" x="392" y="238" width="36" height="26" rx="3"/><rect class="stand" x="407" y="264" width="6" height="10"/><rect class="top" x="370" y="274" width="80" height="7" rx="2"/><rect class="leg" x="376" y="281" width="5" height="39"/><rect class="leg" x="439" y="281" width="5" height="39"/></g><g class="desk dk-f3-2"><rect class="mon" x="512" y="238" width="36" height="26" rx="3"/><rect class="stand" x="527" y="264" width="6" height="10"/><rect class="top" x="490" y="274" width="80" height="7" rx="2"/><rect class="leg" x="496" y="281" width="5" height="39"/><rect class="leg" x="559" y="281" width="5" height="39"/></g><g class="desk dk-f3-3"><rect class="mon" x="632" y="238" width="36" height="26" rx="3"/><rect class="stand" x="647" y="264" width="6" height="10"/><rect class="top" x="610" y="274" width="80" height="7" rx="2"/><rect class="leg" x="616" y="281" width="5" height="39"/><rect class="leg" x="679" y="281" width="5" height="39"/></g><g class="desk dk-f3-4"><rect class="mon" x="752" y="238" width="36" height="26" rx="3"/><rect class="stand" x="767" y="264" width="6" height="10"/><rect class="top" x="730" y="274" width="80" height="7" rx="2"/><rect class="leg" x="736" y="281" width="5" height="39"/><rect class="leg" x="799" y="281" width="5" height="39"/></g><g class="desk dk-f2-0"><rect class="mon" x="272" y="408" width="36" height="26" rx="3"/><rect class="stand" x="287" y="434" width="6" height="10"/><rect class="top" x="250" y="444" width="80" height="7" rx="2"/><rect class="leg" x="256" y="451" width="5" height="39"/><rect class="leg" x="319" y="451" width="5" height="39"/></g><g class="desk dk-f2-1"><rect class="mon" x="392" y="408" width="36" height="26" rx="3"/><rect class="stand" x="407" y="434" width="6" height="10"/><rect class="top" x="370" y="444" width="80" height="7" rx="2"/><rect class="leg" x="376" y="451" width="5" height="39"/><rect class="leg" x="439" y="451" width="5" height="39"/></g><g class="desk dk-f2-2"><rect class="mon" x="512" y="408" width="36" height="26" rx="3"/><rect class="stand" x="527" y="434" width="6" height="10"/><rect class="top" x="490" y="444" width="80" height="7" rx="2"/><rect class="leg" x="496" y="451" width="5" height="39"/><rect class="leg" x="559" y="451" width="5" height="39"/></g><g class="desk dk-f2-3"><rect class="mon" x="632" y="408" width="36" height="26" rx="3"/><rect class="stand" x="647" y="434" width="6" height="10"/><rect class="top" x="610" y="444" width="80" height="7" rx="2"/><rect class="leg" x="616" y="451" width="5" height="39"/><rect class="leg" x="679" y="451" width="5" height="39"/></g><g class="desk dk-f2-4"><rect class="mon" x="752" y="408" width="36" height="26" rx="3"/><rect class="stand" x="767" y="434" width="6" height="10"/><rect class="top" x="730" y="444" width="80" height="7" rx="2"/><rect class="leg" x="736" y="451" width="5" height="39"/><rect class="leg" x="799" y="451" width="5" height="39"/></g><g class="desk dk-f1-0"><rect class="mon" x="392" y="578" width="36" height="26" rx="3"/><rect class="stand" x="407" y="604" width="6" height="10"/><rect class="top" x="370" y="614" width="80" height="7" rx="2"/><rect class="leg" x="376" y="621" width="5" height="39"/><rect class="leg" x="439" y="621" width="5" height="39"/></g><g class="desk dk-f1-1"><rect class="mon" x="512" y="578" width="36" height="26" rx="3"/><rect class="stand" x="527" y="604" width="6" height="10"/><rect class="top" x="490" y="614" width="80" height="7" rx="2"/><rect class="leg" x="496" y="621" width="5" height="39"/><rect class="leg" x="559" y="621" width="5" height="39"/></g><g class="desk dk-f1-2"><rect class="mon" x="632" y="578" width="36" height="26" rx="3"/><rect class="stand" x="647" y="604" width="6" height="10"/><rect class="top" x="610" y="614" width="80" height="7" rx="2"/><rect class="leg" x="616" y="621" width="5" height="39"/><rect class="leg" x="679" y="621" width="5" height="39"/></g><g class="phone-dev"><use href="#i-phone" x="399" y="583" width="22" height="22" class="ic"/></g><g class="cloud"><use href="#i-cloud" x="55" y="500" width="120" height="120" class="ic"/><text class="lbl sm" x="115" y="626" text-anchor="middle" direction="ltr">اینترنت</text></g><g class="mess"><g transform="rotate(-14 820 110)"><use href="#i-hard-drives" x="790" y="80" width="60" height="60" class="ic messy"/></g><g transform="rotate(18 420 455)"><use href="#i-video-camera" x="390" y="425" width="60" height="60" class="ic messy"/></g><g transform="rotate(-20 470 742)"><use href="#i-wifi-high" x="440" y="712" width="60" height="60" class="ic messy"/></g><g transform="rotate(12 700 600)"><use href="#i-chart-bar" x="670" y="570" width="60" height="60" class="ic messy"/></g><g transform="rotate(-10 1060 610)"><use href="#i-battery-charging" x="1030" y="580" width="60" height="60" class="ic messy"/></g><g transform="rotate(16 300 225)"><use href="#i-shield-check" x="270" y="195" width="60" height="60" class="ic messy"/></g></g><g class="wrong"><path class="cab tg" pathLength="1" d="M290 281 C275 292 961 442 944 450"/><path class="cab tg" pathLength="1" d="M410 281 C413 297 739 453 944 450"/><path class="cab tg" pathLength="1" d="M530 281 C572 334 712 403 944 450"/><path class="cab tg" pathLength="1" d="M650 281 C519 337 892 340 944 450"/><path class="cab tg" pathLength="1" d="M770 281 C924 365 880 478 944 450"/><path class="cab tg" pathLength="1" d="M290 451 C180 364 843 344 944 450"/><path class="cab tg" pathLength="1" d="M410 451 C311 405 693 441 944 450"/><path class="cab tg" pathLength="1" d="M530 451 C511 513 840 484 944 450"/><path class="cab tg" pathLength="1" d="M650 451 C650 480 821 397 944 450"/><path class="cab tg" pathLength="1" d="M770 451 C929 540 936 500 944 450"/><path class="cab tg" pathLength="1" d="M410 621 C351 572 771 347 944 450"/><path class="cab tg" pathLength="1" d="M530 621 C615 603 938 423 944 450"/><path class="cab tg" pathLength="1" d="M650 621 C797 684 684 380 944 450"/><path class="cab tg" pathLength="1" d="M560 164 C691 159 978 425 944 450"/><path class="cab tg" pathLength="1" d="M560 334 C423 357 918 395 944 450"/><path class="cab tg" pathLength="1" d="M560 504 C428 474 973 512 944 450"/><path class="cab tg" pathLength="1" d="M505 504 C383 458 714 344 944 450"/><path class="cab tg" pathLength="1" d="M830 504 C925 446 852 437 944 450"/><path class="cab tg one" pathLength="1" d="M944 450 C974 570 904 660 892 708"/><g class="node"><rect x="914" y="439" width="60" height="22" rx="4"/><circle class="node-ring" cx="944" cy="450" r="38"/></g><g class="chip alert"><rect x="388" y="825" width="424" height="34" rx="17"/><use href="#i-warning" x="780" y="832" width="20" height="20" class="ic"/><text class="lbl chip-t" x="774" y="848" text-anchor="end" direction="ltr">دقیق اجرا شد، اما اشتباه طراحی شده بود</text></g></g></g></svg>
+    <div class="vignette" aria-hidden="true"></div>
+    <div class="story-copy" id="storyCopy">
+      
+      <span class="badge">شریک فناوری سازمان‌ها</span>
+      <h1>همه چیز،<br><em>سر جای درستش.</em></h1>
+      <p class="verdict">زیرساخت، امنیت و هوشمندی کسب‌وکار شما؛ از شناخت و طراحی تا اجرا و پشتیبانی، به‌عنوان یک راهکار یکپارچه.</p>
+      <div class="hero-actions"><a class="btn btn-brand" href="index.html#contact">درخواست مشاوره</a><a class="btn btn-ghost" href="#a2">روش کار ما</a></div>
     </div>
-  </footer>
-
+    <div class="caps"><div class="cap" data-s="1"><p class="cap-t">تجهیزات کنار هم، راهکار نیست</p><p>مجموعه‌ای از تجهیزات که کنار هم چیده شده‌اند، هنوز یک راهکار نیست.</p></div><div class="cap" data-s="2"><p class="cap-t">دقیق، اما اشتباه</p><p>اجرای دقیق یک طراحی اشتباه، همچنان یک نتیجهٔ اشتباه است.</p></div></div>
+  </div>
+</section>
+<section class="story bp" id="a2" style="--len:600svh" aria-label="روش کار DaranX">
+  <div class="stage">
+    <svg class="scene world w-a2 " id="w-a2" viewBox="0 0 1600 900" preserveAspectRatio="xMidYMid slice" aria-hidden="true" focusable="false"><rect class="sky" x="-2000" y="-2000" width="5600" height="4900"/><g class="cam" id="cam-a2"><rect class="earth" x="-2000" y="660" width="5600" height="2000"/><line class="ground" x1="-2000" y1="660" x2="3600" y2="660"/><rect class="room room-f3" x="200" y="150" width="800" height="170"/><rect class="room room-f2" x="200" y="320" width="800" height="170"/><rect class="room room-f1" x="200" y="490" width="800" height="170"/><rect class="room room-b" x="200" y="660" width="800" height="140"/><rect class="shell" x="200" y="150" width="800" height="650" rx="6"/><line class="slab" x1="200" y1="320" x2="1000" y2="320"/><line class="slab" x1="200" y1="490" x2="1000" y2="490"/><line class="slab" x1="200" y1="660" x2="1000" y2="660"/><rect class="shaft" x="936" y="160" width="28" height="630" rx="4"/><text class="lbl flr" x="240" y="182" text-anchor="start" direction="ltr">مدیریت و مالی</text><text class="lbl flr" x="240" y="352" text-anchor="start" direction="ltr">فروش و کارشناسان</text><text class="lbl flr" x="240" y="522" text-anchor="start" direction="ltr">پذیرش و دوربین‌ها</text><text class="lbl flr" x="240" y="692" text-anchor="start" direction="ltr">اتاق سرور</text><g class="desk dk-f3-0"><rect class="mon" x="272" y="238" width="36" height="26" rx="3"/><rect class="stand" x="287" y="264" width="6" height="10"/><rect class="top" x="250" y="274" width="80" height="7" rx="2"/><rect class="leg" x="256" y="281" width="5" height="39"/><rect class="leg" x="319" y="281" width="5" height="39"/></g><g class="desk dk-f3-1"><rect class="mon" x="392" y="238" width="36" height="26" rx="3"/><rect class="stand" x="407" y="264" width="6" height="10"/><rect class="top" x="370" y="274" width="80" height="7" rx="2"/><rect class="leg" x="376" y="281" width="5" height="39"/><rect class="leg" x="439" y="281" width="5" height="39"/></g><g class="desk dk-f3-2"><rect class="mon" x="512" y="238" width="36" height="26" rx="3"/><rect class="stand" x="527" y="264" width="6" height="10"/><rect class="top" x="490" y="274" width="80" height="7" rx="2"/><rect class="leg" x="496" y="281" width="5" height="39"/><rect class="leg" x="559" y="281" width="5" height="39"/></g><g class="desk dk-f3-3"><rect class="mon" x="632" y="238" width="36" height="26" rx="3"/><rect class="stand" x="647" y="264" width="6" height="10"/><rect class="top" x="610" y="274" width="80" height="7" rx="2"/><rect class="leg" x="616" y="281" width="5" height="39"/><rect class="leg" x="679" y="281" width="5" height="39"/></g><g class="desk dk-f3-4"><rect class="mon" x="752" y="238" width="36" height="26" rx="3"/><rect class="stand" x="767" y="264" width="6" height="10"/><rect class="top" x="730" y="274" width="80" height="7" rx="2"/><rect class="leg" x="736" y="281" width="5" height="39"/><rect class="leg" x="799" y="281" width="5" height="39"/></g><g class="desk dk-f2-0"><rect class="mon" x="272" y="408" width="36" height="26" rx="3"/><rect class="stand" x="287" y="434" width="6" height="10"/><rect class="top" x="250" y="444" width="80" height="7" rx="2"/><rect class="leg" x="256" y="451" width="5" height="39"/><rect class="leg" x="319" y="451" width="5" height="39"/></g><g class="desk dk-f2-1"><rect class="mon" x="392" y="408" width="36" height="26" rx="3"/><rect class="stand" x="407" y="434" width="6" height="10"/><rect class="top" x="370" y="444" width="80" height="7" rx="2"/><rect class="leg" x="376" y="451" width="5" height="39"/><rect class="leg" x="439" y="451" width="5" height="39"/></g><g class="desk dk-f2-2"><rect class="mon" x="512" y="408" width="36" height="26" rx="3"/><rect class="stand" x="527" y="434" width="6" height="10"/><rect class="top" x="490" y="444" width="80" height="7" rx="2"/><rect class="leg" x="496" y="451" width="5" height="39"/><rect class="leg" x="559" y="451" width="5" height="39"/></g><g class="desk dk-f2-3"><rect class="mon" x="632" y="408" width="36" height="26" rx="3"/><rect class="stand" x="647" y="434" width="6" height="10"/><rect class="top" x="610" y="444" width="80" height="7" rx="2"/><rect class="leg" x="616" y="451" width="5" height="39"/><rect class="leg" x="679" y="451" width="5" height="39"/></g><g class="desk dk-f2-4"><rect class="mon" x="752" y="408" width="36" height="26" rx="3"/><rect class="stand" x="767" y="434" width="6" height="10"/><rect class="top" x="730" y="444" width="80" height="7" rx="2"/><rect class="leg" x="736" y="451" width="5" height="39"/><rect class="leg" x="799" y="451" width="5" height="39"/></g><g class="desk dk-f1-0"><rect class="mon" x="392" y="578" width="36" height="26" rx="3"/><rect class="stand" x="407" y="604" width="6" height="10"/><rect class="top" x="370" y="614" width="80" height="7" rx="2"/><rect class="leg" x="376" y="621" width="5" height="39"/><rect class="leg" x="439" y="621" width="5" height="39"/></g><g class="desk dk-f1-1"><rect class="mon" x="512" y="578" width="36" height="26" rx="3"/><rect class="stand" x="527" y="604" width="6" height="10"/><rect class="top" x="490" y="614" width="80" height="7" rx="2"/><rect class="leg" x="496" y="621" width="5" height="39"/><rect class="leg" x="559" y="621" width="5" height="39"/></g><g class="desk dk-f1-2"><rect class="mon" x="632" y="578" width="36" height="26" rx="3"/><rect class="stand" x="647" y="604" width="6" height="10"/><rect class="top" x="610" y="614" width="80" height="7" rx="2"/><rect class="leg" x="616" y="621" width="5" height="39"/><rect class="leg" x="679" y="621" width="5" height="39"/></g><g class="phone-dev"><use href="#i-phone" x="399" y="583" width="22" height="22" class="ic"/></g><g class="cloud"><use href="#i-cloud" x="55" y="500" width="120" height="120" class="ic"/><text class="lbl sm" x="115" y="626" text-anchor="middle" direction="ltr">اینترنت</text></g><g class="chip ask"><rect x="603" y="162" width="233" height="34" rx="17"/><use href="#i-question" x="805" y="169" width="20" height="20" class="ic"/><text class="lbl chip-t" x="799" y="185" text-anchor="end" direction="ltr">مسئلهٔ واقعی چیست؟</text></g><g class="chip ask"><rect x="603" y="332" width="233" height="34" rx="17"/><use href="#i-question" x="805" y="339" width="20" height="20" class="ic"/><text class="lbl chip-t" x="799" y="355" text-anchor="end" direction="ltr">امروز چه لازم است؟</text></g><g class="chip ask"><rect x="594" y="502" width="252" height="34" rx="17"/><use href="#i-question" x="814" y="509" width="20" height="20" class="ic"/><text class="lbl chip-t" x="808" y="525" text-anchor="end" direction="ltr">فردا چه لازم می‌شود؟</text></g><rect class="hot" x="206" y="156" width="788" height="158" rx="8"/><g class="hot-t"><rect x="850" y="162" width="80" height="30" rx="15"/><text class="lbl sm" x="890" y="183" text-anchor="middle" direction="ltr">نقطهٔ حساس</text></g><rect class="hot" x="206" y="666" width="788" height="128" rx="8"/><g class="hot-t"><rect x="850" y="672" width="80" height="30" rx="15"/><text class="lbl sm" x="890" y="693" text-anchor="middle" direction="ltr">نقطهٔ حساس</text></g><g class="plan"><path class="cab flow lane lane-f3" d="M290 281 V312 H932 V286"/><path class="cab flow lane lane-f3" d="M410 281 V312 H932 V286"/><path class="cab flow lane lane-f3" d="M530 281 V312 H932 V286"/><path class="cab flow lane lane-f3" d="M650 281 V312 H932 V286"/><path class="cab flow lane lane-f3" d="M770 281 V312 H932 V286"/><path class="cab flow lane lane-wifi" d="M578 162 H920 V270"/><path class="cab flow lane lane-f2" d="M290 451 V482 H932 V456"/><path class="cab flow lane lane-f2" d="M410 451 V482 H932 V456"/><path class="cab flow lane lane-f2" d="M530 451 V482 H932 V456"/><path class="cab flow lane lane-f2" d="M650 451 V482 H932 V456"/><path class="cab flow lane lane-f2" d="M770 451 V482 H932 V456"/><path class="cab flow lane lane-wifi" d="M578 332 H920 V440"/><path class="cab flow lane lane-f1" d="M410 621 V652 H932 V626"/><path class="cab flow lane lane-f1" d="M530 621 V652 H932 V626"/><path class="cab flow lane lane-f1" d="M650 621 V652 H932 V626"/><path class="cab flow lane lane-wifi" d="M578 502 H920 V610"/><path class="cab flow lane lane-f1" d="M505 504 V494 H920 V610"/><path class="cab flow lane lane-f1" d="M830 504 V494 H920 V610"/><path class="cab riser riser1" d="M950 286 V708 H892"/><path class="cab uplink" d="M798 768 H160 V600"/><rect class="plan-rk" x="790" y="676" width="110" height="116" rx="5"/><g class="chip"><rect x="460" y="93" width="281" height="34" rx="17"/><use href="#i-pencil-ruler" x="708" y="100" width="20" height="20" class="ic"/><text class="lbl chip-t" x="702" y="116" text-anchor="end" direction="ltr">جای هر جزء، پیش از اجرا</text></g></g><g class="built"><path class="cab flow lane lane-f3" d="M290 281 V312 H932 V286"/><path class="cab flow lane lane-f3" d="M410 281 V312 H932 V286"/><path class="cab flow lane lane-f3" d="M530 281 V312 H932 V286"/><path class="cab flow lane lane-f3" d="M650 281 V312 H932 V286"/><path class="cab flow lane lane-f3" d="M770 281 V312 H932 V286"/><path class="cab flow lane lane-wifi" d="M578 162 H920 V270"/><path class="cab flow lane lane-f2" d="M290 451 V482 H932 V456"/><path class="cab flow lane lane-f2" d="M410 451 V482 H932 V456"/><path class="cab flow lane lane-f2" d="M530 451 V482 H932 V456"/><path class="cab flow lane lane-f2" d="M650 451 V482 H932 V456"/><path class="cab flow lane lane-f2" d="M770 451 V482 H932 V456"/><path class="cab flow lane lane-wifi" d="M578 332 H920 V440"/><path class="cab flow lane lane-f1" d="M410 621 V652 H932 V626"/><path class="cab flow lane lane-f1" d="M530 621 V652 H932 V626"/><path class="cab flow lane lane-f1" d="M650 621 V652 H932 V626"/><path class="cab flow lane lane-wifi" d="M578 502 H920 V610"/><path class="cab flow lane lane-f1" d="M505 504 V494 H920 V610"/><path class="cab flow lane lane-f1" d="M830 504 V494 H920 V610"/><path class="cab riser riser1" d="M950 286 V708 H892"/><path class="cab uplink" d="M798 768 H160 V600"/><g class="sw sw-f3"><rect x="925" y="270" width="50" height="16" rx="3"/><rect class="port" x="931" y="276" width="5" height="5"/><rect class="port" x="939" y="276" width="5" height="5"/><rect class="port" x="947" y="276" width="5" height="5"/><rect class="port" x="955" y="276" width="5" height="5"/><rect class="port" x="963" y="276" width="5" height="5"/></g><g class="sw sw-f2"><rect x="925" y="440" width="50" height="16" rx="3"/><rect class="port" x="931" y="446" width="5" height="5"/><rect class="port" x="939" y="446" width="5" height="5"/><rect class="port" x="947" y="446" width="5" height="5"/><rect class="port" x="955" y="446" width="5" height="5"/><rect class="port" x="963" y="446" width="5" height="5"/></g><g class="sw sw-f1"><rect x="925" y="610" width="50" height="16" rx="3"/><rect class="port" x="931" y="616" width="5" height="5"/><rect class="port" x="939" y="616" width="5" height="5"/><rect class="port" x="947" y="616" width="5" height="5"/><rect class="port" x="955" y="616" width="5" height="5"/><rect class="port" x="963" y="616" width="5" height="5"/></g><g class="ap"><rect x="542" y="158" width="36" height="9" rx="4"/><use href="#i-wifi-high" x="548" y="168" width="24" height="24" class="ic"/></g><g class="ap"><rect x="542" y="328" width="36" height="9" rx="4"/><use href="#i-wifi-high" x="548" y="338" width="24" height="24" class="ic"/></g><g class="ap"><rect x="542" y="498" width="36" height="9" rx="4"/><use href="#i-wifi-high" x="548" y="508" width="24" height="24" class="ic"/></g><g class="cam-dev"><use href="#i-video-camera" x="490" y="503" width="30" height="30" class="ic"/></g><g class="cam-dev"><use href="#i-video-camera" x="815" y="503" width="30" height="30" class="ic"/></g><g class="rack"><rect x="790" y="676" width="110" height="116" rx="5"/><rect class="unit core" x="798" y="700" width="94" height="16" rx="2"/><rect class="unit core2" x="798" y="728" width="94" height="16" rx="2"/><rect class="unit router" x="798" y="760" width="94" height="16" rx="2"/></g></g><g class="care"><g class="mon-p"><polyline points="250,744 266,744 282,744 298,744 314,744 330,720 346,760 362,736 378,744 394,744"/><use href="#i-headset" x="213" y="731" width="26" height="26" class="ic"/></g><text class="lbl sm" x="320" y="790" text-anchor="middle" direction="ltr">پشتیبانی</text></g></g></svg>
+    <div class="vignette" aria-hidden="true"></div>
+    
+    <div class="caps"><div class="cap lead" data-s="0"><h2>طراحی، مقدم بر اجراست</h2><p>پیش از انتخاب هر تجهیزی، اول مسئلهٔ واقعی سازمان را می‌فهمیم.</p></div><div class="cap" data-s="1"><h3>شناخت</h3><p>مسئله، نیاز، شرایط موجود و اهداف آینده؛ پیش از هر تصمیم فنی.</p></div><div class="cap" data-s="2"><h3>طراحی</h3><p>جایگاه، ارتباط و نقش هر جزء پیش از اجرا مشخص می‌شود.</p></div><div class="cap" data-s="3"><h3>اجرا</h3><p>طراحی با تجهیزات و روش اجرایی مناسب، به راهکاری واقعی تبدیل می‌شود.</p></div><div class="cap" data-s="4"><h3>پشتیبانی</h3><p>پروژه با تحویل تمام نمی‌شود؛ نگاه پشتیبانی از همان طراحی آغاز می‌شود.</p></div></div>
+  </div>
+</section>
+<section class="story bp" id="a3" style="--len:520svh" aria-label="سه حوزهٔ DaranX">
+  <div class="stage">
+    <svg class="scene world w-a3 " id="w-a3" viewBox="0 0 1600 900" preserveAspectRatio="xMidYMid slice" aria-hidden="true" focusable="false"><rect class="sky" x="-2000" y="-2000" width="5600" height="4900"/><g class="cam" id="cam-a3"><rect class="earth" x="-2000" y="660" width="5600" height="2000"/><line class="ground" x1="-2000" y1="660" x2="3600" y2="660"/><rect class="room room-f3" x="200" y="150" width="800" height="170"/><rect class="room room-f2" x="200" y="320" width="800" height="170"/><rect class="room room-f1" x="200" y="490" width="800" height="170"/><rect class="room room-b" x="200" y="660" width="800" height="140"/><rect class="shell" x="200" y="150" width="800" height="650" rx="6"/><line class="slab" x1="200" y1="320" x2="1000" y2="320"/><line class="slab" x1="200" y1="490" x2="1000" y2="490"/><line class="slab" x1="200" y1="660" x2="1000" y2="660"/><rect class="shaft" x="936" y="160" width="28" height="630" rx="4"/><text class="lbl flr" x="240" y="182" text-anchor="start" direction="ltr">مدیریت و مالی</text><text class="lbl flr" x="240" y="352" text-anchor="start" direction="ltr">فروش و کارشناسان</text><text class="lbl flr" x="240" y="522" text-anchor="start" direction="ltr">پذیرش و دوربین‌ها</text><text class="lbl flr" x="240" y="692" text-anchor="start" direction="ltr">اتاق سرور</text><g class="desk dk-f3-0"><rect class="mon" x="272" y="238" width="36" height="26" rx="3"/><rect class="stand" x="287" y="264" width="6" height="10"/><rect class="top" x="250" y="274" width="80" height="7" rx="2"/><rect class="leg" x="256" y="281" width="5" height="39"/><rect class="leg" x="319" y="281" width="5" height="39"/></g><g class="desk dk-f3-1"><rect class="mon" x="392" y="238" width="36" height="26" rx="3"/><rect class="stand" x="407" y="264" width="6" height="10"/><rect class="top" x="370" y="274" width="80" height="7" rx="2"/><rect class="leg" x="376" y="281" width="5" height="39"/><rect class="leg" x="439" y="281" width="5" height="39"/></g><g class="desk dk-f3-2"><rect class="mon" x="512" y="238" width="36" height="26" rx="3"/><rect class="stand" x="527" y="264" width="6" height="10"/><rect class="top" x="490" y="274" width="80" height="7" rx="2"/><rect class="leg" x="496" y="281" width="5" height="39"/><rect class="leg" x="559" y="281" width="5" height="39"/></g><g class="desk dk-f3-3"><rect class="mon" x="632" y="238" width="36" height="26" rx="3"/><rect class="stand" x="647" y="264" width="6" height="10"/><rect class="top" x="610" y="274" width="80" height="7" rx="2"/><rect class="leg" x="616" y="281" width="5" height="39"/><rect class="leg" x="679" y="281" width="5" height="39"/></g><g class="desk dk-f3-4"><rect class="mon" x="752" y="238" width="36" height="26" rx="3"/><rect class="stand" x="767" y="264" width="6" height="10"/><rect class="top" x="730" y="274" width="80" height="7" rx="2"/><rect class="leg" x="736" y="281" width="5" height="39"/><rect class="leg" x="799" y="281" width="5" height="39"/></g><g class="desk dk-f2-0"><rect class="mon" x="272" y="408" width="36" height="26" rx="3"/><rect class="stand" x="287" y="434" width="6" height="10"/><rect class="top" x="250" y="444" width="80" height="7" rx="2"/><rect class="leg" x="256" y="451" width="5" height="39"/><rect class="leg" x="319" y="451" width="5" height="39"/></g><g class="desk dk-f2-1"><rect class="mon" x="392" y="408" width="36" height="26" rx="3"/><rect class="stand" x="407" y="434" width="6" height="10"/><rect class="top" x="370" y="444" width="80" height="7" rx="2"/><rect class="leg" x="376" y="451" width="5" height="39"/><rect class="leg" x="439" y="451" width="5" height="39"/></g><g class="desk dk-f2-2"><rect class="mon" x="512" y="408" width="36" height="26" rx="3"/><rect class="stand" x="527" y="434" width="6" height="10"/><rect class="top" x="490" y="444" width="80" height="7" rx="2"/><rect class="leg" x="496" y="451" width="5" height="39"/><rect class="leg" x="559" y="451" width="5" height="39"/></g><g class="desk dk-f2-3"><rect class="mon" x="632" y="408" width="36" height="26" rx="3"/><rect class="stand" x="647" y="434" width="6" height="10"/><rect class="top" x="610" y="444" width="80" height="7" rx="2"/><rect class="leg" x="616" y="451" width="5" height="39"/><rect class="leg" x="679" y="451" width="5" height="39"/></g><g class="desk dk-f2-4"><rect class="mon" x="752" y="408" width="36" height="26" rx="3"/><rect class="stand" x="767" y="434" width="6" height="10"/><rect class="top" x="730" y="444" width="80" height="7" rx="2"/><rect class="leg" x="736" y="451" width="5" height="39"/><rect class="leg" x="799" y="451" width="5" height="39"/></g><g class="desk dk-f1-0"><rect class="mon" x="392" y="578" width="36" height="26" rx="3"/><rect class="stand" x="407" y="604" width="6" height="10"/><rect class="top" x="370" y="614" width="80" height="7" rx="2"/><rect class="leg" x="376" y="621" width="5" height="39"/><rect class="leg" x="439" y="621" width="5" height="39"/></g><g class="desk dk-f1-1"><rect class="mon" x="512" y="578" width="36" height="26" rx="3"/><rect class="stand" x="527" y="604" width="6" height="10"/><rect class="top" x="490" y="614" width="80" height="7" rx="2"/><rect class="leg" x="496" y="621" width="5" height="39"/><rect class="leg" x="559" y="621" width="5" height="39"/></g><g class="desk dk-f1-2"><rect class="mon" x="632" y="578" width="36" height="26" rx="3"/><rect class="stand" x="647" y="604" width="6" height="10"/><rect class="top" x="610" y="614" width="80" height="7" rx="2"/><rect class="leg" x="616" y="621" width="5" height="39"/><rect class="leg" x="679" y="621" width="5" height="39"/></g><g class="phone-dev"><use href="#i-phone" x="399" y="583" width="22" height="22" class="ic"/></g><g class="l-infra"><path class="cab flow" d="M290 281 V312 H932 V286"/><path class="cab flow" d="M410 281 V312 H932 V286"/><path class="cab flow" d="M530 281 V312 H932 V286"/><path class="cab flow" d="M650 281 V312 H932 V286"/><path class="cab flow" d="M770 281 V312 H932 V286"/><path class="cab flow" d="M578 162 H920 V270"/><path class="cab flow" d="M290 451 V482 H932 V456"/><path class="cab flow" d="M410 451 V482 H932 V456"/><path class="cab flow" d="M530 451 V482 H932 V456"/><path class="cab flow" d="M650 451 V482 H932 V456"/><path class="cab flow" d="M770 451 V482 H932 V456"/><path class="cab flow" d="M578 332 H920 V440"/><path class="cab flow" d="M410 621 V652 H932 V626"/><path class="cab flow" d="M530 621 V652 H932 V626"/><path class="cab flow" d="M650 621 V652 H932 V626"/><path class="cab flow" d="M578 502 H920 V610"/><path class="cab flow" d="M505 504 V494 H920 V610"/><path class="cab flow" d="M830 504 V494 H920 V610"/><path class="cab riser riser1" d="M950 286 V708 H892"/><path class="cab uplink" d="M798 768 H160 V600"/><g class="ap"><rect x="542" y="158" width="36" height="9" rx="4"/><use href="#i-wifi-high" x="548" y="168" width="24" height="24" class="ic"/></g><g class="ap"><rect x="542" y="328" width="36" height="9" rx="4"/><use href="#i-wifi-high" x="548" y="338" width="24" height="24" class="ic"/></g><g class="ap"><rect x="542" y="498" width="36" height="9" rx="4"/><use href="#i-wifi-high" x="548" y="508" width="24" height="24" class="ic"/></g><g class="sw sw-f3"><rect x="925" y="270" width="50" height="16" rx="3"/><rect class="port" x="931" y="276" width="5" height="5"/><rect class="port" x="939" y="276" width="5" height="5"/><rect class="port" x="947" y="276" width="5" height="5"/><rect class="port" x="955" y="276" width="5" height="5"/><rect class="port" x="963" y="276" width="5" height="5"/></g><g class="sw sw-f2"><rect x="925" y="440" width="50" height="16" rx="3"/><rect class="port" x="931" y="446" width="5" height="5"/><rect class="port" x="939" y="446" width="5" height="5"/><rect class="port" x="947" y="446" width="5" height="5"/><rect class="port" x="955" y="446" width="5" height="5"/><rect class="port" x="963" y="446" width="5" height="5"/></g><g class="sw sw-f1"><rect x="925" y="610" width="50" height="16" rx="3"/><rect class="port" x="931" y="616" width="5" height="5"/><rect class="port" x="939" y="616" width="5" height="5"/><rect class="port" x="947" y="616" width="5" height="5"/><rect class="port" x="955" y="616" width="5" height="5"/><rect class="port" x="963" y="616" width="5" height="5"/></g><g class="rack"><rect x="790" y="676" width="110" height="116" rx="5"/><rect class="unit core" x="798" y="700" width="94" height="16" rx="2"/><rect class="unit core2" x="798" y="728" width="94" height="16" rx="2"/><rect class="unit router" x="798" y="760" width="94" height="16" rx="2"/></g><g class="srack"><rect class="rk" x="620" y="696" width="70" height="96" rx="5"/><rect class="unit" x="626" y="702" width="58" height="16" rx="2"/><circle class="led" style="--k:0" cx="676" cy="710" r="3"/><rect class="unit" x="626" y="723" width="58" height="16" rx="2"/><circle class="led" style="--k:1" cx="676" cy="731" r="3"/><rect class="unit" x="626" y="744" width="58" height="16" rx="2"/><circle class="led" style="--k:2" cx="676" cy="752" r="3"/><rect class="unit" x="626" y="765" width="58" height="16" rx="2"/><circle class="led" style="--k:3" cx="676" cy="773" r="3"/></g><g class="ups"><rect class="rk" x="500" y="708" width="92" height="84" rx="6"/><rect class="bat" x="514" y="726" width="64" height="26" rx="4"/><rect class="bat-in" x="518" y="730" width="56" height="18" rx="2"/><text class="lbl sm" x="546" y="778" text-anchor="middle" direction="ltr">UPS</text></g><g class="cloud"><use href="#i-cloud" x="55" y="500" width="120" height="120" class="ic"/><text class="lbl sm" x="115" y="626" text-anchor="middle" direction="ltr">اینترنت</text></g></g><g class="l-sec"><rect class="zone-l zone-f3" x="208" y="158" width="784" height="154" rx="8"/><rect class="zone-l zone-f2" x="208" y="328" width="784" height="154" rx="8"/><rect class="zone-l zone-f1" x="208" y="498" width="784" height="154" rx="8"/><rect class="zone-l zone-b" x="208" y="668" width="784" height="124" rx="8"/><g class="cam-dev"><use href="#i-video-camera" x="490" y="503" width="30" height="30" class="ic"/></g><g class="cam-dev"><use href="#i-video-camera" x="815" y="503" width="30" height="30" class="ic"/></g><path class="cone" d="M505 524 L517 663 A140 140 0 0 1 390 604 Z"/><path class="cone" d="M830 524 L929 623 A140 140 0 0 1 794 659 Z"/><g class="fw"><rect class="rk" x="274" y="742" width="52" height="52" rx="10"/><use href="#i-shield-check" x="283" y="751" width="34" height="34" class="ic"/></g><g class="door locked"><rect class="dr" x="201" y="574" width="10" height="86" rx="2"/><rect class="rd" x="218" y="604" width="12" height="20" rx="2"/><circle class="rd-led" cx="224" cy="610" r="2.5"/></g></g><g class="l-int"><g class="dash"><rect class="panel" x="570" y="176" width="230" height="118" rx="12"/><rect class="kpi" x="582" y="188" width="97" height="30" rx="6"/><rect class="kpi-v" x="592" y="198" width="39" height="10" rx="5"/><rect class="kpi" x="691" y="188" width="97" height="30" rx="6"/><rect class="kpi-v" x="701" y="198" width="68" height="10" rx="5"/><rect class="bar" style="--k:0" x="590" y="264" width="25" height="18" rx="3"/><rect class="bar" style="--k:1" x="631" y="253" width="25" height="29" rx="3"/><rect class="bar" style="--k:2" x="673" y="259" width="25" height="23" rx="3"/><rect class="bar" style="--k:3" x="714" y="246" width="25" height="36" rx="3"/><rect class="bar" style="--k:4" x="755" y="235" width="25" height="47" rx="3"/></g><g class="step"><rect class="rk" x="834" y="530" width="52" height="52" rx="14"/><use href="#i-robot" x="845" y="541" width="30.159999999999997" height="30.159999999999997" class="ic"/></g><use href="#i-chat-circle-dots" x="795" y="511" width="22" height="22" class="ic talk"/><use href="#i-chat-circle-dots" x="903" y="511" width="22" height="22" class="ic talk"/></g><g class="dsg"><rect class="dsg-b" x="174" y="124" width="852" height="702" rx="24"/><g class="chip"><rect x="426" y="107" width="348" height="34" rx="17"/><use href="#i-pencil-ruler" x="742" y="114" width="20" height="20" class="ic"/><text class="lbl chip-t" x="736" y="130" text-anchor="end" direction="ltr">Design + Technology = Solution</text></g></g></g></svg>
+    <div class="vignette" aria-hidden="true"></div>
+    
+    <div class="caps"><div class="cap lead" data-s="0"><h2>سه حوزه، یک لایهٔ مشترک</h2><p>زیرساخت را می‌سازیم، از آن محافظت می‌کنیم و آن را هوشمند می‌کنیم.</p></div><div class="cap" data-s="1"><h3>زیرساخت: ساختن بستر درست</h3><p>ساختن بستر درست: شبکه، دیتاسنتر و سرور، ذخیره‌سازی، برق و UPS و زیرساخت پسیو؛ پایدار و آمادهٔ رشد.</p><a class="cap-link" href="infrastructure.html">دیدن حوزهٔ زیرساخت</a></div><div class="cap" data-s="2"><h3>امنیت: محافظت از آنچه ساخته‌ایم</h3><p>محافظت از آنچه ساخته‌ایم: امنیت شبکه، دوربین مداربسته، دسترسی و پایش و کنترل تردد؛ از همان مرحلهٔ طراحی.</p><a class="cap-link" href="security.html">دیدن حوزهٔ امنیت</a></div><div class="cap" data-s="3"><h3>هوشمندی: ارزش‌آفرینی از داده</h3><p>ارزش‌آفرینی از داده: هوش مصنوعی، داده و تحلیل، خودکارسازی و نرم‌افزار و مدل‌های اختصاصی.</p><a class="cap-link" href="intelligence.html">دیدن حوزهٔ هوشمندی</a></div><div class="cap" data-s="4"><h3>همه چیز سر جای درستش.</h3><p>خدمات را کنار هم نمی‌گذاریم؛ با هم طراحی می‌کنیم. شروع، یک گفتگوست.</p><div class="hero-actions"><a class="btn btn-brand" href="index.html#contact">درخواست مشاوره</a><a class="btn btn-ghost" href="tel:+982188964116"><bdi dir="ltr">۰۲۱-۸۸۹۶۴۱۱۶</bdi></a></div></div></div>
+  </div>
+</section>
+<section class="sec" id="what" aria-labelledby="h-what"><div class="wrap">
+  <span class="kicker" data-reveal>خلاصه</span>
+  <h2 id="h-what" data-reveal>دربارهٔ DaranX</h2>
+  <div class="prose" data-reveal>
+    <p>DaranX یک شریک فناوری برای سازمان‌ها و کسب‌وکارهاست. زیرساخت، امنیت و فناوری‌های هوشمند را از مرحلهٔ شناخت و طراحی تا اجرا و پشتیبانی، به‌عنوان اجزای یک راهکار واحد می‌بینیم، نه مجموعه‌ای از تجهیزات که کنار هم چیده شده‌اند. باور اصلی ما ساده است: همه چیز باید سر جای درستش باشد.</p><p>برای ما طراحی مقدم بر اجراست. پیش از انتخاب تجهیز، نصب سرور یا پیاده‌سازی هر راهکار، اول مسئلهٔ واقعی سازمان را می‌فهمیم: نیاز واقعی چیست، چه چیزی امروز لازم است و چه چیزی ممکن است فردا لازم شود.</p><p>روش کار ما یک زنجیرهٔ پیوسته است: شناخت، طراحی، اجرا و پشتیبانی. نگاه پشتیبانی از همان مرحلهٔ طراحی آغاز می‌شود، چون اگر قرار است فردا نگهدار چیزی باشیم، امروز آن را طوری می‌سازیم که دردسر نسازد.</p><p>توانمندی‌های ما در سه حوزه سازمان می‌یابند: زیرساخت برای ساختن بستر درست، امنیت برای محافظت از آنچه ساخته‌ایم، و هوشمندی برای ارزش‌آفرینی از داده. طراحی لایهٔ مشترکی است که هر سه را به هم متصل می‌کند.</p><p>مخاطب ما الزاماً متخصص فناوری نیست؛ برای همین ارزش فناوری را با زبان کسب‌وکار توضیح می‌دهیم: هزینه، ریسک، پایداری، بهره‌وری، امنیت و توسعه. DaranX یکی از مجموعه‌های هلدینگ بهسرما است.</p>
+    
+  </div>
+</div></section>
+<section class="sec" id="parts" aria-labelledby="h-parts"><div class="wrap">
+  <span class="kicker" data-reveal>زیرمجموعه‌ها</span>
+  <h2 id="h-parts" data-reveal>سه حوزه، یک لایهٔ مشترک</h2>
+  <div class="parts" data-reveal><a class="part" href="infrastructure.html"><h3>زیرساخت</h3><p>ساختن بستر درست: شبکه، دیتاسنتر و سرور، ذخیره‌سازی، برق و UPS و زیرساخت پسیو؛ پایدار و آمادهٔ رشد.</p><span class="go">جزئیات زیرساخت</span></a><a class="part" href="security.html"><h3>امنیت</h3><p>محافظت از آنچه ساخته‌ایم: امنیت شبکه، دوربین مداربسته، دسترسی و پایش و کنترل تردد؛ از همان مرحلهٔ طراحی.</p><span class="go">جزئیات امنیت</span></a><a class="part" href="intelligence.html"><h3>هوشمندی</h3><p>ارزش‌آفرینی از داده: هوش مصنوعی، داده و تحلیل، خودکارسازی و نرم‌افزار و مدل‌های اختصاصی.</p><span class="go">جزئیات هوشمندی</span></a></div>
+</div></section>
+<section class="sec" id="why" aria-labelledby="h-why"><div class="wrap">
+  <span class="kicker" data-reveal>چرا مهم است؟</span>
+  <h2 id="h-why" data-reveal>شریک فناوری، نه فروشندهٔ تجهیزات</h2>
+  <ul class="why" data-reveal><li>سیستم درست را طراحی می‌کند</li><li>مسئولیت نتیجه را به عهده می‌گیرد</li><li>از آن پشتیبانی می‌کند</li><li>ارزش فناوری را با زبان کسب‌وکار می‌گوید</li></ul>
+</div></section>
+<section class="sec" id="method" aria-labelledby="h-method"><div class="wrap">
+  <span class="kicker" data-reveal>روش کار</span>
+  <h2 id="h-method" data-reveal>یک مسیر، از مسئله تا پایداری</h2>
+  <ol class="steps4" data-reveal><li><h3>شناخت</h3><p>بررسی مسئله، نیاز، شرایط موجود و اهداف آینده؛ پیش از هر تصمیم فنی.</p></li><li><h3>طراحی</h3><p>راهکار متناسب با نیاز واقعی و جایگاه، ارتباط و نقش هر جزء.</p></li><li><h3>اجرا</h3><p>تبدیل طراحی به راهکاری واقعی با تجهیزات و روش اجرایی مناسب.</p></li><li><h3>پشتیبانی</h3><p>ادامهٔ مسئولیت نگهداری، توسعه و عملکرد راهکار.</p></li></ol>
+</div></section>
+<section class="sec" id="faq" aria-labelledby="h-faq"><div class="wrap">
+  <h2 id="h-faq" data-reveal>پرسش‌های رایج</h2>
+  <div class="faq"><details><summary>DaranX چه کاری انجام می‌دهد؟</summary><p class="ans">DaranX شریک فناوری سازمان‌ها و کسب‌وکارهاست و زیرساخت، امنیت و هوشمندی را از شناخت و طراحی تا اجرا و پشتیبانی، به‌عنوان یک راهکار یکپارچه طراحی می‌کند.</p></details><details><summary>آیا DaranX تجهیزات هم می‌فروشد و نصب می‌کند؟</summary><p class="ans">بله. فروش، نصب و راه‌اندازی شبکه، سرور، سوئیچ و روتر، کامپیوتر و لپ‌تاپ و UPS و برق اضطراری، متناسب با نیاز واقعی سازمان.</p></details><details><summary>روش کار DaranX چیست؟</summary><p class="ans">چهار مرحلهٔ پیوسته: شناخت، طراحی، اجرا و پشتیبانی. پیش از هر تصمیم فنی، مسئلهٔ واقعی سازمان را می‌فهمیم.</p></details><details><summary>دفتر DaranX کجاست؟</summary><p class="ans">تهران، میدان فاطمی، نبش چهلستون، ساختمان چهلستون، طبقه ۲، واحد ۲۰۲. تلفن: ۰۲۱-۸۸۹۶۴۱۱۶.</p></details><details><summary>DaranX عضو کدام مجموعه است؟</summary><p class="ans">DaranX یکی از مجموعه‌های هلدینگ بهسرما است.</p></details></div>
+</div></section><section class="sec" id="venture" aria-labelledby="h-venture"><div class="wrap">
+  <div class="venture-box" data-reveal>
+    <span class="kicker">Venture تحت DaranX</span>
+    <h2 id="h-venture">PlanoGram</h2>
+    <p>راهکار نرم‌افزاری در حوزهٔ چیدمان فروشگاهی، مدیریت قفسه‌ها و Planogram؛ استفاده از داده و نرم‌افزار برای تصمیم‌گیری بهتر دربارهٔ فضای فروش.</p>
+    <ul><li>طراحی و مدیریت چیدمان فروشگاه</li><li>مدیریت قفسه‌ها و استانداردسازی چیدمان</li><li>تصمیم‌گیری داده‌محور دربارهٔ فضای فروش</li></ul>
+  </div>
+</div></section><section class="sec" id="contact" aria-labelledby="h-contact"><div class="wrap contact-grid">
+  <div class="contact-info" data-reveal>
+    <span class="kicker">تماس با ما</span>
+    <h2 id="h-contact">شروع از یک گفتگو</h2>
+    <p>اول مسئلهٔ شما را می‌فهمیم، بعد می‌گوییم چه چیزی واقعاً لازم دارید. برای شروع کافی است تماس بگیرید یا به دفتر ما سر بزنید.</p>
+    <dl class="ci-list">
+      <div><dt>تلفن ثابت</dt><dd><a href="tel:+982188964116"><bdi dir="ltr">۰۲۱-۸۸۹۶۴۱۱۶</bdi></a> · <a href="tel:+982188966904"><bdi dir="ltr">۰۲۱-۸۸۹۶۶۹۰۴</bdi></a></dd></div>
+      <div><dt>موبایل</dt><dd><a href="tel:+989359370910"><bdi dir="ltr">۰۹۳۵-۹۳۷۰۹۱۰</bdi></a></dd></div>
+      <div><dt>آدرس دفتر</dt><dd>تهران، میدان فاطمی، نبش چهلستون، ساختمان چهلستون، طبقه ۲، واحد ۲۰۲</dd></div>
+    </dl>
+  </div>
+  <div class="contact-form" data-reveal>
+    <h3>مسئلهٔ سازمان‌تان را با ما در میان بگذارید.</h3>
+    <p>یک گفتگو دربارهٔ وضعیت فعلی و اهداف، اولین قدم طراحی راهکاری است که سر جای درستش قرار می‌گیرد.</p>
+    <form class="cform" id="contactForm" method="post" action="contact.php" novalidate>
+      <div class="cf-row">
+        <div class="cf-field"><label for="cf-name">نام و نام خانوادگی <span class="req" aria-hidden="true">*</span></label>
+          <input id="cf-name" name="name" type="text" autocomplete="name" required maxlength="80"></div>
+        <div class="cf-field"><label for="cf-phone">شماره تماس <span class="req" aria-hidden="true">*</span></label>
+          <input id="cf-phone" name="phone" type="tel" inputmode="tel" autocomplete="tel" required maxlength="25" dir="ltr"></div>
+      </div>
+      <div class="cf-row">
+        <div class="cf-field"><label for="cf-email">ایمیل <span class="opt">(اختیاری)</span></label>
+          <input id="cf-email" name="email" type="email" autocomplete="email" maxlength="120" dir="ltr"></div>
+        <div class="cf-field"><label for="cf-company">سازمان یا موضوع <span class="opt">(اختیاری)</span></label>
+          <input id="cf-company" name="company" type="text" maxlength="100"></div>
+      </div>
+      <div class="cf-field"><label for="cf-message">پیام شما <span class="req" aria-hidden="true">*</span></label>
+        <textarea id="cf-message" name="message" rows="4" required maxlength="2000" placeholder="کوتاه بگویید با چه مسئله‌ای درگیر هستید"></textarea></div>
+      <!-- honeypot: must stay empty; bots fill it -->
+      <div class="cf-hp" aria-hidden="true"><label>این فیلد را خالی بگذارید<input name="website" tabindex="-1" autocomplete="off"></label></div>
+      <div class="hero-actions"><button type="submit" class="btn btn-solid cf-submit">ارسال پیام</button><a href="tel:+982188964116" class="btn btn-line">یا تماس بگیرید</a></div>
+      <p class="cf-status" id="cfStatus" role="status" aria-live="polite" hidden></p>
+      <p class="cf-note">اطلاعات شما فقط برای پاسخ‌گویی استفاده می‌شود و در اختیار کسی قرار نمی‌گیرد.</p>
+    </form>
+  </div>
+</div></section>
+<section class="sec" id="location" aria-labelledby="h-loc"><div class="wrap">
+  <div class="map-head" data-reveal>
+    <div><span class="kicker">موقعیت ما</span><h2 id="h-loc">روی نقشه پیدایمان کنید</h2>
+      <p>تهران، میدان فاطمی، نبش چهلستون، ساختمان چهلستون، طبقه ۲، واحد ۲۰۲</p></div>
+    <div class="hero-actions"><a class="btn btn-solid" id="mapDir" href="https://www.google.com/maps/dir/?api=1&amp;destination=35.7206225,51.4062148" target="_blank" rel="noopener">مسیریابی با گوگل‌مپ</a>
+      <a class="btn btn-line" id="mapNeshan" href="https://neshan.org/maps/@35.7206225,51.4062148,17z" target="_blank" rel="noopener">نشان</a></div>
+  </div>
+  <div id="map" class="map" role="region" aria-label="نقشهٔ موقعیت دفتر DaranX"></div>
+  <p class="map-hint">برای بزرگ‌نمایی، روی نقشه کلیک کنید و سپس با اسکرول زوم کنید.</p>
+</div></section>
+</main>
+<footer class="site foot"><div class="wrap">
+  <div class="foot-grid">
+    <div class="foot-brand">
+      <div class="brand"><span class="logomark" aria-hidden="true"></span><span>Daran<span style="color:var(--steel-soft)">X</span></span></div>
+      <p>سه حوزه، یک راهکار یکپارچه. زیرساخت را می‌سازیم، از آن محافظت می‌کنیم و آن را هوشمند می‌کنیم؛ مسئولیت نتیجه را به عهده می‌گیریم و پشتیبانی می‌کنیم.</p>
+    </div>
+    <div class="foot-col"><h2>حوزه‌ها</h2><a href="infrastructure.html">زیرساخت</a><a href="security.html">امنیت</a><a href="intelligence.html">هوشمندی</a><a href="solutions.html">همه راهکارها</a></div>
+    <div class="foot-col"><h2>زیرساخت</h2><a href="network.html">شبکه</a><a href="datacenter-server.html">دیتاسنتر و سرور</a><a href="storage.html">ذخیره‌سازی</a><a href="power-ups.html">برق و UPS</a><a href="passive.html">زیرساخت پسیو</a></div>
+    <div class="foot-col"><h2>امنیت و هوشمندی</h2><a href="network-security.html">امنیت شبکه</a><a href="cctv.html">دوربین مداربسته</a><a href="access-monitoring.html">دسترسی و پایش</a><a href="access-control.html">کنترل تردد</a><a href="ai-solutions.html">هوش مصنوعی</a><a href="data-analytics.html">داده و تحلیل</a><a href="automation.html">خودکارسازی</a><a href="software-models.html">نرم‌افزار و مدل اختصاصی</a></div>
+    <div class="foot-col"><h2>تماس</h2>
+      <div class="fc-line"><a href="tel:+982188964116">۰۲۱-۸۸۹۶۴۱۱۶</a></div><div class="fc-line"><a href="tel:+982188966904">۰۲۱-۸۸۹۶۶۹۰۴</a></div>
+      <div class="fc-line"><a href="tel:+989359370910">۰۹۳۵-۹۳۷۰۹۱۰</a></div>
+      <address class="fc-line">تهران، میدان فاطمی، نبش چهلستون، ساختمان چهلستون، طبقه ۲، واحد ۲۰۲</address>
+    </div>
+  </div>
+  <div class="foot-parent">
+    <span class="fp-label">هلدینگ مادر</span>
+    <div class="fp-main"><a href="https://behsarmaholding.com/" title="هلدینگ بهسرما">عضو هلدینگ بهسرما</a><small>DaranX یکی از مجموعه‌های هلدینگ بهسرما است.</small></div>
+    <span class="fp-en">Behsarma Holding · behsarmaholding.com</span>
+  </div>
+  <div class="foot-bottom"><span style="color:var(--on-navy-soft)">همه چیز سر جای درستش.</span><span>© ۱۴۰۵ DaranX، تمامی حقوق محفوظ است.</span></div>
+</div></footer>
+</div>
 <!-- Fixed contact bar: on every page, always on screen, never moves or animates on scroll. -->
 <aside class="fbar" aria-label="تماس و هلدینگ مادر">
   <div class="fbar-in">
@@ -1322,350 +224,40 @@
     <div class="fbar-hold">عضو هلدینگ <a href="https://behsarmaholding.com/" title="هلدینگ بهسرما">بهسرما</a></div>
   </div>
 </aside>
-
-</div>
-
+<script>window.STORY={"acts":[{"bounds":[0.22,0.6],"stops":[0,0.42,1],"cam":[{"z":1,"x":540,"y":470}],"id":"a1","hero":true},{"bounds":[0.18,0.38,0.58,0.78],"stops":[0.08,0.28,0.48,0.68,0.9],"cam":[{"z":1,"x":540,"y":470}],"id":"a2"},{"bounds":[0.16,0.38,0.6,0.8],"stops":[0.06,0.28,0.5,0.7,0.92],"cam":[{"z":1,"x":540,"y":470}],"id":"a3"}]};</script>
+<script src="assets/story/story.js?v=4883a730ba" defer></script>
+<script src="assets/leaflet/leaflet.js" defer></script>
 <script>
-  (function(){
-    var root=document.documentElement, tt=document.getElementById('themeToggle');
-    function stored(){try{return localStorage.getItem('dx-theme')}catch(e){return null}}
-    var s=stored(); if(s){root.setAttribute('data-theme',s);}
-    tt.addEventListener('click',function(){
-      var cur=root.getAttribute('data-theme');
-      var isDark = cur ? cur==='dark' : matchMedia('(prefers-color-scheme:dark)').matches;
-      var next=isDark?'light':'dark';
-      root.setAttribute('data-theme',next);
-      try{localStorage.setItem('dx-theme',next)}catch(e){}
-    });
-
-    var mb=document.getElementById('menuBtn'), nl=document.getElementById('navLinks');
-    mb.addEventListener('click',function(){var open=nl.classList.toggle('open');mb.setAttribute('aria-expanded',open);});
-    nl.addEventListener('click',function(e){if(e.target.tagName==='A')nl.classList.remove('open')});
-
-    var nav=document.getElementById('nav'), prog=document.getElementById('prog');
-    function onScroll(){
-      nav.classList.toggle('scrolled',window.scrollY>8);
-      var h=document.documentElement.scrollHeight-window.innerHeight;
-      prog.style.width=(h>0?(window.scrollY/h*100):0)+'%';
-    }
-    onScroll(); window.addEventListener('scroll',onScroll,{passive:true});
-
-    // pointer parallax on hero (desktop, motion-ok only)
-    var hero=document.querySelector('.hero'), vis=document.querySelector('.hero-visual'), blobs=document.querySelector('.blobs');
-    var motionOK=!matchMedia('(prefers-reduced-motion:reduce)').matches;
-    if(hero&&vis&&motionOK&&matchMedia('(hover:hover)').matches){
-      var raf=0,lx=0,ly=0;
-      hero.addEventListener('mousemove',function(e){
-        var r=hero.getBoundingClientRect();
-        lx=(e.clientX-r.left)/r.width-.5; ly=(e.clientY-r.top)/r.height-.5;
-        if(!raf)raf=requestAnimationFrame(function(){
-          raf=0;
-          vis.style.transform='translate('+(lx*16)+'px,'+(ly*16)+'px)';
-          if(blobs)blobs.style.transform='translate('+(-lx*24)+'px,'+(-ly*24)+'px)';
-        });
-      });
-      hero.addEventListener('mouseleave',function(){vis.style.transform='';if(blobs)blobs.style.transform='';});
-    }
-
-    var els=document.querySelectorAll('.reveal');
-    var steps=document.getElementById('steps');
-    if('IntersectionObserver' in window){
-      var io=new IntersectionObserver(function(en){
-        en.forEach(function(x){if(x.isIntersecting){
-          x.target.classList.add('in');
-          if(x.target.querySelector&&x.target.contains(steps)&&steps){steps.classList.add('drawn');}
-          io.unobserve(x.target);
-        }});
-      },{threshold:.12});
-      els.forEach(function(el){io.observe(el)});
-    } else { els.forEach(function(el){el.classList.add('in')}); if(steps)steps.classList.add('drawn'); }
-  })();
-</script>
-<script id="cfjs">
-  (function(){
-    var form = document.getElementById('contactForm');
-    if(!form) return;
-    var statusEl = document.getElementById('cfStatus');
-    var btn = form.querySelector('.cf-submit');
-    var openedAt = Date.now(); // seconds the form was open go to contact.php (bot check)
-    function show(kind, msg){
-      statusEl.className = 'cf-status ' + kind;
-      statusEl.textContent = msg;
-      statusEl.hidden = false;
-    }
-    form.addEventListener('submit', function(e){
-      e.preventDefault();
-      if(!form.checkValidity()){ form.reportValidity(); return; }
-      var data = new FormData(form);
-      data.append('el', String(Math.round((Date.now() - openedAt) / 1000)));
-      btn.disabled = true;
-      var original = btn.textContent;
-      btn.textContent = 'در حال ارسال…';
-      statusEl.hidden = true;
-      fetch(form.action, {
-        method: 'POST',
-        body: data,
-        headers: { 'Accept': 'application/json', 'X-Requested-With': 'fetch' }
-      }).then(function(r){
-        return r.json().catch(function(){ return { ok: r.ok }; });
-      }).then(function(res){
-        if(res && res.ok){
-          show('ok', 'پیام شما با موفقیت ارسال شد. به‌زودی با شما تماس می‌گیریم.');
-          form.reset();
-        } else {
-          show('err', (res && res.error) || 'ارسال ناموفق بود. لطفاً دوباره تلاش کنید یا تماس بگیرید.');
-        }
-      }).catch(function(){
-        show('err', 'ارتباط برقرار نشد. لطفاً اتصال اینترنت را بررسی کنید یا تماس بگیرید.');
-      }).finally(function(){
-        btn.disabled = false;
-        btn.textContent = original;
-      });
-    });
-    // Non-JS fallback: contact.php redirects back with ?sent=1 / ?sent=0
-    try {
-      var q = new URLSearchParams(location.search);
-      if(q.get('sent') === '1'){ show('ok', 'پیام شما با موفقیت ارسال شد. به‌زودی با شما تماس می‌گیریم.'); }
-      else if(q.get('sent') === '0'){ show('err', 'ارسال ناموفق بود. لطفاً دوباره تلاش کنید یا تماس بگیرید.'); }
-    } catch(_){}
-  })();
-</script>
-<script src="assets/leaflet/leaflet.js"></script>
-<script id="mapjs">
-  (function(){
-    var el = document.getElementById('map');
-    if(!el || !window.L) return;
-    // Office coordinates (exact building).
-    var LAT = 35.7206225, LNG = 51.4062148, ZOOM = 17;
-    var map = L.map('map', { scrollWheelZoom: false }).setView([LAT, LNG], ZOOM);
-    window.__dxmap = map;
-    L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
-      maxZoom: 19,
-      attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>'
-    }).addTo(map);
-    var icon = L.icon({
-      iconUrl: 'assets/leaflet/images/marker-icon.png',
-      iconRetinaUrl: 'assets/leaflet/images/marker-icon-2x.png',
-      shadowUrl: 'assets/leaflet/images/marker-shadow.png',
-      iconSize: [25, 41], iconAnchor: [12, 41], popupAnchor: [1, -34], shadowSize: [41, 41]
-    });
-    L.marker([LAT, LNG], { icon: icon }).addTo(map)
-      .bindPopup('<b>DaranX</b><br>میدان فاطمی، نبش چهلستون<br>ساختمان چهلستون، طبقه ۲، واحد ۲۰۲');
-    // Only hijack the wheel after the user interacts with the map.
-    map.on('focus', function(){ map.scrollWheelZoom.enable(); });
-    map.on('blur',  function(){ map.scrollWheelZoom.disable(); });
-    // Wire up the directions buttons to the same coordinates.
-    var g = document.getElementById('mapDir');
-    if(g) g.href = 'https://www.google.com/maps/dir/?api=1&destination=' + LAT + ',' + LNG;
-    var n = document.getElementById('mapNeshan');
-    if(n) n.href = 'https://neshan.org/maps/@' + LAT + ',' + LNG + ',' + ZOOM + 'z';
-    // Ensure correct sizing once laid out.
-    setTimeout(function(){ map.invalidateSize(); }, 200);
-  })();
-</script>
-<script id="deckjs">
-  (function(){
-    // Full-screen deck on wide screens: one gesture per section.
-    // - Content may shrink a little (to 88%) to fit; a taller section scrolls
-    //   normally, and the gesture that reaches its end moves to the next one.
-    // - A trackpad swipe (with momentum) advances exactly one section.
-    // - Wheel over the map / form fields is left alone.
-    // - The footer (with the parent holding) closes the last section.
-    // - No deck for reduced motion or below 900px: plain scrolling.
-    var root=document.documentElement, main=document.getElementById('top');
-    var dotsWrap=document.getElementById('ddots'), prog=document.getElementById('prog'), nav=document.getElementById('nav');
-    var footer=document.querySelector('footer.site');
-    if(!main||!dotsWrap) return;
-    var mqWide=matchMedia('(min-width:900px)'), mqMotion=matchMedia('(prefers-reduced-motion:no-preference)');
-    var on=false, panels=[], dots=[], idx=0, animating=false;
-    var MIN_ZOOM=0.88, GAP=200, LOCK=560;
-
-    function collect(){
-      return [].slice.call(main.children).filter(function(el){
-        return el.nodeType===1 && !el.hidden && (el.matches('section')||el.classList.contains('sec')||
-               el.classList.contains('fold-motion')||el.classList.contains('hero'));
-      });
-    }
-    function targets(p){
-      if(p.classList.contains('cover'))return [].slice.call(p.querySelectorAll('.cv-text'));
-      var grids=p.querySelectorAll('.cards,.hub-cards,.subs,.mstrip,.pf-grid,.cols,.idx-cards');
-      var out=[];
-      if(grids.length){
-        var head=p.querySelector('.sec-head,.diff-quote,h1,h2'); if(head)out.push(head);
-        [].forEach.call(grids,function(g){[].forEach.call(g.children,function(c){out.push(c);});});
-        [].forEach.call(p.querySelectorAll('.hero-actions,.dhero-actions,.hphone-row,.cta,.contact-info,.contact-cta,.map-head,.map,.map-hint'),
-          function(e){if(out.indexOf(e)<0)out.push(e);});
-      }else{
-        var wrap=p.querySelector('.wrap')||p, kids=[].slice.call(wrap.children);
-        if(kids.length===1&&kids[0].children.length>1) kids=[].slice.call(kids[0].children);
-        out=kids;
-      }
-      return out.filter(Boolean).slice(0,14);
-    }
-    // Shrink a little if that is all it takes to fit; otherwise let it scroll.
-    function fit(p){
-      var wrap=p.querySelector('.wrap'); if(!wrap)return;
-      wrap.style.zoom='';
-      var over=p.scrollHeight/p.clientHeight;
-      if(over>1.005){var z=Math.max(MIN_ZOOM,(p.clientHeight-12)/p.scrollHeight); if(z<1) wrap.style.zoom=z.toFixed(3);}
-    }
-    // Leaving: fade and drift 18px in the direction of travel. Arriving:
-    // rise 24px with a 35ms stagger. Transform + opacity only, ease-out.
-    function leave(p,dir){
-      targets(p).forEach(function(el){
-        el.style.transition='transform .3s cubic-bezier(.23,1,.32,1),opacity .25s ease';
-        el.style.transform='translateY('+(-18*dir)+'px)'; el.style.opacity='0';
-      });
-    }
-    function arrive(p,dir){
-      targets(p).forEach(function(el,i){
-        el.style.transition='none'; el.style.transform='translateY('+(24*dir)+'px)'; el.style.opacity='0';
-        void el.offsetWidth;
-        el.style.transition='transform .5s cubic-bezier(.23,1,.32,1),opacity .4s ease';
-        el.style.transitionDelay=(0.04+i*0.035)+'s';
-        el.style.transform=''; el.style.opacity='';
-      });
-    }
-    function clearT(p){targets(p).forEach(function(el){el.style.transition='';el.style.transitionDelay='';el.style.transform='';el.style.opacity='';});}
-    function chrome(){
-      dots.forEach(function(d,i){d.setAttribute('aria-current',i===idx?'true':'false');});
-      if(prog)prog.style.width=(idx/(panels.length-1)*100)+'%';
-      panels.forEach(function(p,i){p.style.pointerEvents=i===idx?'auto':'none';p.setAttribute('aria-hidden',i===idx?'false':'true');});
-      if(nav){var over=(idx===0);nav.classList.toggle('over-hero',over);nav.classList.toggle('scrolled',!over);}
-      if(window.__dxmap){try{setTimeout(function(){window.__dxmap.invalidateSize();},120);}catch(e){}}
-      var id=panels[idx].id;
-      try{history.replaceState(null,'',id&&idx>0?'#'+id:location.pathname+location.search);}catch(e){}
-    }
-    function go(n){
-      n=Math.max(0,Math.min(panels.length-1,n));
-      if(!on||n===idx||animating)return;
-      animating=true;
-      var dir=n>idx?1:-1, out=panels[idx], inc=panels[n];
-      out.style.zIndex='1'; inc.style.zIndex='2';
-      leave(out,dir); out.classList.add('out'); out.classList.remove('active');
-      clearT(inc); inc.classList.add('active'); fit(inc);
-      inc.scrollTop=dir>0?0:Math.max(0,inc.scrollHeight-inc.clientHeight);
-      arrive(inc,dir);
-      idx=n; chrome();
-      setTimeout(function(){out.classList.remove('out');clearT(out);out.style.zIndex='';inc.style.zIndex='';animating=false;},LOCK);
-    }
-    function idxForId(id){if(id==='top')return 0;for(var i=0;i<panels.length;i++){if(panels[i].id===id)return i;}return -1;}
-
-    // ----- input -----
-    var lastWheel=0, gestureDone=false, gestureScrolled=false;
-    function canScroll(p,dir){return dir>0?p.scrollTop+p.clientHeight<p.scrollHeight-2:p.scrollTop>2;}
-    function onWheel(e){
-      if(!on)return;
-      if(e.ctrlKey)return;                                   // pinch-zoom
-      var t=e.target;
-      if(t.closest&&t.closest('.leaflet-container')&&window.__dxmap&&window.__dxmap.scrollWheelZoom.enabled())return;
-      if(t.closest&&t.closest('textarea,select'))return;
-      var now=Date.now(), gap=now-lastWheel; lastWheel=now;
-      if(gap>GAP){gestureDone=false;gestureScrolled=false;}   // a new gesture begins
-      var dy=e.deltaY, dir=dy>0?1:-1, p=panels[idx];
-      if(animating||gestureDone){e.preventDefault();return;}
-      if(Math.abs(dy)<2)return;
-      if(canScroll(p,dir)){gestureScrolled=true;return;}      // native scroll inside a tall section
-      e.preventDefault();
-      if(gestureScrolled)return;                              // momentum of an inner scroll never flips the page
-      gestureDone=true; go(idx+dir);
-    }
-    function onKey(e){
-      if(!on)return;
-      var t=e.target; if(t&&/^(INPUT|TEXTAREA|SELECT|BUTTON|A)$/.test(t.tagName)&&e.key===' ')return;
-      if(t&&/^(INPUT|TEXTAREA|SELECT)$/.test(t.tagName))return;
-      var p=panels[idx], k=e.key, dir=0;
-      if(k==='ArrowDown'||k==='PageDown'||(k===' '&&!e.shiftKey))dir=1;
-      else if(k==='ArrowUp'||k==='PageUp'||(k===' '&&e.shiftKey))dir=-1;
-      else if(k==='Home'){e.preventDefault();go(0);return;}
-      else if(k==='End'){e.preventDefault();go(panels.length-1);return;}
-      if(!dir)return;
-      if(canScroll(p,dir)&&(k.indexOf('Arrow')===0))return;   // arrows scroll a tall section first
-      e.preventDefault(); go(idx+dir);
-    }
-    var ty=0, tScroll=0;
-    function onTouchStart(e){ty=e.touches[0].clientY;tScroll=panels[idx]?panels[idx].scrollTop:0;}
-    function onTouchEnd(e){
-      if(!on)return;
-      var dy=ty-(e.changedTouches[0]||{clientY:ty}).clientY, p=panels[idx];
-      if(Math.abs(dy)<50||Math.abs(p.scrollTop-tScroll)>2)return; // it was an inner scroll
-      var dir=dy>0?1:-1; if(canScroll(p,dir))return;
-      go(idx+dir);
-    }
-    function onClick(e){
-      if(!on)return;
-      var a=e.target.closest&&e.target.closest('a[href^="#"]'); if(!a)return;
-      var pi=idxForId((a.getAttribute('href')||'').slice(1));
-      if(pi>=0){e.preventDefault();var nl=document.getElementById('navLinks');if(nl)nl.classList.remove('open');go(pi);}
-    }
-    var rt; function onResize(){clearTimeout(rt);rt=setTimeout(function(){if(on)fit(panels[idx]);},150);}
-
-    // ----- set up / tear down (crossing 900px or changing motion settings) -----
-    function start(){
-      panels=collect(); if(panels.length<2)return;
-      on=true; root.classList.add('deck');
-      panels.forEach(function(p){p.classList.add('dpanel');});
-      if(footer) panels[panels.length-1].appendChild(footer);
-      dotsWrap.innerHTML='';
-      panels.forEach(function(p,i){var b=document.createElement('button');b.type='button';
-        b.setAttribute('aria-label','بخش '+(i+1));b.addEventListener('click',function(){go(i);});dotsWrap.appendChild(b);});
-      dots=[].slice.call(dotsWrap.children);
-      var h=(location.hash||'').replace('#',''), pi=h?idxForId(h):0;
-      idx=pi>0?pi:0;
-      panels.forEach(function(p,i){p.classList.toggle('active',i===idx);});
-      chrome(); fit(panels[idx]); arrive(panels[idx],1);
-    }
-    function stop(){
-      if(!on)return; on=false; animating=false;
-      root.classList.remove('deck');
-      panels.forEach(function(p){p.classList.remove('dpanel','active','out');p.style.pointerEvents='';p.style.zIndex='';
-        p.removeAttribute('aria-hidden');clearT(p);var w=p.querySelector('.wrap');if(w)w.style.zoom='';});
-      if(footer) main.parentNode.insertBefore(footer,main.nextSibling);
-      dotsWrap.innerHTML=''; dots=[]; if(prog)prog.style.width='';
-      if(nav){nav.classList.remove('over-hero');}
-    }
-    function sync(){ if(mqWide.matches&&mqMotion.matches) start(); else stop(); }
-    window.__deckGo=function(n){go(n);};
-    main.addEventListener('wheel',onWheel,{passive:false});
-    window.addEventListener('keydown',onKey);
-    main.addEventListener('touchstart',onTouchStart,{passive:true});
-    main.addEventListener('touchend',onTouchEnd,{passive:true});
-    document.addEventListener('click',onClick);
-    window.addEventListener('resize',onResize);
-    [mqWide,mqMotion].forEach(function(m){ if(m.addEventListener) m.addEventListener('change',sync); });
-    sync();
-  })();
-</script>
-<script id="a11yjs">
-/* Keyboard focus must never sit under the fixed contact bar: when a focused
-   field or link ends up (partly) behind it, scroll it just clear of the bar. */
 (function(){
-  /* Skip link: move keyboard focus into <main> itself (the homepage slide
-     deck would otherwise swallow the #top jump without moving focus). */
-  var skip=document.querySelector('.skip-link'), main=document.getElementById('top');
-  if(skip&&main) skip.addEventListener('click',function(e){
-    e.preventDefault(); e.stopPropagation();
-    var deck=document.documentElement.classList.contains('deck');
-    main.focus({preventScroll:deck}); if(!deck) main.scrollIntoView();
+  var form=document.getElementById('contactForm'); if(!form) return;
+  var statusEl=document.getElementById('cfStatus'), btn=form.querySelector('.cf-submit'), openedAt=Date.now();
+  function show(kind,msg){statusEl.className='cf-status '+kind;statusEl.textContent=msg;statusEl.hidden=false;}
+  var OK='پیام شما با موفقیت ارسال شد. به‌زودی با شما تماس می‌گیریم.', ERR='ارسال ناموفق بود. لطفاً دوباره تلاش کنید یا تماس بگیرید.';
+  form.addEventListener('submit',function(e){
+    e.preventDefault();
+    if(!form.checkValidity()){form.reportValidity();return;}
+    var data=new FormData(form);
+    data.append('el',String(Math.round((Date.now()-openedAt)/1000)));   // seconds the form was open (bot check in contact.php)
+    btn.disabled=true; var original=btn.textContent; btn.textContent='در حال ارسال'; statusEl.hidden=true;
+    fetch(form.action,{method:'POST',body:data,headers:{'Accept':'application/json','X-Requested-With':'fetch'}})
+      .then(function(r){return r.json().catch(function(){return {ok:r.ok};});})
+      .then(function(res){if(res&&res.ok){show('ok',OK);form.reset();}else{show('err',(res&&res.error)||ERR);}})
+      .catch(function(){show('err','ارتباط برقرار نشد. لطفاً اتصال اینترنت را بررسی کنید یا تماس بگیرید.');})
+      .finally(function(){btn.disabled=false;btn.textContent=original;});
   });
-  var bar=document.querySelector('.fbar'); if(!bar) return;
-  function scroller(el){
-    for(var p=el.parentElement;p&&p!==document.body;p=p.parentElement){
-      var o=getComputedStyle(p).overflowY;
-      if((o==='auto'||o==='scroll')&&p.scrollHeight>p.clientHeight) return p;
-    }
-    return null;
-  }
-  document.addEventListener('focusin',function(e){
-    var t=e.target; if(!t||!t.getBoundingClientRect||bar.contains(t)) return;
-    requestAnimationFrame(function(){
-      var r=t.getBoundingClientRect(), limit=bar.getBoundingClientRect().top-12;
-      if(r.bottom<=limit||r.top>=window.innerHeight||r.height>limit-90) return;
-      var by=r.bottom-limit, sc=scroller(t);
-      if(sc) sc.scrollTop+=by; else window.scrollBy(0,by);
-    });
-  });
+  try{var q=new URLSearchParams(location.search);if(q.get('sent')==='1')show('ok',OK);else if(q.get('sent')==='0')show('err',ERR);}catch(_){}
 })();
+window.addEventListener('load',function(){
+  var el=document.getElementById('map'); if(!el||!window.L) return;
+  var LAT=35.7206225,LNG=51.4062148,ZOOM=17;
+  var map=L.map('map',{scrollWheelZoom:false}).setView([LAT,LNG],ZOOM);
+  L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png',{maxZoom:19,attribution:'&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>'}).addTo(map);
+  var icon=L.icon({iconUrl:'assets/leaflet/images/marker-icon.png',iconRetinaUrl:'assets/leaflet/images/marker-icon-2x.png',shadowUrl:'assets/leaflet/images/marker-shadow.png',
+    iconSize:[25,41],iconAnchor:[12,41],popupAnchor:[1,-34],shadowSize:[41,41]});
+  L.marker([LAT,LNG],{icon:icon}).addTo(map).bindPopup('<b>DaranX</b><br>میدان فاطمی، نبش چهلستون<br>ساختمان چهلستون، طبقه ۲، واحد ۲۰۲');
+  map.on('focus',function(){map.scrollWheelZoom.enable();}); map.on('blur',function(){map.scrollWheelZoom.disable();});
+  setTimeout(function(){map.invalidateSize();},200);
+});
 </script>
 </body>
 </html>

@@ -72,7 +72,6 @@ def llms(built):
 
 def main(only):
     (css_href, js_href, banner_href), nc, nj = shared()
-    banner.inject_index(ROOT, banner_href)
     print(f'shared: story.css {nc // 1024} KB, story.js {nj // 1024} KB')
     names = only or sorted(p.stem for p in (HERE / 'pages').glob('*.py') if not p.stem.startswith('_'))
     built = {}
