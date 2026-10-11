@@ -35,7 +35,7 @@ def esc(s):
 def plain(s):
     """strip tags for meta/JSON-LD text"""
     import re
-    return re.sub(r'<[^>]+>', '', s)
+    return re.sub(r'<[^>]+>', '', re.sub(r'<br\s*/?>', ' ', s))
 
 
 # ---------------------------------------------------------------- head

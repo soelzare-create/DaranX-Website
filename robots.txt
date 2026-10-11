@@ -1,4 +1,27 @@
+# DaranX: everything public is open to search engines and AI answer engines.
+# Client work areas are private and not meant for any index.
+
 User-agent: *
 Allow: /
+Disallow: /invoice/
+Disallow: /merchandising/
+Disallow: /reports/
+
+# AI search and answer engines (explicitly welcome, same rules)
+User-agent: GPTBot
+User-agent: OAI-SearchBot
+User-agent: ChatGPT-User
+User-agent: ClaudeBot
+User-agent: Claude-SearchBot
+User-agent: Claude-User
+User-agent: PerplexityBot
+User-agent: Perplexity-User
+User-agent: Google-Extended
+User-agent: Applebot-Extended
+User-agent: Bingbot
+Allow: /
+Disallow: /invoice/
+Disallow: /merchandising/
+Disallow: /reports/
 
 Sitemap: https://www.daranx.com/sitemap.xml

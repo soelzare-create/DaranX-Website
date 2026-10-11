@@ -25,14 +25,25 @@ AddDefaultCharset UTF-8
   Redirect 301 /network-story.html https://www.daranx.com/network.html
 </IfModule>
 
+# --- Compression ------------------------------------------------------------
+# Text files shrink to a fraction over the wire (the story script and styles most of all).
+<IfModule mod_deflate.c>
+  AddOutputFilterByType DEFLATE text/html text/css text/plain text/xml application/xml application/javascript text/javascript application/json application/ld+json image/svg+xml
+</IfModule>
+
 # --- Caching for static assets --------------------------------------------
 <IfModule mod_expires.c>
   ExpiresActive On
   ExpiresByType image/svg+xml "access plus 1 month"
+  ExpiresByType image/jpeg "access plus 1 month"
+  ExpiresByType image/png "access plus 1 month"
+  ExpiresByType image/webp "access plus 1 month"
   ExpiresByType text/css "access plus 1 week"
   ExpiresByType application/javascript "access plus 1 week"
   ExpiresByType font/woff2 "access plus 1 year"
   ExpiresByType text/html "access plus 0 seconds"
+  ExpiresByType text/plain "access plus 1 day"
+  ExpiresByType application/xml "access plus 1 day"
 </IfModule>
 
 # Self-hosted font: correct MIME type (older Apache builds may miss it).
