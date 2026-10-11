@@ -401,3 +401,48 @@ def disks(x, y, cols=4, rows=2, cls='disks', bad=()):
             s.append(f'<rect class="disk{b}" style="--k:{k}" x="{x + 8 + c * 34}" y="{y + 8 + r * 40}" width="28" height="34" rx="3"/>')
     s.append('</g>')
     return ''.join(s)
+
+
+# ---------------------------------------------------------------- security parts
+def person(x, y, cls='who', s=30):
+    return group(cls, use('user', x, y, s))
+
+
+def door(x, y, h=86, cls='door', reader=True, side=1):
+    """a door in a wall at x (8 wide), its card reader beside it (side=+1 right, -1 left)"""
+    s = [f'<g class="{cls}"><rect class="dr" x="{x - 5}" y="{y}" width="10" height="{h}" rx="2"/>']
+    if reader:
+        rx = x + side * 18
+        s.append(f'<rect class="rd" x="{rx - 6}" y="{y + h * .35:.0f}" width="12" height="20" rx="2"/><circle class="rd-led" cx="{rx}" cy="{y + h * .35 + 6:.0f}" r="2.5"/>')
+    s.append('</g>')
+    return ''.join(s)
+
+
+def cone(cx, cy, deg, length=230, spread=34, cls='cone'):
+    """a camera's field of view: a wedge from (cx, cy) pointing deg degrees (0 = right, 90 = down)"""
+    import math
+    a1, a2 = math.radians(deg - spread), math.radians(deg + spread)
+    p1 = (cx + length * math.cos(a1), cy + length * math.sin(a1))
+    p2 = (cx + length * math.cos(a2), cy + length * math.sin(a2))
+    return f'<path class="{cls}" d="M{cx} {cy} L{p1[0]:.0f} {p1[1]:.0f} A{length} {length} 0 0 1 {p2[0]:.0f} {p2[1]:.0f} Z"/>'
+
+
+def zone(fid, cls='zone', inset=8):
+    top, bot = ft(fid), fb(fid)
+    return f'<rect class="{cls} zone-{fid}" x="{X0 + inset}" y="{top + inset}" width="{X1 - X0 - 2 * inset}" height="{bot - top - 2 * inset}" rx="8"/>'
+
+
+def firewall(x=300, y=768, cls='fw'):
+    return group(cls, f'<rect class="rk" x="{x - 26}" y="{y - 26}" width="52" height="52" rx="10"/>', use('shield-check', x, y, 34))
+
+
+def log_panel(x, y, w, rows, cls='logp', title='ثبت رویدادها'):
+    """an event log: rows appear one by one (each row's --k staggers it)"""
+    s = [f'<g class="{cls}"><rect class="panel" x="{x}" y="{y}" width="{w}" height="{44 + len(rows) * 30}" rx="10"/>',
+         use('list-checks', x + w - 22, y + 22, 22), label(x + w - 40, y + 29, title, 'lbl chip-t', 'end')]
+    for k, (text, alert) in enumerate(rows):
+        ry = y + 44 + k * 30
+        s.append(f'<g class="lrow{" alert" if alert else ""}" style="--k:{k}"><rect x="{x + 10}" y="{ry}" width="{w - 20}" height="24" rx="5"/>'
+                 + label(x + w - 20, ry + 17, text, 'lbl lrow-t', 'end') + '</g>')
+    s.append('</g>')
+    return ''.join(s)

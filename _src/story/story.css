@@ -263,3 +263,22 @@ html{scroll-padding-bottom:6.5rem}
 .disk{fill:#24507D;stroke:#3A6189;stroke-width:1;transition:fill .4s ease}
 .disk.bad{transition-delay:0s}
 .hot-srv{fill:var(--alert)}
+
+/* ---------------- security parts ---------------- */
+.who .ic{fill:#AEC4DB}
+.who.bad .ic{fill:var(--alert)}
+.who.ok .ic{fill:#7FD1A8}
+.door .dr{fill:#2B4868;stroke:#6E89A6;stroke-width:1.5;transition:fill .4s ease,transform .5s var(--ease-out);transform-box:fill-box;transform-origin:50% 0}
+.door.open .dr{fill:var(--alert)}
+.door .rd{fill:#0B1D33;stroke:#6E89A6;stroke-width:1.5}.door .rd-led{fill:#6E89A6}
+.door.locked .rd-led{fill:var(--brand)}
+.fw .rk{fill:#0F2744;stroke:var(--brand);stroke-width:2}.fw .ic{fill:var(--brand)}
+.logp .panel{fill:rgba(8,22,39,.92)}
+.lrow rect{fill:rgba(127,176,223,.10);stroke:rgba(127,176,223,.35)}
+.lrow.alert rect{fill:rgba(242,112,94,.14);stroke:var(--alert)}
+.lbl.lrow-t{font-size:14px;fill:var(--st-ink-2);stroke-width:0}
+.lrow{opacity:0;transition:opacity .4s var(--ease-out);transition-delay:calc(var(--k,0) * 160ms)}
+.story[data-sc] .logp.on .lrow,body.no-story .lrow,html:not(.js) .lrow{opacity:1}
+.zone-l{fill:none;stroke:var(--brand);stroke-width:2;stroke-dasharray:8 8}
+.acc{fill:none;stroke:#7FB0DF;stroke-width:2.5;opacity:.7}
+.acc.bad{stroke:var(--alert)}
