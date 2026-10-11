@@ -81,6 +81,8 @@ jobs:
             # lftp with retries): its large file batch trips this shared
             # host's FTP session here, so it is excluded from this deploy.
             invoice/**
+            # build sources of generated pages (e.g. network-story.html); the built page is uploaded, not these
+            _src/**
 
       # بعد از آپلود: صفحهٔ زندهٔ سایت را می‌خوانیم و گزارش می‌دهیم که تغییرات
       # واقعاً سرو می‌شوند یا نه (و آیا یک CDN/کش نسخهٔ قدیمی را نگه داشته).
