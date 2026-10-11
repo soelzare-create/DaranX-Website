@@ -17,6 +17,7 @@ HERE = Path(__file__).resolve().parent
 sys.path.insert(0, str(HERE))
 sys.path.insert(0, str(HERE / 'pages'))
 import layout  # noqa: E402
+import banner  # noqa: E402
 
 ROOT = HERE.parent.parent
 ENG = HERE / 'engine'
@@ -31,13 +32,16 @@ def shared():
     (OUT_ASSETS / 'story.css').write_text(css, encoding='utf-8')
     (OUT_ASSETS / 'story.js').write_text(js, encoding='utf-8')
     (OUT_ASSETS / 'LICENSE-GSAP.txt').write_text((ENG / 'LICENSE-GSAP.txt').read_text(encoding='utf-8'), encoding='utf-8')
+    bcss = (HERE / 'banner.css').read_text(encoding='utf-8')
+    (ROOT / 'assets' / 'banner.css').write_text(bcss, encoding='utf-8')
     v = lambda s: hashlib.sha1(s.encode()).hexdigest()[:10]
-    return f'assets/story/story.css?v={v(css)}', f'assets/story/story.js?v={v(js)}', len(css), len(js)
+    return (f'assets/story/story.css?v={v(css)}', f'assets/story/story.js?v={v(js)}', f'assets/banner.css?v={v(bcss)}'), len(css), len(js)
 
 
 ORDER = ['solutions', 'infrastructure', 'network', 'datacenter-server', 'storage', 'power-ups', 'passive',
          'security', 'network-security', 'cctv', 'access-monitoring', 'access-control',
-         'intelligence', 'ai-solutions', 'data-analytics', 'automation', 'software-models']
+         'intelligence', 'ai-solutions', 'data-analytics', 'automation', 'software-models',
+         'sale-network', 'sale-server', 'sale-switch-router', 'sale-computer-laptop', 'sale-ups']
 
 
 def llms(built):
@@ -50,7 +54,8 @@ def llms(built):
             '- Address: تهران، میدان فاطمی، نبش چهلستون، ساختمان چهلستون، طبقه ۲، واحد ۲۰۲',
             '- Method: شناخت، طراحی، اجرا، پشتیبانی', '- Parent organisation: Behsarma Holding (https://behsarmaholding.com/)', '']
     idx, full = list(head), list(head)
-    groups = {'solutions': 'راهکارها', 'infrastructure': 'زیرساخت', 'security': 'امنیت', 'intelligence': 'هوشمندی'}
+    groups = {'solutions': 'راهکارها', 'infrastructure': 'زیرساخت', 'security': 'امنیت', 'intelligence': 'هوشمندی',
+              'sale-network': 'فروش، نصب و راه‌اندازی تجهیزات'}
     for name in ORDER:
         P = built[name]
         if name in groups:
@@ -66,14 +71,15 @@ def llms(built):
 
 
 def main(only):
-    css_href, js_href, nc, nj = shared()
+    (css_href, js_href, banner_href), nc, nj = shared()
+    banner.inject_index(ROOT, banner_href)
     print(f'shared: story.css {nc // 1024} KB, story.js {nj // 1024} KB')
     names = only or sorted(p.stem for p in (HERE / 'pages').glob('*.py') if not p.stem.startswith('_'))
     built = {}
     for name in names:
         layout.kit.USED_ICONS.clear()
         P = built[name] = importlib.import_module(name).build()
-        html = layout.page(P, css_href, js_href)
+        html = layout.page(P, css_href, js_href, banner_href)
         assert '{{' not in html
         (ROOT / P['file']).write_text(html, encoding='utf-8')
         print(f'  {P["file"]:24} {len(html.encode()) // 1024:4} KB')

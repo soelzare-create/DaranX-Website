@@ -7,6 +7,7 @@ import html
 import json
 
 import kit
+import banner
 
 SITE = 'https://www.daranx.com/'
 ORG = {
@@ -272,15 +273,16 @@ def timeline(P):
     return json.dumps({'acts': acts}, ensure_ascii=False, separators=(',', ':'))
 
 
-def page(P, css_href, js_href):
+def page(P, css_href, js_href, banner_href):
     acts = '\n'.join(act_html(P, a) for a in P['acts'])     # icons were registered while the page module drew its worlds
     icons = ('<svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false"><defs>'
              '<marker id="arrowhead" viewBox="0 0 10 10" refX="7" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">'
              '<path d="M0 0L10 5L0 10z" fill="context-stroke"/></marker>' + kit.icon_symbols() + '</defs></svg>')
-    return (head(P, css_href)
+    return (head(P, css_href) + f'<link rel="stylesheet" href="{banner_href}">\n'
             + f'<style>\n{state_css(P["states"])}\n{P.get("css", "")}\n</style>\n</head>\n<body>\n'
             + icons + '\n<a class="skip" href="#what">پرش به خلاصهٔ متنی صفحه</a>\n'
-            + topbar(P) + '\n<div id="doc"><main id="top" tabindex="-1">\n' + acts + '\n'
+            + topbar(P) + '\n<div id="doc"><main id="top" tabindex="-1">\n' + banner.banner(P['file']) + '\n'
+            + P.get('hero_html', '') + acts + '\n'
             + P.get('before_sections', '') + sections(P) + '\n</main>\n' + FOOTER + '\n</div>\n' + FBAR + '\n'
             + f'<script>window.STORY={timeline(P)};</script>\n'
             + f'<script src="{js_href}" defer></script>\n</body>\n</html>\n')

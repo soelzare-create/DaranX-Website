@@ -1,0 +1,52 @@
+/* DaranX sales banner: first section of every page (story pages, landing pages, homepage).
+   Self-contained: always dark over the Milad-tower / data-center photo, whatever the page theme. */
+.dxb{position:relative;isolation:isolate;overflow:hidden;display:grid;place-items:center;min-height:100svh;
+  padding:calc(var(--nav-h,72px) + 2.2rem) clamp(1rem,4vw,3rem) calc(2.5rem + 72px);
+  background:#081627;color:#EEF3F9;text-align:center;font-family:"Vazirmatn",system-ui,sans-serif;line-height:1.7}
+.dxb-bg{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:24% 42%;z-index:-2}
+.dxb::before{content:"";position:absolute;inset:0;z-index:-1;
+  background:radial-gradient(120% 80% at 50% 45%,rgba(8,22,39,.42),rgba(8,22,39,.8)),linear-gradient(180deg,rgba(8,22,39,.5),transparent 30%,rgba(8,22,39,.55))}
+.dxb-in{width:min(1160px,100%);display:grid;gap:clamp(1rem,2.4vw,1.6rem);justify-items:center}
+.dxb-k{margin:0;font-size:clamp(.95rem,.88rem + .35vw,1.15rem);font-weight:700;color:#C9DAEB}
+
+/* the three services: one big card each */
+.dxb-svc{list-style:none;margin:0;padding:0;width:100%;display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:clamp(.6rem,2vw,1.4rem)}
+.dxb-svc li{position:relative;display:grid;justify-items:center;align-content:center;gap:.35rem;padding:clamp(1.3rem,3.4vw,2.6rem) .8rem;
+  border-radius:26px;background:rgba(14,39,73,.58);border:1px solid rgba(238,243,249,.22);
+  -webkit-backdrop-filter:blur(12px);backdrop-filter:blur(12px);box-shadow:0 24px 60px rgba(4,12,24,.35)}
+.dxb-svc svg{width:clamp(34px,3.6vw,54px);height:clamp(34px,3.6vw,54px);fill:#7FB0DF}
+.dxb-svc strong{font-size:clamp(2rem,1rem + 3.8vw,4.4rem);font-weight:900;line-height:1.2;color:#fff}
+.dxb-d{font-size:clamp(.85rem,.8rem + .2vw,1rem);color:#B4C8DD}
+.dxb-n{position:absolute;top:.8rem;inset-inline-start:1rem;font-size:.9rem;font-weight:800;color:#7FB0DF;opacity:.85}
+
+/* the five equipment groups: each opens its landing page */
+.dxb-pick{margin:.4rem 0 0;font-weight:800;font-size:clamp(1rem,.95rem + .3vw,1.2rem);color:#EEF3F9}
+.dxb-cats{width:100%;display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:clamp(.5rem,1.4vw,.9rem)}
+.dxb-cats a{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:.4rem;min-height:44px;padding:1.1rem .7rem;
+  border-radius:20px;background:#F5F9FD;color:#0E2749;text-decoration:none;font-weight:800;
+  box-shadow:0 14px 34px rgba(4,12,24,.3);transition:transform .2s cubic-bezier(.23,1,.32,1),box-shadow .2s ease,background .2s ease}
+.dxb-cats svg{width:36px;height:36px;fill:#153A62}
+.dxb-c{font-size:clamp(.98rem,.92rem + .25vw,1.12rem);line-height:1.4}
+.dxb-go{display:inline-flex;align-items:center;gap:.25rem;font-size:.82rem;font-weight:700;color:#2F62A0}
+.dxb-go svg{width:14px;height:14px;fill:currentColor}
+.dxb-cats a:active{transform:scale(.97)}
+.dxb-cats a:focus-visible{outline:3px solid #7FB0DF;outline-offset:3px}
+.dxb-cats a[aria-current="page"]{background:#7FB0DF;color:#081627}
+.dxb-cats a[aria-current="page"] svg,.dxb-cats a[aria-current="page"] .dxb-go{fill:#081627;color:#081627}
+@media (hover:hover) and (pointer:fine){
+  .dxb-cats a:hover{transform:translateY(-3px);box-shadow:0 20px 44px rgba(4,12,24,.42);background:#fff}
+}
+@media (max-width:900px){.dxb-cats{grid-template-columns:repeat(3,minmax(0,1fr))}}
+@media (max-width:600px){
+  .dxb{min-height:auto;padding-top:calc(var(--nav-h,64px) + 1.4rem);padding-bottom:2.4rem}
+  .dxb-svc{gap:.45rem}
+  .dxb-svc li{padding:1.1rem .3rem .9rem;border-radius:18px}
+  .dxb-d,.dxb-n{display:none}
+  .dxb-cats{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .dxb-cats a:last-child{grid-column:1/-1}
+  .dxb-cats a{flex-direction:row;padding:.85rem .6rem;border-radius:16px}
+  .dxb-cats svg{width:28px;height:28px}
+  .dxb-go{display:none}
+}
+@media (prefers-reduced-transparency:reduce){.dxb-svc li{background:#0E2749;-webkit-backdrop-filter:none;backdrop-filter:none}}
+@media (prefers-reduced-motion:reduce){.dxb-cats a{transition:none}}
