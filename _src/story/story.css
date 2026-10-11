@@ -282,3 +282,20 @@ html{scroll-padding-bottom:6.5rem}
 .zone-l{fill:none;stroke:var(--brand);stroke-width:2;stroke-dasharray:8 8}
 .acc{fill:none;stroke:#7FB0DF;stroke-width:2.5;opacity:.7}
 .acc.bad{stroke:var(--alert)}
+
+/* ---------------- intelligence parts ---------------- */
+.silo-b{fill:none;stroke:#6E89A6;stroke-width:2;stroke-dasharray:6 6}
+.sheet{fill:#E9F2FB;stroke:#9DB6CF;stroke-width:1;opacity:0;transform:translateY(-16px);transition:opacity .35s var(--ease-out),transform .45s var(--ease-out);transition-delay:calc(var(--k,0) * 80ms)}
+.dash .kpi{fill:rgba(127,176,223,.12);stroke:rgba(127,176,223,.4)}.dash .kpi-v{fill:var(--brand)}
+.step .rk,.model .rk,.dbx .rk{fill:#0F2744;stroke:var(--brand);stroke-width:2}
+.step .ic,.model .ic,.dbx .ic{fill:var(--brand)}
+.step.bad .rk{stroke:var(--alert)}.step.bad .ic{fill:var(--alert)}
+.step.who .rk{stroke:#7FD1A8}.step.who .ic{fill:#7FD1A8}
+@keyframes spin{to{transform:rotate(360deg)}}
+.loop .ic{fill:#E2A35A}
+.loop .spin{transform-origin:0 0}
+.story[data-sc] .loop .spin{animation:spin 2.6s linear infinite}
+.proc{fill:none;stroke:var(--brand);stroke-width:4;stroke-linecap:round;stroke-linejoin:round;stroke-dasharray:1;stroke-dashoffset:var(--draw,0)}
+.proc.bad{stroke:#E2A35A;stroke-width:3}
+.pk.bad{stroke:var(--alert);fill:#FFD9D3}
+.chip.hype rect{stroke-dasharray:5 5;fill:rgba(8,22,39,.6)}

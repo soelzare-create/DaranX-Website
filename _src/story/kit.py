@@ -446,3 +446,54 @@ def log_panel(x, y, w, rows, cls='logp', title='ثبت رویدادها'):
                  + label(x + w - 20, ry + 17, text, 'lbl lrow-t', 'end') + '</g>')
     s.append('</g>')
     return ''.join(s)
+
+
+# ---------------------------------------------------------------- intelligence parts
+def silo(x, y, icon, text, cls='silo'):
+    """one system's data, kept apart: a chip inside a dashed wall"""
+    w = text_w(text) + 54 + 24
+    return group(cls, f'<rect class="silo-b" x="{x - w / 2 - 12:.0f}" y="{y - 29}" width="{w + 24:.0f}" height="58" rx="14"/>',
+                 chip(x, y, text, 'chip', icon))
+
+
+def pile(x, floor_y, n=10, cls='pile'):
+    """a stack of unread reports standing on a floor; sheets stagger in by --k"""
+    return group(cls, *[f'<rect class="sheet" style="--k:{k}" x="{x - 30 + (k % 3) * 3}" y="{floor_y - 9 - k * 9}" width="56" height="8" rx="2"/>'
+                        for k in range(n)])
+
+
+def dash(x, y, w=300, h=136, cls='dash', vals=(.35, .55, .45, .7, .9)):
+    """a one-glance dashboard: two KPI tiles over a bar chart (bars grow when shown)"""
+    s = [f'<g class="{cls}"><rect class="panel" x="{x}" y="{y}" width="{w}" height="{h}" rx="12"/>']
+    tw = (w - 36) / 2
+    for k in range(2):
+        tx = x + 12 + k * (tw + 12)
+        s.append(f'<rect class="kpi" x="{tx:.0f}" y="{y + 12}" width="{tw:.0f}" height="30" rx="6"/>'
+                 f'<rect class="kpi-v" x="{tx + 10:.0f}" y="{y + 22}" width="{tw * (.4 + .3 * k):.0f}" height="10" rx="5"/>')
+    n = len(vals)
+    cw = (w - 24) / n
+    for k, v in enumerate(vals):
+        bh = (h - 66) * v
+        s.append(f'<rect class="bar" style="--k:{k}" x="{x + 12 + k * cw + cw * .2:.0f}" y="{y + h - 12 - bh:.0f}" width="{cw * .6:.0f}" height="{bh:.0f}" rx="3"/>')
+    s.append('</g>')
+    return ''.join(s)
+
+
+def step(x, y, icon, text=None, cls='step', s=60):
+    """one step of a process: a rounded box with its icon, its name below"""
+    return group(cls, f'<rect class="rk" x="{x - s / 2:.0f}" y="{y - s / 2:.0f}" width="{s}" height="{s}" rx="14"/>',
+                 use(icon, x, y, s * .58), label(x, y + s / 2 + 26, text, 'lbl sm') if text else '')
+
+
+def loop(x, y, s=34, cls='loop'):
+    """the same task again and again: a turning arrow"""
+    return f'<g class="{cls}" transform="translate({x} {y})"><g class="spin">{use("arrows-clockwise", 0, 0, s)}</g></g>'
+
+
+def model(x, y, cls='model', s=84):
+    return group(cls, f'<rect class="rk" x="{x - s / 2:.0f}" y="{y - s / 2:.0f}" width="{s}" height="{s}" rx="20"/>', use('brain', x, y, s * .6))
+
+
+def db(x, y, cls='dbx', s=72, text=None):
+    return group(cls, f'<rect class="rk" x="{x - s / 2:.0f}" y="{y - s / 2:.0f}" width="{s}" height="{s}" rx="14"/>', use('database', x, y, s * .6),
+                 label(x, y + s / 2 + 26, text, 'lbl sm') if text else '')
