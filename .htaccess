@@ -20,6 +20,11 @@ AddDefaultCharset UTF-8
   RewriteRule ^ https://www.daranx.com%{REQUEST_URI} [R=301,L]
 </IfModule>
 
+# The cinematic network page was tested at this address before it replaced network.html.
+<IfModule mod_alias.c>
+  Redirect 301 /network-story.html https://www.daranx.com/network.html
+</IfModule>
+
 # --- Caching for static assets --------------------------------------------
 <IfModule mod_expires.c>
   ExpiresActive On
