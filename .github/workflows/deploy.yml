@@ -102,3 +102,10 @@ jobs:
             r=$(curl -s -o /dev/null -w '%{http_code} -> %{redirect_url}' --max-time 20 "$u") || r="000"
             echo "$u -> $r"
           done
+          # Search and AI-engine files, compression and the year-long cache of the versioned story assets
+          for f in robots.txt sitemap.xml llms.txt llms-full.txt; do
+            echo "$f -> HTTP $(curl -s -o /dev/null -w '%{http_code}' --max-time 20 "https://www.daranx.com/$f")"
+          done
+          js=$(curl -s --max-time 20 https://www.daranx.com/solutions.html | grep -o 'assets/story/story.js?v=[a-f0-9]*' | head -1)
+          echo "$js:"
+          curl -sI --max-time 20 -H 'Accept-Encoding: gzip' "https://www.daranx.com/$js" | grep -iE '^(content-encoding|cache-control):' | sed 's/^/    /' || true
