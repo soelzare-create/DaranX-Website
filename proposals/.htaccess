@@ -1,0 +1,18 @@
+# DaranX client proposals: reachable only by their private link, never listed or indexed.
+# Each page is encrypted; its key is only in the link (#k=...), never on the server or in git.
+DirectoryIndex index.html
+Options -Indexes
+<IfModule mod_rewrite.c>
+  RewriteEngine On
+  # Same canonical https://www redirect as the site root (a folder with its own
+  # RewriteEngine does not inherit the root rules).
+  RewriteCond %{HTTP:X-Forwarded-Proto} !https
+  RewriteCond %{HTTPS} off [OR]
+  RewriteCond %{HTTP_HOST} !^www\. [NC]
+  RewriteRule ^ https://www.daranx.com%{REQUEST_URI} [R=301,L]
+</IfModule>
+<IfModule mod_headers.c>
+  Header set X-Robots-Tag "noindex, nofollow, noarchive, nosnippet"
+  Header set Referrer-Policy "no-referrer"
+  Header set Cache-Control "no-cache"
+</IfModule>
